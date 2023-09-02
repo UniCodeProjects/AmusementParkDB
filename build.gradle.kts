@@ -20,6 +20,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
+    implementation("org.jooq:jooq:3.18.6")
+
     val javaFxVersion = "15"
 
     for (platform in supportedPlatforms) {
