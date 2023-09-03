@@ -25,7 +25,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
-    jooqGenerator("mysql:mysql-connector-java:8.0.28")
+    val mysqlConnectorVersion = "8.0.33"
+    implementation("mysql:mysql-connector-java:$mysqlConnectorVersion")
+    jooqGenerator("mysql:mysql-connector-java:$mysqlConnectorVersion")
+
+    implementation("io.github.cdimascio:dotenv-java:3.0.0")
 
     val javaFxVersion = "15"
 
