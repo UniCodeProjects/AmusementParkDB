@@ -4,26 +4,26 @@
 package org.apdb4j.db;
 
 
-import org.apdb4j.db.tables.Account;
-import org.apdb4j.db.tables.Attribution;
-import org.apdb4j.db.tables.Contract;
-import org.apdb4j.db.tables.Cost;
-import org.apdb4j.db.tables.Exhibition;
-import org.apdb4j.db.tables.ExhibitionDetail;
-import org.apdb4j.db.tables.Facility;
-import org.apdb4j.db.tables.Guest;
-import org.apdb4j.db.tables.Maintenance;
-import org.apdb4j.db.tables.Picture;
-import org.apdb4j.db.tables.PriceList;
-import org.apdb4j.db.tables.PunchDate;
-import org.apdb4j.db.tables.Responsibility;
-import org.apdb4j.db.tables.Review;
-import org.apdb4j.db.tables.Ride;
-import org.apdb4j.db.tables.RideDetail;
+import org.apdb4j.db.tables.Accounts;
+import org.apdb4j.db.tables.Attributions;
+import org.apdb4j.db.tables.Contracts;
+import org.apdb4j.db.tables.Costs;
+import org.apdb4j.db.tables.ExhibitionDetails;
+import org.apdb4j.db.tables.Exhibitions;
+import org.apdb4j.db.tables.Facilities;
+import org.apdb4j.db.tables.Guests;
+import org.apdb4j.db.tables.Maintenances;
+import org.apdb4j.db.tables.Pictures;
+import org.apdb4j.db.tables.PriceLists;
+import org.apdb4j.db.tables.PunchDates;
+import org.apdb4j.db.tables.Responsibilities;
+import org.apdb4j.db.tables.Reviews;
+import org.apdb4j.db.tables.RideDetails;
+import org.apdb4j.db.tables.Rides;
 import org.apdb4j.db.tables.Staff;
-import org.apdb4j.db.tables.Ticket;
-import org.apdb4j.db.tables.TicketType;
-import org.apdb4j.db.tables.Validation;
+import org.apdb4j.db.tables.TicketTypes;
+import org.apdb4j.db.tables.Tickets;
+import org.apdb4j.db.tables.Validations;
 
 
 /**
@@ -33,84 +33,84 @@ import org.apdb4j.db.tables.Validation;
 public class Tables {
 
     /**
-     * The table <code>amusement_park.account</code>.
+     * The table <code>amusement_park.accounts</code>.
      */
-    public static final Account ACCOUNT = Account.ACCOUNT;
+    public static final Accounts ACCOUNTS = Accounts.ACCOUNTS;
 
     /**
-     * The table <code>amusement_park.attribution</code>.
+     * The table <code>amusement_park.attributions</code>.
      */
-    public static final Attribution ATTRIBUTION = Attribution.ATTRIBUTION;
+    public static final Attributions ATTRIBUTIONS = Attributions.ATTRIBUTIONS;
 
     /**
-     * The table <code>amusement_park.contract</code>.
+     * The table <code>amusement_park.contracts</code>.
      */
-    public static final Contract CONTRACT = Contract.CONTRACT;
+    public static final Contracts CONTRACTS = Contracts.CONTRACTS;
 
     /**
-     * The table <code>amusement_park.cost</code>.
+     * The table <code>amusement_park.costs</code>.
      */
-    public static final Cost COST = Cost.COST;
+    public static final Costs COSTS = Costs.COSTS;
 
     /**
-     * The table <code>amusement_park.exhibition</code>.
+     * The table <code>amusement_park.exhibition_details</code>.
      */
-    public static final Exhibition EXHIBITION = Exhibition.EXHIBITION;
+    public static final ExhibitionDetails EXHIBITION_DETAILS = ExhibitionDetails.EXHIBITION_DETAILS;
 
     /**
-     * The table <code>amusement_park.exhibition_detail</code>.
+     * The table <code>amusement_park.exhibitions</code>.
      */
-    public static final ExhibitionDetail EXHIBITION_DETAIL = ExhibitionDetail.EXHIBITION_DETAIL;
+    public static final Exhibitions EXHIBITIONS = Exhibitions.EXHIBITIONS;
 
     /**
-     * The table <code>amusement_park.facility</code>.
+     * The table <code>amusement_park.facilities</code>.
      */
-    public static final Facility FACILITY = Facility.FACILITY;
+    public static final Facilities FACILITIES = Facilities.FACILITIES;
 
     /**
-     * The table <code>amusement_park.guest</code>.
+     * The table <code>amusement_park.guests</code>.
      */
-    public static final Guest GUEST = Guest.GUEST;
+    public static final Guests GUESTS = Guests.GUESTS;
 
     /**
-     * The table <code>amusement_park.maintenance</code>.
+     * The table <code>amusement_park.maintenances</code>.
      */
-    public static final Maintenance MAINTENANCE = Maintenance.MAINTENANCE;
+    public static final Maintenances MAINTENANCES = Maintenances.MAINTENANCES;
 
     /**
-     * The table <code>amusement_park.picture</code>.
+     * The table <code>amusement_park.pictures</code>.
      */
-    public static final Picture PICTURE = Picture.PICTURE;
+    public static final Pictures PICTURES = Pictures.PICTURES;
 
     /**
-     * The table <code>amusement_park.price_list</code>.
+     * The table <code>amusement_park.price_lists</code>.
      */
-    public static final PriceList PRICE_LIST = PriceList.PRICE_LIST;
+    public static final PriceLists PRICE_LISTS = PriceLists.PRICE_LISTS;
 
     /**
-     * The table <code>amusement_park.punch_date</code>.
+     * The table <code>amusement_park.punch_dates</code>.
      */
-    public static final PunchDate PUNCH_DATE = PunchDate.PUNCH_DATE;
+    public static final PunchDates PUNCH_DATES = PunchDates.PUNCH_DATES;
 
     /**
-     * The table <code>amusement_park.responsibility</code>.
+     * The table <code>amusement_park.responsibilities</code>.
      */
-    public static final Responsibility RESPONSIBILITY = Responsibility.RESPONSIBILITY;
+    public static final Responsibilities RESPONSIBILITIES = Responsibilities.RESPONSIBILITIES;
 
     /**
-     * The table <code>amusement_park.review</code>.
+     * The table <code>amusement_park.reviews</code>.
      */
-    public static final Review REVIEW = Review.REVIEW;
+    public static final Reviews REVIEWS = Reviews.REVIEWS;
 
     /**
-     * The table <code>amusement_park.ride</code>.
+     * The table <code>amusement_park.ride_details</code>.
      */
-    public static final Ride RIDE = Ride.RIDE;
+    public static final RideDetails RIDE_DETAILS = RideDetails.RIDE_DETAILS;
 
     /**
-     * The table <code>amusement_park.ride_detail</code>.
+     * The table <code>amusement_park.rides</code>.
      */
-    public static final RideDetail RIDE_DETAIL = RideDetail.RIDE_DETAIL;
+    public static final Rides RIDES = Rides.RIDES;
 
     /**
      * The table <code>amusement_park.staff</code>.
@@ -118,17 +118,17 @@ public class Tables {
     public static final Staff STAFF = Staff.STAFF;
 
     /**
-     * The table <code>amusement_park.ticket</code>.
+     * The table <code>amusement_park.ticket_types</code>.
      */
-    public static final Ticket TICKET = Ticket.TICKET;
+    public static final TicketTypes TICKET_TYPES = TicketTypes.TICKET_TYPES;
 
     /**
-     * The table <code>amusement_park.ticket_type</code>.
+     * The table <code>amusement_park.tickets</code>.
      */
-    public static final TicketType TICKET_TYPE = TicketType.TICKET_TYPE;
+    public static final Tickets TICKETS = Tickets.TICKETS;
 
     /**
-     * The table <code>amusement_park.validation</code>.
+     * The table <code>amusement_park.validations</code>.
      */
-    public static final Validation VALIDATION = Validation.VALIDATION;
+    public static final Validations VALIDATIONS = Validations.VALIDATIONS;
 }
