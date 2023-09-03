@@ -148,17 +148,17 @@ public class Staff extends TableImpl<Record> {
         return Arrays.asList(Keys.FKSTAFF_OWNERSHIP_FK);
     }
 
-    private transient Account _account;
+    private transient Accounts _accounts;
 
     /**
-     * Get the implicit join path to the <code>amusement_park.account</code>
+     * Get the implicit join path to the <code>amusement_park.accounts</code>
      * table.
      */
-    public Account account() {
-        if (_account == null)
-            _account = new Account(this, Keys.FKSTAFF_OWNERSHIP_FK);
+    public Accounts accounts() {
+        if (_accounts == null)
+            _accounts = new Accounts(this, Keys.FKSTAFF_OWNERSHIP_FK);
 
-        return _account;
+        return _accounts;
     }
 
     @Override
