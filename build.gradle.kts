@@ -6,7 +6,7 @@ plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.danilopianini.gradle-java-qa") version "1.6.0"
+    id("org.danilopianini.gradle-java-qa") version "1.17.0"
     id("nu.studer.jooq") version "8.2.1"
 }
 
@@ -109,6 +109,19 @@ fun loadEnvFromFile(envFilePath: String) {
     }
 }
 
+spotbugs {
+    excludeFilter.set(file("config/spotbugs-excludes.xml"))
+}
+
+pmd {
+    ruleSetFiles = files("config/pmd_config.xml")
+}
+
+javaQA {
+    checkstyle {
+        additionalSuppressions.set("config/checkstyle_suppressions.xml")
+    }
+}
 application {
     mainClass.set("org.apdb4j.Main")
 }

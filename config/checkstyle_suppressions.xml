@@ -1,0 +1,1 @@
+<suppress files="src[\\/]generated[\\/]jooq[\\/]org[\\/]apdb4j[\\/]db[\\/]*." checks=".*"/>
