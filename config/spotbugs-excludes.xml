@@ -1,0 +1,9 @@
+<FindBugsFilter>
+  <Match>
+    <Package name="org.apdb4j.db.tables"/>
+  </Match>
+
+  <Match>
+    <Package name="org.apdb4j.db"/>
+  </Match>
+</FindBugsFilter>
