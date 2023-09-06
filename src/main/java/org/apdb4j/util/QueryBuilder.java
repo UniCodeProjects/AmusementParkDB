@@ -1,13 +1,17 @@
 package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.PermissionDeniedException;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -16,37 +20,56 @@ import java.util.function.Consumer;
 public class QueryBuilder {
 
     private Connection connection;
+    private boolean isPermissionSet;
     private boolean isConnectionCreated;
     private boolean isQueryExecuted;
+    private static final String INVALID_METHOD_ORDER_MSG = "Invalid method order";
+
+    /**
+     * Defines the permissions that allow the execution of the following query(ies).
+     * @param required the required permissions
+     * @param actual the executor's actual permissions
+     * @return {@code this} for fluent style
+     */
+    public QueryBuilder definePermissions(final Permission required,
+                                          final Permission actual) throws PermissionDeniedException {
+        if (isConnectionCreated || isQueryExecuted) {
+            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
+        }
+        if (invalidPermissions(required, actual)) {
+            throw new PermissionDeniedException();
+        }
+        isPermissionSet = true;
+        return this;
+    }
+
+    /**
+     * Defines the permissions that allow the execution of the following query(ies).
+     * @param required the required permissions set
+     * @param actual the executor's actual permissions
+     * @return {@code this} for fluent style
+     */
+    public QueryBuilder definePermissions(final Set<Permission> required,
+                                          final Permission actual) throws PermissionDeniedException {
+        if (isConnectionCreated || isQueryExecuted) {
+            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
+        }
+        if (invalidPermissions(required, actual)) {
+            throw new PermissionDeniedException();
+        }
+        isPermissionSet = true;
+        return this;
+    }
 
     /**
      * Creates a JDBC connection to run the successive queries.
      * @return {@code this} for fluent style
      */
     public QueryBuilder createConnection() {
-        if (isConnectionCreated || isQueryExecuted) {
-            throw new IllegalStateException();
+        if (isConnectionCreated || isQueryExecuted || !isPermissionSet) {
+            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
         }
         isConnectionCreated = connectionCreate();
-        if (!isConnectionCreated) {
-            throw new IllegalStateException("Connection could not be created.");
-        }
-        return this;
-    }
-
-    /**
-     * Creates a JDBC connection to run the successive queries
-     * given the connection details such as DB's url and credentials.
-     * @param dbUrl the database's url
-     * @param username the username
-     * @param password the password
-     * @return {@code this} for fluent style
-     */
-    public QueryBuilder createConnection(final String dbUrl, final String username, final String password) {
-        if (isConnectionCreated || isQueryExecuted) {
-            throw new IllegalStateException();
-        }
-        isConnectionCreated = connectionCreate(dbUrl, username, password);
         if (!isConnectionCreated) {
             throw new IllegalStateException("Connection could not be created.");
         }
@@ -58,13 +81,14 @@ public class QueryBuilder {
      * this is an ending operation.
      */
     public void closeConnection() {
-        if (!isConnectionCreated || !isQueryExecuted) {
-            throw new IllegalStateException();
+        if (!isConnectionCreated || !isQueryExecuted || !isPermissionSet) {
+            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
         }
         final var connectionStatus = connectionClose();
         if (!connectionStatus) {
             throw new IllegalStateException("Connection could not be closed.");
         }
+        isPermissionSet = false;
         isConnectionCreated = false;
         isQueryExecuted = false;
     }
@@ -77,8 +101,8 @@ public class QueryBuilder {
      * @return {@code this} for fluent style
      */
     public QueryBuilder queryAction(final Consumer<DSLContext> db) {
-        if (!isConnectionCreated || isQueryExecuted) {
-            throw new IllegalStateException();
+        if (!isConnectionCreated || isQueryExecuted || !isPermissionSet) {
+            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
         }
         db.accept(DSL.using(Objects.requireNonNull(connection)));
         isQueryExecuted = true;
@@ -112,6 +136,14 @@ public class QueryBuilder {
         } catch (final SQLException e) {
             return false;
         }
+    }
+
+    private boolean invalidPermissions(final Permission required, final Permission actual) {
+        return !actual.equals(required);
+    }
+
+    private boolean invalidPermissions(final Collection<Permission> required, final Permission actual) {
+        return required.stream().noneMatch(actual::equals);
     }
 
 }

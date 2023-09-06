@@ -1,5 +1,7 @@
-package org.apdb4j;
+package org.apdb4j.core;
 
+import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.PermissionDeniedException;
 import org.apdb4j.util.QueryBuilder;
 //import org.jooq.Record;
 //import org.jooq.Result;
@@ -18,14 +20,18 @@ public final class Main {
      * Main method.
      * @param args main args.
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws PermissionDeniedException {
         // DB connection sample.
+        final var p = new Permission() {
+        };
         final var builder = new QueryBuilder();
-//        builder.createConnection()
-//                .queryAction(db -> db.insertInto(PRICE_LISTS).values(2015).execute())
-//                .closeConnection();
+        builder.definePermissions(p, p)
+                .createConnection()
+                .queryAction(db -> db.insertInto(PRICE_LISTS).values(2015).execute())
+                .closeConnection();
 
-//        builder.createConnection()
+//        builder.definePermissions(p, p)
+//                .createConnection()
 //                .queryAction(db -> {
 //                    final Result<Record> result = db
 //                            .select()
