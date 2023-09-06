@@ -123,5 +123,5 @@ javaQA {
     }
 }
 application {
-    mainClass.set("org.apdb4j.Main")
+    mainClass.set("org.apdb4j.core.Main")
 }
