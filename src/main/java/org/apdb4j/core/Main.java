@@ -21,9 +21,9 @@ public final class Main {
     public static void main(final String[] args) {
         // DB connection sample.
         final var builder = new QueryBuilder();
-        builder.createConnection()
-                .queryAction(db -> db.insertInto(PRICE_LISTS).values(2015).execute())
-                .closeConnection();
+//        builder.createConnection()
+//                .queryAction(db -> db.insertInto(PRICE_LISTS).values(2015).execute())
+//                .closeConnection();
 
 //        builder.createConnection()
 //                .queryAction(db -> {
