@@ -20,93 +20,83 @@ import java.util.function.Consumer;
 public class QueryBuilder {
 
     private Connection connection;
-    private boolean isPermissionSet;
-    private boolean isConnectionCreated;
-    private boolean isQueryExecuted;
-    private static final String INVALID_METHOD_ORDER_MSG = "Invalid method order";
 
     /**
      * Defines the permissions that allow the execution of the following query(ies).
      * @param required the required permissions
      * @param actual the executor's actual permissions
-     * @return {@code this} for fluent style
+     * @return {@link QueryBuilder1} for fluent style
      */
-    public QueryBuilder definePermissions(final Permission required,
+    public QueryBuilder1 definePermissions(final Permission required,
                                           final Permission actual) throws PermissionDeniedException {
-        if (isConnectionCreated || isQueryExecuted) {
-            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
-        }
         if (invalidPermissions(required, actual)) {
             throw new PermissionDeniedException();
         }
-        isPermissionSet = true;
-        return this;
+        return new QueryBuilder1();
     }
 
     /**
      * Defines the permissions that allow the execution of the following query(ies).
      * @param required the required permissions set
      * @param actual the executor's actual permissions
-     * @return {@code this} for fluent style
+     * @return {@link QueryBuilder1} for fluent style
      */
-    public QueryBuilder definePermissions(final Set<Permission> required,
+    public QueryBuilder1 definePermissions(final Set<Permission> required,
                                           final Permission actual) throws PermissionDeniedException {
-        if (isConnectionCreated || isQueryExecuted) {
-            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
-        }
         if (invalidPermissions(required, actual)) {
             throw new PermissionDeniedException();
         }
-        isPermissionSet = true;
-        return this;
+        return new QueryBuilder1();
     }
 
     /**
-     * Creates a JDBC connection to run the successive queries.
-     * @return {@code this} for fluent style
+     * First builder used for chaining.
      */
-    public QueryBuilder createConnection() {
-        if (isConnectionCreated || isQueryExecuted || !isPermissionSet) {
-            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
+    public class QueryBuilder1 {
+        /**
+         * Creates a JDBC connection to run the successive queries.
+         * @return {@link QueryBuilder2} for fluent style
+         */
+        public QueryBuilder2 createConnection() {
+            final var isConnectionCreated = connectionCreate();
+            if (!isConnectionCreated) {
+                throw new IllegalStateException("Connection could not be created.");
+            }
+            return new QueryBuilder2();
         }
-        isConnectionCreated = connectionCreate();
-        if (!isConnectionCreated) {
-            throw new IllegalStateException("Connection could not be created.");
-        }
-        return this;
     }
 
     /**
-     * Closes the JDBC connection previously created,
-     * this is an ending operation.
+     * Second builder used for chaining.
      */
-    public void closeConnection() {
-        if (!isConnectionCreated || !isQueryExecuted || !isPermissionSet) {
-            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
+    public class QueryBuilder2 {
+        /**
+         * Contains the query(ies) that will be executed with jOOQ.
+         * The {@code Consumer<DSLContext>} allows to run queries from the
+         * provided API.
+         * @param db the jOOQ DSL context
+         * @return {@link QueryBuilder3} for fluent style
+         */
+        public QueryBuilder3 queryAction(final Consumer<DSLContext> db) {
+            db.accept(DSL.using(Objects.requireNonNull(connection)));
+            return new QueryBuilder3();
         }
-        final var connectionStatus = connectionClose();
-        if (!connectionStatus) {
-            throw new IllegalStateException("Connection could not be closed.");
-        }
-        isPermissionSet = false;
-        isConnectionCreated = false;
-        isQueryExecuted = false;
     }
 
     /**
-     * Contains the query(ies) that will be executed with jOOQ.
-     * The {@code Consumer<DSLContext>} allows to run queries from the
-     * provided API.
-     * @param db the jOOQ DSL context
-     * @return {@code this} for fluent style
+     * Third and last builder used for chaining.
      */
-    public QueryBuilder queryAction(final Consumer<DSLContext> db) {
-        if (!isConnectionCreated || isQueryExecuted || !isPermissionSet) {
-            throw new IllegalStateException(INVALID_METHOD_ORDER_MSG);
+    public class QueryBuilder3 {
+        /**
+         * Closes the JDBC connection previously created,
+         * this is an ending operation.
+         */
+        public void closeConnection() {
+            final var connectionStatus = connectionClose();
+            if (!connectionStatus) {
+                throw new IllegalStateException("Connection could not be closed.");
+            }
         }
-        db.accept(DSL.using(Objects.requireNonNull(connection)));
-        isQueryExecuted = true;
-        return this;
     }
 
     private boolean connectionCreate() {
