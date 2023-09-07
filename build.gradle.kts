@@ -18,7 +18,9 @@ val javaFXModules = listOf("base", "controls", "fxml", "swing", "graphics")
 val supportedPlatforms = listOf("linux", "mac", "win")
 
 dependencies {
-    compileOnly("com.github.spotbugs:spotbugs-annotations:4.7.3")
+    val spotbugsAnnotations = "com.github.spotbugs:spotbugs-annotations:4.7.3"
+    compileOnly(spotbugsAnnotations)
+    testCompileOnly(spotbugsAnnotations)
 
     val junitVersion = "5.9.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
