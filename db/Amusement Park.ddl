@@ -102,7 +102,7 @@ create table REVIEWS (
      FacilityID char(6) not null,
      Account varchar(256) not null,
      constraint IDRECENSIONE primary key (ReviewID),
-     constraint IDREVIEW unique (FacilityID));
+     constraint IDREVIEW unique (FacilityID, Account));
 
 create table RIDES (
      RideID char(6) not null,
@@ -144,8 +144,6 @@ create table TICKETS (
      ValidUntil date,
      Duration time,
      OwnerID char(72) not null,
-     Year decimal(4) not null,
-     Type varchar(50) not null,
      constraint IDTICKET_ID primary key (TicketID));
 
 create table TICKET_TYPES (
