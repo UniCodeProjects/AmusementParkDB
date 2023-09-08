@@ -2,10 +2,8 @@ package org.apdb4j.util;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -31,15 +29,7 @@ public final class LoadFXML {
         } catch (final IOException e) {
             throw new IllegalStateException("Could not load scene from FXML file", e);
         }
-        final var node = (Node) event.getSource();
-        final var window = node.getScene().getWindow();
-        // Checks if it's safe to downcast.
-        Stage stage;
-        if (window instanceof Stage) {
-            stage = (Stage) window;
-        } else {
-            throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
-        }
+        final var stage = JavaFXUtils.getStage(event);
         // Ensures that the new scene has the same size of the previous one.
         final var width = stage.getScene().getWidth();
         final var height = stage.getScene().getHeight();
