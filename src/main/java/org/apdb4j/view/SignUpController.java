@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.apdb4j.util.JavaFXUtils;
 import org.apdb4j.util.LoadFXML;
 
 import java.awt.Toolkit;
@@ -35,6 +36,7 @@ public class SignUpController implements Initializable {
      */
     @FXML
     void signUp(final ActionEvent event) {
+        JavaFXUtils.setStageTitle(event, username.getText());
         LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
     }
 
