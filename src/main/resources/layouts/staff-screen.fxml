@@ -1,30 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollBar?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.StaffScreenController">
    <center>
@@ -79,10 +58,10 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="TicketID" />
-                              <DatePicker promptText="Bought on" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Purchase date" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Label text="Ticket type:" />
                               <RadioButton mnemonicParsing="false" text="Single day">
@@ -117,7 +96,7 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Attraction name" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
@@ -150,10 +129,10 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Shop name" />
-                              <ChoiceBox prefWidth="150.0" />
+                              <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
@@ -181,7 +160,7 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Facility name" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
@@ -214,10 +193,10 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" BorderPane.alignment="CENTER">
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Employee name" />
-                              <ChoiceBox prefWidth="150.0" />
+                              <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
