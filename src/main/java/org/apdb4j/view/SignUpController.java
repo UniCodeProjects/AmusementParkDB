@@ -6,6 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.apdb4j.util.JavaFXUtils;
 import org.apdb4j.util.LoadFXML;
 
@@ -38,6 +40,20 @@ public class SignUpController implements Initializable {
     void signUp(final ActionEvent event) {
         JavaFXUtils.setStageTitle(event, username.getText());
         LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
+    }
+
+    /**
+     * Allows to sign-up by pressing the enter key.
+     * @param event the event
+     */
+    @FXML
+    void onEnterPressed(final KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)
+                && !email.getText().isBlank()
+                && !username.getText().isBlank()
+                && !password.getText().isBlank()) {
+            signUpBtn.fire();
+        }
     }
 
     /**
