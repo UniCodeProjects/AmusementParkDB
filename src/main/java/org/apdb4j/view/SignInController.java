@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.apdb4j.util.JavaFXUtils;
 import org.apdb4j.util.LoadFXML;
 
@@ -53,6 +55,16 @@ public class SignInController implements Initializable {
         LoadFXML.fromEvent(event, "layouts/signup-screen.fxml", true);
     }
 
+    /**
+     * Allows to sign-in by pressing the enter key.
+     * @param event the event
+     */
+    @FXML
+    void onEnterPressed(final KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER) && !username.getText().isBlank() && !password.getText().isBlank()) {
+            signInBtn.fire();
+        }
+    }
 
     /**
      * {@inheritDoc}
