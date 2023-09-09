@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,7 +19,11 @@ import java.io.IOException;
 public class StaffScreenController {
 
     @FXML
+    private Button clearBtn;
+    @FXML
     private MenuBar menuBar;
+    @FXML
+    private ToggleGroup radioBtnToggle;
 
     /**
      * Opens a popup window to change the user's password.
@@ -43,6 +49,15 @@ public class StaffScreenController {
         // Showing the popup window
         root.requestFocus();
         popupStage.show();
+    }
+
+    /**
+     * Clears the selected toggle button.
+     * @param event the event
+     */
+    @FXML
+    void onClearBtn(final ActionEvent event) {
+        radioBtnToggle.getSelectedToggle().setSelected(false);
     }
 
 }
