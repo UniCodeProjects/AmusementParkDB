@@ -31,7 +31,13 @@
                         <Label text="Administrator:" GridPane.rowIndex="3" />
                         <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" />
                         <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <image>
+                              <Image url="@../img/apdb4j-logo.png" />
+                           </image>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin></ImageView>
                         <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="Attractions:" GridPane.rowIndex="4" />
                         <Label text="Shops:" GridPane.rowIndex="5" />
