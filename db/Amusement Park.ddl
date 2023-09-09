@@ -142,7 +142,7 @@ create table TICKETS (
      PurchaseDate date not null,
      ValidOn date,
      ValidUntil date,
-     Duration time,
+     Duration decimal(2),
      OwnerID char(72) not null,
      constraint IDTICKET_ID primary key (TicketID));
 

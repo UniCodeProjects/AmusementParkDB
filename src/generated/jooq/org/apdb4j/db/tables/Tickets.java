@@ -5,7 +5,6 @@ package org.apdb4j.db.tables;
 
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,22 +68,12 @@ public class Tickets extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.tickets.Duration</code>.
      */
-    public final TableField<Record, LocalTime> DURATION = createField(DSL.name("Duration"), SQLDataType.LOCALTIME, this, "");
+    public final TableField<Record, Byte> DURATION = createField(DSL.name("Duration"), SQLDataType.TINYINT, this, "");
 
     /**
      * The column <code>amusement_park.tickets.OwnerID</code>.
      */
     public final TableField<Record, String> OWNERID = createField(DSL.name("OwnerID"), SQLDataType.CHAR(72).nullable(false), this, "");
-
-    /**
-     * The column <code>amusement_park.tickets.Year</code>.
-     */
-    public final TableField<Record, Short> YEAR = createField(DSL.name("Year"), SQLDataType.SMALLINT.nullable(false), this, "");
-
-    /**
-     * The column <code>amusement_park.tickets.Type</code>.
-     */
-    public final TableField<Record, String> TYPE = createField(DSL.name("Type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     private Tickets(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
