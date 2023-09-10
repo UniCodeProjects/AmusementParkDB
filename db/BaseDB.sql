@@ -23,10 +23,10 @@ values ("A-001", "MRARSS77E15A944I", "mariorossi@gmail.com", "Mario", "Rossi", '
        ("E-004", "FRRRCR79H09H501F", "riccardoferrari@gmail.com", "Riccardo", "Ferrari", '1979-06-09', "Roma", "chef", false, true);
 
 insert into contracts 
-values ("C-001", '2022-01-01', null, 1100.00, "MRARSS77E15A944I", "RSSLRD89L17C573J"),
-       ("C-002", '2023-06-01', '2024-01-01', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
-       ("C-003", '2023-04-01', '2024-04-01', 1500.00, "MRARSS77E15A944I", "GLLLSN66T22F839A"),
-       ("C-004", '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "FRRRCR79H09H501F");
+values ("C-001", '2021-12-10', '2022-01-01', null, 1100.00, "MRARSS77E15A944I", "RSSLRD89L17C573J"),
+       ("C-002", '2023-05-04', '2023-06-01', '2024-01-01', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
+       ("C-003", '2023-02-22', '2023-04-01', '2024-04-01', 1500.00, "MRARSS77E15A944I", "GLLLSN66T22F839A"),
+       ("C-004", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "FRRRCR79H09H501F");
 
 insert into price_lists
 values (2023);

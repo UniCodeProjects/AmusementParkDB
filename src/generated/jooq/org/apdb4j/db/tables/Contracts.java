@@ -52,6 +52,11 @@ public class Contracts extends TableImpl<Record> {
     public final TableField<Record, String> CONTRACTID = createField(DSL.name("ContractID"), SQLDataType.CHAR(65).nullable(false), this, "");
 
     /**
+     * The column <code>amusement_park.contracts.SubscriptionDate</code>.
+     */
+    public final TableField<Record, LocalDate> SUBSCRIPTIONDATE = createField(DSL.name("SubscriptionDate"), SQLDataType.LOCALDATE.nullable(false), this, "");
+
+    /**
      * The column <code>amusement_park.contracts.BeginDate</code>.
      */
     public final TableField<Record, LocalDate> BEGINDATE = createField(DSL.name("BeginDate"), SQLDataType.LOCALDATE.nullable(false), this, "");
@@ -117,6 +122,11 @@ public class Contracts extends TableImpl<Record> {
     @Override
     public UniqueKey<Record> getPrimaryKey() {
         return Keys.KEY_CONTRACTS_PRIMARY;
+    }
+
+    @Override
+    public List<UniqueKey<Record>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_CONTRACTS_EMPLOYEENID);
     }
 
     @Override

@@ -19,12 +19,14 @@ create table attributions (
 
 create table CONTRACTS (
      ContractID char(65) not null,
+     SubscriptionDate date not null,
      BeginDate date not null,
      EndDate date,
      Salary decimal(7,2) not null,
      EmployerNID varchar(256) not null,
      EmployeeNID varchar(256) not null,
-     constraint IDCONTRATTO primary key (ContractID));
+     constraint IDCONTRATTO primary key (ContractID),
+     unique (EmployeeNID, SubscriptionDate));
 
 create table COSTS (
      FacilityID char(6) not null,
