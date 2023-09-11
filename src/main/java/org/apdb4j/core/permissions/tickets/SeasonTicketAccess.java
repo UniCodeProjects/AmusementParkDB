@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.tickets;
 
 /**
- * The permissions related to season tickets.
+ * The access related to season tickets.
  */
 public interface SeasonTicketAccess extends TicketAccess {
 

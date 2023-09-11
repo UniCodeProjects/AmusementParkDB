@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.facilities;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to pictures.
+ * The access related to pictures.
  */
-public interface PictureAccess extends Permission {
+public interface PictureAccess extends Access {
 
     /**
      * The access permission for the {@code Path} attribute.

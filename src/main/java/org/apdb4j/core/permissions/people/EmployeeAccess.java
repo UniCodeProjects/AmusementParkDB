@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.people;
 
 /**
- * The permissions related to employees.
+ * The access related to employees.
  */
 public interface EmployeeAccess extends StaffAccess {
 

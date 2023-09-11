@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.account;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to accounts.
+ * The access related to accounts.
  */
-public interface AccountAccess extends Permission {
+public interface AccountAccess extends Access {
 
     /**
      * The access permission for the {@code Email} attribute.

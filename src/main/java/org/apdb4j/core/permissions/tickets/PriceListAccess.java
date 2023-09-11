@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.tickets;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to price lists.
+ * The access related to price lists.
  */
-public interface PriceListAccess extends Permission {
+public interface PriceListAccess extends Access {
 
     /**
      * The access permission for the {@code Year} attribute.

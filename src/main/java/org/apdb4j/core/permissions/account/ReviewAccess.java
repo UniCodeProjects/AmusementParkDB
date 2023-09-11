@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.account;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to reviews.
+ * The access related to reviews.
  */
-public interface ReviewAccess extends Permission {
+public interface ReviewAccess extends Access {
 
     /**
      * The access permission for the {@code ReviewID} attribute.
