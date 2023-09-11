@@ -1,4 +1,4 @@
-package org.apdb4j.util;
+package org.apdb4j.util.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
