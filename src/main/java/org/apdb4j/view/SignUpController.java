@@ -8,8 +8,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import org.apdb4j.util.JavaFXUtils;
-import org.apdb4j.util.LoadFXML;
+import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.awt.Toolkit;
 import java.net.URL;
