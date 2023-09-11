@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
 /**
- * The permissions related to exhibitions.
+ * The access related to exhibitions.
  */
 public interface ExhibitionAccess extends AttractionAccess {
 

@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
 /**
- * The permissions related to rides.
+ * The access related to rides.
  */
 public interface RideAccess extends AttractionAccess {
 

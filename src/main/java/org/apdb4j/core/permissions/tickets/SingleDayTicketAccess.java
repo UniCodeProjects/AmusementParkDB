@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.tickets;
 
 /**
- * The permissions related to single day tickets.
+ * The access related to single day tickets.
  */
 public interface SingleDayTicketAccess extends TicketAccess {
 

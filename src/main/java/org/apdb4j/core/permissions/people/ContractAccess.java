@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.people;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to contracts.
+ * The access related to contracts.
  */
-public interface ContractAccess extends Permission {
+public interface ContractAccess extends Access {
 
     /**
      * The access permission for the {@code ContractID} attribute.

@@ -1,7 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
 /**
- * The permissions related to shops.
+ * The access related to shops.
  */
 public interface ShopAccess extends FacilityAccess {
 

@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.tickets;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to ticket types.
+ * The access related to ticket types.
  */
-public interface TicketTypeAccess extends Permission {
+public interface TicketTypeAccess extends Access {
 
     /**
      * The access permission for the {@code Price} attribute.

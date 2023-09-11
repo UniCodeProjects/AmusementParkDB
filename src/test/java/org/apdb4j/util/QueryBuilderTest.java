@@ -1,8 +1,8 @@
 package org.apdb4j.util;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.PermissionDeniedException;
+import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.facilities.PictureAccess;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class QueryBuilderTest {
 
     private static final QueryBuilder DB = new QueryBuilder();
-    private static final Permission P1 = new SimplePermissions1();
-    private static final Permission P2 = new SimplePermissions2();
-    private static final Permission P3 = new SimplePermissions3();
+    private static final Access P1 = new SimpleAccess1();
+    private static final Access P2 = new SimpleAccess2();
+    private static final Access P3 = new SimpleAccess3();
 
     @SuppressFBWarnings("UPM_UNCALLED_PRIVATE_METHOD")
-    private static Stream<Arguments> permissionDeniedTestCases() {
+    private static Stream<Arguments> accessDeniedTestCases() {
         return Stream.of(
                 Arguments.of(P1, P2),
                 Arguments.of(P1, P3),
@@ -30,15 +30,15 @@ class QueryBuilderTest {
     }
 
     @ParameterizedTest
-    @MethodSource("permissionDeniedTestCases")
-    void permissionDeniedTest(final Permission a, final Permission b) {
-        assertThrows(PermissionDeniedException.class, () -> DB.definePermissions(a, b));
+    @MethodSource("accessDeniedTestCases")
+    void accessDeniedTest(final Access a, final Access b) {
+        assertThrows(AccessDeniedException.class, () -> DB.defineAccess(a, b));
     }
 
     /**
      * A class that models a simple permission.
      */
-    private static final class SimplePermissions1 implements PictureAccess {
+    private static final class SimpleAccess1 implements PictureAccess {
 
         private final String type = this.getClass().getName();
 
@@ -55,7 +55,7 @@ class QueryBuilderTest {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            final SimplePermissions1 that = (SimplePermissions1) o;
+            final SimpleAccess1 that = (SimpleAccess1) o;
             return Objects.equals(type, that.type);
         }
 
@@ -68,7 +68,7 @@ class QueryBuilderTest {
     /**
      * A class that models a simple permission.
      */
-    private static final class SimplePermissions2 implements PictureAccess {
+    private static final class SimpleAccess2 implements PictureAccess {
 
         private final String type = this.getClass().getName();
 
@@ -85,7 +85,7 @@ class QueryBuilderTest {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            final SimplePermissions2 that = (SimplePermissions2) o;
+            final SimpleAccess2 that = (SimpleAccess2) o;
             return Objects.equals(type, that.type);
         }
 
@@ -98,7 +98,7 @@ class QueryBuilderTest {
     /**
      * A class that models a simple permission.
      */
-    private static final class SimplePermissions3 implements PictureAccess {
+    private static final class SimpleAccess3 implements PictureAccess {
 
         private final String type = this.getClass().getName();
 
@@ -115,7 +115,7 @@ class QueryBuilderTest {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            final SimplePermissions3 that = (SimplePermissions3) o;
+            final SimpleAccess3 that = (SimpleAccess3) o;
             return Objects.equals(type, that.type);
         }
 

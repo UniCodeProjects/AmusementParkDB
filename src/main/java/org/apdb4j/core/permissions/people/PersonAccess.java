@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.people;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to people.
+ * The access related to people.
  */
-public interface PersonAccess extends Permission {
+public interface PersonAccess extends Access {
 
     /**
      * The access permission for the {@code PersonID} attribute.

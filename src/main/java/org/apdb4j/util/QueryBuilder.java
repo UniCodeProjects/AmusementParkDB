@@ -1,8 +1,8 @@
 package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.PermissionDeniedException;
+import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessDeniedException;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
@@ -22,29 +22,29 @@ public class QueryBuilder {
     private Connection connection;
 
     /**
-     * Defines the permissions that allow the execution of the following query(ies).
-     * @param required the required permissions
-     * @param actual the executor's actual permissions
+     * Defines the access that allow the execution of the following query(ies).
+     * @param required the required access
+     * @param actual the executor's actual access
      * @return {@link QueryBuilder1} for fluent style
      */
-    public QueryBuilder1 definePermissions(final Permission required,
-                                          final Permission actual) throws PermissionDeniedException {
-        if (invalidPermissions(required, actual)) {
-            throw new PermissionDeniedException();
+    public QueryBuilder1 defineAccess(final Access required,
+                                      final Access actual) throws AccessDeniedException {
+        if (invalidAccess(required, actual)) {
+            throw new AccessDeniedException();
         }
         return new QueryBuilder1();
     }
 
     /**
-     * Defines the permissions that allow the execution of the following query(ies).
-     * @param required the required permissions set
-     * @param actual the executor's actual permissions
+     * Defines the access that allow the execution of the following query(ies).
+     * @param required the required access set
+     * @param actual the executor's actual access
      * @return {@link QueryBuilder1} for fluent style
      */
-    public QueryBuilder1 definePermissions(final Set<Permission> required,
-                                          final Permission actual) throws PermissionDeniedException {
-        if (invalidPermissions(required, actual)) {
-            throw new PermissionDeniedException();
+    public QueryBuilder1 defineAccess(final Set<Access> required,
+                                      final Access actual) throws AccessDeniedException {
+        if (invalidAccess(required, actual)) {
+            throw new AccessDeniedException();
         }
         return new QueryBuilder1();
     }
@@ -128,11 +128,11 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidPermissions(final Permission required, final Permission actual) {
+    private boolean invalidAccess(final Access required, final Access actual) {
         return !actual.equals(required);
     }
 
-    private boolean invalidPermissions(final Collection<Permission> required, final Permission actual) {
+    private boolean invalidAccess(final Collection<Access> required, final Access actual) {
         return required.stream().noneMatch(actual::equals);
     }
 

@@ -1,11 +1,11 @@
 package org.apdb4j.core.permissions.facilities;
 
-import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Access;
 
 /**
- * The permissions related to maintenances.
+ * The access related to maintenances.
  */
-public interface MaintenanceAccess extends Permission {
+public interface MaintenanceAccess extends Access {
 
     /**
      * The access permission for the {@code Price} attribute.
