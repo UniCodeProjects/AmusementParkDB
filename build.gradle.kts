@@ -8,6 +8,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.danilopianini.gradle-java-qa") version "1.17.0"
     id("nu.studer.jooq") version "8.2.1"
+    id("io.freefair.lombok") version "8.3"
 }
 
 repositories {
