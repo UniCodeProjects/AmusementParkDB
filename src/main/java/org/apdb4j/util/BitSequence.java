@@ -27,6 +27,8 @@ public interface BitSequence {
      */
     void setAccessSetting(@NonNull String methodName, @NonNull Bit value);
 
+    String getSequenceAsString();
+
     /**
      * The enum that represents the bit values of zero and one.
      */
@@ -52,6 +54,14 @@ public interface BitSequence {
          */
         public static Bit fromBoolean(final boolean value) {
             return value ? ONE : ZERO;
+        }
+
+        /**
+         * @return
+         */
+        @Override
+        public String toString() {
+            return bit ? "1" : "0";
         }
 
     }
