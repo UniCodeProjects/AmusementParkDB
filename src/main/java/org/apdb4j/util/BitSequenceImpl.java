@@ -1,8 +1,10 @@
 package org.apdb4j.util;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.apdb4j.core.permissions.Access;
 
 import java.util.Collections;
@@ -12,33 +14,41 @@ import java.util.TreeMap;
 /**
  * Implementation of a {@link BitSequence}.
  */
+@EqualsAndHashCode
+@ToString
 public class BitSequenceImpl implements BitSequence {
 
     /**
-     * Returns the access type.
-     * @return the type of access
+     * Returns the access interface.
+     * @return the interface name
      */
-    @Getter @NonNull private final Class<? extends Access> accessType;
+    @Getter @NonNull private final String accessInterface;
+    /**
+     * Returns the access instance.
+     * @return the class name
+     */
+    @Getter @NonNull private final String accessInstance;
     @NonNull private final SortedMap<String, Bit> accessSettings;
 
     /**
      * The bit sequence constructor.
      * @param accessInterface an interface that extends {@link Access}
-     * @param accessImpl a class that implements {@link Access} or its subinterfaces
+     * @param accessInstance a class that implements {@link Access} or its subinterfaces
      */
     public BitSequenceImpl(@NonNull final Class<? extends Access> accessInterface,
-                           @NonNull final Class<? extends Access> accessImpl) {
+                           @NonNull final Class<? extends Access> accessInstance) {
         if (!accessInterface.isInterface()) {
             throw new IllegalStateException(accessInterface.getName() + " is not an interface");
         }
-        // Checks if the class 'accessImpl' implements the accessInterface interface.
-        if (accessImpl.isInterface() || !accessInterface.isAssignableFrom(accessImpl)) {
-            throw new IllegalStateException(accessImpl.getName()
+        // Checks if the class 'accessInstance' implements the accessInterface interface.
+        if (accessInstance.isInterface() || !accessInterface.isAssignableFrom(accessInstance)) {
+            throw new IllegalStateException(accessInstance.getName()
                     + " is an interface or not a class that implements "
                     + accessInterface.getName());
         }
-        this.accessType = accessInterface;
-        this.accessSettings = generateMapFromClass(accessInterface, accessImpl);
+        this.accessInterface = accessInterface.getName();
+        this.accessInstance = accessInstance.getName();
+        this.accessSettings = generateMapFromClass(accessInterface, accessInstance);
     }
 
     /**
@@ -55,6 +65,18 @@ public class BitSequenceImpl implements BitSequence {
     @Override
     public void setAccessSetting(@NonNull final String methodName, @NonNull final Bit value) {
         accessSettings.replace(methodName, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSequenceAsString() {
+        return String.join(
+                "",
+                getAccessSettings().values().stream()
+                        .map(Bit::toString)
+                        .toList());
     }
 
     @SneakyThrows
