@@ -1,17 +1,16 @@
 package org.apdb4j.core.permissions;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.apdb4j.core.permissions.account.AccountAccess2Impl;
 import org.apdb4j.util.BitSequence;
 import org.apdb4j.util.BitSequenceImpl;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -30,29 +29,60 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PermissionIntegrityValidator {
 
-    @Getter private static final PermissionIntegrityValidator INSTANCE = new PermissionIntegrityValidator();
+    private static final PermissionIntegrityValidator INSTANCE = new PermissionIntegrityValidator();
+    private static final String SEQUENCE_INTERNAL_SEPARATOR = ".";
+    private static final String SEQUENCE_EXTERNAL_SEPARATOR = "-";
+    private static final int SEQUENCE_NUMERICAL_CODE_MAXSIZE = 2;
+    private static final String SEQUENCE_NUMERICAL_CODE_DEFAULT = "0";
+    private static final String EMPTY_STRING = "";
     @NonNull private final List<String> knownAccessInterfacesNames = getKnownAccessInterfacesNames();
 
     /**
-     * @return
+     * Returns the single instance of this class.
+     * @return the instance
      */
-    public @NonNull String generateIdentifierSequence(@NonNull final Class<? extends Access> permissions) {
+    public static PermissionIntegrityValidator getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Returns the unique identifier for a set of access permissions.
+     * @param permissions the class that implements a set of accesses
+     * @return a string representing an UID for the given permissions
+     * @see Access
+     */
+    public @NonNull String generatePermissionsUID(@NonNull final Class<? extends Access> permissions) {
+        if (!isClass(permissions)) {
+            throw new IllegalArgumentException(permissions + " is not a class.");
+        }
         final List<BitSequence> bitSequenceList = createListAtRunTime(permissions.getName());
-        final List<String> prefixCodes = generateSequencePrefixes();
-        final List<String> bitSequences = generateBitSequencesAsStrings(bitSequenceList);
-        final var result = new StringBuilder();
-        if (prefixCodes.size() == bitSequences.size()) {
-            for (int i = 0; i < prefixCodes.size(); i++) {
-                result.append(prefixCodes.get(i))
-                        .append(".")
-                        .append(bitSequences.get(i))
-                        .append("-");
-            }
-        } else {
+        final List<String> prefixCodes = generatePrefixes();
+        final List<String> bitSequences = generateBitStrings(bitSequenceList);
+        if (prefixCodes.size() != bitSequences.size()) {
             throw new IllegalStateException();
+        }
+        final var result = new StringBuilder();
+        for (int i = 0; i < prefixCodes.size(); i++) {
+            result.append(prefixCodes.get(i))
+                    .append(SEQUENCE_INTERNAL_SEPARATOR)
+                    .append(bitSequences.get(i))
+                    .append(SEQUENCE_EXTERNAL_SEPARATOR);
         }
         result.deleteCharAt(result.length() - 1);
         return result.toString();
+    }
+
+    private boolean isClass(@NonNull final Class<? extends Access> clazz) {
+        return !clazz.isInterface() && Access.class.isAssignableFrom(clazz);
+    }
+
+    private static List<String> getKnownAccessInterfacesNames() {
+        final Reflections reflections = new Reflections("org.apdb4j.core.permissions");
+        return reflections.getSubTypesOf(Access.class).stream()
+                .filter(Class::isInterface)
+                .map(Class::getName)
+                .sorted()
+                .toList();
     }
 
     @SneakyThrows
@@ -71,15 +101,6 @@ public final class PermissionIntegrityValidator {
         return list;
     }
 
-    private static List<String> getKnownAccessInterfacesNames() {
-        Reflections reflections = new Reflections("org.apdb4j.core.permissions");
-        return reflections.getSubTypesOf(Access.class).stream()
-                .filter(Class::isInterface)
-                .map(Class::getName)
-                .sorted()
-                .toList();
-    }
-
     @SneakyThrows
     private SortedMap<String, String> createMapFromClassNames(@NonNull final List<String> interfaces,
                                                                     @NonNull final String clazz) {
@@ -91,7 +112,7 @@ public final class PermissionIntegrityValidator {
             if (actualInterface.isAssignableFrom(actualClass)) {
                 className = clazz;
             } else {
-                className = "";
+                className = EMPTY_STRING;
             }
             map.put(i, className);
         }
@@ -99,67 +120,69 @@ public final class PermissionIntegrityValidator {
     }
 
     @SneakyThrows
-    private String getSimpleClassName(@NonNull final String longClassName) {
-        final var actualClass = Class.forName(longClassName);
-        return actualClass.getSimpleName();
-    }
-
-    @SneakyThrows
-    private List<String> getSimpleClassName(@NonNull final List<String> longClassNames) {
-        final List<String> result = new ArrayList<>();
-        for (final var name : longClassNames) {
-            result.add(Class.forName(name).getSimpleName());
-        }
-        return result;
-    }
-
-    // TODO: needs cleanup.
-    @SneakyThrows
-    private List<String> generateSequencePrefixes() {
-        final var stringBuilder = new StringBuilder();
+    private List<String> generatePrefixes() {
         final List<String> result = new ArrayList<>();
         for (final var i : knownAccessInterfacesNames) {
-            final var actualInterface = Class.forName(i).asSubclass(Access.class);
-            Pattern pattern = Pattern.compile("\\b\\w");
-            final var packagePath = actualInterface.getName().replace(actualInterface.getSimpleName(), "");
-            Matcher matcher = pattern.matcher(packagePath);
-            while (matcher.find()) {
-                stringBuilder.append(matcher.group());
-            }
-            stringBuilder.append(".");
-            final var restOfName = actualInterface.getSimpleName().substring(0, 3);
-            stringBuilder.append(restOfName);
-
-            // Check if present in history.
-            if (result.contains(stringBuilder.toString().toUpperCase() + "00")) {
-                final int amount = Math.toIntExact(
-                        result.stream()
-                                .filter(s -> s.contentEquals(stringBuilder))
-                                .count());
-                var amountAsString = String.valueOf(amount + 1);
-                if (amountAsString.length() > 2) {
-                    throw new IllegalStateException();
-                }
-                if (amountAsString.length() == 1) {
-                    amountAsString = "0" + amountAsString;
-                }
-                stringBuilder.append(amountAsString);
-                result.add(stringBuilder.toString().toUpperCase());
-            } else {
-                stringBuilder.append("00");
-                result.add(stringBuilder.toString().toUpperCase());
-            }
-            stringBuilder.setLength(0);
+            final var prefix = generatePrefixFromInterface(i);
+            final var numericalSequence = generateNumericalSequenceFromPrefix(result, prefix);
+            result.add(prefix.toUpperCase(Locale.ROOT) + numericalSequence);
         }
         return result;
     }
 
-    private List<String> generateBitSequencesAsStrings(@NonNull final List<BitSequence> bitSequences) {
+    @SneakyThrows
+    private @NonNull String generatePrefixFromInterface(@NonNull final String interfaceName) {
+        final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
+        final Pattern pattern = Pattern.compile("\\b\\w");
+        // Input to match
+        final var packagePath = actualInterface.getName().replace(actualInterface.getSimpleName(), EMPTY_STRING);
+        final Matcher matcher = pattern.matcher(packagePath);
+        // Building the prefix.
+        final var stringBuilder = new StringBuilder();
+        while (matcher.find()) {
+            stringBuilder.append(matcher.group());
+        }
+        stringBuilder.append(SEQUENCE_INTERNAL_SEPARATOR);
+        final var restOfName = actualInterface.getSimpleName().substring(0, 3);
+        stringBuilder.append(restOfName);
+        return stringBuilder.toString();
+    }
+
+    private @NonNull String generateNumericalSequenceFromPrefix(@NonNull final List<String> history,
+                                                                @NonNull final String prefix) {
+        // Checking for duplicates.
+        final String defaultNumericalSequence = SEQUENCE_NUMERICAL_CODE_DEFAULT.repeat(SEQUENCE_NUMERICAL_CODE_MAXSIZE);
+        // The generated sequence to test, it is all in uppercase and starts with a 0 numerical sequence.
+        final var testSequence = prefix.toUpperCase(Locale.ROOT) + defaultNumericalSequence;
+        if (!history.contains(testSequence)) {
+            return defaultNumericalSequence;
+        }
+        // Calculating the actual numerical sequence.
+        final int amount = Math.toIntExact(
+                history.stream()
+                        .filter(s -> s.equals(prefix))
+                        .count());
+        return getAmountAsString(amount);
+    }
+
+    private @NonNull String getAmountAsString(final int amount) {
+        var amountAsString = String.valueOf(amount + 1);
+        if (amountAsString.length() > SEQUENCE_NUMERICAL_CODE_MAXSIZE) {
+            throw new IllegalStateException();
+        }
+        if (amountAsString.length() < SEQUENCE_NUMERICAL_CODE_MAXSIZE) {
+            final int repeatAmount = SEQUENCE_NUMERICAL_CODE_MAXSIZE - amountAsString.length();
+            amountAsString = SEQUENCE_NUMERICAL_CODE_DEFAULT.repeat(repeatAmount) + amountAsString;
+        }
+        return amountAsString;
+    }
+
+    private List<String> generateBitStrings(@NonNull final List<BitSequence> bitSequences) {
         final SortedMap<String, String> interfaceBitSequenceMap = new TreeMap<>();
         // Init tree map.
         knownAccessInterfacesNames.forEach(s -> interfaceBitSequenceMap.put(s, getDefaultSequence(s)));
         // Populate map with actual bit sequences.
-        for (BitSequence sequence : bitSequences) {
+        for (final BitSequence sequence : bitSequences) {
             final var accessInterface = ((BitSequenceImpl) sequence).getAccessInterface();
             interfaceBitSequenceMap.replace(accessInterface, sequence.getSequenceAsString());
         }
@@ -170,21 +193,7 @@ public final class PermissionIntegrityValidator {
     private String getDefaultSequence(@NonNull final String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         final int numberOfMethods = actualInterface.getDeclaredMethods().length;
-        return "0".repeat(numberOfMethods);
-    }
-
-    private String numberOfOccurrencesAsString(@NonNull final List<String> history, @NonNull final String testString) {
-        final int occurrences = Math.toIntExact(
-                history.stream()
-                        .filter(s -> s.equals(testString))
-                        .count());
-        final var numberAsString = String.valueOf(occurrences);
-        return numberAsString.length() == 1 ? "0" + numberAsString : numberAsString;
-    }
-
-    // todo: remove.
-    public static void main(final String[] args) {
-        System.out.println(PermissionIntegrityValidator.getINSTANCE().generateIdentifierSequence(AccountAccess2Impl.class));
+        return SEQUENCE_NUMERICAL_CODE_DEFAULT.repeat(numberOfMethods);
     }
 
 }

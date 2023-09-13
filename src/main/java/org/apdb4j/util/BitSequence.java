@@ -27,6 +27,10 @@ public interface BitSequence {
      */
     void setAccessSetting(@NonNull String methodName, @NonNull Bit value);
 
+    /**
+     * Returns the bit sequence as a string of binary values.
+     * @return the string of binary values
+     */
     String getSequenceAsString();
 
     /**
