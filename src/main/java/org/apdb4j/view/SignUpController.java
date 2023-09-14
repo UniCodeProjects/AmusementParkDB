@@ -42,7 +42,7 @@ public class SignUpController implements Initializable {
     void signUp(final ActionEvent event) {
         if (noTextFieldIsBlank()) {
             JavaFXUtils.setStageTitle(event, username.getText());
-            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
+            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
         }
     }
 
