@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.StaffScreenController">
    <center>
@@ -114,6 +138,37 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </LineChart>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Employees">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField promptText="Employee name" />
+                              <ChoiceBox maxWidth="1.7976931348623157E308" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </VBox>
+                     </left>
+                     <center>
+                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <columns>
+                              <TableColumn prefWidth="75.0" text="C1" />
+                              <TableColumn prefWidth="75.0" text="C2" />
+                           </columns>
+                        </TableView>
                      </center>
                   </BorderPane>
                </content>
@@ -232,6 +287,7 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Facility name" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Maintenance date" />
                               <Label text="Filter for:" />
                               <CheckBox mnemonicParsing="false" text="Rides" />
                               <CheckBox mnemonicParsing="false" text="Exhibitions" />
@@ -258,18 +314,29 @@
                      </center>
                   </BorderPane>
                </content></Tab>
-            <Tab closable="false" text="Employees">
+            <Tab closable="false" text="Reviews">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Employee name" />
-                              <ChoiceBox maxWidth="1.7976931348623157E308" />
+                              <TextField promptText="Facility name" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Review date" />
+                              <Label text="Filter by rating:" />
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="1" />
+                                    <CheckBox mnemonicParsing="false" text="2" />
+                                    <CheckBox mnemonicParsing="false" text="3" />
+                                    <CheckBox mnemonicParsing="false" text="4" />
+                                    <CheckBox mnemonicParsing="false" text="5" />
+                                 </children>
+                              </HBox>
+                              <Label text="Filter for:" />
+                              <CheckBox mnemonicParsing="false" text="Rides" />
+                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
+                              <CheckBox mnemonicParsing="false" text="Shops" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
-                              <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -318,7 +385,4 @@
         </menus>
       </MenuBar>
    </top>
-   <right>
-      <ScrollBar orientation="VERTICAL" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>
