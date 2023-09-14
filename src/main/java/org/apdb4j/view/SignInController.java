@@ -42,7 +42,7 @@ public class SignInController implements Initializable {
     @FXML
     void signIn(final ActionEvent event) {
         // todo: check user type, add validator.
-        if (!username.getText().isBlank() && !password.getText().isBlank()) {
+        if (noTextFieldIsBlank()) {
             JavaFXUtils.setStageTitle(event, username.getText());
             LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
         }
@@ -63,7 +63,7 @@ public class SignInController implements Initializable {
      */
     @FXML
     void onEnterPressed(final KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER) && !username.getText().isBlank() && !password.getText().isBlank()) {
+        if (event.getCode().equals(KeyCode.ENTER) && noTextFieldIsBlank()) {
             signInBtn.fire();
         }
     }
@@ -81,17 +81,25 @@ public class SignInController implements Initializable {
         signInBtn.setDisable(true);
         List.of(username, password).forEach(textField -> {
             textField.setOnKeyTyped(event -> {
-                if (Stream.of(username, password).map(TextField::getText).noneMatch(String::isBlank)) {
+                if (noTextFieldIsBlank()) {
                     signInBtn.setDisable(false);
                 }
             });
             textField.setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)
-                        && Stream.of(username, password).map(TextField::getText).anyMatch(String::isBlank)) {
+                        && anyTextFieldIsBlank()) {
                     signInBtn.setDisable(true);
                 }
             });
         });
+    }
+
+    private boolean anyTextFieldIsBlank() {
+        return Stream.of(username, password).map(TextField::getText).anyMatch(String::isBlank);
+    }
+
+    private boolean noTextFieldIsBlank() {
+        return Stream.of(username, password).map(TextField::getText).noneMatch(String::isBlank);
     }
 
 }

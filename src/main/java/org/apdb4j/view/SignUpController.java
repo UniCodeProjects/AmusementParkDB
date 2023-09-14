@@ -40,8 +40,10 @@ public class SignUpController implements Initializable {
      */
     @FXML
     void signUp(final ActionEvent event) {
-        JavaFXUtils.setStageTitle(event, username.getText());
-        LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
+        if (noTextFieldIsBlank()) {
+            JavaFXUtils.setStageTitle(event, username.getText());
+            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
+        }
     }
 
     /**
@@ -51,9 +53,7 @@ public class SignUpController implements Initializable {
     @FXML
     void onEnterPressed(final KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)
-                && !email.getText().isBlank()
-                && !username.getText().isBlank()
-                && !password.getText().isBlank()) {
+                && noTextFieldIsBlank()) {
             signUpBtn.fire();
         }
     }
@@ -72,17 +72,25 @@ public class SignUpController implements Initializable {
         signUpBtn.setDisable(true);
         List.of(email, username, password).forEach(textField -> {
             textField.setOnKeyTyped(event -> {
-                if (Stream.of(email, username, password).map(TextField::getText).noneMatch(String::isBlank)) {
+                if (noTextFieldIsBlank()) {
                     signUpBtn.setDisable(false);
                 }
             });
             textField.setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)
-                        && Stream.of(email, username, password).map(TextField::getText).anyMatch(String::isBlank)) {
+                        && anyTextFieldIsBlank()) {
                     signUpBtn.setDisable(true);
                 }
             });
         });
+    }
+
+    private boolean anyTextFieldIsBlank() {
+        return Stream.of(email, username, password).map(TextField::getText).anyMatch(String::isBlank);
+    }
+
+    private boolean noTextFieldIsBlank() {
+        return Stream.of(email, username, password).map(TextField::getText).noneMatch(String::isBlank);
     }
 
 }
