@@ -44,7 +44,7 @@ public class SignInController implements Initializable {
         // todo: check user type, add validator.
         if (noTextFieldIsBlank()) {
             JavaFXUtils.setStageTitle(event, username.getText());
-            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false);
+            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
         }
     }
 
@@ -54,7 +54,7 @@ public class SignInController implements Initializable {
      */
     @FXML
     void signUp(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/signup-screen.fxml", true);
+        LoadFXML.fromEvent(event, "layouts/signup-screen.fxml", true, false);
     }
 
     /**
