@@ -1,5 +1,7 @@
 package org.apdb4j.util.view;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,23 +23,53 @@ public final class LoadFXML {
      * @param event the event that provides the source
      * @param fxml the FXML path
      * @param removeFocus {@code true} to remove the focus from any visible component
+     * @param showLoading if {@code true} shows a loading indicator while loading the FXML
      */
-    public static void fromEvent(final ActionEvent event, final String fxml, final boolean removeFocus) {
-        Parent root;
-        try {
-            root = FXMLLoader.load(ClassLoader.getSystemResource(fxml));
-        } catch (final IOException e) {
-            throw new IllegalStateException("Could not load scene from FXML file", e);
-        }
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    public static void fromEvent(final ActionEvent event, final String fxml,
+                                 final boolean removeFocus, final boolean showLoading) {
         final var stage = JavaFXUtils.getStage(event);
-        // Ensures that the new scene has the same size of the previous one.
-        final var width = stage.getScene().getWidth();
-        final var height = stage.getScene().getHeight();
-        final Scene scene = new Scene(root, width, height);
-        if (removeFocus) {
-            root.requestFocus();
-        }
-        stage.setScene(scene);
+        final var stageWidth = stage.getScene().getWidth();
+        final var stageHeight = stage.getScene().getHeight();
+        final Task<Parent> task = new Task<>() {
+            @Override
+            protected Parent call() throws IOException {
+                return FXMLLoader.load(ClassLoader.getSystemResource(fxml));
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            Platform.runLater(() -> {
+                final Parent root = task.getValue();
+                final Scene scene = new Scene(root, stageWidth, stageHeight);
+                if (removeFocus) {
+                    root.requestFocus();
+                }
+                stage.setScene(scene);
+            });
+        });
+
+        task.setOnFailed(e -> {
+            throw new IllegalStateException(task.getException());
+        });
+
+        task.setOnRunning(e -> {
+            if (showLoading) {
+                Platform.runLater(() -> {
+                    final Parent root;
+                    try {
+                        root = FXMLLoader.load(ClassLoader.getSystemResource("layouts/loading-screen.fxml"));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    final Scene scene = new Scene(root, stageWidth, stageHeight);
+                    stage.setScene(scene);
+                });
+            }
+        });
+
+        final Thread thread = new Thread(task);
+        thread.start();
     }
 
 }
