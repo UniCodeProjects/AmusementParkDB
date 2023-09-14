@@ -13,7 +13,9 @@ import org.apdb4j.util.view.LoadFXML;
 
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 /**
  * The FXML controller for the sign-up scene.
@@ -67,6 +69,20 @@ public class SignUpController implements Initializable {
         username.setPrefWidth(width);
         password.setPrefWidth(width);
         signUpBtn.setPrefWidth(width);
+        signUpBtn.setDisable(true);
+        List.of(email, username, password).forEach(textField -> {
+            textField.setOnKeyTyped(event -> {
+                if (Stream.of(email, username, password).map(TextField::getText).noneMatch(String::isBlank)) {
+                    signUpBtn.setDisable(false);
+                }
+            });
+            textField.setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)
+                        && Stream.of(email, username, password).map(TextField::getText).anyMatch(String::isBlank)) {
+                    signUpBtn.setDisable(true);
+                }
+            });
+        });
     }
 
 }
