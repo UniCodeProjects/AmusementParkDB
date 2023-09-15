@@ -135,7 +135,9 @@ public final class PermissionIntegrityValidator {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         final Pattern pattern = Pattern.compile("\\b\\w");
         // Input to match
-        final var packagePath = actualInterface.getName().replace(actualInterface.getSimpleName(), EMPTY_STRING);
+        final var packagePath = actualInterface.getName()
+                .replace("org.apdb4j.core", EMPTY_STRING)
+                .replace(actualInterface.getSimpleName(), EMPTY_STRING);
         final Matcher matcher = pattern.matcher(packagePath);
         // Building the prefix.
         final var stringBuilder = new StringBuilder();
