@@ -1,4 +1,4 @@
-package org.apdb4j.core.permissions.facilities;
+package org.apdb4j.core.permissions.services;
 
 /**
  * The access related to shops.
