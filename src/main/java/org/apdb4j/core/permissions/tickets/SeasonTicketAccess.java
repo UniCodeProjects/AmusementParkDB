@@ -13,10 +13,10 @@ public interface SeasonTicketAccess extends TicketAccess {
     boolean canAccessTicketValidUntil();
 
     /**
-     * The access permission for the {@code Duration} attribute.
+     * The access permission for the {@code RemainingEntrances} attribute.
      * @return {@code true} if the specific permission group
      *         allows the access to this attribute.
      */
-    boolean canAccessTicketDuration();
+    boolean canAccessTicketRemainingEntrances();
 
 }

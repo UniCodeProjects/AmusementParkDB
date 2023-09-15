@@ -1,38 +1,38 @@
-package org.apdb4j.core.permissions.facilities;
+package org.apdb4j.core.permissions.services;
 
 import org.apdb4j.core.permissions.Access;
 
 /**
- * The access related to facilities.
+ * The access related to park services.
  */
-public interface FacilityAccess extends Access {
+public interface ParkServiceAccess extends Access {
 
     /**
-     * The access permission for the {@code FacilityID} attribute.
+     * The access permission for the {@code ParkServiceID} attribute.
      * @return {@code true} if the specific permission group
      *         allows the access to this attribute.
      */
-    boolean canAccessFacilityID();
+    boolean canAccessParkServiceID();
 
     /**
      * The access permission for the {@code Name} attribute.
      * @return {@code true} if the specific permission group
      *         allows the access to this attribute.
      */
-    boolean canAccessFacilityName();
-
-    /**
-     * The access permission for the {@code OpeningAndClosingTimes} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
-     */
-    boolean canAccessFacilityOpeningAndClosingTimes();
+    boolean canAccessParkServiceName();
 
     /**
      * The access permission for the {@code Type} attribute.
      * @return {@code true} if the specific permission group
      *         allows the access to this attribute.
      */
-    boolean canAccessFacilityType();
+    boolean canAccessParkServiceType();
+
+    /**
+     * The access permission for the {@code Description} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessParkServiceDescription();
 
 }

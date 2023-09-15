@@ -3,7 +3,7 @@ package org.apdb4j.util;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.facilities.PictureAccess;
+import org.apdb4j.core.permissions.services.PictureAccess;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
