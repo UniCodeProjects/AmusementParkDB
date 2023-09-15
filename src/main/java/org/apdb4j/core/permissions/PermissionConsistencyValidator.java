@@ -6,11 +6,14 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apdb4j.util.BitSequence;
 import org.apdb4j.util.BitSequenceImpl;
+import org.jooq.Record;
+import org.jooq.Table;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -27,9 +30,9 @@ import java.util.regex.Pattern;
  * related identifier sequence.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class PermissionIntegrityValidator {
+public final class PermissionConsistencyValidator {
 
-    private static final PermissionIntegrityValidator INSTANCE = new PermissionIntegrityValidator();
+    private static final PermissionConsistencyValidator INSTANCE = new PermissionConsistencyValidator();
     private static final String SEQUENCE_INTERNAL_SEPARATOR = ".";
     private static final String SEQUENCE_EXTERNAL_SEPARATOR = "-";
     private static final int SEQUENCE_NUMERICAL_CODE_MAXSIZE = 2;
@@ -41,17 +44,27 @@ public final class PermissionIntegrityValidator {
      * Returns the single instance of this class.
      * @return the instance
      */
-    public static PermissionIntegrityValidator getInstance() {
+    public static PermissionConsistencyValidator getInstance() {
         return INSTANCE;
     }
 
     /**
-     * Returns the unique identifier for a set of access permissions.
+     * Checks the consistency of the permissions provided by the application and database.
      * @param permissions the class that implements a set of accesses
-     * @return a string representing an UID for the given permissions
-     * @see Access
+     * @param table the database table that represents a set of accesses
+     * @return {@code true} if the permissions from the class and table are equivalent,<br>
+     *         {@code false} if the permissions are different, or have been tampered with on one side.
      */
-    public @NonNull String generatePermissionsUID(@NonNull final Class<? extends Access> permissions) {
+    public boolean arePermissionsConsistent(@NonNull final Class<? extends Access> permissions,
+                                            @NonNull final Table<? extends Record> table) {
+        return Objects.equals(generatePermissionsUID(permissions), generatePermissionsUID(table));
+    }
+
+    private @NonNull String generatePermissionsUID(@NonNull final Table<? extends Record> table) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private @NonNull String generatePermissionsUID(@NonNull final Class<? extends Access> permissions) {
         if (!isClass(permissions)) {
             throw new IllegalArgumentException(permissions + " is not a class.");
         }
