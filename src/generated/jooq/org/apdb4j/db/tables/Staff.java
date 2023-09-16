@@ -81,6 +81,11 @@ public class Staff extends TableImpl<Record> {
     public final TableField<Record, String> BIRTHPLACE = createField(DSL.name("BirthPlace"), SQLDataType.VARCHAR(256).nullable(false), this, "");
 
     /**
+     * The column <code>amusement_park.staff.Gender</code>.
+     */
+    public final TableField<Record, String> GENDER = createField(DSL.name("Gender"), SQLDataType.CHAR(1).nullable(false), this, "");
+
+    /**
      * The column <code>amusement_park.staff.Role</code>.
      */
     public final TableField<Record, String> ROLE = createField(DSL.name("Role"), SQLDataType.VARCHAR(256), this, "");
@@ -140,12 +145,12 @@ public class Staff extends TableImpl<Record> {
 
     @Override
     public List<UniqueKey<Record>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_STAFF_IDSTAFF_1, Keys.KEY_STAFF_FKSTAFF_OWNERSHIP_ID);
+        return Arrays.asList(Keys.KEY_STAFF_IDSTAFF_1, Keys.KEY_STAFF_FKR_ID);
     }
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKSTAFF_OWNERSHIP_FK);
+        return Arrays.asList(Keys.FKSTAFF_FK);
     }
 
     private transient Accounts _accounts;
@@ -156,7 +161,7 @@ public class Staff extends TableImpl<Record> {
      */
     public Accounts accounts() {
         if (_accounts == null)
-            _accounts = new Accounts(this, Keys.FKSTAFF_OWNERSHIP_FK);
+            _accounts = new Accounts(this, Keys.FKSTAFF_FK);
 
         return _accounts;
     }

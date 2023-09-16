@@ -8,11 +8,12 @@ import org.apdb4j.db.tables.Accounts;
 import org.apdb4j.db.tables.Attributions;
 import org.apdb4j.db.tables.Contracts;
 import org.apdb4j.db.tables.Costs;
+import org.apdb4j.db.tables.DailyRecaps;
 import org.apdb4j.db.tables.ExhibitionDetails;
-import org.apdb4j.db.tables.Exhibitions;
 import org.apdb4j.db.tables.Facilities;
 import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
+import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
 import org.apdb4j.db.tables.PunchDates;
@@ -53,14 +54,14 @@ public class Tables {
     public static final Costs COSTS = Costs.COSTS;
 
     /**
+     * The table <code>amusement_park.daily_recaps</code>.
+     */
+    public static final DailyRecaps DAILY_RECAPS = DailyRecaps.DAILY_RECAPS;
+
+    /**
      * The table <code>amusement_park.exhibition_details</code>.
      */
     public static final ExhibitionDetails EXHIBITION_DETAILS = ExhibitionDetails.EXHIBITION_DETAILS;
-
-    /**
-     * The table <code>amusement_park.exhibitions</code>.
-     */
-    public static final Exhibitions EXHIBITIONS = Exhibitions.EXHIBITIONS;
 
     /**
      * The table <code>amusement_park.facilities</code>.
@@ -76,6 +77,11 @@ public class Tables {
      * The table <code>amusement_park.maintenances</code>.
      */
     public static final Maintenances MAINTENANCES = Maintenances.MAINTENANCES;
+
+    /**
+     * The table <code>amusement_park.park_services</code>.
+     */
+    public static final ParkServices PARK_SERVICES = ParkServices.PARK_SERVICES;
 
     /**
      * The table <code>amusement_park.pictures</code>.
