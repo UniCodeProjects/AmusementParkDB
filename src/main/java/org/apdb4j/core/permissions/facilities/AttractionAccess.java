@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to attractions.
  */
@@ -7,16 +9,14 @@ public interface AttractionAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code MaxSeats} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessAttractionMaxSeats();
+    AccessType canAccessAttractionMaxSeats();
 
     /**
      * The access permission for the {@code Description} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessAttractionDescription();
+    AccessType canAccessAttractionDescription();
 
 }

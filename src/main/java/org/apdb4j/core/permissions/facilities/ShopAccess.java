@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to shops.
  */
@@ -7,30 +9,26 @@ public interface ShopAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code Revenue} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopRevenue();
+    AccessType canAccessShopRevenue();
 
     /**
      * The access permission for the {@code Expenses} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopExpenses();
+    AccessType canAccessShopExpenses();
 
     /**
      * The access permission for the {@code Month} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopMonth();
+    AccessType canAccessShopMonth();
 
     /**
      * The access permission for the {@code Year} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopYear();
+    AccessType canAccessShopYear();
 
 }

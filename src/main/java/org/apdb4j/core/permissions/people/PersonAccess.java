@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions.people;
 
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to people.
@@ -9,23 +10,20 @@ public interface PersonAccess extends Access {
 
     /**
      * The access permission for the {@code PersonID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessPersonID();
+    AccessType canAccessPersonID();
 
     /**
      * The access permission for the {@code Name} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessName();
+    AccessType canAccessName();
 
     /**
      * The access permission for the {@code Surname} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessSurname();
+    AccessType canAccessSurname();
 
 }

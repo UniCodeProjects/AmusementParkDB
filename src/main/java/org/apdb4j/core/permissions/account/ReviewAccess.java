@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions.account;
 
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to reviews.
@@ -9,37 +10,32 @@ public interface ReviewAccess extends Access {
 
     /**
      * The access permission for the {@code ReviewID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewID();
+    AccessType canAccessReviewID();
 
     /**
      * The access permission for the {@code Rating} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewRating();
+    AccessType canAccessReviewRating();
 
     /**
      * The access permission for the {@code Date} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewDate();
+    AccessType canAccessReviewDate();
 
     /**
      * The access permission for the {@code Time} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewTime();
+    AccessType canAccessReviewTime();
 
     /**
      * The access permission for the {@code Description} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewDescription();
+    AccessType canAccessReviewDescription();
 
 }

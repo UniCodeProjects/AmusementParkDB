@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to facilities.
@@ -9,30 +10,26 @@ public interface FacilityAccess extends Access {
 
     /**
      * The access permission for the {@code FacilityID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessFacilityID();
+    AccessType canAccessFacilityID();
 
     /**
      * The access permission for the {@code Name} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessFacilityName();
+    AccessType canAccessFacilityName();
 
     /**
      * The access permission for the {@code OpeningAndClosingTimes} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessFacilityOpeningAndClosingTimes();
+    AccessType canAccessFacilityOpeningAndClosingTimes();
 
     /**
      * The access permission for the {@code Type} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessFacilityType();
+    AccessType canAccessFacilityType();
 
 }

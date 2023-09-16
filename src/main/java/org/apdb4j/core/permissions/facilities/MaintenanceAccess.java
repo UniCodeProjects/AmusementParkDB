@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to maintenances.
@@ -9,23 +10,20 @@ public interface MaintenanceAccess extends Access {
 
     /**
      * The access permission for the {@code Price} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenancePrice();
+    AccessType canAccessMaintenancePrice();
 
     /**
      * The access permission for the {@code Description} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenanceDescription();
+    AccessType canAccessMaintenanceDescription();
 
     /**
      * The access permission for the {@code Date} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenanceDate();
+    AccessType canAccessMaintenanceDate();
 
 }

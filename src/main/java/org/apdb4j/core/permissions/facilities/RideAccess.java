@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions.facilities;
 
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to rides.
  */
@@ -7,44 +9,38 @@ public interface RideAccess extends AttractionAccess {
 
     /**
      * The access permission for the {@code Intensity} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideIntensity();
+    AccessType canAccessRideIntensity();
 
     /**
      * The access permission for the {@code Duration} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideDuration();
+    AccessType canAccessRideDuration();
 
     /**
      * The access permission for the {@code Height} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideHeightValues();
+    AccessType canAccessRideHeightValues();
 
     /**
      * The access permission for the {@code Weight} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideWeightValues();
+    AccessType canAccessRideWeightValues();
 
     /**
      * The access permission for the {@code Status} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideStatus();
+    AccessType canAccessRideStatus();
 
     /**
      * The access permission for the {@code WaitTime} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideWaitTime();
+    AccessType canAccessRideWaitTime();
 
 }
