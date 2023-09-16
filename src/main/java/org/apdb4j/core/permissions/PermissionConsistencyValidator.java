@@ -10,7 +10,12 @@ import org.jooq.Record;
 import org.jooq.Table;
 import org.reflections.Reflections;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
