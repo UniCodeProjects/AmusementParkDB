@@ -1,5 +1,6 @@
 package org.apdb4j.core.permissions.people;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessType;
 
@@ -12,24 +13,24 @@ public interface ContractAccess extends Access {
      * The access permission for the {@code ContractID} attribute.
      * @return the type of access
      */
-    AccessType canAccessContractID();
+    @NonNull AccessType canAccessContractID();
 
     /**
      * The access permission for the {@code SubscriptionDate} attribute.
      * @return the type of access
      */
-    AccessType canAccessContractSubscriptionDate();
+    @NonNull AccessType canAccessContractSubscriptionDate();
 
     /**
      * The access permission for the {@code BeginDate and EndDate} attribute.
      * @return the type of access
      */
-    AccessType canAccessContractBeginAndEndDate();
+    @NonNull AccessType canAccessContractBeginAndEndDate();
 
     /**
      * The access permission for the {@code Salary} attribute.
      * @return the type of access
      */
-    AccessType canAccessContractSalary();
+    @NonNull AccessType canAccessContractSalary();
 
 }
