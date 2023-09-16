@@ -195,7 +195,7 @@ public final class PermissionConsistencyValidator {
     private List<String> generateCharStrings(@NonNull final List<CharSequence> charSequences) {
         final SortedMap<String, String> interfaceCharSequenceMap = new TreeMap<>();
         // Init tree map.
-        knownAccessInterfacesNames.forEach(s -> interfaceCharSequenceMap.put(s, getDefaultSequence(s)));
+        knownAccessInterfacesNames.forEach(s -> interfaceCharSequenceMap.put(s, getDefaultAccessSequence(s)));
         // Populate map with actual char sequences.
         for (final CharSequence sequence : charSequences) {
             final var accessInterface = ((CharSequenceImpl) sequence).getAccessInterface();
@@ -205,10 +205,10 @@ public final class PermissionConsistencyValidator {
     }
 
     @SneakyThrows
-    private String getDefaultSequence(@NonNull final String interfaceName) {
+    private String getDefaultAccessSequence(@NonNull final String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         final int numberOfMethods = actualInterface.getDeclaredMethods().length;
-        return SEQUENCE_NUMERICAL_CODE_DEFAULT.repeat(numberOfMethods);
+        return AccessType.NONE.toString().repeat(numberOfMethods);
     }
 
 }
