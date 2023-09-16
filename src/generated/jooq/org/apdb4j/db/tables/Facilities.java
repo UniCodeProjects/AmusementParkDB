@@ -4,7 +4,6 @@
 package org.apdb4j.db.tables;
 
 
-import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -52,11 +51,6 @@ public class Facilities extends TableImpl<Record> {
     public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(6).nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.facilities.Name</code>.
-     */
-    public final TableField<Record, String> NAME = createField(DSL.name("Name"), SQLDataType.VARCHAR(256).nullable(false), this, "");
-
-    /**
      * The column <code>amusement_park.facilities.OpeningTime</code>.
      */
     public final TableField<Record, LocalTime> OPENINGTIME = createField(DSL.name("OpeningTime"), SQLDataType.LOCALTIME.nullable(false), this, "");
@@ -65,21 +59,6 @@ public class Facilities extends TableImpl<Record> {
      * The column <code>amusement_park.facilities.ClosingTime</code>.
      */
     public final TableField<Record, LocalTime> CLOSINGTIME = createField(DSL.name("ClosingTime"), SQLDataType.LOCALTIME.nullable(false), this, "");
-
-    /**
-     * The column <code>amusement_park.facilities.AvgRating</code>.
-     */
-    public final TableField<Record, BigDecimal> AVGRATING = createField(DSL.name("AvgRating"), SQLDataType.DECIMAL(2, 1).nullable(false), this, "");
-
-    /**
-     * The column <code>amusement_park.facilities.NumReviews</code>.
-     */
-    public final TableField<Record, Integer> NUMREVIEWS = createField(DSL.name("NumReviews"), SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>amusement_park.facilities.Type</code>.
-     */
-    public final TableField<Record, String> TYPE = createField(DSL.name("Type"), SQLDataType.VARCHAR(256).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.facilities.IsShop</code>.
@@ -130,8 +109,21 @@ public class Facilities extends TableImpl<Record> {
     }
 
     @Override
-    public List<UniqueKey<Record>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_FACILITIES_IDFACILITY);
+    public List<ForeignKey<Record, ?>> getReferences() {
+        return Arrays.asList(Keys.FKR_FK);
+    }
+
+    private transient ParkServices _parkServices;
+
+    /**
+     * Get the implicit join path to the
+     * <code>amusement_park.park_services</code> table.
+     */
+    public ParkServices parkServices() {
+        if (_parkServices == null)
+            _parkServices = new ParkServices(this, Keys.FKR_FK);
+
+        return _parkServices;
     }
 
     @Override

@@ -126,16 +126,16 @@ public class Contracts extends TableImpl<Record> {
 
     @Override
     public List<UniqueKey<Record>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_CONTRACTS_EMPLOYEENID);
+        return Arrays.asList(Keys.KEY_CONTRACTS_IDCONTRACT);
     }
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKHIRING, Keys.FKEMPLOYEMENT);
+        return Arrays.asList(Keys.FKHIRING, Keys.FKEMPLOYMENT);
     }
 
     private transient Staff _fkhiring;
-    private transient Staff _fkemployement;
+    private transient Staff _fkemployment;
 
     /**
      * Get the implicit join path to the <code>amusement_park.staff</code>
@@ -150,13 +150,13 @@ public class Contracts extends TableImpl<Record> {
 
     /**
      * Get the implicit join path to the <code>amusement_park.staff</code>
-     * table, via the <code>FKemployement</code> key.
+     * table, via the <code>FKemployment</code> key.
      */
-    public Staff fkemployement() {
-        if (_fkemployement == null)
-            _fkemployement = new Staff(this, Keys.FKEMPLOYEMENT);
+    public Staff fkemployment() {
+        if (_fkemployment == null)
+            _fkemployment = new Staff(this, Keys.FKEMPLOYMENT);
 
-        return _fkemployement;
+        return _fkemployment;
     }
 
     @Override
