@@ -4,8 +4,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.apdb4j.util.BitSequence;
-import org.apdb4j.util.BitSequenceImpl;
+import org.apdb4j.core.permissions.account.AccountAccessImpl;
+import org.apdb4j.util.CharSequence;
+import org.apdb4j.util.CharSequenceImpl;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.reflections.Reflections;
@@ -68,17 +69,17 @@ public final class PermissionConsistencyValidator {
         if (!isClass(permissions)) {
             throw new IllegalArgumentException(permissions + " is not a class.");
         }
-        final List<BitSequence> bitSequenceList = createListAtRunTime(permissions.getName());
+        final List<CharSequence> charSequenceList = createListAtRunTime(permissions.getName());
         final List<String> prefixCodes = generatePrefixes();
-        final List<String> bitSequences = generateBitStrings(bitSequenceList);
-        if (prefixCodes.size() != bitSequences.size()) {
+        final List<String> charSequences = generateCharStrings(charSequenceList);
+        if (prefixCodes.size() != charSequences.size()) {
             throw new IllegalStateException();
         }
         final var result = new StringBuilder();
         for (int i = 0; i < prefixCodes.size(); i++) {
             result.append(prefixCodes.get(i))
                     .append(SEQUENCE_INTERNAL_SEPARATOR)
-                    .append(bitSequences.get(i))
+                    .append(charSequences.get(i))
                     .append(SEQUENCE_EXTERNAL_SEPARATOR);
         }
         result.deleteCharAt(result.length() - 1);
@@ -99,9 +100,9 @@ public final class PermissionConsistencyValidator {
     }
 
     @SneakyThrows
-    private List<BitSequence> createListAtRunTime(@NonNull final String permissionClassName) {
+    private List<CharSequence> createListAtRunTime(@NonNull final String permissionClassName) {
         final var interfaceAndImplNames = createMapFromClassNames(knownAccessInterfacesNames, permissionClassName);
-        final List<BitSequence> list = new ArrayList<>();
+        final List<CharSequence> list = new ArrayList<>();
         // Using for loops instead of lambdas to allow the usage of the SneakyThrows annotation.
         for (final var entry : interfaceAndImplNames.entrySet()) {
             if (entry.getValue().isEmpty()) {
@@ -109,7 +110,7 @@ public final class PermissionConsistencyValidator {
             }
             final Class<? extends Access> actualInterface = Class.forName(entry.getKey()).asSubclass(Access.class);
             final Class<? extends Access> actualClass = Class.forName(entry.getValue()).asSubclass(Access.class);
-            list.add(new BitSequenceImpl(actualInterface, actualClass));
+            list.add(new CharSequenceImpl(actualInterface, actualClass));
         }
         return list;
     }
@@ -192,16 +193,16 @@ public final class PermissionConsistencyValidator {
         return amountAsString;
     }
 
-    private List<String> generateBitStrings(@NonNull final List<BitSequence> bitSequences) {
-        final SortedMap<String, String> interfaceBitSequenceMap = new TreeMap<>();
+    private List<String> generateCharStrings(@NonNull final List<CharSequence> charSequences) {
+        final SortedMap<String, String> interfaceCharSequenceMap = new TreeMap<>();
         // Init tree map.
-        knownAccessInterfacesNames.forEach(s -> interfaceBitSequenceMap.put(s, getDefaultSequence(s)));
-        // Populate map with actual bit sequences.
-        for (final BitSequence sequence : bitSequences) {
-            final var accessInterface = ((BitSequenceImpl) sequence).getAccessInterface();
-            interfaceBitSequenceMap.replace(accessInterface, sequence.getSequenceAsString());
+        knownAccessInterfacesNames.forEach(s -> interfaceCharSequenceMap.put(s, getDefaultSequence(s)));
+        // Populate map with actual char sequences.
+        for (final CharSequence sequence : charSequences) {
+            final var accessInterface = ((CharSequenceImpl) sequence).getAccessInterface();
+            interfaceCharSequenceMap.replace(accessInterface, sequence.getSequenceAsString());
         }
-        return interfaceBitSequenceMap.values().stream().toList();
+        return interfaceCharSequenceMap.values().stream().toList();
     }
 
     @SneakyThrows
