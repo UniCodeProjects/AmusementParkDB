@@ -1,5 +1,6 @@
 package org.apdb4j.core.permissions.people;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessType;
 
@@ -12,18 +13,18 @@ public interface PersonAccess extends Access {
      * The access permission for the {@code PersonID} attribute.
      * @return the type of access
      */
-    AccessType canAccessPersonID();
+    @NonNull AccessType canAccessPersonID();
 
     /**
      * The access permission for the {@code Name} attribute.
      * @return the type of access
      */
-    AccessType canAccessName();
+    @NonNull AccessType canAccessName();
 
     /**
      * The access permission for the {@code Surname} attribute.
      * @return the type of access
      */
-    AccessType canAccessSurname();
+    @NonNull AccessType canAccessSurname();
 
 }
