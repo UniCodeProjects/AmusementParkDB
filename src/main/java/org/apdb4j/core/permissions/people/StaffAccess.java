@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions.people;
 
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to staff members.
  */
@@ -7,23 +9,20 @@ public interface StaffAccess extends PersonAccess {
 
     /**
      * The access permission for the {@code NationalID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffNationalID();
+    AccessType canAccessStaffNationalID();
 
     /**
      * The access permission for the {@code DoB} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffDoB();
+    AccessType canAccessStaffDoB();
 
     /**
      * The access permission for the {@code BirthPlace} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffBirthPlace();
+    AccessType canAccessStaffBirthPlace();
 
 }
