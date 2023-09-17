@@ -14,7 +14,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
@@ -143,6 +142,37 @@
                   </BorderPane>
                </content>
             </Tab>
+            <Tab closable="false" text="Employees">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField promptText="Employee name" />
+                              <ChoiceBox maxWidth="1.7976931348623157E308" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </VBox>
+                     </left>
+                     <center>
+                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <columns>
+                              <TableColumn prefWidth="75.0" text="C1" />
+                              <TableColumn prefWidth="75.0" text="C2" />
+                           </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
             <Tab closable="false" text="Tickets">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -151,14 +181,19 @@
                            <children>
                               <TextField promptText="TicketID" />
                               <DatePicker maxWidth="1.7976931348623157E308" promptText="Purchase date" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
-                              <Label text="Ticket type:" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Punch date" />
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label text="Ticket type:" />
+                                    <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#onClearBtn" text="Clear" />
+                                 </children>
+                              </HBox>
                               <RadioButton mnemonicParsing="false" text="Single day">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioBtnToggle" />
                                  </toggleGroup></RadioButton>
                               <RadioButton mnemonicParsing="false" text="Season" toggleGroup="$radioBtnToggle" />
-                              <Button fx:id="clearBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClearBtn" text="Clear" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
@@ -188,10 +223,10 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Attraction name" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Label text="Attraction type:" />
                               <CheckBox mnemonicParsing="false" text="Rides" />
                               <CheckBox mnemonicParsing="false" text="Exhibitions" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
@@ -252,11 +287,12 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField promptText="Facility name" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Maintenance date" />
                               <Label text="Filter for:" />
                               <CheckBox mnemonicParsing="false" text="Rides" />
                               <CheckBox mnemonicParsing="false" text="Exhibitions" />
                               <CheckBox mnemonicParsing="false" text="Shops" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
@@ -278,18 +314,29 @@
                      </center>
                   </BorderPane>
                </content></Tab>
-            <Tab closable="false" text="Employees">
+            <Tab closable="false" text="Reviews">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Employee name" />
-                              <ChoiceBox maxWidth="1.7976931348623157E308" />
+                              <TextField promptText="Facility name" />
+                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Review date" />
+                              <Label text="Filter by rating:" />
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="1" />
+                                    <CheckBox mnemonicParsing="false" text="2" />
+                                    <CheckBox mnemonicParsing="false" text="3" />
+                                    <CheckBox mnemonicParsing="false" text="4" />
+                                    <CheckBox mnemonicParsing="false" text="5" />
+                                 </children>
+                              </HBox>
+                              <Label text="Filter for:" />
+                              <CheckBox mnemonicParsing="false" text="Rides" />
+                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
+                              <CheckBox mnemonicParsing="false" text="Shops" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
-                              <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -338,7 +385,4 @@
         </menus>
       </MenuBar>
    </top>
-   <right>
-      <ScrollBar orientation="VERTICAL" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>

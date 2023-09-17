@@ -72,14 +72,14 @@ public class Reviews extends TableImpl<Record> {
     public final TableField<Record, String> DESCRIPTION = createField(DSL.name("Description"), SQLDataType.VARCHAR(1000), this, "");
 
     /**
-     * The column <code>amusement_park.reviews.FacilityID</code>.
-     */
-    public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(6).nullable(false), this, "");
-
-    /**
      * The column <code>amusement_park.reviews.Account</code>.
      */
     public final TableField<Record, String> ACCOUNT = createField(DSL.name("Account"), SQLDataType.VARCHAR(256).nullable(false), this, "");
+
+    /**
+     * The column <code>amusement_park.reviews.ParkServiceID</code>.
+     */
+    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(6).nullable(false), this, "");
 
     private Reviews(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
@@ -131,22 +131,11 @@ public class Reviews extends TableImpl<Record> {
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKREFERENCE, Keys.FKPUBLICATION);
+        return Arrays.asList(Keys.FKPUBLICATION, Keys.FKREFERENCE);
     }
 
-    private transient Facilities _facilities;
     private transient Accounts _accounts;
-
-    /**
-     * Get the implicit join path to the <code>amusement_park.facilities</code>
-     * table.
-     */
-    public Facilities facilities() {
-        if (_facilities == null)
-            _facilities = new Facilities(this, Keys.FKREFERENCE);
-
-        return _facilities;
-    }
+    private transient ParkServices _parkServices;
 
     /**
      * Get the implicit join path to the <code>amusement_park.accounts</code>
@@ -157,6 +146,17 @@ public class Reviews extends TableImpl<Record> {
             _accounts = new Accounts(this, Keys.FKPUBLICATION);
 
         return _accounts;
+    }
+
+    /**
+     * Get the implicit join path to the
+     * <code>amusement_park.park_services</code> table.
+     */
+    public ParkServices parkServices() {
+        if (_parkServices == null)
+            _parkServices = new ParkServices(this, Keys.FKREFERENCE);
+
+        return _parkServices;
     }
 
     @Override

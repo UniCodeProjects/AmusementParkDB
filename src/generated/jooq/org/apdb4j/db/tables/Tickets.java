@@ -66,9 +66,9 @@ public class Tickets extends TableImpl<Record> {
     public final TableField<Record, LocalDate> VALIDUNTIL = createField(DSL.name("ValidUntil"), SQLDataType.LOCALDATE, this, "");
 
     /**
-     * The column <code>amusement_park.tickets.Duration</code>.
+     * The column <code>amusement_park.tickets.RemainingEntrances</code>.
      */
-    public final TableField<Record, Byte> DURATION = createField(DSL.name("Duration"), SQLDataType.TINYINT, this, "");
+    public final TableField<Record, Integer> REMAININGENTRANCES = createField(DSL.name("RemainingEntrances"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.tickets.OwnerID</code>.

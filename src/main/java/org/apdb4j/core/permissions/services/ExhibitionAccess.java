@@ -1,4 +1,4 @@
-package org.apdb4j.core.permissions.facilities;
+package org.apdb4j.core.permissions.services;
 
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessType;
@@ -6,7 +6,7 @@ import org.apdb4j.core.permissions.AccessType;
 /**
  * The access related to exhibitions.
  */
-public interface ExhibitionAccess extends AttractionAccess {
+public interface ExhibitionAccess extends ParkServiceAccess {
 
     /**
      * The access permission for the {@code Date} attribute.
@@ -19,6 +19,13 @@ public interface ExhibitionAccess extends AttractionAccess {
      * @return the type of access
      */
     @NonNull AccessType canAccessExhibitionTime();
+
+    /**
+     * The access permission for the {@code MaxSeats} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessExhibitionMaxSeats();
 
     /**
      * The access permission for the {@code SpectatorNum} attribute.

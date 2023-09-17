@@ -46,9 +46,9 @@ public class Costs extends TableImpl<Record> {
     }
 
     /**
-     * The column <code>amusement_park.costs.FacilityID</code>.
+     * The column <code>amusement_park.costs.ShopID</code>.
      */
-    public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> SHOPID = createField(DSL.name("ShopID"), SQLDataType.CHAR(6).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.costs.Revenue</code>.
@@ -63,12 +63,12 @@ public class Costs extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.costs.Month</code>.
      */
-    public final TableField<Record, Byte> MONTH = createField(DSL.name("Month"), SQLDataType.TINYINT.nullable(false), this, "");
+    public final TableField<Record, Integer> MONTH = createField(DSL.name("Month"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.costs.Year</code>.
      */
-    public final TableField<Record, Short> YEAR = createField(DSL.name("Year"), SQLDataType.SMALLINT.nullable(false), this, "");
+    public final TableField<Record, Integer> YEAR = createField(DSL.name("Year"), SQLDataType.INTEGER.nullable(false), this, "");
 
     private Costs(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
