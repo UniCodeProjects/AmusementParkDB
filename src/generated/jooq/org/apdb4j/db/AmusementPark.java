@@ -11,11 +11,11 @@ import org.apdb4j.db.tables.Accounts;
 import org.apdb4j.db.tables.Attributions;
 import org.apdb4j.db.tables.Contracts;
 import org.apdb4j.db.tables.Costs;
-import org.apdb4j.db.tables.DailyRecaps;
 import org.apdb4j.db.tables.ExhibitionDetails;
 import org.apdb4j.db.tables.Facilities;
 import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
+import org.apdb4j.db.tables.MonthlyRecaps;
 import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
@@ -67,11 +67,6 @@ public class AmusementPark extends SchemaImpl {
     public final Costs COSTS = Costs.COSTS;
 
     /**
-     * The table <code>amusement_park.daily_recaps</code>.
-     */
-    public final DailyRecaps DAILY_RECAPS = DailyRecaps.DAILY_RECAPS;
-
-    /**
      * The table <code>amusement_park.exhibition_details</code>.
      */
     public final ExhibitionDetails EXHIBITION_DETAILS = ExhibitionDetails.EXHIBITION_DETAILS;
@@ -90,6 +85,11 @@ public class AmusementPark extends SchemaImpl {
      * The table <code>amusement_park.maintenances</code>.
      */
     public final Maintenances MAINTENANCES = Maintenances.MAINTENANCES;
+
+    /**
+     * The table <code>amusement_park.monthly_recaps</code>.
+     */
+    public final MonthlyRecaps MONTHLY_RECAPS = MonthlyRecaps.MONTHLY_RECAPS;
 
     /**
      * The table <code>amusement_park.park_services</code>.
@@ -171,11 +171,11 @@ public class AmusementPark extends SchemaImpl {
             Attributions.ATTRIBUTIONS,
             Contracts.CONTRACTS,
             Costs.COSTS,
-            DailyRecaps.DAILY_RECAPS,
             ExhibitionDetails.EXHIBITION_DETAILS,
             Facilities.FACILITIES,
             Guests.GUESTS,
             Maintenances.MAINTENANCES,
+            MonthlyRecaps.MONTHLY_RECAPS,
             ParkServices.PARK_SERVICES,
             Pictures.PICTURES,
             PriceLists.PRICE_LISTS,
