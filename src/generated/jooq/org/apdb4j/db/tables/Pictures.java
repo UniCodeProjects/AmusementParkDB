@@ -50,9 +50,9 @@ public class Pictures extends TableImpl<Record> {
     public final TableField<Record, String> PATH = createField(DSL.name("Path"), SQLDataType.VARCHAR(256).nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.pictures.FacilityID</code>.
+     * The column <code>amusement_park.pictures.ParkServiceID</code>.
      */
-    public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(6).nullable(false), this, "");
 
     private Pictures(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
@@ -102,17 +102,17 @@ public class Pictures extends TableImpl<Record> {
         return Arrays.asList(Keys.FKREPRESENT);
     }
 
-    private transient Facilities _facilities;
+    private transient ParkServices _parkServices;
 
     /**
-     * Get the implicit join path to the <code>amusement_park.facilities</code>
-     * table.
+     * Get the implicit join path to the
+     * <code>amusement_park.park_services</code> table.
      */
-    public Facilities facilities() {
-        if (_facilities == null)
-            _facilities = new Facilities(this, Keys.FKREPRESENT);
+    public ParkServices parkServices() {
+        if (_parkServices == null)
+            _parkServices = new ParkServices(this, Keys.FKREPRESENT);
 
-        return _facilities;
+        return _parkServices;
     }
 
     @Override

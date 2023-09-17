@@ -66,11 +66,6 @@ public class Rides extends TableImpl<Record> {
     public final TableField<Record, Integer> MAXSEATS = createField(DSL.name("MaxSeats"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.rides.Description</code>.
-     */
-    public final TableField<Record, String> DESCRIPTION = createField(DSL.name("Description"), SQLDataType.VARCHAR(500), this, "");
-
-    /**
      * The column <code>amusement_park.rides.MinHeight</code>.
      */
     public final TableField<Record, Integer> MINHEIGHT = createField(DSL.name("MinHeight"), SQLDataType.INTEGER.nullable(false), this, "");
@@ -135,7 +130,7 @@ public class Rides extends TableImpl<Record> {
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKFACILITY_RIDE_FK);
+        return Arrays.asList(Keys.FKRIDE_FK);
     }
 
     private transient Facilities _facilities;
@@ -146,7 +141,7 @@ public class Rides extends TableImpl<Record> {
      */
     public Facilities facilities() {
         if (_facilities == null)
-            _facilities = new Facilities(this, Keys.FKFACILITY_RIDE_FK);
+            _facilities = new Facilities(this, Keys.FKRIDE_FK);
 
         return _facilities;
     }

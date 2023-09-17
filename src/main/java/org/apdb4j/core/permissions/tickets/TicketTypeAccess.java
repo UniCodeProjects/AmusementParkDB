@@ -20,4 +20,18 @@ public interface TicketTypeAccess extends Access {
      */
     AccessType canAccessTicketType();
 
+    /**
+     * The access permission for the {@code Target} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessTicketTypeTarget();
+
+    /**
+     * The access permission for the {@code Duration} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessTicketTypeDuration();
+
 }

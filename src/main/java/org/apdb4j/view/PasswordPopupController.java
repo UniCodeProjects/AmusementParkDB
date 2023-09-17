@@ -42,6 +42,7 @@ public class PasswordPopupController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         Platform.runLater(() -> {
             final var scene = safeCastToStage(confirmBtn.getScene().getWindow());
+            scene.setResizable(false);
             final var width = scene.getWidth() * 0.5;
             oldPasswordField.setPrefWidth(width);
             newPasswordField.setPrefWidth(width);

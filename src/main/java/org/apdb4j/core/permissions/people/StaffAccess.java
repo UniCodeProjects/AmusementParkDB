@@ -26,4 +26,11 @@ public interface StaffAccess extends PersonAccess {
      */
     @NonNull AccessType canAccessStaffBirthPlace();
 
+    /**
+     * The access permission for the {@code Gender} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessStaffGender();
+
 }

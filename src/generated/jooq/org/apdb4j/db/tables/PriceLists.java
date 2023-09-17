@@ -44,7 +44,7 @@ public class PriceLists extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.price_lists.Year</code>.
      */
-    public final TableField<Record, Short> YEAR = createField(DSL.name("Year"), SQLDataType.SMALLINT.nullable(false), this, "");
+    public final TableField<Record, Integer> YEAR = createField(DSL.name("Year"), SQLDataType.INTEGER.nullable(false), this, "");
 
     private PriceLists(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

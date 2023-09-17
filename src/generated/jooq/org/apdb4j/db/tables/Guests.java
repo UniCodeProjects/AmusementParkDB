@@ -109,12 +109,12 @@ public class Guests extends TableImpl<Record> {
 
     @Override
     public List<UniqueKey<Record>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_GUESTS_FKGUEST_OWNERSHIP_ID);
+        return Arrays.asList(Keys.KEY_GUESTS_FKR_1_ID);
     }
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKGUEST_OWNERSHIP_FK);
+        return Arrays.asList(Keys.FKR_1_FK);
     }
 
     private transient Accounts _accounts;
@@ -125,7 +125,7 @@ public class Guests extends TableImpl<Record> {
      */
     public Accounts accounts() {
         if (_accounts == null)
-            _accounts = new Accounts(this, Keys.FKGUEST_OWNERSHIP_FK);
+            _accounts = new Accounts(this, Keys.FKR_1_FK);
 
         return _accounts;
     }

@@ -48,7 +48,7 @@ public class TicketTypes extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.ticket_types.Year</code>.
      */
-    public final TableField<Record, Short> YEAR = createField(DSL.name("Year"), SQLDataType.SMALLINT.nullable(false), this, "");
+    public final TableField<Record, Integer> YEAR = createField(DSL.name("Year"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.ticket_types.Price</code>.
@@ -59,6 +59,16 @@ public class TicketTypes extends TableImpl<Record> {
      * The column <code>amusement_park.ticket_types.Type</code>.
      */
     public final TableField<Record, String> TYPE = createField(DSL.name("Type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>amusement_park.ticket_types.Target</code>.
+     */
+    public final TableField<Record, String> TARGET = createField(DSL.name("Target"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+
+    /**
+     * The column <code>amusement_park.ticket_types.Duration</code>.
+     */
+    public final TableField<Record, Integer> DURATION = createField(DSL.name("Duration"), SQLDataType.INTEGER.nullable(false), this, "");
 
     private TicketTypes(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

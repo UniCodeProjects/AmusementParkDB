@@ -14,7 +14,7 @@ public interface SeasonTicketAccess extends TicketAccess {
     AccessType canAccessTicketValidUntil();
 
     /**
-     * The access permission for the {@code Duration} attribute.
+     * The access permission for the {@code RemainingEntrances} attribute.
      * @return the type of access
      */
     AccessType canAccessTicketDuration();

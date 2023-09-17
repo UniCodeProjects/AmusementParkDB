@@ -62,6 +62,11 @@ public class ExhibitionDetails extends TableImpl<Record> {
     public final TableField<Record, LocalTime> TIME = createField(DSL.name("Time"), SQLDataType.LOCALTIME.nullable(false), this, "");
 
     /**
+     * The column <code>amusement_park.exhibition_details.MaxSeats</code>.
+     */
+    public final TableField<Record, Integer> MAXSEATS = createField(DSL.name("MaxSeats"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
      * The column <code>amusement_park.exhibition_details.Spectators</code>.
      */
     public final TableField<Record, Integer> SPECTATORS = createField(DSL.name("Spectators"), SQLDataType.INTEGER, this, "");
@@ -113,20 +118,20 @@ public class ExhibitionDetails extends TableImpl<Record> {
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKEXHIBITION_EXHIBITION_DETAIL);
+        return Arrays.asList(Keys.FKR);
     }
 
-    private transient Exhibitions _exhibitions;
+    private transient ParkServices _parkServices;
 
     /**
-     * Get the implicit join path to the <code>amusement_park.exhibitions</code>
-     * table.
+     * Get the implicit join path to the
+     * <code>amusement_park.park_services</code> table.
      */
-    public Exhibitions exhibitions() {
-        if (_exhibitions == null)
-            _exhibitions = new Exhibitions(this, Keys.FKEXHIBITION_EXHIBITION_DETAIL);
+    public ParkServices parkServices() {
+        if (_parkServices == null)
+            _parkServices = new ParkServices(this, Keys.FKR);
 
-        return _exhibitions;
+        return _parkServices;
     }
 
     @Override

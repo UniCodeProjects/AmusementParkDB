@@ -1,4 +1,4 @@
-package org.apdb4j.core.permissions.facilities;
+package org.apdb4j.core.permissions.services;
 
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessType;
@@ -6,7 +6,7 @@ import org.apdb4j.core.permissions.AccessType;
 /**
  * The access related to rides.
  */
-public interface RideAccess extends AttractionAccess {
+public interface RideAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code Intensity} attribute.
@@ -19,6 +19,13 @@ public interface RideAccess extends AttractionAccess {
      * @return the type of access
      */
     @NonNull AccessType canAccessRideDuration();
+
+    /**
+     * The access permission for the {@code MaxSeats} attribute.
+     * @return {@code true} if the specific permission group
+     *         allows the access to this attribute.
+     */
+    boolean canAccessRideMaxSeats();
 
     /**
      * The access permission for the {@code Height} attribute.
