@@ -37,10 +37,10 @@ create table COSTS (
      Year int not null,
      constraint IDCOST primary key (ShopID, Month, Year));
 
-create table DAILY_RECAPS (
+create table MONTHLY_RECAPS (
      Date date not null,
      Revenue decimal(9,2) not null,
-     constraint IDDAILY_RECAP primary key (Date));
+     constraint IDMONTHLY_RECAP primary key (Date));
 
 create table EXHIBITION_DETAILS (
      ExhibitionID char(6) not null,
