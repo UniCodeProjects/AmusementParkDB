@@ -22,10 +22,9 @@ public interface RideAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code MaxSeats} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideMaxSeats();
+    @NonNull AccessType canAccessRideMaxSeats();
 
     /**
      * The access permission for the {@code Height} attribute.

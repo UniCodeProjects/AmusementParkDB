@@ -28,9 +28,8 @@ public interface StaffAccess extends PersonAccess {
 
     /**
      * The access permission for the {@code Gender} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffGender();
+    @NonNull AccessType canAccessStaffGender();
 
 }
