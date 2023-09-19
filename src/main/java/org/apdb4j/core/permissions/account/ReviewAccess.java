@@ -13,30 +13,30 @@ public interface ReviewAccess extends Access {
      * The access permission for the {@code ReviewID} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessReviewID();
+    @NonNull AccessType getAccessOfReviewID();
 
     /**
      * The access permission for the {@code Rating} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessReviewRating();
+    @NonNull AccessType getAccessOfReviewRating();
 
     /**
      * The access permission for the {@code Date} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessReviewDate();
+    @NonNull AccessType getAccessOfReviewDate();
 
     /**
      * The access permission for the {@code Time} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessReviewTime();
+    @NonNull AccessType getAccessOfReviewTime();
 
     /**
      * The access permission for the {@code Description} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessReviewDescription();
+    @NonNull AccessType getAccessOfReviewDescription();
 
 }

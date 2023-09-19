@@ -12,24 +12,24 @@ public interface ExhibitionAccess extends ParkServiceAccess {
      * The access permission for the {@code Date} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessExhibitionDate();
+    @NonNull AccessType getAccessOfExhibitionDate();
 
     /**
      * The access permission for the {@code Time} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessExhibitionTime();
+    @NonNull AccessType getAccessOfExhibitionTime();
 
     /**
      * The access permission for the {@code MaxSeats} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessExhibitionMaxSeats();
+    @NonNull AccessType getAccessOfExhibitionMaxSeats();
 
     /**
      * The access permission for the {@code SpectatorNum} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessExhibitionSpectatorNum();
+    @NonNull AccessType getAccessOfExhibitionSpectatorNum();
 
 }

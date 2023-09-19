@@ -13,6 +13,6 @@ public interface PriceListAccess extends Access {
      * The access permission for the {@code Year} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessPriceListYear();
+    @NonNull AccessType getAccessOfPriceListYear();
 
 }

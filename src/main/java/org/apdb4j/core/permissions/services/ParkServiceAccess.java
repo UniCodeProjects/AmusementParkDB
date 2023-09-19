@@ -13,24 +13,24 @@ public interface ParkServiceAccess extends Access {
      * The access permission for the {@code ParkServiceID} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessParkServiceID();
+    @NonNull AccessType getAccessOfParkServiceID();
 
     /**
      * The access permission for the {@code Name} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessParkServiceName();
+    @NonNull AccessType getAccessOfParkServiceName();
 
     /**
      * The access permission for the {@code Type} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessParkServiceType();
+    @NonNull AccessType getAccessOfParkServiceType();
 
     /**
      * The access permission for the {@code Description} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessParkServiceDescription();
+    @NonNull AccessType getAccessOfParkServiceDescription();
 
 }

@@ -13,24 +13,24 @@ public interface TicketTypeAccess extends Access {
      * The access permission for the {@code Price} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketTypePrice();
+    @NonNull AccessType getAccessOfTicketTypePrice();
 
     /**
      * The access permission for the {@code Type} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketType();
+    @NonNull AccessType getAccessOfTicketTypeType();
 
     /**
      * The access permission for the {@code Target} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketTypeTarget();
+    @NonNull AccessType getAccessOfTicketTypeTarget();
 
     /**
      * The access permission for the {@code Duration} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketTypeDuration();
+    @NonNull AccessType getAccessOfTicketTypeDuration();
 
 }

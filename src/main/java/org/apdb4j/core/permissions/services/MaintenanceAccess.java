@@ -13,18 +13,18 @@ public interface MaintenanceAccess extends Access {
      * The access permission for the {@code Price} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessMaintenancePrice();
+    @NonNull AccessType getAccessOfMaintenancePrice();
 
     /**
      * The access permission for the {@code Description} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessMaintenanceDescription();
+    @NonNull AccessType getAccessOfMaintenanceDescription();
 
     /**
      * The access permission for the {@code Date} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessMaintenanceDate();
+    @NonNull AccessType getAccessOfMaintenanceDate();
 
 }

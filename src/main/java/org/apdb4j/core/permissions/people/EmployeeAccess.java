@@ -12,6 +12,6 @@ public interface EmployeeAccess extends StaffAccess {
      * The access permission for the {@code Role} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessEmployeeRole();
+    @NonNull AccessType getAccessOfEmployeeRole();
 
 }

@@ -13,18 +13,18 @@ public interface PersonAccess extends Access {
      * The access permission for the {@code PersonID} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessPersonID();
+    @NonNull AccessType getAccessOfPersonID();
 
     /**
      * The access permission for the {@code Name} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessName();
+    @NonNull AccessType getAccessOfPersonName();
 
     /**
      * The access permission for the {@code Surname} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessSurname();
+    @NonNull AccessType getAccessOfPersonSurname();
 
 }

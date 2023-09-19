@@ -45,7 +45,7 @@ class QueryBuilderTest {
         private final String type = this.getClass().getName();
 
         @Override
-        public @NonNull AccessType canAccessPicturePath() {
+        public @NonNull AccessType getAccessOfPicturePath() {
             return AccessType.WRITE;
         }
 
@@ -75,7 +75,7 @@ class QueryBuilderTest {
         private final String type = this.getClass().getName();
 
         @Override
-        public @NonNull AccessType canAccessPicturePath() {
+        public @NonNull AccessType getAccessOfPicturePath() {
             return AccessType.WRITE;
         }
 
@@ -105,7 +105,7 @@ class QueryBuilderTest {
         private final String type = this.getClass().getName();
 
         @Override
-        public @NonNull AccessType canAccessPicturePath() {
+        public @NonNull AccessType getAccessOfPicturePath() {
             return AccessType.WRITE;
         }
 

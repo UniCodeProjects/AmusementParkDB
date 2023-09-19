@@ -13,18 +13,18 @@ public interface TicketAccess extends Access {
      * The access permission for the {@code TicketID} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketID();
+    @NonNull AccessType getAccessOfTicketID();
 
     /**
      * The access permission for the {@code PurchaseDate} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketPurchaseDate();
+    @NonNull AccessType getAccessOfTicketPurchaseDate();
 
     /**
      * The access permission for the {@code PunchDate} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketPunchDate();
+    @NonNull AccessType getAccessOfTicketPunchDate();
 
 }

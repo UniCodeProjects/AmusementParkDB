@@ -13,6 +13,6 @@ public interface PictureAccess extends Access {
      * The access permission for the {@code Path} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessPicturePath();
+    @NonNull AccessType getAccessOfPicturePath();
 
 }

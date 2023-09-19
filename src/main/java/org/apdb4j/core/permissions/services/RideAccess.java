@@ -12,42 +12,42 @@ public interface RideAccess extends FacilityAccess {
      * The access permission for the {@code Intensity} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideIntensity();
+    @NonNull AccessType getAccessOfRideIntensity();
 
     /**
      * The access permission for the {@code Duration} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideDuration();
+    @NonNull AccessType getAccessOfRideDuration();
 
     /**
      * The access permission for the {@code MaxSeats} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideMaxSeats();
+    @NonNull AccessType getAccessOfRideMaxSeats();
 
     /**
      * The access permission for the {@code Height} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideHeightValues();
+    @NonNull AccessType getAccessOfRideHeightValues();
 
     /**
      * The access permission for the {@code Weight} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideWeightValues();
+    @NonNull AccessType getAccessOfRideWeightValues();
 
     /**
      * The access permission for the {@code Status} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideStatus();
+    @NonNull AccessType getAccessOfRideStatus();
 
     /**
      * The access permission for the {@code WaitTime} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessRideWaitTime();
+    @NonNull AccessType getAccessOfRideWaitTime();
 
 }
