@@ -12,12 +12,12 @@ public interface SeasonTicketAccess extends TicketAccess {
      * The access permission for the {@code ValidUntil} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketValidUntil();
+    @NonNull AccessType getAccessOfSeasonTicketValidUntil();
 
     /**
      * The access permission for the {@code RemainingEntrances} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessTicketDuration();
+    @NonNull AccessType getAccessOfSeasonTicketDuration();
 
 }

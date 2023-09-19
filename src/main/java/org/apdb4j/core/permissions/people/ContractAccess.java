@@ -13,24 +13,24 @@ public interface ContractAccess extends Access {
      * The access permission for the {@code ContractID} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessContractID();
+    @NonNull AccessType getAccessOfContractID();
 
     /**
      * The access permission for the {@code SubscriptionDate} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessContractSubscriptionDate();
+    @NonNull AccessType getAccessOfContractSubscriptionDate();
 
     /**
      * The access permission for the {@code BeginDate and EndDate} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessContractBeginAndEndDate();
+    @NonNull AccessType getAccessOfContractBeginAndEndDate();
 
     /**
      * The access permission for the {@code Salary} attribute.
      * @return the type of access
      */
-    @NonNull AccessType canAccessContractSalary();
+    @NonNull AccessType getAccessOfContractSalary();
 
 }
