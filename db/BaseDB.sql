@@ -1,13 +1,13 @@
 insert into accounts
-values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc1"),
-       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc2"), 
-       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc3"),
-       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc4"),
-       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc5"),
-       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc6"),
-       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc7"),
-       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc8"),
-       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc9");
+values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc1", null),
+       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc2", null), 
+       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc3", null),
+       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc4", null),
+       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc5", null),
+       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc6", null),
+       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc7", null),
+       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc8", null),
+       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc9", null);
        
 insert into guests
 values ("G-001", "andreaverdi@gmail.com", "Andrea", "Verdi"),

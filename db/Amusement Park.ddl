@@ -8,6 +8,7 @@ create table ACCOUNTS (
      Email varchar(256) not null,
      Username varchar(30),
      Password varchar(30),
+     PermissionType varchar(30) /*not null*/, -- TODO: make null for deployment
      constraint IDACCOUNT primary key (Email),
      constraint IDACCOUNT_1 unique (Username));
 
@@ -36,11 +37,6 @@ create table COSTS (
      Month int not null,
      Year int not null,
      constraint IDCOST primary key (ShopID, Month, Year));
-
-create table MONTHLY_RECAPS (
-     Date date not null,
-     Revenue decimal(9,2) not null,
-     constraint IDMONTHLY_RECAP primary key (Date));
 
 create table EXHIBITION_DETAILS (
      ExhibitionID char(6) not null,
@@ -72,6 +68,11 @@ create table MAINTENANCES (
      Date date not null,
      constraint IDMAINTENANCE_ID primary key (FacilityID, Date));
 
+create table MONTHLY_RECAPS (
+     Date date not null,
+     Revenue decimal(9,2) not null,
+     constraint IDDAILY_RECAP primary key (Date));
+
 create table PARK_SERVICES (
      ParkServiceID char(6) not null,
      Name varchar(256) not null,
@@ -82,6 +83,12 @@ create table PARK_SERVICES (
      IsExhibition boolean not null,
      constraint IDPARK_SERVICE primary key (ParkServiceID),
      constraint IDPARK_SERVICE_1 unique (Name));
+
+create table PERMISSIONS (
+     PermissionType varchar(30) not null,
+     Category varchar(100) not null,
+     AccessSequence varchar(100) not null,
+     constraint IDACCESS primary key (PermissionType));
 
 create table PICTURES (
      Path varchar(256) not null,
@@ -113,6 +120,12 @@ create table REVIEWS (
      constraint IDRECENSIONE primary key (ReviewID),
      constraint IDREVIEW unique (Account, ParkServiceID));
 
+create table RIDE_DETAILS (
+     RideID char(6) not null,
+     Status char(1) not null,
+     EstimatedWaitTime time,
+     constraint FKride_ride_detail_ID primary key (RideID));
+
 create table RIDES (
      RideID char(6) not null,
      Intensity varchar(50) not null,
@@ -123,12 +136,6 @@ create table RIDES (
      MinWeight int not null,
      MaxWeight int not null,
      constraint FKR_ID primary key (RideID));
-
-create table RIDE_DETAILS (
-     RideID char(6) not null,
-     Status char(1) not null,
-     EstimatedWaitTime time,
-     constraint FKride_ride_detail_ID primary key (RideID));
 
 create table STAFF (
      StaffID char(72) not null,
@@ -146,6 +153,14 @@ create table STAFF (
      constraint IDSTAFF_1 unique (StaffID),
      constraint FKR_ID unique (Email));
 
+create table TICKET_TYPES (
+     Year int not null,
+     Price decimal(5,2) not null,
+     Type varchar(50) not null,
+     Target varchar(50) not null,
+     Duration int not null,
+     constraint IDTICKET_TYPE primary key (Year, Type, Target));
+
 create table TICKETS (
      TicketID char(65) not null,
      PurchaseDate date not null,
@@ -155,14 +170,6 @@ create table TICKETS (
      OwnerID char(72) not null,
      constraint IDTICKET_ID primary key (TicketID));
 
-create table TICKET_TYPES (
-     Year int not null,
-     Price decimal(5,2) not null,
-     Type varchar(50) not null,
-     Target varchar(50) not null,
-     Duration int not null,
-     constraint IDTICKET_TYPE primary key (Year, Type, Target));
-
 create table validations (
      Date date not null,
      TicketID char(65) not null,
@@ -171,6 +178,10 @@ create table validations (
 
 -- Constraints Section
 -- ___________________ 
+
+alter table ACCOUNTS add constraint FKpossessions
+     foreign key (PermissionType)
+     references PERMISSIONS (PermissionType);
 
 alter table attributions add constraint FKatt_TIC_FK
      foreign key (TicketID)
@@ -233,22 +244,26 @@ alter table REVIEWS add constraint FKreference
      foreign key (ParkServiceID)
      references PARK_SERVICES (ParkServiceID);
 
+alter table RIDE_DETAILS add constraint FKride_ride_detail_FK
+     foreign key (RideID)
+     references RIDES (RideID);
+
 -- Not allowed in MySQL
 -- alter table RIDES add constraint FKR_CHK
 --     check(exists(select * from RIDE_DETAILS
 --                  where RIDE_DETAILS.RideID = RideID)); 
 
-alter table RIDES add constraint FKRIDE_FK
+alter table RIDES add constraint FKR_FKR
      foreign key (RideID)
      references FACILITIES (FacilityID);
 
-alter table RIDE_DETAILS add constraint FKride_ride_detail_FK
-     foreign key (RideID)
-     references RIDES (RideID);
-
-alter table STAFF add constraint FKSTAFF_FK
+alter table STAFF add constraint FKR_FKS
      foreign key (Email)
      references ACCOUNTS (Email);
+
+alter table TICKET_TYPES add constraint FKcomposition
+     foreign key (Year)
+     references PRICE_LISTS (Year);
 
 -- Not allowed in MySQL
 -- alter table TICKETS add constraint IDTICKET_CHK
@@ -258,10 +273,6 @@ alter table STAFF add constraint FKSTAFF_FK
 alter table TICKETS add constraint FKpurchase
      foreign key (OwnerID)
      references GUESTS (GuestID);
-
-alter table TICKET_TYPES add constraint FKcomposition
-     foreign key (Year)
-     references PRICE_LISTS (Year);
 
 alter table validations add constraint FKval_TIC
      foreign key (TicketID)
