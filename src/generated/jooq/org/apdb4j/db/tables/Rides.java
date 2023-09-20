@@ -130,7 +130,7 @@ public class Rides extends TableImpl<Record> {
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKRIDE_FK);
+        return Arrays.asList(Keys.FKR_FKR);
     }
 
     private transient Facilities _facilities;
@@ -141,7 +141,7 @@ public class Rides extends TableImpl<Record> {
      */
     public Facilities facilities() {
         if (_facilities == null)
-            _facilities = new Facilities(this, Keys.FKRIDE_FK);
+            _facilities = new Facilities(this, Keys.FKR_FKR);
 
         return _facilities;
     }

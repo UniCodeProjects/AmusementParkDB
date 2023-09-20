@@ -150,7 +150,7 @@ public class Staff extends TableImpl<Record> {
 
     @Override
     public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKSTAFF_FK);
+        return Arrays.asList(Keys.FKR_FKS);
     }
 
     private transient Accounts _accounts;
@@ -161,7 +161,7 @@ public class Staff extends TableImpl<Record> {
      */
     public Accounts accounts() {
         if (_accounts == null)
-            _accounts = new Accounts(this, Keys.FKSTAFF_FK);
+            _accounts = new Accounts(this, Keys.FKR_FKS);
 
         return _accounts;
     }

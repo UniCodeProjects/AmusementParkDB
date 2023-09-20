@@ -59,6 +59,11 @@ public class Accounts extends TableImpl<Record> {
      */
     public final TableField<Record, String> PASSWORD = createField(DSL.name("Password"), SQLDataType.VARCHAR(30), this, "");
 
+    /**
+     * The column <code>amusement_park.accounts.PermissionType</code>.
+     */
+    public final TableField<Record, String> PERMISSIONTYPE = createField(DSL.name("PermissionType"), SQLDataType.VARCHAR(30), this, "");
+
     private Accounts(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
     }
@@ -105,6 +110,24 @@ public class Accounts extends TableImpl<Record> {
     @Override
     public List<UniqueKey<Record>> getUniqueKeys() {
         return Arrays.asList(Keys.KEY_ACCOUNTS_IDACCOUNT_1);
+    }
+
+    @Override
+    public List<ForeignKey<Record, ?>> getReferences() {
+        return Arrays.asList(Keys.FKPOSSESSIONS);
+    }
+
+    private transient Permissions _permissions;
+
+    /**
+     * Get the implicit join path to the <code>amusement_park.permissions</code>
+     * table.
+     */
+    public Permissions permissions() {
+        if (_permissions == null)
+            _permissions = new Permissions(this, Keys.FKPOSSESSIONS);
+
+        return _permissions;
     }
 
     @Override
