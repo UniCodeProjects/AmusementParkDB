@@ -29,28 +29,40 @@ public class QueryBuilder {
      * Defines the access that allow the execution of the following query(ies).
      * @param required the required access
      * @param actual the executor's actual access
-     * @return {@link QueryBuilder1} for fluent style
+     * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the access objects are incompatible
      */
-    public QueryBuilder1 defineAccess(final Access required,
+    public QueryBuilder defineAccess(final Access required,
                                       final Access actual) throws AccessDeniedException {
         if (invalidAccess(required, actual)) {
             throw new AccessDeniedException();
         }
-        return new QueryBuilder1();
+        return this;
     }
 
     /**
      * Defines the access that allow the execution of the following query(ies).
      * @param required the required access set
      * @param actual the executor's actual access
-     * @return {@link QueryBuilder1} for fluent style
+     * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the access objects are incompatible
      */
-    public QueryBuilder1 defineAccess(final Set<Access> required,
+    public QueryBuilder defineAccess(final Set<Access> required,
                                       final Access actual) throws AccessDeniedException {
         if (invalidAccess(required, actual)) {
             throw new AccessDeniedException();
+        }
+        return this;
+    }
+
+    /**
+     * Creates a JDBC connection to run the successive queries.
+     * @return {@link QueryBuilder1} for fluent style
+     */
+    public QueryBuilder1 createConnection() {
+        final var isConnectionCreated = connectionCreate();
+        if (!isConnectionCreated) {
+            throw new IllegalStateException("Connection could not be created.");
         }
         return new QueryBuilder1();
     }
@@ -60,14 +72,14 @@ public class QueryBuilder {
      */
     public class QueryBuilder1 {
         /**
-         * Creates a JDBC connection to run the successive queries.
+         * Contains the query(ies) that will be executed with jOOQ.
+         * The {@code Consumer<DSLContext>} allows to run queries from the
+         * provided API.
+         * @param db the jOOQ DSL context
          * @return {@link QueryBuilder2} for fluent style
          */
-        public QueryBuilder2 createConnection() {
-            final var isConnectionCreated = connectionCreate();
-            if (!isConnectionCreated) {
-                throw new IllegalStateException("Connection could not be created.");
-            }
+        public QueryBuilder2 queryAction(final Function<DSLContext, Object> db) {
+            queryResult = db.apply(DSL.using(Objects.requireNonNull(connection)));
             return new QueryBuilder2();
         }
     }
@@ -77,39 +89,21 @@ public class QueryBuilder {
      */
     public class QueryBuilder2 {
         /**
-         * Contains the query(ies) that will be executed with jOOQ.
-         * The {@code Consumer<DSLContext>} allows to run queries from the
-         * provided API.
-         * @param db the jOOQ DSL context
+         * Closes the JDBC connection previously created.
          * @return {@link QueryBuilder3} for fluent style
          */
-        public QueryBuilder3 queryAction(final Function<DSLContext, Object> db) {
-            queryResult = db.apply(DSL.using(Objects.requireNonNull(connection)));
-            return new QueryBuilder3();
-        }
-    }
-
-    /**
-     * Third builder used for chaining.
-     */
-    public class QueryBuilder3 {
-        /**
-         * Closes the JDBC connection previously created.
-         * @return {@link QueryBuilder4} for fluent style
-         */
-        public QueryBuilder4 closeConnection() {
+        public QueryBuilder3 closeConnection() {
             final var connectionStatus = connectionClose();
             if (!connectionStatus) {
                 throw new IllegalStateException("Connection could not be closed.");
             }
-            return new QueryBuilder4();
+            return new QueryBuilder3();
         }
     }
-
     /**
-     * Fourth and last builder used for chaining.
+     * Third builder used for chaining.
      */
-    public class QueryBuilder4 {
+    public class QueryBuilder3 {
         /**
          * Retrieves the query result as a {@link Result}{@code <}{@link Record}{@code >}.
          * @return the query result
