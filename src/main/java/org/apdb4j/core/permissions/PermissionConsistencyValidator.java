@@ -1,9 +1,11 @@
 package org.apdb4j.core.permissions;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.apdb4j.core.permissions.account.GuestPermission;
 import org.apdb4j.util.CharSequence;
 import org.apdb4j.util.CharSequenceImpl;
 import org.jooq.Record;
@@ -38,7 +40,8 @@ public final class PermissionConsistencyValidator {
     private static final int SEQUENCE_NUMERICAL_CODE_MAXSIZE = 2;
     private static final String SEQUENCE_NUMERICAL_CODE_DEFAULT = "0";
     private static final String EMPTY_STRING = "";
-    @NonNull private final List<String> knownAccessInterfacesNames = getKnownAccessInterfacesNames();
+    @Getter(AccessLevel.PACKAGE)
+    @NonNull private final List<String> knownAccessInterfacesNames = createKnownAccessInterfacesNames();
 
     /**
      * Returns the single instance of this class.
@@ -89,7 +92,7 @@ public final class PermissionConsistencyValidator {
         return !clazz.isInterface() && Access.class.isAssignableFrom(clazz);
     }
 
-    private static List<String> getKnownAccessInterfacesNames() {
+    private static List<String> createKnownAccessInterfacesNames() {
         final Reflections reflections = new Reflections("org.apdb4j.core.permissions");
         return reflections.getSubTypesOf(Access.class).stream()
                 .filter(Class::isInterface)
@@ -209,6 +212,11 @@ public final class PermissionConsistencyValidator {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         final int numberOfMethods = actualInterface.getDeclaredMethods().length;
         return AccessType.NONE.toString().repeat(numberOfMethods);
+    }
+
+    // TODO: remove.
+    public static void main(String[] args) {
+        System.out.println(PermissionConsistencyValidator.getInstance().generatePermissionsUID(GuestPermission.class));
     }
 
 }
