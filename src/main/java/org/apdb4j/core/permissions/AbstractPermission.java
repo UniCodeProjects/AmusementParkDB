@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Method;
@@ -18,10 +20,11 @@ import java.util.function.Supplier;
 public abstract class AbstractPermission implements Access {
 
     // Field lazily initialised, necessary because of reflection use.
-    private Supplier<List<AccessType>> accessTypes = () -> {
+    @Getter(AccessLevel.PACKAGE)
+    private Supplier<List<AccessType>> returnedAccessTypes = () -> {
         final List<AccessType> value = getMethodsReturnValues(getClass());
         // Reassigning the implementation of Supplier.get() to return the exiting value.
-        accessTypes = () -> value;
+        returnedAccessTypes = () -> value;
         return value;
     };
 
@@ -72,7 +75,7 @@ public abstract class AbstractPermission implements Access {
             }
         }
         final AbstractPermission that = (AbstractPermission) o;
-        return Objects.equals(accessTypes.get(), that.accessTypes.get());
+        return Objects.equals(returnedAccessTypes.get(), that.returnedAccessTypes.get());
     }
 
     /**
@@ -80,7 +83,7 @@ public abstract class AbstractPermission implements Access {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(accessTypes.get());
+        return Objects.hash(returnedAccessTypes.get());
     }
 
 }
