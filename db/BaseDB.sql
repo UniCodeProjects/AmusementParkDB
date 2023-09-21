@@ -1,13 +1,13 @@
 insert into accounts
-values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc1"),
-       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc2"), 
-       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc3"),
-       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc4"),
-       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc5"),
-       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc6"),
-       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc7"),
-       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc8"),
-       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc9");
+values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc1", null),
+       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc2", null), 
+       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc3", null),
+       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc4", null),
+       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc5", null),
+       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc6", null),
+       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc7", null),
+       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc8", null),
+       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc9", null);
        
 insert into guests
 values ("G-001", "andreaverdi@gmail.com", "Andrea", "Verdi"),
@@ -152,3 +152,10 @@ values ('2023-05-05', "T-001"),
        ('2023-11-25', "T-004"),
        ('2023-08-10', "T-005"),
        ('2023-07-01', "T-006");
+       
+insert into monthly_recaps
+values ('2023-01-01', 100000.00),
+	   ('2023-02-01', 125000.00),
+       ('2023-03-01', 50000.00),
+       ('2023-04-01', 75460.00),
+       ('2023-05-01', 74085.00);
