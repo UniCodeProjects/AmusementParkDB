@@ -8,12 +8,13 @@ import org.apdb4j.db.tables.Accounts;
 import org.apdb4j.db.tables.Attributions;
 import org.apdb4j.db.tables.Contracts;
 import org.apdb4j.db.tables.Costs;
-import org.apdb4j.db.tables.DailyRecaps;
 import org.apdb4j.db.tables.ExhibitionDetails;
 import org.apdb4j.db.tables.Facilities;
 import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
+import org.apdb4j.db.tables.MonthlyRecaps;
 import org.apdb4j.db.tables.ParkServices;
+import org.apdb4j.db.tables.Permissions;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
 import org.apdb4j.db.tables.PunchDates;
@@ -54,11 +55,6 @@ public class Tables {
     public static final Costs COSTS = Costs.COSTS;
 
     /**
-     * The table <code>amusement_park.daily_recaps</code>.
-     */
-    public static final DailyRecaps DAILY_RECAPS = DailyRecaps.DAILY_RECAPS;
-
-    /**
      * The table <code>amusement_park.exhibition_details</code>.
      */
     public static final ExhibitionDetails EXHIBITION_DETAILS = ExhibitionDetails.EXHIBITION_DETAILS;
@@ -79,9 +75,19 @@ public class Tables {
     public static final Maintenances MAINTENANCES = Maintenances.MAINTENANCES;
 
     /**
+     * The table <code>amusement_park.monthly_recaps</code>.
+     */
+    public static final MonthlyRecaps MONTHLY_RECAPS = MonthlyRecaps.MONTHLY_RECAPS;
+
+    /**
      * The table <code>amusement_park.park_services</code>.
      */
     public static final ParkServices PARK_SERVICES = ParkServices.PARK_SERVICES;
+
+    /**
+     * The table <code>amusement_park.permissions</code>.
+     */
+    public static final Permissions PERMISSIONS = Permissions.PERMISSIONS;
 
     /**
      * The table <code>amusement_park.pictures</code>.

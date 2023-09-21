@@ -8,12 +8,13 @@ import org.apdb4j.db.tables.Accounts;
 import org.apdb4j.db.tables.Attributions;
 import org.apdb4j.db.tables.Contracts;
 import org.apdb4j.db.tables.Costs;
-import org.apdb4j.db.tables.DailyRecaps;
 import org.apdb4j.db.tables.ExhibitionDetails;
 import org.apdb4j.db.tables.Facilities;
 import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
+import org.apdb4j.db.tables.MonthlyRecaps;
 import org.apdb4j.db.tables.ParkServices;
+import org.apdb4j.db.tables.Permissions;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
 import org.apdb4j.db.tables.PunchDates;
@@ -50,14 +51,15 @@ public class Keys {
     public static final UniqueKey<Record> KEY_CONTRACTS_IDCONTRACT = Internal.createUniqueKey(Contracts.CONTRACTS, DSL.name("KEY_contracts_IDCONTRACT"), new TableField[] { Contracts.CONTRACTS.SUBSCRIPTIONDATE, Contracts.CONTRACTS.EMPLOYEENID }, true);
     public static final UniqueKey<Record> KEY_CONTRACTS_PRIMARY = Internal.createUniqueKey(Contracts.CONTRACTS, DSL.name("KEY_contracts_PRIMARY"), new TableField[] { Contracts.CONTRACTS.CONTRACTID }, true);
     public static final UniqueKey<Record> KEY_COSTS_PRIMARY = Internal.createUniqueKey(Costs.COSTS, DSL.name("KEY_costs_PRIMARY"), new TableField[] { Costs.COSTS.SHOPID, Costs.COSTS.MONTH, Costs.COSTS.YEAR }, true);
-    public static final UniqueKey<Record> KEY_DAILY_RECAPS_PRIMARY = Internal.createUniqueKey(DailyRecaps.DAILY_RECAPS, DSL.name("KEY_daily_recaps_PRIMARY"), new TableField[] { DailyRecaps.DAILY_RECAPS.DATE }, true);
     public static final UniqueKey<Record> KEY_EXHIBITION_DETAILS_PRIMARY = Internal.createUniqueKey(ExhibitionDetails.EXHIBITION_DETAILS, DSL.name("KEY_exhibition_details_PRIMARY"), new TableField[] { ExhibitionDetails.EXHIBITION_DETAILS.EXHIBITIONID, ExhibitionDetails.EXHIBITION_DETAILS.DATE, ExhibitionDetails.EXHIBITION_DETAILS.TIME }, true);
     public static final UniqueKey<Record> KEY_FACILITIES_PRIMARY = Internal.createUniqueKey(Facilities.FACILITIES, DSL.name("KEY_facilities_PRIMARY"), new TableField[] { Facilities.FACILITIES.FACILITYID }, true);
     public static final UniqueKey<Record> KEY_GUESTS_FKR_1_ID = Internal.createUniqueKey(Guests.GUESTS, DSL.name("KEY_guests_FKR_1_ID"), new TableField[] { Guests.GUESTS.EMAIL }, true);
     public static final UniqueKey<Record> KEY_GUESTS_PRIMARY = Internal.createUniqueKey(Guests.GUESTS, DSL.name("KEY_guests_PRIMARY"), new TableField[] { Guests.GUESTS.GUESTID }, true);
     public static final UniqueKey<Record> KEY_MAINTENANCES_PRIMARY = Internal.createUniqueKey(Maintenances.MAINTENANCES, DSL.name("KEY_maintenances_PRIMARY"), new TableField[] { Maintenances.MAINTENANCES.FACILITYID, Maintenances.MAINTENANCES.DATE }, true);
+    public static final UniqueKey<Record> KEY_MONTHLY_RECAPS_PRIMARY = Internal.createUniqueKey(MonthlyRecaps.MONTHLY_RECAPS, DSL.name("KEY_monthly_recaps_PRIMARY"), new TableField[] { MonthlyRecaps.MONTHLY_RECAPS.DATE }, true);
     public static final UniqueKey<Record> KEY_PARK_SERVICES_IDPARK_SERVICE_1 = Internal.createUniqueKey(ParkServices.PARK_SERVICES, DSL.name("KEY_park_services_IDPARK_SERVICE_1"), new TableField[] { ParkServices.PARK_SERVICES.NAME }, true);
     public static final UniqueKey<Record> KEY_PARK_SERVICES_PRIMARY = Internal.createUniqueKey(ParkServices.PARK_SERVICES, DSL.name("KEY_park_services_PRIMARY"), new TableField[] { ParkServices.PARK_SERVICES.PARKSERVICEID }, true);
+    public static final UniqueKey<Record> KEY_PERMISSIONS_PRIMARY = Internal.createUniqueKey(Permissions.PERMISSIONS, DSL.name("KEY_permissions_PRIMARY"), new TableField[] { Permissions.PERMISSIONS.PERMISSIONTYPE }, true);
     public static final UniqueKey<Record> KEY_PICTURES_PRIMARY = Internal.createUniqueKey(Pictures.PICTURES, DSL.name("KEY_pictures_PRIMARY"), new TableField[] { Pictures.PICTURES.PATH }, true);
     public static final UniqueKey<Record> KEY_PRICE_LISTS_PRIMARY = Internal.createUniqueKey(PriceLists.PRICE_LISTS, DSL.name("KEY_price_lists_PRIMARY"), new TableField[] { PriceLists.PRICE_LISTS.YEAR }, true);
     public static final UniqueKey<Record> KEY_PUNCH_DATES_PRIMARY = Internal.createUniqueKey(PunchDates.PUNCH_DATES, DSL.name("KEY_punch_dates_PRIMARY"), new TableField[] { PunchDates.PUNCH_DATES.DATE }, true);
@@ -77,6 +79,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<Record, Record> FKPOSSESSIONS = Internal.createForeignKey(Accounts.ACCOUNTS, DSL.name("FKpossessions"), new TableField[] { Accounts.ACCOUNTS.PERMISSIONTYPE }, Keys.KEY_PERMISSIONS_PRIMARY, new TableField[] { Permissions.PERMISSIONS.PERMISSIONTYPE }, true);
     public static final ForeignKey<Record, Record> FKATT_TIC_1 = Internal.createForeignKey(Attributions.ATTRIBUTIONS, DSL.name("FKatt_TIC_1"), new TableField[] { Attributions.ATTRIBUTIONS.YEAR, Attributions.ATTRIBUTIONS.TYPE, Attributions.ATTRIBUTIONS.TARGET }, Keys.KEY_TICKET_TYPES_PRIMARY, new TableField[] { TicketTypes.TICKET_TYPES.YEAR, TicketTypes.TICKET_TYPES.TYPE, TicketTypes.TICKET_TYPES.TARGET }, true);
     public static final ForeignKey<Record, Record> FKATT_TIC_FK = Internal.createForeignKey(Attributions.ATTRIBUTIONS, DSL.name("FKatt_TIC_FK"), new TableField[] { Attributions.ATTRIBUTIONS.TICKETID }, Keys.KEY_TICKETS_PRIMARY, new TableField[] { Tickets.TICKETS.TICKETID }, true);
     public static final ForeignKey<Record, Record> FKEMPLOYMENT = Internal.createForeignKey(Contracts.CONTRACTS, DSL.name("FKemployment"), new TableField[] { Contracts.CONTRACTS.EMPLOYEENID }, Keys.KEY_STAFF_PRIMARY, new TableField[] { Staff.STAFF.NATIONALID }, true);
@@ -92,8 +95,8 @@ public class Keys {
     public static final ForeignKey<Record, Record> FKPUBLICATION = Internal.createForeignKey(Reviews.REVIEWS, DSL.name("FKpublication"), new TableField[] { Reviews.REVIEWS.ACCOUNT }, Keys.KEY_ACCOUNTS_PRIMARY, new TableField[] { Accounts.ACCOUNTS.EMAIL }, true);
     public static final ForeignKey<Record, Record> FKREFERENCE = Internal.createForeignKey(Reviews.REVIEWS, DSL.name("FKreference"), new TableField[] { Reviews.REVIEWS.PARKSERVICEID }, Keys.KEY_PARK_SERVICES_PRIMARY, new TableField[] { ParkServices.PARK_SERVICES.PARKSERVICEID }, true);
     public static final ForeignKey<Record, Record> FKRIDE_RIDE_DETAIL_FK = Internal.createForeignKey(RideDetails.RIDE_DETAILS, DSL.name("FKride_ride_detail_FK"), new TableField[] { RideDetails.RIDE_DETAILS.RIDEID }, Keys.KEY_RIDES_PRIMARY, new TableField[] { Rides.RIDES.RIDEID }, true);
-    public static final ForeignKey<Record, Record> FKRIDE_FK = Internal.createForeignKey(Rides.RIDES, DSL.name("FKRIDE_FK"), new TableField[] { Rides.RIDES.RIDEID }, Keys.KEY_FACILITIES_PRIMARY, new TableField[] { Facilities.FACILITIES.FACILITYID }, true);
-    public static final ForeignKey<Record, Record> FKSTAFF_FK = Internal.createForeignKey(Staff.STAFF, DSL.name("FKSTAFF_FK"), new TableField[] { Staff.STAFF.EMAIL }, Keys.KEY_ACCOUNTS_PRIMARY, new TableField[] { Accounts.ACCOUNTS.EMAIL }, true);
+    public static final ForeignKey<Record, Record> FKR_FKR = Internal.createForeignKey(Rides.RIDES, DSL.name("FKR_FKR"), new TableField[] { Rides.RIDES.RIDEID }, Keys.KEY_FACILITIES_PRIMARY, new TableField[] { Facilities.FACILITIES.FACILITYID }, true);
+    public static final ForeignKey<Record, Record> FKR_FKS = Internal.createForeignKey(Staff.STAFF, DSL.name("FKR_FKS"), new TableField[] { Staff.STAFF.EMAIL }, Keys.KEY_ACCOUNTS_PRIMARY, new TableField[] { Accounts.ACCOUNTS.EMAIL }, true);
     public static final ForeignKey<Record, Record> FKCOMPOSITION = Internal.createForeignKey(TicketTypes.TICKET_TYPES, DSL.name("FKcomposition"), new TableField[] { TicketTypes.TICKET_TYPES.YEAR }, Keys.KEY_PRICE_LISTS_PRIMARY, new TableField[] { PriceLists.PRICE_LISTS.YEAR }, true);
     public static final ForeignKey<Record, Record> FKPURCHASE = Internal.createForeignKey(Tickets.TICKETS, DSL.name("FKpurchase"), new TableField[] { Tickets.TICKETS.OWNERID }, Keys.KEY_GUESTS_PRIMARY, new TableField[] { Guests.GUESTS.GUESTID }, true);
     public static final ForeignKey<Record, Record> FKVAL_PUN = Internal.createForeignKey(Validations.VALIDATIONS, DSL.name("FKval_PUN"), new TableField[] { Validations.VALIDATIONS.DATE }, Keys.KEY_PUNCH_DATES_PRIMARY, new TableField[] { PunchDates.PUNCH_DATES.DATE }, true);
