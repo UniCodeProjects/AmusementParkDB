@@ -42,6 +42,10 @@ public final class PermissionMapper {
             throw new IllegalStateException(); // TODO: add message.
         }
         // TODO: implement full string gen.
+        System.out.println(permissionType);
+        System.out.println(packageCode);
+        System.out.println(interfaceCode);
+        System.out.println(accessSequence);
     }
 
     private static @NonNull String getSimplePermissionName(final @NonNull Access permission) {
@@ -83,10 +87,10 @@ public final class PermissionMapper {
                 final int duplicateCount = (int) interfaceCodesMap.values().stream()
                         .filter(string -> string.equals(code))
                         .count();
-                interfaceCodesMap.put(Class.forName(i).getName(),
+                interfaceCodesMap.put(Class.forName(i).getSimpleName(),
                         generateInterfaceCode(Class.forName(i).getSimpleName(), duplicateCount));
             } else {
-                interfaceCodesMap.put(Class.forName(i).getName(),
+                interfaceCodesMap.put(Class.forName(i).getSimpleName(),
                         generateInterfaceCode(Class.forName(i).getSimpleName()));
             }
         }
