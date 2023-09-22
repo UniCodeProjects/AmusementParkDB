@@ -41,6 +41,9 @@ dependencies {
     val slf4jVersion = "2.0.9"
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 
+    val commonsCollectionVersion = "4.4"
+    implementation("org.apache.commons:commons-collections4:$commonsCollectionVersion")
+
     val javaFxVersion = "15"
 
     for (platform in supportedPlatforms) {
@@ -132,6 +135,7 @@ javaQA {
         additionalSuppressions.set("config/checkstyle_suppressions.xml")
     }
 }
+
 application {
     mainClass.set("org.apdb4j.core.Main")
 }
