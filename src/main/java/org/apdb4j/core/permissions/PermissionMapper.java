@@ -20,9 +20,10 @@ import java.util.stream.Collectors;
  * Maps an Access class instance to an actual database tuple.
  * @see Access
  */
-// TODO: make this class the generator, instead of the validator.
+// TODO: make this class the generator, instead of the validator. Make methods not static?
 public final class PermissionMapper {
 
+    private static Access source;
     private static final String CLASS_NAME_PATTERN_TO_MATCH = "Permission";
 
     private PermissionMapper() {
@@ -35,9 +36,9 @@ public final class PermissionMapper {
      */
     public static void insertInDB(final @NonNull Access source) {
         final String permissionType = getSimplePermissionName(source);
-        final List<String> packageCode = getPackageCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getPackageName).toList()); // TODO: make it like in perm validator.
-        final List<String> interfaceCode = getInterfaceCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getSimpleName).toList());
-        final List<String> accessSequence = getReturnValuesSequences(source);
+//        final List<String> packageCode = getPackageCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getPackageName).toList()); // TODO: make it like in perm validator.
+//        final List<String> interfaceCode = getInterfaceCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getSimpleName).toList());
+//        final List<String> accessSequence = getReturnValuesSequences(source);
 //        if (packageCode.size() != interfaceCode.size() || packageCode.size() != accessSequence.size()) {
 //            throw new IllegalStateException("Incongruent amount of permission codes generated");
 //        }
@@ -46,6 +47,7 @@ public final class PermissionMapper {
 //        System.out.println(packageCode);
 //        System.out.println(interfaceCode);
 //        System.out.println(accessSequence);
+        PermissionMapper.source = source;
         final var interfaceCodes = generateAllInterfaceCodes();
         interfaceCodes.asMap().forEach((s, strings) -> System.out.println(s + ": " + strings));
 
@@ -60,14 +62,11 @@ public final class PermissionMapper {
         return className.replace(CLASS_NAME_PATTERN_TO_MATCH, "");
     }
 
-    private static @NonNull List<String> getPackageCodes(final @NonNull List<String> packageName) {
+    private static @NonNull String generatePackageCodes(final @NonNull String packageName) {
         final var regex = "(?<=\\.)\\w+$";
-        final List<String> result = new ArrayList<>();
-        packageName.forEach(name -> result.add("P"
-                + getMatch(name, regex)
+        return "P" + (getMatch(packageName, regex))
                 .toUpperCase(Locale.ROOT)
-                .charAt(0)));
-        return result;
+                .charAt(0);
     }
 
     // Retrieves the correct interface code (alphabetical + numerical).
@@ -92,13 +91,37 @@ public final class PermissionMapper {
                         .filter(string -> string.equals(code))
                         .count();
                 // TODO: add other values first and after
+                interfaceCodesMap.put(i, generatePackageCodes(i));
                 interfaceCodesMap.put(i, generateInterfaceCode(i, duplicateCount));
+                interfaceCodesMap.put(i, generateReturnSequence(i));
             } else {
                 // TODO: add other values first and after
+                interfaceCodesMap.put(i, generatePackageCodes(i));
                 interfaceCodesMap.put(i, generateInterfaceCode(i));
+                interfaceCodesMap.put(i, generateReturnSequence(i));
             }
         }
         return interfaceCodesMap;
+    }
+
+    // TODO: cleanup.
+    @SneakyThrows
+    private static @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
+        final Class<? extends Access> actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
+        // Check if interfaceName is implemented by source.
+        if (Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
+            // Gets only the methods that are actively implemented by source.
+            final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
+                    .filter(method -> Arrays.stream(actualInterface.getMethods()).anyMatch(m -> m.getName().equals(method.getName())))
+                    .sorted(Comparator.comparing(Method::getName))
+                    .toList();
+            final var sequence = new StringBuilder();
+            for (final var method : methods) {
+                sequence.append(method.invoke(source));
+            }
+            return sequence.toString();
+        }
+        return "N".repeat(actualInterface.getMethods().length);
     }
 
     @SneakyThrows
