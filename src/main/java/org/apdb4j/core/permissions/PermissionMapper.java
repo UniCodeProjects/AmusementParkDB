@@ -2,6 +2,8 @@ package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.account.GuestPermission;
 
 import java.lang.reflect.Method;
@@ -10,8 +12,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,14 +38,17 @@ public final class PermissionMapper {
         final List<String> packageCode = getPackageCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getPackageName).toList()); // TODO: make it like in perm validator.
         final List<String> interfaceCode = getInterfaceCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getSimpleName).toList());
         final List<String> accessSequence = getReturnValuesSequences(source);
-        if (packageCode.size() != interfaceCode.size() || packageCode.size() != accessSequence.size()) {
-            throw new IllegalStateException(); // TODO: add message.
-        }
+//        if (packageCode.size() != interfaceCode.size() || packageCode.size() != accessSequence.size()) {
+//            throw new IllegalStateException("Incongruent amount of permission codes generated");
+//        }
         // TODO: implement full string gen.
-        System.out.println(permissionType);
-        System.out.println(packageCode);
-        System.out.println(interfaceCode);
-        System.out.println(accessSequence);
+//        System.out.println(permissionType);
+//        System.out.println(packageCode);
+//        System.out.println(interfaceCode);
+//        System.out.println(accessSequence);
+        final var interfaceCodes = generateAllInterfaceCodes();
+        interfaceCodes.asMap().forEach((s, strings) -> System.out.println(s + ": " + strings));
+
     }
 
     private static @NonNull String getSimplePermissionName(final @NonNull Access permission) {
@@ -71,36 +74,42 @@ public final class PermissionMapper {
     private static @NonNull List<String> getInterfaceCodes(final @NonNull List<String> interfaces) {
         final var interfaceCodesMap = generateAllInterfaceCodes();
         final List<String> result = new ArrayList<>();
-        interfaces.forEach(i -> {
-            result.add(interfaceCodesMap.get(i));
-        });
+//        interfaces.forEach(i -> {
+//            result.add(interfaceCodesMap.get(i));
+//        });
         return result;
     }
 
     @SneakyThrows
-    private static @NonNull Map<String, String> generateAllInterfaceCodes() {
+    private static @NonNull MultiValuedMap<String, String> generateAllInterfaceCodes() {
         final var allInterfaces = PermissionConsistencyValidator.getInstance().getKnownAccessInterfacesNames();
-        final Map<String, String> interfaceCodesMap = new TreeMap<>();
+        // TODO: remember to sort! Not a treemap.
+        final MultiValuedMap<String, String> interfaceCodesMap = new ArrayListValuedHashMap<>();
         for (final String i : allInterfaces) {
-            final String code = generateInterfaceCode(Class.forName(i).getSimpleName());
+            final String code = generateInterfaceCode(i);
             if (interfaceCodesMap.containsValue(code)) {
                 final int duplicateCount = (int) interfaceCodesMap.values().stream()
                         .filter(string -> string.equals(code))
                         .count();
-                interfaceCodesMap.put(Class.forName(i).getSimpleName(),
-                        generateInterfaceCode(Class.forName(i).getSimpleName(), duplicateCount));
+                // TODO: add other values first and after
+                interfaceCodesMap.put(i, generateInterfaceCode(i, duplicateCount));
             } else {
-                interfaceCodesMap.put(Class.forName(i).getSimpleName(),
-                        generateInterfaceCode(Class.forName(i).getSimpleName()));
+                // TODO: add other values first and after
+                interfaceCodesMap.put(i, generateInterfaceCode(i));
             }
         }
         return interfaceCodesMap;
     }
 
+    @SneakyThrows
     private static @NonNull String generateInterfaceCode(final @NonNull String interfaceName) {
-        return interfaceName.substring(0, 3).toUpperCase(Locale.ROOT) + "00";
+        return Class.forName(interfaceName)
+                .getSimpleName()
+                .substring(0, 3)
+                .toUpperCase(Locale.ROOT) + "00";
     }
 
+    @SneakyThrows
     private static @NonNull String generateInterfaceCode(final @NonNull String interfaceName, final int numericalCode) {
         final int numericalCodeLength = String.valueOf(numericalCode).length();
         final String numCodeAsString = switch (numericalCodeLength) {
@@ -108,7 +117,10 @@ public final class PermissionMapper {
             case 2 -> String.valueOf(numericalCode);
             default -> throw new IllegalArgumentException("Numerical code cannot be greater than 99: " + numericalCode);
         };
-        return interfaceName.substring(0, 3).toUpperCase(Locale.ROOT) + numCodeAsString;
+        return Class.forName(interfaceName)
+                .getSimpleName()
+                .substring(0, 3)
+                .toUpperCase(Locale.ROOT) + numCodeAsString;
     }
 
     private static @NonNull List<String> getReturnValuesSequences(final @NonNull Access source) {
