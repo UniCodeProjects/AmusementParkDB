@@ -18,8 +18,7 @@ import java.util.Objects;
 import static org.apdb4j.db.tables.Permissions.PERMISSIONS;
 
 /**
- * todo: update doc
- * Maps an Access class instance to an actual database tuple.
+ * Generates an UID (Unique ID) for a set of access settings (permission).
  * @see Access
  */
 public final class PermissionUID {
@@ -27,6 +26,8 @@ public final class PermissionUID {
     private final Access source;
     private final String uid;
     private static final String CLASS_NAME_PATTERN_TO_MATCH = "Permission";
+    private static final char UID_INTERNAL_DELIMITER = '.';
+    private static final char UID_EXTERNAL_DELIMITER = '-';
 
     /**
      * Creates a new UID from a permission class.
@@ -38,7 +39,7 @@ public final class PermissionUID {
     }
 
     /**
-     * Inserts a tuple in the database representing a permission.
+     * Maps the given permission instance to an actual database tuple.
      * @return {@code true} on successful insertion
      */
     public boolean insertInDB() {
@@ -63,11 +64,11 @@ public final class PermissionUID {
             final String interfaceCode = values.get(1);
             final String accessSequence = values.get(2);
             result.append(packageCode)
-                    .append('.')
+                    .append(UID_INTERNAL_DELIMITER)
                     .append(interfaceCode)
-                    .append('.')
+                    .append(UID_INTERNAL_DELIMITER)
                     .append(accessSequence)
-                    .append('-');
+                    .append(UID_EXTERNAL_DELIMITER);
         });
         result.deleteCharAt(result.length() - 1);
         return result.toString();
@@ -92,45 +93,52 @@ public final class PermissionUID {
     @SneakyThrows
     private @NonNull MultiValuedMap<String, String> generateAllInterfaceCodes() {
         final var allInterfaces = getKnownAccessInterfacesNames();
-        final MultiValuedMap<String, String> interfaceCodesMap = new ArrayListValuedHashMap<>();
-        for (final String i : allInterfaces) {
-            final var actualInterface = Class.forName(i).asSubclass(Access.class);
-            interfaceCodesMap.put(i, generatePackageCodes(actualInterface.getPackageName()));
-            final String code = generateInterfaceCode(i);
-            if (interfaceCodesMap.containsValue(code)) {
-                final int duplicateCount = (int) interfaceCodesMap.values().stream()
-                        .filter(string -> string.equals(code))
+        final MultiValuedMap<String, String> interfacesAndCodes = new ArrayListValuedHashMap<>();
+        for (final String currentInterface : allInterfaces) {
+            final var actualInterface = Class.forName(currentInterface).asSubclass(Access.class);
+            // Putting the package code for the current interface.
+            interfacesAndCodes.put(currentInterface, generatePackageCodes(actualInterface.getPackageName()));
+            // Generating the interface code and checking for duplicates.
+            final String interfaceCode = generateInterfaceCode(currentInterface);
+            if (interfacesAndCodes.containsValue(interfaceCode)) {
+                final int duplicateCount = (int) interfacesAndCodes.values().stream()
+                        .filter(string -> string.equals(interfaceCode))
                         .count();
-                interfaceCodesMap.put(i, generateInterfaceCode(i, duplicateCount));
+                // Putting the interface code with a progressive number sequence.
+                interfacesAndCodes.put(currentInterface, generateInterfaceCode(currentInterface, duplicateCount));
             } else {
-                interfaceCodesMap.put(i, generateInterfaceCode(i));
+                interfacesAndCodes.put(currentInterface, generateInterfaceCode(currentInterface));
             }
-            interfaceCodesMap.put(i, generateReturnSequence(i));
+            // Putting the return values sequence for the current interface.
+            interfacesAndCodes.put(currentInterface, generateReturnSequence(currentInterface));
         }
-        return interfaceCodesMap;
+        return interfacesAndCodes;
     }
 
-    // todo: cleanup.
     @SneakyThrows
     private @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
-        final Class<? extends Access> actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
-        // Check if interfaceName is implemented by source.
-        if (Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
-            // Gets only the methods that are actively implemented by source.
-            final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
-                    .filter(method -> Arrays.stream(actualInterface.getMethods())
-                            .anyMatch(m -> m.getName().equals(method.getName())))
-                    .sorted(Comparator.comparing(Method::getName))
-                    .toList();
-            final var sequence = new StringBuilder();
-            for (final var method : methods) {
-                sequence.append(method.invoke(source));
-            }
-            return sequence.toString();
+        final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
+        // If the source class does not implement the interface, a 'None' sequence in returned.
+        if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
+            return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
         }
-        return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
+        // Gets only the methods that are actively implemented by source.
+        final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
+                .filter(method -> Arrays.stream(actualInterface.getMethods())
+                        .anyMatch(m -> m.getName().equals(method.getName())))
+                .sorted(Comparator.comparing(Method::getName))
+                .toList();
+        final var sequence = new StringBuilder();
+        for (final var method : methods) {
+            sequence.append(method.invoke(source));
+        }
+        return sequence.toString();
     }
 
+    /*
+     * Helper method for generateAllInterfaceCodes().
+     * Generates an interface code with the default numerical sequence.
+     */
     @SneakyThrows
     private @NonNull String generateInterfaceCode(final @NonNull String interfaceName) {
         return Class.forName(interfaceName)
@@ -139,6 +147,10 @@ public final class PermissionUID {
                 .toUpperCase(Locale.ROOT) + "00";
     }
 
+    /*
+     * Helper method for generateAllInterfaceCodes().
+     * Generates an interface code with a progressive numerical sequence.
+     */
     @SneakyThrows
     private @NonNull String generateInterfaceCode(final @NonNull String interfaceName, final int numericalCode) {
         final int numericalCodeLength = String.valueOf(numericalCode).length();
@@ -153,6 +165,7 @@ public final class PermissionUID {
                 .toUpperCase(Locale.ROOT) + numCodeAsString;
     }
 
+    // Gets all the known Access interfaces in the package.
     private List<String> getKnownAccessInterfacesNames() {
         final Reflections reflections = new Reflections("org.apdb4j.core.permissions");
         return reflections.getSubTypesOf(Access.class).stream()
@@ -184,10 +197,5 @@ public final class PermissionUID {
     public int hashCode() {
         return Objects.hash(uid);
     }
-
-    // todo: remove.
-//    public static void main(String[] args) {
-//        System.out.println(new PermissionUID(new GuestPermission()).insertInDB());
-//    }
 
 }
