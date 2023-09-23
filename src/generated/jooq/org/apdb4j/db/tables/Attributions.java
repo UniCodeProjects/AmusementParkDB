@@ -60,9 +60,9 @@ public class Attributions extends TableImpl<Record> {
     public final TableField<Record, String> TYPE = createField(DSL.name("Type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.attributions.Target</code>.
+     * The column <code>amusement_park.attributions.Category</code>.
      */
-    public final TableField<Record, String> TARGET = createField(DSL.name("Target"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<Record, String> CATEGORY = createField(DSL.name("Category"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     private Attributions(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

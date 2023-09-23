@@ -16,7 +16,7 @@ create table attributions (
      TicketID char(65) not null,
      Year int not null,
      Type varchar(50) not null,
-     Target varchar(50) not null,
+     Category varchar(50) not null,
      constraint FKatt_TIC_ID primary key (TicketID));
 
 create table CONTRACTS (
@@ -157,9 +157,9 @@ create table TICKET_TYPES (
      Year int not null,
      Price decimal(5,2) not null,
      Type varchar(50) not null,
-     Target varchar(50) not null,
+     Category varchar(50) not null,
      Duration int not null,
-     constraint IDTICKET_TYPE primary key (Year, Type, Target));
+     constraint IDTICKET_TYPE primary key (Year, Type, Category));
 
 create table TICKETS (
      TicketID char(65) not null,
@@ -188,8 +188,8 @@ alter table attributions add constraint FKatt_TIC_FK
      references TICKETS (TicketID);
 
 alter table attributions add constraint FKatt_TIC_1
-     foreign key (Year, Type, Target)
-     references TICKET_TYPES (Year, Type, Target);
+     foreign key (Year, Type, Category)
+     references TICKET_TYPES (Year, Type, Category);
 
 alter table CONTRACTS add constraint FKhiring
      foreign key (EmployerNID)

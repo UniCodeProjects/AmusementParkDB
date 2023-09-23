@@ -61,9 +61,9 @@ public class TicketTypes extends TableImpl<Record> {
     public final TableField<Record, String> TYPE = createField(DSL.name("Type"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.ticket_types.Target</code>.
+     * The column <code>amusement_park.ticket_types.Category</code>.
      */
-    public final TableField<Record, String> TARGET = createField(DSL.name("Target"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<Record, String> CATEGORY = createField(DSL.name("Category"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.ticket_types.Duration</code>.
