@@ -47,14 +47,9 @@ public class Permissions extends TableImpl<Record> {
     public final TableField<Record, String> PERMISSIONTYPE = createField(DSL.name("PermissionType"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>amusement_park.permissions.Category</code>.
-     */
-    public final TableField<Record, String> CATEGORY = createField(DSL.name("Category"), SQLDataType.VARCHAR(100).nullable(false), this, "");
-
-    /**
      * The column <code>amusement_park.permissions.AccessSequence</code>.
      */
-    public final TableField<Record, String> ACCESSSEQUENCE = createField(DSL.name("AccessSequence"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<Record, String> ACCESSSEQUENCE = createField(DSL.name("AccessSequence"), SQLDataType.VARCHAR(300).nullable(false), this, "");
 
     private Permissions(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

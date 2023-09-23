@@ -1,6 +1,8 @@
 package org.apdb4j.core.permissions.account;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to reviews.
@@ -9,37 +11,32 @@ public interface ReviewAccess extends Access {
 
     /**
      * The access permission for the {@code ReviewID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewID();
+    @NonNull AccessType getAccessOfReviewID();
 
     /**
      * The access permission for the {@code Rating} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewRating();
+    @NonNull AccessType getAccessOfReviewRating();
 
     /**
      * The access permission for the {@code Date} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewDate();
+    @NonNull AccessType getAccessOfReviewDate();
 
     /**
      * The access permission for the {@code Time} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewTime();
+    @NonNull AccessType getAccessOfReviewTime();
 
     /**
      * The access permission for the {@code Description} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessReviewDescription();
+    @NonNull AccessType getAccessOfReviewDescription();
 
 }

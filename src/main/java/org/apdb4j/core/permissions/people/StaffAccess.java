@@ -1,5 +1,8 @@
 package org.apdb4j.core.permissions.people;
 
+import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to staff members.
  */
@@ -7,30 +10,26 @@ public interface StaffAccess extends PersonAccess {
 
     /**
      * The access permission for the {@code NationalID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffNationalID();
+    @NonNull AccessType getAccessOfStaffNationalID();
 
     /**
      * The access permission for the {@code DoB} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffDoB();
+    @NonNull AccessType getAccessOfStaffDoB();
 
     /**
      * The access permission for the {@code BirthPlace} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffBirthPlace();
+    @NonNull AccessType getAccessOfStaffBirthPlace();
 
     /**
      * The access permission for the {@code Gender} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessStaffGender();
+    @NonNull AccessType getAccessOfStaffGender();
 
 }

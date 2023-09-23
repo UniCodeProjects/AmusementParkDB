@@ -1,6 +1,8 @@
 package org.apdb4j.core.permissions.tickets;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to ticket types.
@@ -9,30 +11,26 @@ public interface TicketTypeAccess extends Access {
 
     /**
      * The access permission for the {@code Price} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketTypePrice();
+    @NonNull AccessType getAccessOfTicketTypePrice();
 
     /**
      * The access permission for the {@code Type} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketType();
+    @NonNull AccessType getAccessOfTicketTypeType();
 
     /**
      * The access permission for the {@code Target} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketTypeTarget();
+    @NonNull AccessType getAccessOfTicketTypeTarget();
 
     /**
      * The access permission for the {@code Duration} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketTypeDuration();
+    @NonNull AccessType getAccessOfTicketTypeDuration();
 
 }
