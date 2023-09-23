@@ -4,6 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.PermissionUID;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -152,11 +153,11 @@ public class QueryBuilder {
     }
 
     private boolean invalidAccess(final @NonNull Access required, final @NonNull Access actual) {
-        return !actual.equals(required);
+        return !Objects.equals(new PermissionUID(required), new PermissionUID(actual));
     }
 
     private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull Access actual) {
-        return required.stream().noneMatch(actual::equals);
+        return required.stream().noneMatch(req -> Objects.equals(new PermissionUID(req), new PermissionUID(actual)));
     }
 
 }
