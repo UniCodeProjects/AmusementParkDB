@@ -7,14 +7,12 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.account.GuestPermission;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Maps an Access class instance to an actual database tuple.
@@ -35,22 +33,29 @@ public final class PermissionMapper {
      * @param source the access object
      */
     public static void insertInDB(final @NonNull Access source) {
-        final String permissionType = getSimplePermissionName(source);
-//        final List<String> packageCode = getPackageCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getPackageName).toList()); // TODO: make it like in perm validator.
-//        final List<String> interfaceCode = getInterfaceCodes(Arrays.stream(source.getClass().getInterfaces()).map(Class::getSimpleName).toList());
-//        final List<String> accessSequence = getReturnValuesSequences(source);
-//        if (packageCode.size() != interfaceCode.size() || packageCode.size() != accessSequence.size()) {
-//            throw new IllegalStateException("Incongruent amount of permission codes generated");
-//        }
-        // TODO: implement full string gen.
-//        System.out.println(permissionType);
-//        System.out.println(packageCode);
-//        System.out.println(interfaceCode);
-//        System.out.println(accessSequence);
         PermissionMapper.source = source;
-        final var interfaceCodes = generateAllInterfaceCodes();
-        interfaceCodes.asMap().forEach((s, strings) -> System.out.println(s + ": " + strings));
+//        result.append(getSimplePermissionName(source));
+        System.out.println(assemblePermissionUID());
+    }
 
+    private static @NonNull String assemblePermissionUID() {
+        final MultiValuedMap<String, String> permissionMap = generateAllInterfaceCodes();
+        final List<String> sortedKeys = permissionMap.keySet().stream().sorted().toList();
+        final var result = new StringBuilder();
+        sortedKeys.forEach(key -> {
+            final List<String> values = permissionMap.get(key).stream().toList();
+            final String packageCode = values.get(0);
+            final String interfaceCode = values.get(1);
+            final String accessSequence = values.get(2);
+            result.append(packageCode)
+                    .append(".")
+                    .append(interfaceCode)
+                    .append(".")
+                    .append(accessSequence)
+                    .append("-");
+        });
+        result.deleteCharAt(result.length() - 1);
+        return result.toString();
     }
 
     private static @NonNull String getSimplePermissionName(final @NonNull Access permission) {
@@ -69,42 +74,30 @@ public final class PermissionMapper {
                 .charAt(0);
     }
 
-    // Retrieves the correct interface code (alphabetical + numerical).
-    private static @NonNull List<String> getInterfaceCodes(final @NonNull List<String> interfaces) {
-        final var interfaceCodesMap = generateAllInterfaceCodes();
-        final List<String> result = new ArrayList<>();
-//        interfaces.forEach(i -> {
-//            result.add(interfaceCodesMap.get(i));
-//        });
-        return result;
-    }
-
     @SneakyThrows
     private static @NonNull MultiValuedMap<String, String> generateAllInterfaceCodes() {
         final var allInterfaces = PermissionConsistencyValidator.getInstance().getKnownAccessInterfacesNames();
         // TODO: remember to sort! Not a treemap.
         final MultiValuedMap<String, String> interfaceCodesMap = new ArrayListValuedHashMap<>();
         for (final String i : allInterfaces) {
+            final var actualInterface = Class.forName(i).asSubclass(Access.class);
+            interfaceCodesMap.put(i, generatePackageCodes(actualInterface.getPackageName()));
             final String code = generateInterfaceCode(i);
             if (interfaceCodesMap.containsValue(code)) {
                 final int duplicateCount = (int) interfaceCodesMap.values().stream()
                         .filter(string -> string.equals(code))
                         .count();
-                // TODO: add other values first and after
-                interfaceCodesMap.put(i, generatePackageCodes(i));
                 interfaceCodesMap.put(i, generateInterfaceCode(i, duplicateCount));
-                interfaceCodesMap.put(i, generateReturnSequence(i));
             } else {
-                // TODO: add other values first and after
-                interfaceCodesMap.put(i, generatePackageCodes(i));
                 interfaceCodesMap.put(i, generateInterfaceCode(i));
-                interfaceCodesMap.put(i, generateReturnSequence(i));
             }
+            interfaceCodesMap.put(i, generateReturnSequence(i));
         }
         return interfaceCodesMap;
     }
 
     // TODO: cleanup.
+    // BUGFIX: incorrect N amount.
     @SneakyThrows
     private static @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
         final Class<? extends Access> actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
@@ -121,7 +114,7 @@ public final class PermissionMapper {
             }
             return sequence.toString();
         }
-        return "N".repeat(actualInterface.getMethods().length);
+        return "N".repeat(actualInterface.getDeclaredMethods().length);
     }
 
     @SneakyThrows
@@ -144,31 +137,6 @@ public final class PermissionMapper {
                 .getSimpleName()
                 .substring(0, 3)
                 .toUpperCase(Locale.ROOT) + numCodeAsString;
-    }
-
-    private static @NonNull List<String> getReturnValuesSequences(final @NonNull Access source) {
-        return Arrays.stream(source.getClass().getInterfaces())
-                .map(i -> i.<Access>asSubclass(Access.class))
-                .map(i -> getSingleReturnSequence(source, i))
-                .toList();
-    }
-
-    @SneakyThrows
-    private static @NonNull String getSingleReturnSequence(final @NonNull Access source,
-                                                           final @NonNull Class<? extends Access> currentInterface) {
-        final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
-                .filter(method -> Arrays.stream(currentInterface.getMethods()).anyMatch(m -> m.getName().equals(method.getName())))
-                .sorted(Comparator.comparing(Method::getName))
-                .toList();
-        // Not using lambdas to allow the use of SneakyThrows.
-        final List<AccessType> returnValues = new ArrayList<>();
-        for (final var method : methods) {
-            returnValues.add((AccessType) method.invoke(source));
-        }
-        // Joining the accesses in one string.
-        return returnValues.stream()
-                .map(AccessType::toString)
-                .collect(Collectors.joining());
     }
 
     private static @NonNull String getMatch(final @NonNull String string, final @NonNull String regex) {
