@@ -1,5 +1,8 @@
 package org.apdb4j.core.permissions.tickets;
 
+import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to season tickets.
  */
@@ -7,16 +10,14 @@ public interface SeasonTicketAccess extends TicketAccess {
 
     /**
      * The access permission for the {@code ValidUntil} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketValidUntil();
+    @NonNull AccessType getAccessOfSeasonTicketValidUntil();
 
     /**
      * The access permission for the {@code RemainingEntrances} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessTicketRemainingEntrances();
+    @NonNull AccessType getAccessOfSeasonTicketDuration();
 
 }

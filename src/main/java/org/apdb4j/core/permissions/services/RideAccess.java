@@ -1,5 +1,8 @@
 package org.apdb4j.core.permissions.services;
 
+import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to rides.
  */
@@ -7,51 +10,44 @@ public interface RideAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code Intensity} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideIntensity();
+    @NonNull AccessType getAccessOfRideIntensity();
 
     /**
      * The access permission for the {@code Duration} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideDuration();
+    @NonNull AccessType getAccessOfRideDuration();
 
     /**
      * The access permission for the {@code MaxSeats} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideMaxSeats();
+    @NonNull AccessType getAccessOfRideMaxSeats();
 
     /**
      * The access permission for the {@code Height} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideHeightValues();
+    @NonNull AccessType getAccessOfRideHeightValues();
 
     /**
      * The access permission for the {@code Weight} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideWeightValues();
+    @NonNull AccessType getAccessOfRideWeightValues();
 
     /**
      * The access permission for the {@code Status} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideStatus();
+    @NonNull AccessType getAccessOfRideStatus();
 
     /**
      * The access permission for the {@code WaitTime} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessRideWaitTime();
+    @NonNull AccessType getAccessOfRideWaitTime();
 
 }

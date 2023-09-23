@@ -1,6 +1,8 @@
 package org.apdb4j.core.permissions.people;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to contracts.
@@ -9,30 +11,26 @@ public interface ContractAccess extends Access {
 
     /**
      * The access permission for the {@code ContractID} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessContractID();
+    @NonNull AccessType getAccessOfContractID();
 
     /**
      * The access permission for the {@code SubscriptionDate} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessContractSubscriptionDate();
+    @NonNull AccessType getAccessOfContractSubscriptionDate();
 
     /**
      * The access permission for the {@code BeginDate and EndDate} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessContractBeginAndEndDate();
+    @NonNull AccessType getAccessOfContractBeginAndEndDate();
 
     /**
      * The access permission for the {@code Salary} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessContractSalary();
+    @NonNull AccessType getAccessOfContractSalary();
 
 }

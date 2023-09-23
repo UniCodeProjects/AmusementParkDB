@@ -32,7 +32,17 @@ dependencies {
     implementation("mysql:mysql-connector-java:$mysqlConnectorVersion")
     jooqGenerator("mysql:mysql-connector-java:$mysqlConnectorVersion")
 
-    implementation("io.github.cdimascio:dotenv-java:3.0.0")
+    val dotenvVersion = "3.0.0"
+    implementation("io.github.cdimascio:dotenv-java:$dotenvVersion")
+
+    val reflectionsVersion = "0.10.2"
+    implementation("org.reflections:reflections:$reflectionsVersion")
+
+    val slf4jVersion = "2.0.9"
+    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+
+    val commonsCollectionVersion = "4.4"
+    implementation("org.apache.commons:commons-collections4:$commonsCollectionVersion")
 
     val javaFxVersion = "15"
 
@@ -125,6 +135,7 @@ javaQA {
         additionalSuppressions.set("config/checkstyle_suppressions.xml")
     }
 }
+
 application {
     mainClass.set("org.apdb4j.core.Main")
 }

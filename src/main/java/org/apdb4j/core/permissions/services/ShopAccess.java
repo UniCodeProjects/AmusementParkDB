@@ -1,5 +1,8 @@
 package org.apdb4j.core.permissions.services;
 
+import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessType;
+
 /**
  * The access related to shops.
  */
@@ -7,30 +10,26 @@ public interface ShopAccess extends FacilityAccess {
 
     /**
      * The access permission for the {@code Revenue} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopRevenue();
+    @NonNull AccessType getAccessOfShopRevenue();
 
     /**
      * The access permission for the {@code Expenses} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopExpenses();
+    @NonNull AccessType getAccessOfShopExpenses();
 
     /**
      * The access permission for the {@code Month} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopMonth();
+    @NonNull AccessType getAccessOfShopMonth();
 
     /**
      * The access permission for the {@code Year} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessShopYear();
+    @NonNull AccessType getAccessOfShopYear();
 
 }

@@ -1,6 +1,8 @@
 package org.apdb4j.core.permissions.services;
 
+import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 
 /**
  * The access related to maintenances.
@@ -9,23 +11,20 @@ public interface MaintenanceAccess extends Access {
 
     /**
      * The access permission for the {@code Price} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenancePrice();
+    @NonNull AccessType getAccessOfMaintenancePrice();
 
     /**
      * The access permission for the {@code Description} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenanceDescription();
+    @NonNull AccessType getAccessOfMaintenanceDescription();
 
     /**
      * The access permission for the {@code Date} attribute.
-     * @return {@code true} if the specific permission group
-     *         allows the access to this attribute.
+     * @return the type of access
      */
-    boolean canAccessMaintenanceDate();
+    @NonNull AccessType getAccessOfMaintenanceDate();
 
 }
