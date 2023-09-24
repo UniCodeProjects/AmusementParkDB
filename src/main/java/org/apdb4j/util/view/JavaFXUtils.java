@@ -1,6 +1,6 @@
 package org.apdb4j.util.view;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
@@ -18,7 +18,7 @@ public final class JavaFXUtils {
      * @param event the event source
      * @param title the new title
      */
-    public static void setStageTitle(final ActionEvent event, final String title) {
+    public static void setStageTitle(final Event event, final String title) {
         final var stage = getStage(event);
         stage.setTitle(stage.getTitle() + " - " + title);
     }
@@ -28,7 +28,7 @@ public final class JavaFXUtils {
      * @param event the event source
      * @return the primary stage
      */
-    public static Stage getStage(final ActionEvent event) {
+    public static Stage getStage(final Event event) {
         final var node = (Node) event.getSource();
         final var window = node.getScene().getWindow();
         // Checks if it's safe to downcast.
