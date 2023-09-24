@@ -41,6 +41,9 @@ dependencies {
     val slf4jVersion = "2.0.9"
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 
+    val apacheLang3Version = "3.13.0"
+    implementation("org.apache.commons:commons-lang3:$apacheLang3Version")
+
     val commonsCollectionVersion = "4.4"
     implementation("org.apache.commons:commons-collections4:$commonsCollectionVersion")
 
