@@ -1,7 +1,7 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import java.time.LocalDate;
 import java.util.List;
 
