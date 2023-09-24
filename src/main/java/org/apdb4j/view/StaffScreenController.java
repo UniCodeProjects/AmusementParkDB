@@ -3,13 +3,10 @@ package org.apdb4j.view;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -19,10 +16,8 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import org.apdb4j.util.view.LoadFXML;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -55,24 +50,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void changePasswordAction(final ActionEvent event) {
-        Parent root;
-        try {
-            root = FXMLLoader.load(ClassLoader.getSystemResource("layouts/change-password-popup.fxml"));
-        } catch (final IOException e) {
-            throw new IllegalStateException("Could not load scene from FXML file", e);
-        }
-        // Creating a new Scene with the loaded FXML and with an adequate size.
-        final var window = menuBar.getScene().getWindow();
-        final var sizeFactor = 0.3;
-        final Scene popupScene = new Scene(root, window.getWidth() * sizeFactor, window.getHeight() * sizeFactor);
-        // Setting the popup stage.
-        final Stage popupStage = new Stage();
-        popupStage.setScene(popupScene);
-        popupStage.setTitle("Change password");
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        // Showing the popup window
-        root.requestFocus();
-        popupStage.show();
+        LoadFXML.fromNodeAsPopup(menuBar, "layouts/change-password-popup.fxml", "Change password");
     }
 
     /**
@@ -155,6 +133,15 @@ public class StaffScreenController implements Initializable {
         vBox.getChildren().remove(1, vBox.getChildrenUnmodifiable().size());
         addRowCounter = 1;
         addRowBtn.setDisable(false);
+    }
+
+    /**
+     * Opens the ticket selector popup.
+     * @param event the event
+     */
+    @FXML
+    void onAddTicketBtnPress(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
     /**
