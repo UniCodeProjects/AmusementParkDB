@@ -2,6 +2,7 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -50,49 +51,45 @@ public interface ShopManager {
      * @param shopID the shop identifier. If the value of this parameter is not the identifier of a shop,
      *               the query will not be executed.
      * @param month the month.
-     * @param year the year.
      * @param expense the expenses made by the provided shop.
      * @param revenue the revenue made by the provided shop.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewMonthlyCost(@NonNull String shopID, int month, int year, double expense, double revenue, @NonNull String account);
+    void addNewMonthlyCost(@NonNull String shopID, LocalDate month, double expense, double revenue, @NonNull String account);
 
     /**
      * Performs the SQL query that modifies the date of the money info for the given shop.
      * If in the {@link org.apdb4j.db.tables.Costs} table does not exist a tuple whose values of
      * {@link org.apdb4j.db.tables.Costs#MONTH} and {@link org.apdb4j.db.tables.Costs#YEAR} are respectively
-     * {@code actualMonth} and {@code actualYear}, the query will not be executed.
+     * {@code actualMonth.getMonth()} and {@code actualMonth.getYear()}, the query will not be executed.
      * @param shopID the shop identifier. If the value of this parameter is not the identifier of a shop,
      *               the query will not be executed.
      * @param actualMonth the actual month of the money info.
-     * @param actualYear the actual year of the money info.
      * @param newMonth the new month of the money info.
-     * @param newYear the new year of the money info.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is performing this operation.
+     *                If this account has not the permissions to accomplish the operation, the query will not be executed.
      */
     void editCostDate(@NonNull String shopID,
-                      int actualMonth, int actualYear,
-                      int newMonth, int newYear,
+                      LocalDate actualMonth,
+                      LocalDate newMonth,
                       @NonNull String account);
 
     /**
      * Performs the SQL query that edits the money info of the given shop.
      * If in the {@link org.apdb4j.db.tables.Costs} table does not exist a tuple whose values of
      * {@link org.apdb4j.db.tables.Costs#MONTH} and {@link org.apdb4j.db.tables.Costs#YEAR} are respectively
-     * {@code month} and {@code year}, the query will not be executed.
+     * {@code month.getMonth()} and {@code month.getYear()}, the query will not be executed.
      * @param shopID the shop identifier. If the value of this parameter is not the identifier of a shop,
      *               the query will not be executed.
      * @param month the month of the money info.
-     * @param year the year of the money info.
      * @param newRevenue the new revenue of the money info.
      * @param newExpense the new expense of the money info.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
     void editCostMoney(@NonNull String shopID,
-                       int month, int year,
+                       LocalDate month,
                        double newRevenue, double newExpense,
                        @NonNull String account);
 
