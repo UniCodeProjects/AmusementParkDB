@@ -108,6 +108,39 @@ public final class LoadFXML {
     }
 
     /**
+     * Loads a scene as popup from a FXML using an event.
+     * Used inside event handlers.
+     * @param event the event that provides the scene
+     * @param fxml the FXML path
+     * @param title the window title
+     * @param widthSizeFactor the size factor for the popup width
+     * @param heightSizeFactor the size factor for the popup height
+     */
+    public static void fromEventAsPopup(final @NonNull Event event,
+                                        final @NonNull String fxml,
+                                        final @NonNull String title,
+                                        final double widthSizeFactor,
+                                        final double heightSizeFactor) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(ClassLoader.getSystemResource(fxml));
+        } catch (final IOException e) {
+            throw new IllegalStateException("Could not load scene from FXML file", e);
+        }
+        // Creating a new Scene with the loaded FXML and with an adequate size.
+        final var window = JavaFXUtils.getStage(event).getScene().getWindow();
+        final Scene popupScene = new Scene(root, window.getWidth() * widthSizeFactor, window.getHeight() * heightSizeFactor);
+        // Setting the popup stage.
+        final Stage popupStage = new Stage();
+        popupStage.setScene(popupScene);
+        popupStage.setTitle(title);
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        // Showing the popup window
+        root.requestFocus();
+        popupStage.show();
+    }
+
+    /**
      * Loads a scene as popup from a FXML using a node.
      * Used inside event handlers.
      * @param node the node that provides the scene
