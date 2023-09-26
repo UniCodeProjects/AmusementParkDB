@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -21,6 +22,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -127,6 +129,13 @@ public class Maintenances extends TableImpl<Record> {
             _facilities = new Facilities(this, Keys.FKEXECUTION);
 
         return _facilities;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("PRICE_NOT_NEGATIVITY_CHECK"), "(`Price` >= 0)", true)
+        );
     }
 
     @Override
