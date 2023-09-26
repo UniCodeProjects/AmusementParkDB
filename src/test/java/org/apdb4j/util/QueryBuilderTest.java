@@ -38,7 +38,7 @@ class QueryBuilderTest {
                                 ACCOUNTS.USERNAME,
                                 ACCOUNTS.PASSWORD,
                                 ACCOUNTS.PERMISSIONTYPE)
-                        .values("foo@mail.com", "foo", "f123", "Foo")
+                        .values("foo@mail.com", "foo", "f1234567", "Foo")
                         .execute())
                 .closeConnection();
         DB.createConnection()
@@ -47,7 +47,7 @@ class QueryBuilderTest {
                                 ACCOUNTS.USERNAME,
                                 ACCOUNTS.PASSWORD,
                                 ACCOUNTS.PERMISSIONTYPE)
-                        .values("bar@mail.com", "bar", "b123", "Bar")
+                        .values("bar@mail.com", "bar", "b1234567", "Bar")
                         .execute())
                 .closeConnection();
     }
