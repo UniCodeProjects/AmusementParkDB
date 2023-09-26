@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -144,6 +146,15 @@ public class Rides extends TableImpl<Record> {
             _facilities = new Facilities(this, Keys.FKR_FKR);
 
         return _facilities;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("HEIGHT_VALUES_CONSISTENCY"), "(`MinHeight` < `MaxHeight`)", true),
+            Internal.createCheck(this, DSL.name("RIDEID_FORMAT"), "(`RideID` like _utf8mb4\\'RI%\\')", true),
+            Internal.createCheck(this, DSL.name("WEIGHT_VALUES_CONSISTENCY"), "(`MinWeight` < `MaxWeight`)", true)
+        );
     }
 
     @Override

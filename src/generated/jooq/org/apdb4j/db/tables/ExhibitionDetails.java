@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -21,6 +22,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -132,6 +134,14 @@ public class ExhibitionDetails extends TableImpl<Record> {
             _parkServices = new ParkServices(this, Keys.FKR);
 
         return _parkServices;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("EX_DET_ID_CHECK"), "(`ExhibitionID` like _utf8mb4\\'EX%\\')", true),
+            Internal.createCheck(this, DSL.name("SPECTATORS_CONSISTENCY"), "((`Spectators` is null) or (`Spectators` <= `MaxSeats`))", true)
+        );
     }
 
     @Override

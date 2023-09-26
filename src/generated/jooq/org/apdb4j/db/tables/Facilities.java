@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -124,6 +126,15 @@ public class Facilities extends TableImpl<Record> {
             _parkServices = new ParkServices(this, Keys.FKR_FK);
 
         return _parkServices;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("FACILITYID_CHECK"), "((`FacilityID` like _utf8mb4\\'SH%\\') or (`FacilityID` like _utf8mb4\\'RE%\\') or (`FacilityID` like _utf8mb4\\'RI%\\'))", true),
+            Internal.createCheck(this, DSL.name("SHOP_CHECK"), "(((`IsShop` = false) or (`FacilityID` like _utf8mb4\\'SH%\\') or (`FacilityID` like _utf8mb4\\'RE%\\')) and ((`IsShop` = true) or (`FacilityID` like _utf8mb4\\'RI%\\')))", true),
+            Internal.createCheck(this, DSL.name("TIMES_CONSISTENCY"), "(`OpeningTime` < `ClosingTime`)", true)
+        );
     }
 
     @Override
