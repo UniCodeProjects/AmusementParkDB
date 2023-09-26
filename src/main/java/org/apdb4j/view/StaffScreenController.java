@@ -136,11 +136,29 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Opens the employee hiring popup screen.
+     * @param event the event
+     */
+    @FXML
+    void onHire(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire an employee", 0.4, 0.6);
+    }
+
+    /**
      * Opens the ticket selector popup.
      * @param event the event
      */
     @FXML
     void onAddTicketBtnPress(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    }
+
+    /**
+     * Opens the ticket selector popup.
+     * @param event the event
+     */
+    @FXML
+    void onEditTicketBtnPress(final ActionEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
