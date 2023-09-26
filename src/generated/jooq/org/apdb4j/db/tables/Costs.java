@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -129,6 +131,16 @@ public class Costs extends TableImpl<Record> {
             _facilities = new Facilities(this, Keys.FKCONNECTION);
 
         return _facilities;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("COST_ID_CHECK"), "((`ShopID` like _utf8mb4\\'SH%\\') or (`ShopID` like _utf8mb4\\'RE%\\'))", true),
+            Internal.createCheck(this, DSL.name("MONEY_DATA_NON_NEGATIVITY_CHECK"), "((`Revenue` >= 0) and (`Expenses` >= 0))", true),
+            Internal.createCheck(this, DSL.name("MONTH_DOMAIN"), "(`Month` between 1 and 12)", true),
+            Internal.createCheck(this, DSL.name("YEAR_DOMAIN"), "(`Year` >= 2000)", true)
+        );
     }
 
     @Override

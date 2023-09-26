@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -134,6 +136,16 @@ public class Tickets extends TableImpl<Record> {
             _guests = new Guests(this, Keys.FKPURCHASE);
 
         return _guests;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("PURCHASE_DATE_CHK"), "(((`ValidOn` is not null) and (`PurchaseDate` <= `ValidOn`)) or ((`ValidUntil` is not null) and (`PurchaseDate` <= `ValidUntil`)))", true),
+            Internal.createCheck(this, DSL.name("REMAINING_ENTRANCES_DOMAIN"), "(`RemainingEntrances` >= 0)", true),
+            Internal.createCheck(this, DSL.name("TICKET_TYPE_CHK"), "(((`ValidOn` is not null) and (`ValidUntil` is null)) or ((`ValidOn` is null) and (`ValidUntil` is not null)))", true),
+            Internal.createCheck(this, DSL.name("TICKETID_FORMAT"), "(`TicketID` like _utf8mb4\\'T%\\')", true)
+        );
     }
 
     @Override

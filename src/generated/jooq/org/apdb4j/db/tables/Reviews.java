@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -21,8 +22,10 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UInteger;
 
 
 /**
@@ -49,7 +52,7 @@ public class Reviews extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.reviews.ReviewID</code>.
      */
-    public final TableField<Record, Integer> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.reviews.Rating</code>.
@@ -157,6 +160,13 @@ public class Reviews extends TableImpl<Record> {
             _parkServices = new ParkServices(this, Keys.FKREFERENCE);
 
         return _parkServices;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("RATING_FORMAT"), "(`Rating` between 1 and 5)", true)
+        );
     }
 
     @Override

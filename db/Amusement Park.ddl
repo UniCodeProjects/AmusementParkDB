@@ -10,7 +10,9 @@ create table ACCOUNTS (
      Password varchar(30),
      PermissionType varchar(30) /*not null*/, -- TODO: make null for deployment
      constraint IDACCOUNT primary key (Email),
-     constraint IDACCOUNT_1 unique (Username));
+     constraint IDACCOUNT_1 unique (Username),
+     constraint EMAIL_FORMAT check (regexp_like(Email, '^([a-z0-9._%]+@[a-z0-9.]+\.[a-z]{2,})$', 'c')),
+     constraint PSW_LENGTH check (length(Password) >= 8));
 
 create table attributions (
      TicketID char(65) not null,
@@ -28,7 +30,11 @@ create table CONTRACTS (
      EmployerNID varchar(256) not null,
      EmployeeNID varchar(256) not null,
      constraint IDCONTRATTO primary key (ContractID),
-     constraint IDCONTRACT unique (SubscriptionDate, EmployeeNID));
+     constraint IDCONTRACT unique (SubscriptionDate, EmployeeNID),
+     constraint CONTRACTID_FORMAT check (ContractID like 'C%'),
+     constraint DATES_CONSISTENCY_1 check (SubscriptionDate <= BeginDate),
+     constraint DATES_CONSISTENCY_2 check (EndDate is null or (BeginDate < EndDate)),
+     constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0)); -- TODO: should this check be more strict?
 
 create table COSTS (
      ShopID char(6) not null,
@@ -36,6 +42,10 @@ create table COSTS (
      Expenses decimal(8,2) not null,
      Month int not null,
      Year int not null,
+     constraint COST_ID_CHECK check ((ShopID like 'SH%') or (ShopID like 'RE%')),
+     constraint MONEY_DATA_NON_NEGATIVITY_CHECK check (Revenue >= 0 and Expenses >= 0),
+     constraint MONTH_DOMAIN check (Month between 1 and 12),
+     constraint YEAR_DOMAIN check (Year >= 2000),
      constraint IDCOST primary key (ShopID, Month, Year));
 
 create table EXHIBITION_DETAILS (
@@ -44,14 +54,20 @@ create table EXHIBITION_DETAILS (
      Time time not null,
      MaxSeats int not null,
      Spectators int,
-     constraint IDEXHIBITION_DETAIL primary key (ExhibitionID, Date, Time));
+     constraint IDEXHIBITION_DETAIL primary key (ExhibitionID, Date, Time),
+     constraint EX_DET_ID_CHECK check (ExhibitionID like 'EX%'),
+     constraint SPECTATORS_CONSISTENCY check (Spectators is null or (Spectators <= MaxSeats)));
 
 create table FACILITIES (
      FacilityID char(6) not null,
      OpeningTime time not null,
      ClosingTime time not null,
      IsShop boolean not null,
-     constraint FKR_ID primary key (FacilityID));
+     constraint FKR_ID primary key (FacilityID),
+     constraint FACILITYID_CHECK check (FacilityID like 'SH%' or FacilityID like 'RE%' or FacilityID like 'RI%'),
+     -- if IsShop is true, then the facility must be a shop. If IsShop is false, then the facility must not be a shop.
+     constraint SHOP_CHECK check ((IsShop = false or (FacilityID like 'SH%' or FacilityID like 'RE%')) and (IsShop = true or (FacilityID like 'RI%'))),
+     constraint TIMES_CONSISTENCY check (OpeningTime < ClosingTime));
 
 create table GUESTS (
      GuestID char(72) not null,
@@ -66,23 +82,30 @@ create table MAINTENANCES (
      Price decimal(8,2) not null,
      Description varchar(4000) not null,
      Date date not null,
-     constraint IDMAINTENANCE_ID primary key (FacilityID, Date));
+     -- TODO: add check for Date? A maintenance can be carried out only by employees that have a valid contract in that date!
+     constraint IDMAINTENANCE_ID primary key (FacilityID, Date),
+     constraint PRICE_NOT_NEGATIVITY_CHECK check (Price >= 0));
 
 create table MONTHLY_RECAPS (
      Date date not null,
      Revenue decimal(9,2) not null,
-     constraint IDDAILY_RECAP primary key (Date));
+     constraint IDDAILY_RECAP primary key (Date),
+     constraint REVENUE_NON_NEGATIVITY_CHECK check (Revenue >= 0));
 
 create table PARK_SERVICES (
      ParkServiceID char(6) not null,
      Name varchar(256) not null,
      AvgRating decimal(2,1) not null,
-     NumReviews int not null,
+     NumReviews int unsigned not null,
      Type varchar(256) not null,
      Description varchar(1000),
      IsExhibition boolean not null,
      constraint IDPARK_SERVICE primary key (ParkServiceID),
-     constraint IDPARK_SERVICE_1 unique (Name));
+     constraint IDPARK_SERVICE_1 unique (Name),
+     constraint PARKSERVICEID_CHECK check (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%' or ParkServiceID like 'EX%'),
+     -- if IsExhibition is true, then the park service must be an exhibition. If IsExhibition is false, then the park service must not be an exhibition.
+     constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%'))),
+     constraint AVGRATING_DOMAIN check (AvgRating between 1 and 5));
 
 create table PERMISSIONS (
      PermissionType varchar(30) not null,
@@ -109,7 +132,7 @@ create table responsibilities (
      constraint IDresponsibility primary key (EmployeeNID, FacilityID, Date));
 
 create table REVIEWS (
-     ReviewID int not null,
+     ReviewID int unsigned not null,
      Rating decimal(1,0) not null,
      Date date not null,
      Time time not null,
@@ -117,12 +140,17 @@ create table REVIEWS (
      Account varchar(256) not null,
      ParkServiceID char(6) not null,
      constraint IDRECENSIONE primary key (ReviewID),
-     constraint IDREVIEW unique (Account, ParkServiceID));
+     constraint IDREVIEW unique (Account, ParkServiceID),
+     constraint RATING_FORMAT check (Rating between 1 and 5));
 
 create table RIDE_DETAILS (
      RideID char(6) not null,
      Status char(1) not null,
      EstimatedWaitTime time,
+     constraint RIDEID_CHECK check (RideID like 'RI%'),
+     -- if EstimatedWaitTime is null then the ride must not be open. Otherwise, if it is not null then the ride must be open.
+     constraint STATUS_CHECK check ((EstimatedWaitTime is not null or (Status in ('C', 'M'))) and (EstimatedWaitTime is null or (Status = 'O'))),
+     constraint STATUS_DOMAIN check (Status in ('O', 'M', 'C')),
      constraint FKride_ride_detail_ID primary key (RideID));
 
 create table RIDES (
@@ -134,7 +162,10 @@ create table RIDES (
      MaxHeight int not null,
      MinWeight int not null,
      MaxWeight int not null,
-     constraint FKR_ID primary key (RideID));
+     constraint FKR_ID primary key (RideID),
+     constraint RIDEID_FORMAT check (RideID like 'RI%'),
+     constraint HEIGHT_VALUES_CONSISTENCY check (MinHeight < MaxHeight),
+     constraint WEIGHT_VALUES_CONSISTENCY check (MinWeight < MaxWeight));
 
 create table STAFF (
      StaffID char(72) not null,
@@ -150,7 +181,10 @@ create table STAFF (
      IsEmployee boolean not null,
      constraint IDSTAFF primary key (NationalID),
      constraint IDSTAFF_1 unique (StaffID),
-     constraint FKR_ID unique (Email));
+     constraint FKR_ID unique (Email), 
+     constraint GENDER_DOMAIN check (Gender in ('M', 'F')), -- TODO: best way to do this?
+     constraint ROLE_CHECK check ((Role is null and isAdmin = true) or (Role is not null and isEmployee = true)),
+     constraint FLAGS_CONSISTENCY check ((isAdmin = true and isEmployee = false) or (isAdmin = false and isEmployee = true)));
 
 create table TICKET_TYPES (
      Year int not null,
@@ -158,16 +192,24 @@ create table TICKET_TYPES (
      Type varchar(50) not null,
      Category varchar(50) not null,
      Duration int not null,
-     constraint IDTICKET_TYPE primary key (Year, Type, Category));
+     constraint IDTICKET_TYPE primary key (Year, Type, Category),
+     constraint TYPE_DOMAIN check (Type in ('Single day ticket', 'Season ticket')),
+     constraint DURATION_DOMAIN check (Duration >= 1),
+     constraint CATEGORY_DOMAIN check (Category in ('Senior', 'Kids', 'Adults', 'Disable')),
+     constraint PRICE_NON_NEGATIVITY_CHECK check (Price > 0));
 
-create table TICKETS (
+create table TICKETS ( -- TODO: add check for RemainingEntrances in order that its valus is <= to TICKET_TYPE.Duration?
      TicketID char(65) not null,
      PurchaseDate date not null,
      ValidOn date,
      ValidUntil date,
      RemainingEntrances int not null,
      OwnerID char(72) not null,
-     constraint IDTICKET_ID primary key (TicketID));
+     constraint IDTICKET_ID primary key (TicketID),
+     constraint TICKETID_FORMAT check (TicketID like 'T%'),
+     constraint PURCHASE_DATE_CHK check ((ValidOn is not null and PurchaseDate <= ValidOn) or (ValidUntil is not null and PurchaseDate <= ValidUntil)),
+     constraint TICKET_TYPE_CHK check ((ValidOn is not null and ValidUntil is null) or (ValidOn is null and ValidUntil is not null)),
+     constraint REMAINING_ENTRANCES_DOMAIN check (RemainingEntrances >= 0));
 
 create table validations (
      Date date not null,
@@ -175,7 +217,7 @@ create table validations (
      constraint IDvalidations primary key (Date, TicketID));
 
 
--- Constraints Section
+-- Foreign key constraints
 -- ___________________ 
 
 alter table ACCOUNTS add constraint FKpossessions

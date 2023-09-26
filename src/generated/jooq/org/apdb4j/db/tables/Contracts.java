@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -21,6 +22,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -157,6 +159,16 @@ public class Contracts extends TableImpl<Record> {
             _fkemployment = new Staff(this, Keys.FKEMPLOYMENT);
 
         return _fkemployment;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("CONTRACTID_FORMAT"), "(`ContractID` like _utf8mb4\\'C%\\')", true),
+            Internal.createCheck(this, DSL.name("DATES_CONSISTENCY_1"), "(`SubscriptionDate` <= `BeginDate`)", true),
+            Internal.createCheck(this, DSL.name("DATES_CONSISTENCY_2"), "((`EndDate` is null) or (`BeginDate` < `EndDate`))", true),
+            Internal.createCheck(this, DSL.name("SALARY_NON_NEGATIVITY_CHECK"), "(`Salary` > 0)", true)
+        );
     }
 
     @Override
