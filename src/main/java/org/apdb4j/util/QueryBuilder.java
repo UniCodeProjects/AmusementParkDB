@@ -4,7 +4,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.PermissionUID;
+import org.apdb4j.core.permissions.AppPermissionUID;
+import org.apdb4j.core.permissions.DBPermissionUID;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -27,30 +28,30 @@ public class QueryBuilder {
     private Object queryResult;
 
     /**
-     * Defines the access that allow the execution of the following query(ies).
-     * @param required the required access
-     * @param actual the executor's actual access
+     * Defines the access that allows the execution of the following query(ies).
+     * @param required the required permissions
+     * @param actualAccountEmail the account's email used to check its permissions from the database
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the access objects are incompatible
      */
-    public QueryBuilder defineAccess(final Access required,
-                                      final Access actual) throws AccessDeniedException {
-        if (invalidAccess(required, actual)) {
+    public QueryBuilder definePermissions(final @NonNull Access required,
+                                          final @NonNull String actualAccountEmail) throws AccessDeniedException {
+        if (invalidAccess(required, actualAccountEmail)) {
             throw new AccessDeniedException();
         }
         return this;
     }
 
     /**
-     * Defines the access that allow the execution of the following query(ies).
-     * @param required the required access set
-     * @param actual the executor's actual access
+     * Defines the access that allows the execution of the following query(ies).
+     * @param required the required permissions
+     * @param actualAccountEmail the account's email used to check its permissions from the database
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the access objects are incompatible
      */
-    public QueryBuilder defineAccess(final Set<Access> required,
-                                      final Access actual) throws AccessDeniedException {
-        if (invalidAccess(required, actual)) {
+    public QueryBuilder definePermissions(final @NonNull Set<Access> required,
+                                          final @NonNull String actualAccountEmail) throws AccessDeniedException {
+        if (invalidAccess(required, actualAccountEmail)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -152,12 +153,13 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidAccess(final @NonNull Access required, final @NonNull Access actual) {
-        return !Objects.equals(new PermissionUID(required), new PermissionUID(actual));
+    private boolean invalidAccess(final @NonNull Access required, final @NonNull String actual) {
+        return !Objects.equals(new AppPermissionUID(required).getUid(), new DBPermissionUID(actual).getUid());
     }
 
-    private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull Access actual) {
-        return required.stream().noneMatch(req -> Objects.equals(new PermissionUID(req), new PermissionUID(actual)));
+    private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull String actual) {
+        return required.stream()
+                .noneMatch(req -> Objects.equals(new AppPermissionUID(req).getUid(), new DBPermissionUID(actual).getUid()));
     }
 
 }
