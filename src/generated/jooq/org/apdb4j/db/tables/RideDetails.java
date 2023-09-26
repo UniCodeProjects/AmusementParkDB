@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -121,6 +123,15 @@ public class RideDetails extends TableImpl<Record> {
             _rides = new Rides(this, Keys.FKRIDE_RIDE_DETAIL_FK);
 
         return _rides;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("RIDEID_CHECK"), "(`RideID` like _utf8mb4\\'RI%\\')", true),
+            Internal.createCheck(this, DSL.name("STATUS_CHECK"), "(((`EstimatedWaitTime` is not null) or (`Status` in (_utf8mb4\\'C\\',_utf8mb4\\'M\\'))) and ((`EstimatedWaitTime` is null) or (`Status` = _utf8mb4\\'O\\')))", true),
+            Internal.createCheck(this, DSL.name("STATUS_DOMAIN"), "(`Status` in (_utf8mb4\\'O\\',_utf8mb4\\'M\\',_utf8mb4\\'C\\'))", true)
+        );
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,8 +21,10 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UInteger;
 
 
 /**
@@ -63,7 +66,7 @@ public class ParkServices extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.park_services.NumReviews</code>.
      */
-    public final TableField<Record, Integer> NUMREVIEWS = createField(DSL.name("NumReviews"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> NUMREVIEWS = createField(DSL.name("NumReviews"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.park_services.Type</code>.
@@ -128,6 +131,15 @@ public class ParkServices extends TableImpl<Record> {
     @Override
     public List<UniqueKey<Record>> getUniqueKeys() {
         return Arrays.asList(Keys.KEY_PARK_SERVICES_IDPARK_SERVICE_1);
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("AVGRATING_DOMAIN"), "(`AvgRating` between 1 and 5)", true),
+            Internal.createCheck(this, DSL.name("EXHIBITION_CHECK"), "(((`IsExhibition` = false) or (`ParkServiceID` like _utf8mb4\\'EX%\\')) and ((`IsExhibition` = true) or (`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RE%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\')))", true),
+            Internal.createCheck(this, DSL.name("PARKSERVICEID_CHECK"), "((`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RE%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\') or (`ParkServiceID` like _utf8mb4\\'EX%\\'))", true)
+        );
     }
 
     @Override

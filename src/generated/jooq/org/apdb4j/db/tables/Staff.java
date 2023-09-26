@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apdb4j.db.AmusementPark;
 import org.apdb4j.db.Keys;
+import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
@@ -20,6 +21,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -164,6 +166,15 @@ public class Staff extends TableImpl<Record> {
             _accounts = new Accounts(this, Keys.FKR_FKS);
 
         return _accounts;
+    }
+
+    @Override
+    public List<Check<Record>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("FLAGS_CONSISTENCY"), "(((`IsAdmin` = true) and (`IsEmployee` = false)) or ((`IsAdmin` = false) and (`IsEmployee` = true)))", true),
+            Internal.createCheck(this, DSL.name("GENDER_DOMAIN"), "(`Gender` in (_utf8mb4\\'M\\',_utf8mb4\\'F\\'))", true),
+            Internal.createCheck(this, DSL.name("ROLE_CHECK"), "(((`Role` is null) and (`IsAdmin` = true)) or ((`Role` is not null) and (`IsEmployee` = true)))", true)
+        );
     }
 
     @Override
