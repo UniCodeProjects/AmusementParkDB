@@ -1,5 +1,6 @@
 package org.apdb4j.view;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +10,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import org.apdb4j.controllers.LoginController;
+import org.apdb4j.controllers.LoginControllerImpl;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -23,15 +26,13 @@ import java.util.stream.Stream;
  */
 public class SignInController implements Initializable {
 
+    private final LoginController controller = new LoginControllerImpl();
     @FXML
     private PasswordField password;
-
     @FXML
     private Button signInBtn;
-
     @FXML
     private Hyperlink signUpLink;
-
     @FXML
     private TextField username;
 
@@ -41,11 +42,12 @@ public class SignInController implements Initializable {
      */
     @FXML
     void signIn(final ActionEvent event) {
-        // todo: check user type, add validator.
-        if (noTextFieldIsBlank()) {
-            JavaFXUtils.setStageTitle(event, username.getText());
-            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
-        }
+        Platform.runLater(() -> {
+            if (controller.checkSignIn(username.getText(), password.getText())) {
+                JavaFXUtils.setStageTitle(event, username.getText());
+                LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
+            }
+        });
     }
 
     /**
