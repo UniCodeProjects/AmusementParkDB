@@ -1,9 +1,9 @@
 package org.apdb4j.view;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -42,12 +42,15 @@ public class SignInController implements Initializable {
      */
     @FXML
     void signIn(final ActionEvent event) {
-        Platform.runLater(() -> {
-            if (controller.checkSignIn(username.getText(), password.getText())) {
-                JavaFXUtils.setStageTitle(event, username.getText());
-                LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
-            }
-        });
+        if (controller.checkSignIn(username.getText(), password.getText())) {
+            JavaFXUtils.setStageTitle(event, username.getText());
+            LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
+        } else {
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("An error has occurred.");
+            alert.setContentText(controller.getErrorMessage().orElse("Error"));
+            alert.show();
+        }
     }
 
     /**

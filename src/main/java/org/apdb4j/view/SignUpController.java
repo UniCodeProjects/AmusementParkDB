@@ -3,11 +3,14 @@ package org.apdb4j.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import org.apdb4j.controllers.LoginController;
+import org.apdb4j.controllers.LoginControllerImpl;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -22,15 +25,13 @@ import java.util.stream.Stream;
  */
 public class SignUpController implements Initializable {
 
+    private final LoginController controller = new LoginControllerImpl();
     @FXML
     private TextField email;
-
     @FXML
     private PasswordField password;
-
     @FXML
     private Button signUpBtn;
-
     @FXML
     private TextField username;
 
@@ -40,9 +41,14 @@ public class SignUpController implements Initializable {
      */
     @FXML
     void signUp(final ActionEvent event) {
-        if (noTextFieldIsBlank()) {
+        if (controller.checkSignUp(email.getText(), username.getText(), password.getText())) {
             JavaFXUtils.setStageTitle(event, username.getText());
             LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
+        } else {
+            final Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("An error has occurred.");
+            alert.setContentText(controller.getErrorMessage().orElse("Error"));
+            alert.show();
         }
     }
 
