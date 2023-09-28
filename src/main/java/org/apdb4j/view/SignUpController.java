@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 /**
  * The FXML controller for the sign-up scene.
  */
-public class SignUpController extends LoginController implements Initializable {
+public class SignUpController extends LoginCommonController implements Initializable {
 
     @FXML
     private TextField email;

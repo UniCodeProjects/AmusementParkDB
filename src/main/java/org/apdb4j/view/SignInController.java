@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 /**
  * The FXML controller for the sign-in scene.
  */
-public class SignInController extends LoginController implements Initializable {
+public class SignInController extends LoginCommonController implements Initializable {
 
     @FXML
     private PasswordField password;

@@ -12,7 +12,7 @@ import org.apdb4j.controllers.LoginControllerImpl;
  * @see SignInController
  * @see SignUpController
  */
-public class LoginController {
+public class LoginCommonController {
 
     @Getter(AccessLevel.PACKAGE)
     private final org.apdb4j.controllers.LoginController controller = new LoginControllerImpl();
