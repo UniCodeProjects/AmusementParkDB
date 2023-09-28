@@ -65,6 +65,41 @@ public class LoginControllerImpl implements LoginController {
      * {@inheritDoc}
      */
     @Override
+    public boolean isStaff(final @NonNull String username) {
+        final Result<Record> resultCount = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Admin"))
+                        .or(ACCOUNTS.PERMISSIONTYPE.eq("Staff"))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        // Checking if got only one result, and it is unique (accounts are unique).
+        return resultCount.size() == 1 && resultCount.get(0).get(0, Integer.class) == 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isGuest(final @NonNull String username) {
+        final Result<Record> resultCount = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Guest"))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        // Checking if got only one result, and it is unique (accounts are unique).
+        return resultCount.size() == 1 && resultCount.get(0).get(0, Integer.class) == 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull Optional<String> getErrorMessage() {
         return Optional.ofNullable(errorMessage);
     }
