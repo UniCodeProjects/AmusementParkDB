@@ -28,10 +28,11 @@ public interface AccountManager {
      *                       in the database, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     *                Its value must be {@code null} when a guest is creating his account.
      */
     void addNewAccount(@NonNull String email, @NonNull String username, @NonNull String password,
                        @NonNull String permissionType,
-                       @NonNull String account);
+                       String account);
 
     /**
      * Performs the SQL query that adds the credentials for an account that does not
