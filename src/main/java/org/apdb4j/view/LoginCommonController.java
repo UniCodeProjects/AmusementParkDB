@@ -1,10 +1,14 @@
 package org.apdb4j.view;
 
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.scene.control.Alert;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import org.apdb4j.controllers.LoginControllerImpl;
+import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.util.view.LoadFXML;
 
 /**
  * The login fxml controller. Groups all common functionalities
@@ -16,6 +20,24 @@ public class LoginCommonController {
 
     @Getter(AccessLevel.PACKAGE)
     private final org.apdb4j.controllers.LoginController controller = new LoginControllerImpl();
+
+    /**
+     * Loads the correct screen based on the account's permission type.
+     * @param event the source's event
+     * @param username account's username
+     */
+    void showUserScreen(final @NonNull Event event, final @NonNull String username) {
+        Platform.runLater(() -> {
+            JavaFXUtils.setStageTitle(event, username);
+            if (getController().isStaff(username)) {
+                LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
+            } else if (getController().isGuest(username)) {
+                LoadFXML.fromEvent(event, "layouts/user-screen.fxml", false, true);
+            } else {
+                throw new IllegalStateException("Unknown permission type for '" + username + "'.");
+            }
+        });
+    }
 
     /**
      * Shows a simple error dialog window.<br>
