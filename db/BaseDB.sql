@@ -1,13 +1,19 @@
+-- Sample permissions for testing, they do not reflect actual permissions.
+insert into permissions
+values ("Admin", "A"),
+	   ("Staff", "S"),
+       ("Guest", "G");
+
 insert into accounts
-values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc11", null),
-       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc22", null), 
-       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc33", null),
-       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc44", null),
-       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc55", null),
-       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc66", null),
-       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc77", null),
-       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc88", null),
-       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc99", null);
+values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc11", "Admin"),
+       ("andreaverdi@gmail.com", "andrea.verdi", "A@BbCc22", "Staff"), 
+       ("mariagialli@gmail.com", "maria.gialli", "A@BbCc33", "Staff"),
+       ("leonardorossi@gmail.com", "leonardo.rossi", "A@BbCc44", "Staff"),
+       ("sofiaverdi@gmail.com", "sofia.verdi", "A@BbCc55", "Staff"),
+       ("alessandrogialli@gmail.com", "alessandro.gialli", "A@BbCc66", "Guest"),
+       ("tommasorusso@gmail.com", "tommaso.russo", "A@BbCc77", "Guest"),
+       ("francescoesposito@gmail.com", "francesco.esposito", "A@BbCc88", "Guest"),
+       ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc99", "Guest");
        
 insert into guests
 values ("G-001", "andreaverdi@gmail.com", "Andrea", "Verdi"),
