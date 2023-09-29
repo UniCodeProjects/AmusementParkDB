@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
  */
-public interface StaffManager {
+public class StaffManager {
 
     /**
      * Performs the SQL query that adds a new staff member (an employee or an admin).
@@ -25,13 +25,15 @@ public interface StaffManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void hireNewStaffMember(@NonNull String nationalID, @NonNull String staffID,
+    static void hireNewStaffMember(@NonNull String nationalID, @NonNull String staffID,
                             @NonNull String email,
                             @NonNull String name, @NonNull String surname,
                             @NonNull LocalDate dateOfBirth, @NonNull String birthPlace,
                             char gender,
                             String role, boolean isAdmin, boolean isEmployee,
-                            @NonNull String account);
+                            @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that fires the provided staff member.
@@ -40,7 +42,9 @@ public interface StaffManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void fireStaffMember(@NonNull String staffNationalID, @NonNull String account);
+    static void fireStaffMember(@NonNull String staffNationalID, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that updates the salary of the provided staff member.

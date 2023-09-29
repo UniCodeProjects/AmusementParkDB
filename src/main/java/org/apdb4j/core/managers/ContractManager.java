@@ -7,7 +7,7 @@ import java.time.LocalDate;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Contracts} table.
  */
-public interface ContractManager {
+public class ContractManager {
 
     /**
      * Performs the SQL query that creates a new contract.
@@ -25,10 +25,12 @@ public interface ContractManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void signNewContract(@NonNull String contractID,
+    static void signNewContract(@NonNull String contractID,
                          @NonNull String employeeNID, @NonNull String employerNID,
                          @NonNull LocalDate subscriptionDate, @NonNull LocalDate beginDate, LocalDate endDate,
                          double salary,
-                         @NonNull String account);
+                         @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

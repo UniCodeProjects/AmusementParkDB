@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Reviews} table.
  */
-public interface ReviewManager {
+public class ReviewManager {
 
     /**
      * Performs the SQL query that adds a review for the provided park service.
@@ -16,6 +16,8 @@ public interface ReviewManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addReview(@NonNull String parkServiceID, int rating, String description, @NonNull String account);
+    static void addReview(@NonNull String parkServiceID, int rating, String description, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Pictures} table.
  */
-public interface PictureManager {
+public class PictureManager {
 
     /**
      * Performs the SQL query that adds a new picture for the provided park service.
@@ -15,7 +15,9 @@ public interface PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addPicture(@NonNull String picturePath, @NonNull String parkServiceID, @NonNull String account);
+    static void addPicture(@NonNull String picturePath, @NonNull String parkServiceID, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that modifies a picture path with the provided one.
@@ -25,7 +27,9 @@ public interface PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void editPicture(@NonNull String oldPath, @NonNull String newPath, @NonNull String account);
+    static void editPicture(@NonNull String oldPath, @NonNull String newPath, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that removes the provided picture from the database.
@@ -34,6 +38,8 @@ public interface PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void removePicture(@NonNull String path, @NonNull String account);
+    static void removePicture(@NonNull String path, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

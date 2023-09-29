@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Contains all the SQL queries that are related to money.
  */
-public interface MoneyManager {
+public class MoneyManager {
 
     /**
      * Performs the SQL query that retrieves the list of the provided months with the related income.
@@ -18,7 +18,9 @@ public interface MoneyManager {
      *               the query will not be executed.
      * @return a list of months and years paired with the related income.
      */
-    @NonNull List<Pair<LocalDate, Double>> getIncomes(@NonNull String account, @NonNull LocalDate... months);
+    static @NonNull List<Pair<LocalDate, Double>> getIncomes(@NonNull String account, @NonNull LocalDate... months) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds in the {@link org.apdb4j.db.tables.MonthlyRecaps} table the tuple
@@ -26,7 +28,9 @@ public interface MoneyManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addRecapForPreviousMonth(@NonNull String account);
+    static void addRecapForPreviousMonth(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
     // This operation needs to be done automatically at the end of every month.
 
 }

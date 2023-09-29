@@ -7,7 +7,7 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Facilities} table.
  */
-public interface FacilityManager {
+public class FacilityManager {
 
     /**
      * Performs the SQL query that changes the opening time of the given facility.
@@ -17,8 +17,10 @@ public interface FacilityManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeOpeningTime(@NonNull String facilityID, @NonNull LocalTime newOpeningTime,
-                           @NonNull String account);
+    static void changeOpeningTime(@NonNull String facilityID, @NonNull LocalTime newOpeningTime,
+                           @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the closing time of the given facility.
@@ -28,7 +30,9 @@ public interface FacilityManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeClosingTime(@NonNull String facilityID, @NonNull LocalTime newClosingTime,
-                           @NonNull String account);
+    static void changeClosingTime(@NonNull String facilityID, @NonNull LocalTime newClosingTime,
+                           @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

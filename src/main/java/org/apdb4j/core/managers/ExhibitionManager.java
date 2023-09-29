@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * Contains all the SQL queries that are related to the entity EXHIBITION.
  */
-public interface ExhibitionManager {
+public class ExhibitionManager {
 
     /**
      * Performs the SQL query that adds a new exhibition without a description, that will be set to {@code null}.
@@ -20,10 +20,12 @@ public interface ExhibitionManager {
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewExhibition(@NonNull String exhibitionID,
+    static void addNewExhibition(@NonNull String exhibitionID,
                           @NonNull String name,
                           @NonNull String type,
-                          @NonNull String account);
+                          @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds a new exhibition.
@@ -36,11 +38,13 @@ public interface ExhibitionManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewExhibitionWithDescription(@NonNull String exhibitionID,
+    static void addNewExhibitionWithDescription(@NonNull String exhibitionID,
                                          @NonNull String name,
                                          @NonNull String type,
                                          @NonNull String description,
-                                         @NonNull String account);
+                                         @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that plans a new exhibition, so inserts a new tuple with the
@@ -53,10 +57,12 @@ public interface ExhibitionManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void planNewExhibition(@NonNull String exhibitionID,
+    static void planNewExhibition(@NonNull String exhibitionID,
                            @NonNull LocalDate date, @NonNull LocalTime time,
                            int maxSeats,
-                           @NonNull String account);
+                           @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the maximum number of seats for the provided exhibition.
@@ -71,10 +77,12 @@ public interface ExhibitionManager {
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeMaxSeats(@NonNull String exhibitionID,
+    static void changeMaxSeats(@NonNull String exhibitionID,
                         @NonNull LocalDate date, @NonNull LocalTime time,
                         int newMaxSeats,
-                        @NonNull String account);
+                        @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds the number of spectators for an ended exhibition.
@@ -88,10 +96,12 @@ public interface ExhibitionManager {
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addSpectatorsNum(@NonNull String exhibitionID,
+    static void addSpectatorsNum(@NonNull String exhibitionID,
                           @NonNull LocalDate date, @NonNull LocalTime time,
                           int spectators,
-                          @NonNull String account);
+                          @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that computes the average number of spectators for each
@@ -100,7 +110,9 @@ public interface ExhibitionManager {
      *                to accomplish the operation, the query will not be executed.
      * @return a collection in which each exhibition type is paired with its average number of spectators.
      */
-    @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType(@NonNull String account);
+    static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that computes the percentage of exhibitions that were sold-out until now.
@@ -108,7 +120,9 @@ public interface ExhibitionManager {
      *                to accomplish the operation, the query will not be executed.
      * @return the percentage of sold-out exhibitions.
      */
-    double computePercentageOfSoldOutExhibitions(@NonNull String account);
+    static double computePercentageOfSoldOutExhibitions(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Realises the SQL query that retrieves all the exhibitions that are going to be performed in the future.
@@ -116,6 +130,8 @@ public interface ExhibitionManager {
      *                to accomplish the operation, the query will not be executed.
      * @return all the exhibitions that are planned for the future.
      */
-    @NonNull Collection<Record> viewAllPlannedExhibitions(@NonNull String account);
+    static @NonNull Collection<Record> viewAllPlannedExhibitions(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

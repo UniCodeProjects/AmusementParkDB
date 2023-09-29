@@ -7,7 +7,7 @@ import java.time.LocalTime;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Rides} table.
  */
-public interface RideManager {
+public class RideManager {
 
     /**
      * Performs the SQL query that adds a new ride in the database without a description,
@@ -28,7 +28,7 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewRide(@NonNull String rideID,
+    static void addNewRide(@NonNull String rideID,
                     @NonNull String name,
                     @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
                     @NonNull String type,
@@ -38,7 +38,9 @@ public interface RideManager {
                     int minHeight, int maxHeight,
                     int minWeight, int maxWeight,
                     char status,
-                    @NonNull String account);
+                    @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds a new ride in the database, with the provided description.
@@ -62,7 +64,7 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewRideWithDescription(@NonNull String rideID,
+    static void addNewRideWithDescription(@NonNull String rideID,
                                    @NonNull String name,
                                    @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
                                    @NonNull String type,
@@ -73,7 +75,9 @@ public interface RideManager {
                                    int minHeight, int maxHeight,
                                    int minWeight, int maxWeight,
                                    char status,
-                                   @NonNull String account);
+                                   @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the intensity for the provided ride.
@@ -83,7 +87,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeIntensity(@NonNull String rideID, @NonNull String newIntensity, @NonNull String account);
+    static void changeIntensity(@NonNull String rideID, @NonNull String newIntensity, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the duration of the provided ride.
@@ -93,7 +99,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeDuration(@NonNull String rideID, @NonNull LocalTime newDuration, @NonNull String account);
+    static void changeDuration(@NonNull String rideID, @NonNull LocalTime newDuration, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 
     /**
@@ -104,7 +112,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeMaxSeats(@NonNull String rideID, int newMaxSeats, @NonNull String account);
+    static void changeMaxSeats(@NonNull String rideID, int newMaxSeats, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the values of the attributes {@link org.apdb4j.db.tables.Rides#MINHEIGHT},
@@ -116,7 +126,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeHeightRequirements(@NonNull String rideID, int minHeight,  int maxHeight, @NonNull String account);
+    static void changeHeightRequirements(@NonNull String rideID, int minHeight,  int maxHeight, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the values of the attributes {@link org.apdb4j.db.tables.Rides#MINWEIGHT},
@@ -128,7 +140,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeWeightRequirements(@NonNull String rideID, int minWeight, int maxWeight, @NonNull String account);
+    static void changeWeightRequirements(@NonNull String rideID, int minWeight, int maxWeight, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds the given estimated wait time for the provided ride.
@@ -138,7 +152,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addEstimatedWaitTime(@NonNull String rideID, @NonNull LocalTime estimatedWaitTime, @NonNull String account);
+    static void addEstimatedWaitTime(@NonNull String rideID, @NonNull LocalTime estimatedWaitTime, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Replaces the actual status of a ride with the given one.
@@ -148,7 +164,9 @@ public interface RideManager {
      * @param account the account that is performing this operation. If the account has not the permissions to
      *                accomplish the operation, the query will not be executed.
      */
-    void changeRideStatus(@NonNull String rideID, char newStatus, @NonNull String account);
+    static void changeRideStatus(@NonNull String rideID, char newStatus, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
     // Note that if the new status is 'C', the estimatedWaitTime of the provided ride must be set to null!
     // This operation must be done every day when the park closes.
 

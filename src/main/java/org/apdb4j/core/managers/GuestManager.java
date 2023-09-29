@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Guests} table.
  */
-public interface GuestManager {
+public class GuestManager {
 
     /**
      * Performs the SQL query that adds a new guest in the database.
@@ -16,7 +16,9 @@ public interface GuestManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewGuest(@NonNull String guestID, @NonNull String name, @NonNull String surname,
-                     @NonNull String email, @NonNull String account);
+    static void addNewGuest(@NonNull String guestID, @NonNull String name, @NonNull String surname,
+                     @NonNull String email, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }
