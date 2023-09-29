@@ -70,8 +70,8 @@ public class LoginControllerImpl implements LoginController {
                 .queryAction(db -> db.selectCount()
                         .from(ACCOUNTS)
                         .where(ACCOUNTS.USERNAME.eq(username))
-                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Admin"))
-                        .or(ACCOUNTS.PERMISSIONTYPE.eq("Staff"))
+                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Admin")
+                                .or(ACCOUNTS.PERMISSIONTYPE.eq("Staff")))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
