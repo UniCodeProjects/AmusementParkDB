@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Accounts} table.
  */
-public interface AccountManager {
+public class AccountManager {
 
     /**
      * Performs the SQL query that creates a new account with the provided email, but without
@@ -16,7 +16,9 @@ public interface AccountManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewAccount(@NonNull String email, @NonNull String permissionType, @NonNull String account);
+    static void addNewAccount(@NonNull String email, @NonNull String permissionType, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that creates a new account with the provided email,
@@ -28,10 +30,13 @@ public interface AccountManager {
      *                       in the database, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     *                Its value must be {@code null} when a guest is creating his account.
      */
-    void addNewAccount(@NonNull String email, @NonNull String username, @NonNull String password,
+    static void addNewAccount(@NonNull String email, @NonNull String username, @NonNull String password,
                        @NonNull String permissionType,
-                       @NonNull String account);
+                       String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds the credentials for an account that does not
@@ -44,8 +49,10 @@ public interface AccountManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addCredentialsForAccount(@NonNull String email, @NonNull String username, @NonNull String password,
-                                  @NonNull String account);
+    static void addCredentialsForAccount(@NonNull String email, @NonNull String username, @NonNull String password,
+                                  @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the password of the provided account.
@@ -57,7 +64,9 @@ public interface AccountManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void updateAccountPassword(@NonNull String email, @NonNull String actualPassword, @NonNull String newPassword,
-                               @NonNull String account);
+    static void updateAccountPassword(@NonNull String email, @NonNull String actualPassword, @NonNull String newPassword,
+                               @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }
