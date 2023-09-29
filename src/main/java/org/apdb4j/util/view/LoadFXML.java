@@ -2,7 +2,6 @@ package org.apdb4j.util.view;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -31,7 +30,7 @@ public final class LoadFXML {
      * @param showLoading if {@code true} shows a loading indicator while loading the FXML
      */
     @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
-    public static void fromEvent(final ActionEvent event, final String fxml,
+    public static void fromEvent(final Event event, final String fxml,
                                  final boolean removeFocus, final boolean showLoading) {
         final var stage = JavaFXUtils.getStage(event);
         final var stageWidth = stage.getScene().getWidth();
