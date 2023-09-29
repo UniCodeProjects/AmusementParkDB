@@ -16,7 +16,7 @@ public interface LoginController extends Controller {
     boolean checkSignIn(@NonNull String username, @NonNull String password);
 
     /**
-     * Checks the validity of an account sign-up.
+     * Checks the validity of an account sign-up by inserting it in the DB.
      * @param email the provided email
      * @param username the provided username
      * @param password the provided password
