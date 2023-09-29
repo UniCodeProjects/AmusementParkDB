@@ -8,7 +8,7 @@ import java.time.LocalTime;
 /**
  * Contains all the SQL queries that are related to the SHOP entity.
  */
-public interface ShopManager {
+public class ShopManager {
 
     /**
      * Performs the SQL query that adds a new shop without a description.
@@ -20,11 +20,13 @@ public interface ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewShop(@NonNull String shopID,
+    static void addNewShop(@NonNull String shopID,
                     @NonNull String name,
                     @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
                     @NonNull String type,
-                    @NonNull String account);
+                    @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds a new shop with the provided description.
@@ -39,12 +41,14 @@ public interface ShopManager {
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewShopWithDescription(@NonNull String shopID,
+    static void addNewShopWithDescription(@NonNull String shopID,
                                    @NonNull String name,
                                    @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
                                    @NonNull String type,
                                    String description,
-                                   @NonNull String account);
+                                   @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds the money info for the provided shop in the provided month.
@@ -56,7 +60,10 @@ public interface ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addNewMonthlyCost(@NonNull String shopID, LocalDate month, double expense, double revenue, @NonNull String account);
+    static void addNewMonthlyCost(@NonNull String shopID, LocalDate month, double expense, double revenue,
+                                  @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that modifies the date of the money info for the given shop.
@@ -70,10 +77,12 @@ public interface ShopManager {
      * @param account the account that is performing this operation.
      *                If this account has not the permissions to accomplish the operation, the query will not be executed.
      */
-    void editCostDate(@NonNull String shopID,
+    static void editCostDate(@NonNull String shopID,
                       LocalDate actualMonth,
                       LocalDate newMonth,
-                      @NonNull String account);
+                      @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that edits the money info of the given shop.
@@ -88,9 +97,11 @@ public interface ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void editCostMoney(@NonNull String shopID,
+    static void editCostMoney(@NonNull String shopID,
                        LocalDate month,
                        double newRevenue, double newExpense,
-                       @NonNull String account);
+                       @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }

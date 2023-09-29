@@ -9,7 +9,7 @@ import org.jooq.Record;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Maintenances} table.
  */
-public interface MaintenanceManager {
+public class MaintenanceManager {
 
     /**
      * Performs the SQL query that adds a new maintenance carried out by the provided employees
@@ -25,12 +25,14 @@ public interface MaintenanceManager {
      *                     of this parameter is not the national identifier of an employee,
      *                     the query will not be executed.
      */
-    void addNewMaintenance(@NonNull String facilityID,
+    static void addNewMaintenance(@NonNull String facilityID,
                            double price,
                            @NonNull String description,
                            @NonNull LocalDate date,
                            @NonNull String account,
-                           @NonNull String... employeeNIDs);
+                           @NonNull String... employeeNIDs) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that retrieves a list of all the facilities sorted
@@ -39,7 +41,9 @@ public interface MaintenanceManager {
      *                to accomplish the operation, the query will not be executed.
      * @return a list containing all the park's facilities, sorted by the date of their last maintenance.
      */
-    @NonNull List<Record> sortFacilitiesByLastMaintenanceDate(@NonNull String account);
+    static @NonNull List<Record> sortFacilitiesByLastMaintenanceDate(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     // viewAllPlannedMaintenances();
     // methods that add/edit/delete one or more employees (for maintenances not already carried out).

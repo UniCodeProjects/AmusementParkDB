@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.ParkServices} table.
  */
-public interface ParkServiceManager {
+public class ParkServiceManager {
 
     /**
      * Performs the SQL query that changes the name of the given park service.
@@ -18,7 +18,9 @@ public interface ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeName(@NonNull String parkServiceID, @NonNull String newName, @NonNull String account);
+    static void changeName(@NonNull String parkServiceID, @NonNull String newName, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that modifies the average rating of the provided park service.
@@ -28,7 +30,9 @@ public interface ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void editAverageRating(@NonNull String parkServiceID, double newAverageRating, @NonNull String account);
+    static void editAverageRating(@NonNull String parkServiceID, double newAverageRating, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that increments of one unit the number of ratings for the provided park service.
@@ -37,7 +41,9 @@ public interface ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void incrementRatings(@NonNull String parkServiceID, @NonNull String account);
+    static void incrementRatings(@NonNull String parkServiceID, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that changes the type of the given park service.
@@ -47,7 +53,9 @@ public interface ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void changeType(@NonNull String parkServiceID, @NonNull String newType, @NonNull String account);
+    static void changeType(@NonNull String parkServiceID, @NonNull String newType, @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that adds a description for the provided park service. If the park service
@@ -58,9 +66,11 @@ public interface ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    void addDescription(@NonNull String parkServiceID,
+    static void addDescription(@NonNull String parkServiceID,
                         @NonNull String description,
-                        @NonNull String account);
+                        @NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
     /**
      * Performs the SQL query that retrieves the park's best services according to their average rating.
@@ -68,6 +78,8 @@ public interface ParkServiceManager {
      *                to accomplish the operation, the query will not be executed.
      * @return the park's best services.
      */
-    @NonNull List<Record> getBestParkServices(@NonNull String account);
+    static @NonNull List<Record> getBestParkServices(@NonNull String account) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 
 }
