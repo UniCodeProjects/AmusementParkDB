@@ -10,7 +10,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.awt.Toolkit;
@@ -46,10 +45,7 @@ public class SignInController extends LoginCommonController implements Initializ
         }).thenAcceptAsync(result -> {
             Platform.runLater(() -> signInBtn.setDisable(false));
             if (result) {
-                Platform.runLater(() -> {
-                    JavaFXUtils.setStageTitle(event, username.getText());
-                    LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
-                });
+                showUserScreen(event, username.getText());
             } else {
                 showErrorDialog();
             }
