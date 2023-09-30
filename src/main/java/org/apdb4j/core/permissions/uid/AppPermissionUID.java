@@ -127,7 +127,7 @@ public class AppPermissionUID implements PermissionUID {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         // If the source class implements the AllAccess interface always put ALL.
         if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
-            return AccessType.ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
+            return AccessType.GLOBAL_ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
         }
         // If the source class does not implement the interface, a 'None' sequence in returned.
         if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
