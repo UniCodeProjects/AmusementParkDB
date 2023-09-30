@@ -1,4 +1,4 @@
-package org.apdb4j.core.permissions;
+package org.apdb4j.core.permissions.uid;
 
 import lombok.NonNull;
 

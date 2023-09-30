@@ -1,10 +1,12 @@
-package org.apdb4j.core.permissions;
+package org.apdb4j.core.permissions.uid;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.reflections.Reflections;
