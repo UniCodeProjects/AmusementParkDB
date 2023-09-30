@@ -7,7 +7,10 @@ import java.time.LocalDate;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
  */
-public class StaffManager {
+public final class StaffManager {
+
+    private StaffManager() {
+    }
 
     /**
      * Performs the SQL query that adds a new staff member (an employee or an admin).
@@ -16,8 +19,8 @@ public class StaffManager {
      * @param email the email of the new staff member.
      * @param name the name of the new staff member.
      * @param surname the surname of the new staff member.
-     * @param dateOfBirth the date of birth of the new staff member.
-     * @param birthPlace the place of birth of the new staff member.
+     * @param dateOfBirth the new staff member's date of birth.
+     * @param birthPlace the new staff member's birthplace.
      * @param gender the gender of the new staff member.
      * @param role the role of the new staff member. It can be {@code null} only if the provided staff is an admin.
      * @param isAdmin determines whether the provided staff is an admin or not.
@@ -25,13 +28,13 @@ public class StaffManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void hireNewStaffMember(@NonNull String nationalID, @NonNull String staffID,
-                            @NonNull String email,
-                            @NonNull String name, @NonNull String surname,
-                            @NonNull LocalDate dateOfBirth, @NonNull String birthPlace,
-                            char gender,
-                            String role, boolean isAdmin, boolean isEmployee,
-                            @NonNull String account) {
+    public static void hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
+                                          final @NonNull String email,
+                                          final @NonNull String name, final @NonNull String surname,
+                                          final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
+                                          final char gender,
+                                          final String role, final boolean isAdmin, final boolean isEmployee,
+                                          final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -42,7 +45,7 @@ public class StaffManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void fireStaffMember(@NonNull String staffNationalID, @NonNull String account) {
+    public static void fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

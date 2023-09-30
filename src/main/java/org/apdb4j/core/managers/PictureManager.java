@@ -5,7 +5,10 @@ import lombok.NonNull;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Pictures} table.
  */
-public class PictureManager {
+public final class PictureManager {
+
+    private PictureManager() {
+    }
 
     /**
      * Performs the SQL query that adds a new picture for the provided park service.
@@ -15,7 +18,8 @@ public class PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addPicture(@NonNull String picturePath, @NonNull String parkServiceID, @NonNull String account) {
+    public static void addPicture(final @NonNull String picturePath, final @NonNull String parkServiceID,
+                                  final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -27,7 +31,7 @@ public class PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void editPicture(@NonNull String oldPath, @NonNull String newPath, @NonNull String account) {
+    public static void editPicture(final @NonNull String oldPath, final @NonNull String newPath, final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -38,7 +42,7 @@ public class PictureManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void removePicture(@NonNull String path, @NonNull String account) {
+    public static void removePicture(final @NonNull String path, final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

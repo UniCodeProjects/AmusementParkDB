@@ -8,7 +8,10 @@ import java.util.List;
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.ParkServices} table.
  */
-public class ParkServiceManager {
+public final class ParkServiceManager {
+
+    private ParkServiceManager() {
+    }
 
     /**
      * Performs the SQL query that changes the name of the given park service.
@@ -18,8 +21,9 @@ public class ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void changeName(@NonNull String parkServiceID, @NonNull String newName, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void changeName(final @NonNull String parkServiceID, final @NonNull String newName,
+                                  final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -30,8 +34,9 @@ public class ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void editAverageRating(@NonNull String parkServiceID, double newAverageRating, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void editAverageRating(final @NonNull String parkServiceID, final double newAverageRating,
+                                         final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -41,8 +46,8 @@ public class ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void incrementRatings(@NonNull String parkServiceID, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void incrementRatings(final @NonNull String parkServiceID, final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -53,8 +58,9 @@ public class ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void changeType(@NonNull String parkServiceID, @NonNull String newType, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void changeType(final @NonNull String parkServiceID, final @NonNull String newType,
+                                  final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -66,10 +72,10 @@ public class ParkServiceManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addDescription(@NonNull String parkServiceID,
-                        @NonNull String description,
-                        @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addDescription(final @NonNull String parkServiceID,
+                                      final @NonNull String description,
+                                      final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -78,8 +84,8 @@ public class ParkServiceManager {
      *                to accomplish the operation, the query will not be executed.
      * @return the park's best services.
      */
-    static @NonNull List<Record> getBestParkServices(@NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static @NonNull List<Record> getBestParkServices(final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
 }

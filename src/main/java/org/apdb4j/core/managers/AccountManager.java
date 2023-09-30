@@ -6,28 +6,30 @@ import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.Objects;
-
 import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.PERMISSIONS;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Accounts} table.
  */
-public class AccountManager {
+public final class AccountManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
 
+    private AccountManager() {
+    }
+
     /**
      * Performs the SQL query that creates a new account with the provided email, but without
-     * username and password, that will be set to {@code null}.
+     * a username and password, that will be set to {@code null}.
      * @param email the email of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-     public static void addNewAccount(@NonNull String email, @NonNull String permissionType, @NonNull String account) {
+     public static void addNewAccount(final @NonNull String email, final @NonNull String permissionType,
+                                      final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
      }
 
@@ -44,9 +46,11 @@ public class AccountManager {
      *                Its value must be {@code null} when a guest is creating his account.
      * @return {@code true} on successful tuple insertion
      */
-    public static boolean addNewAccount(final @NonNull String email, final @NonNull String username, final @NonNull String password,
-                              final @NonNull String permissionType,
-                              final String account) throws AccessDeniedException {
+    public static boolean addNewAccount(final @NonNull String email,
+                                        final @NonNull String username,
+                                        final @NonNull String password,
+                                        final @NonNull String permissionType,
+                                        final String account) throws AccessDeniedException {
         final Result<Record> count = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(PERMISSIONS)
@@ -58,12 +62,16 @@ public class AccountManager {
         if (count.size() != 1 || count.get(0).get(0, Integer.class) != 1) {
             throw new IllegalStateException(permissionType + " is not present in the DB.");
         }
-        if (Objects.nonNull(account)) {
-            // todo: create permissions.
-//            DB.definePermissions((Access) null, "");
-        }
+        // todo: create permissions.
+//        if (Objects.nonNull(account)) {
+//            DB.definePermissions();
+//        }
         final int tuplesAdded = DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS, ACCOUNTS.EMAIL, ACCOUNTS.USERNAME, ACCOUNTS.PASSWORD, ACCOUNTS.PERMISSIONTYPE)
+                .queryAction(db -> db.insertInto(ACCOUNTS,
+                                ACCOUNTS.EMAIL,
+                                ACCOUNTS.USERNAME,
+                                ACCOUNTS.PASSWORD,
+                                ACCOUNTS.PERMISSIONTYPE)
                         .values(email, username, password, permissionType)
                         .execute())
                 .closeConnection()
@@ -82,8 +90,10 @@ public class AccountManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    public static void addCredentialsForAccount(@NonNull String email, @NonNull String username, @NonNull String password,
-                                  @NonNull String account) {
+    public static void addCredentialsForAccount(final @NonNull String email,
+                                                final @NonNull String username,
+                                                final @NonNull String password,
+                                                final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -97,8 +107,10 @@ public class AccountManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-     public static void updateAccountPassword(@NonNull String email, @NonNull String actualPassword, @NonNull String newPassword,
-                               @NonNull String account) {
+     public static void updateAccountPassword(final @NonNull String email,
+                                              final @NonNull String actualPassword,
+                                              final @NonNull String newPassword,
+                                              final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
      }
 
