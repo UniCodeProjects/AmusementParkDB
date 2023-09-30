@@ -1,5 +1,6 @@
 package org.apdb4j.core.permissions.uid;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -7,6 +8,7 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.AllAccess;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.reflections.Reflections;
@@ -25,7 +27,7 @@ import static org.apdb4j.db.tables.Permissions.PERMISSIONS;
  * It represents the application-side permission UID.
  * @see Access
  */
-public final class AppPermissionUID implements PermissionUID {
+public class AppPermissionUID implements PermissionUID {
 
     private final Access source;
     private final @Getter UID uid;
@@ -37,6 +39,7 @@ public final class AppPermissionUID implements PermissionUID {
      * Creates a new UID from a permission class.
      * @param source the permission object
      */
+    @SuppressFBWarnings("MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR")
     public AppPermissionUID(final @NonNull Access source) {
         this.source = source;
         uid = new UID(assemblePermissionUID());
@@ -122,6 +125,10 @@ public final class AppPermissionUID implements PermissionUID {
     @SneakyThrows
     private @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
+        // If the source class implements the AllAccess interface always put ALL.
+        if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
+            return AccessType.ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
+        }
         // If the source class does not implement the interface, a 'None' sequence in returned.
         if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
             return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
@@ -171,10 +178,13 @@ public final class AppPermissionUID implements PermissionUID {
 
     // Gets all the known Access interfaces in the package.
     private List<String> getKnownAccessInterfacesNames() {
-        final Reflections reflections = new Reflections("org.apdb4j.core.permissions");
+        final String rootPackage = "org.apdb4j.core.permissions";
+        final Reflections reflections = new Reflections(rootPackage);
         return reflections.getSubTypesOf(Access.class).stream()
                 .filter(Class::isInterface)
                 .map(Class::getName)
+                .filter(name -> name.startsWith(rootPackage + '.')    // Filter only the subpackages of rootPackage.
+                        && name.lastIndexOf('.') > (rootPackage + '.').length())
                 .sorted()
                 .toList();
     }
