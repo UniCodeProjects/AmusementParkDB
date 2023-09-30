@@ -8,7 +8,10 @@ import java.time.LocalDate;
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Tickets},
  * {@link org.apdb4j.db.tables.TicketTypes} and {@link org.apdb4j.db.tables.PriceLists} tables.
  */
-public class TicketManager {
+public final class TicketManager {
+
+    private TicketManager() {
+    }
 
     /**
      * Performs the SQL query that adds a new ticket type.
@@ -21,13 +24,13 @@ public class TicketManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewTicketType(@NonNull String type,
-                          double price,
-                          int year,
-                          @NonNull String category,
-                          int duration,
-                          @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewTicketType(final @NonNull String type,
+                                        final double price,
+                                        final int year,
+                                        final @NonNull String category,
+                                        final int duration,
+                                        final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -40,10 +43,10 @@ public class TicketManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void updateTicketTypePrice(@NonNull String type, @NonNull String category,
-                               double newPrice,
-                               @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void updateTicketTypePrice(final @NonNull String type, final @NonNull String category,
+                                             final double newPrice,
+                                             final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -65,16 +68,16 @@ public class TicketManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewTicket(@NonNull String ticketID,
-                      @NonNull LocalDate purchaseDate,
-                      LocalDate validOn,
-                      LocalDate validUntil,
-                      @NonNull String ownerID,
-                      int year,
-                      @NonNull String type,
-                      @NonNull String category,
-                      @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewTicket(final @NonNull String ticketID,
+                                    final @NonNull LocalDate purchaseDate,
+                                    final LocalDate validOn,
+                                    final LocalDate validUntil,
+                                    final @NonNull String ownerID,
+                                    final int year,
+                                    final @NonNull String type,
+                                    final @NonNull String category,
+                                    final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -85,8 +88,8 @@ public class TicketManager {
      *                to accomplish the operation, the query will not be executed.
      * @return the date of the provided month with the most visits.
      */
-    static @NonNull LocalDate getWeekDayWithMostVisits(int month, int year, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static @NonNull LocalDate getWeekDayWithMostVisits(final int month, final int year, final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -97,8 +100,8 @@ public class TicketManager {
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void punchTicket(@NonNull String ticketID, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void punchTicket(final @NonNull String ticketID, final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -108,8 +111,8 @@ public class TicketManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewPriceList(int year, @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewPriceList(final int year, final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
 }

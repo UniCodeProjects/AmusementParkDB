@@ -7,7 +7,10 @@ import org.jooq.Record;
 /**
  * An SQL query manager for general purpose operations.
  */
-public class Manager {
+public final class Manager {
+
+    private Manager() {
+    }
 
     /**
      * Performs the SQL query that retrieves all the tuples of the table with the provided name.
@@ -17,7 +20,7 @@ public class Manager {
      *                to accomplish the operation, the query will not be executed.
      * @return all the tuples of the table with the provided name.
      */
-    static @NonNull Result<Record> viewAllInfoFromTable(@NonNull String tableName, @NonNull String account) {
+    public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull String tableName, final @NonNull String account) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -31,8 +34,8 @@ public class Manager {
      *                   names is not the name of an attribute of the provided table, the query will not be executed.
      * @return all the tuples of the table projected on the given attributes.
      */
-    static @NonNull Result<Record> viewPartialInfoFromTable(@NonNull String tableName, @NonNull String account,
-                                                     @NonNull String... attributes) {
+    public static @NonNull Result<Record> viewPartialInfoFromTable(final @NonNull String tableName, final @NonNull String account,
+                                                                   final @NonNull String... attributes) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

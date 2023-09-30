@@ -8,7 +8,10 @@ import java.time.LocalTime;
 /**
  * Contains all the SQL queries that are related to the SHOP entity.
  */
-public class ShopManager {
+public final class ShopManager {
+
+    private ShopManager() {
+    }
 
     /**
      * Performs the SQL query that adds a new shop without a description.
@@ -20,12 +23,12 @@ public class ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewShop(@NonNull String shopID,
-                    @NonNull String name,
-                    @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
-                    @NonNull String type,
-                    @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewShop(final @NonNull String shopID,
+                                  final @NonNull String name,
+                                  final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                  final @NonNull String type,
+                                  final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -36,18 +39,18 @@ public class ShopManager {
      * @param closingTime the closing time of the new shop.
      * @param type the type of the new shop.
      * @param description the possible description of the new shop. If the value of this parameter is {@code null}, the
-     *                    behavior of this method will be the same of the method
+     *                    behaviour of this method will be the same of the method
      *                    {@link ShopManager#addNewShop(String, String, LocalTime, LocalTime, String, String)}.
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewShopWithDescription(@NonNull String shopID,
-                                   @NonNull String name,
-                                   @NonNull LocalTime openingTime, @NonNull LocalTime closingTime,
-                                   @NonNull String type,
-                                   String description,
-                                   @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewShopWithDescription(final @NonNull String shopID,
+                                                 final @NonNull String name,
+                                                 final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                                 final @NonNull String type,
+                                                 final String description,
+                                                 final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -60,9 +63,10 @@ public class ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void addNewMonthlyCost(@NonNull String shopID, LocalDate month, double expense, double revenue,
-                                  @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void addNewMonthlyCost(final @NonNull String shopID, final LocalDate month,
+                                         final double expense, final double revenue,
+                                         final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -77,11 +81,11 @@ public class ShopManager {
      * @param account the account that is performing this operation.
      *                If this account has not the permissions to accomplish the operation, the query will not be executed.
      */
-    static void editCostDate(@NonNull String shopID,
-                      LocalDate actualMonth,
-                      LocalDate newMonth,
-                      @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void editCostDate(final @NonNull String shopID,
+                                    final LocalDate actualMonth,
+                                    final LocalDate newMonth,
+                                    final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -97,11 +101,11 @@ public class ShopManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    static void editCostMoney(@NonNull String shopID,
-                       LocalDate month,
-                       double newRevenue, double newExpense,
-                       @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void editCostMoney(final @NonNull String shopID,
+                                     final LocalDate month,
+                                     final double newRevenue, final double newExpense,
+                                     final @NonNull String account) {
+        throw new UnsupportedOperationException();
     }
 
 }
