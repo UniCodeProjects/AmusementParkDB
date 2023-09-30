@@ -106,7 +106,7 @@ class QueryBuilderTest {
     protected static final class FooPermission extends AbstractPermission implements PictureAccess {
         @Override
         public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.WRITE;
+            return AccessType.GLOBAL_WRITE;
         }
     }
 
@@ -116,7 +116,7 @@ class QueryBuilderTest {
     protected static final class BarPermission extends AbstractPermission implements PictureAccess {
         @Override
         public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.READ;
+            return AccessType.GLOBAL_READ;
         }
     }
 
