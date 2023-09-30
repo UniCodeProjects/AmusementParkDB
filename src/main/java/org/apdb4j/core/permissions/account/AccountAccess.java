@@ -13,18 +13,18 @@ public interface AccountAccess extends Access {
      * The access permission for the {@code Email} attribute.
      * @return the type of access
      */
-    @NonNull AccessType getAccessOfEmail();
+    @NonNull AccessType getAccessOfAccountEmail();
 
     /**
      * The access permission for the {@code Username} attribute.
      * @return the type of access
      */
-    @NonNull AccessType getAccessOfUsername();
+    @NonNull AccessType getAccessOfAccountUsername();
 
     /**
      * The access permission for the {@code Password} attribute.
      * @return the type of access
      */
-    @NonNull AccessType getAccessOfPassword();
+    @NonNull AccessType getAccessOfAccountPassword();
 
 }
