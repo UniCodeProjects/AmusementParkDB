@@ -6,7 +6,7 @@ import org.apdb4j.core.permissions.AbstractPermission;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AppPermissionUID;
+import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.services.PictureAccess;
 import org.jooq.Record;
 import org.jooq.Result;
