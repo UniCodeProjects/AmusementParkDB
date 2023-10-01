@@ -27,7 +27,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfAccountEmail() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.GLOBAL_READ;
     }
 
     /**
@@ -43,7 +43,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfAccountPassword() {
-        return AccessType.NONE;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -91,7 +91,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractID() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -99,7 +99,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractSubscriptionDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -107,7 +107,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractBeginAndEndDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -115,7 +115,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractSalary() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -123,7 +123,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfEmployeeRole() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -139,7 +139,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfPersonName() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -147,7 +147,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfPersonSurname() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -155,7 +155,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfStaffNationalID() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -163,7 +163,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfStaffDoB() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -171,7 +171,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfStaffBirthPlace() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -179,7 +179,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfStaffGender() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -411,7 +411,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfTicketID() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.GLOBAL_ALL;
     }
 
     /**
@@ -419,7 +419,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfTicketPurchaseDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.GLOBAL_ALL;
     }
 
     /**

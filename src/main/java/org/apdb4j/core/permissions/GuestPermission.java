@@ -59,7 +59,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfReviewRating() {
-        return AccessType.GLOBAL_ALL;
+        return AccessType.GLOBAL_READ;
     }
 
     /**
@@ -99,7 +99,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractSubscriptionDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.NONE;
     }
 
     /**
@@ -107,7 +107,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfContractBeginAndEndDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.NONE;
     }
 
     /**
@@ -139,7 +139,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfPersonName() {
-        return AccessType.NONE;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -147,7 +147,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfPersonSurname() {
-        return AccessType.NONE;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -387,7 +387,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfSeasonTicketValidUntil() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -395,7 +395,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfSeasonTicketDuration() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -403,7 +403,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfSingleDayTicketValidOn() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_ALL;
     }
 
     /**
@@ -411,7 +411,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfTicketID() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
@@ -419,7 +419,7 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessType getAccessOfTicketPurchaseDate() {
-        return AccessType.GLOBAL_READ;
+        return AccessType.LOCAL_READ;
     }
 
     /**
