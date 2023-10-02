@@ -1,12 +1,7 @@
-package org.apdb4j.util;
+package org.apdb4j.core.permissions;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apdb4j.core.permissions.Access;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AdminPermission;
-import org.apdb4j.core.permissions.GuestPermission;
-import org.apdb4j.core.permissions.StaffPermission;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
