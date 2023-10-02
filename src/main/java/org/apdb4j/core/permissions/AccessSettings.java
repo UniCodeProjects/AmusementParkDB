@@ -1,9 +1,7 @@
-package org.apdb4j.util;
+package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apdb4j.core.permissions.Access;
-import org.apdb4j.core.permissions.AccessType;
 
 import java.util.Set;
 

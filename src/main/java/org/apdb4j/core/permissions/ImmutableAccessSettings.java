@@ -1,12 +1,10 @@
-package org.apdb4j.util;
+package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-import org.apdb4j.core.permissions.Access;
-import org.apdb4j.core.permissions.AccessType;
 
 import java.util.Set;
 import java.util.function.Predicate;
