@@ -7,8 +7,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.Access;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AllAccess;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.reflections.Reflections;
@@ -126,13 +124,13 @@ public class AppPermissionUID implements PermissionUID {
     private @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         // If the source class implements the AllAccess interface always put ALL.
-        if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
-            return AccessType.GLOBAL_ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
-        }
+//        if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
+//            return AccessType.GLOBAL_ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
+//        }
         // If the source class does not implement the interface, a 'None' sequence in returned.
-        if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
-            return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
-        }
+//        if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
+//            return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
+//        }
         // Gets only the methods that are actively implemented by source.
         final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
                 .filter(method -> Arrays.stream(actualInterface.getMethods())
