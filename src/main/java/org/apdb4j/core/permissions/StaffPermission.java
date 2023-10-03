@@ -26,440 +26,440 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfAccountEmail() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfAccountEmail() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfAccountUsername() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfAccountUsername() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfAccountPassword() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfAccountPassword() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfReviewID() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfReviewID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfReviewRating() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfReviewRating() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfReviewDate() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfReviewDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfReviewTime() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfReviewTime() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfReviewDescription() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfReviewDescription() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfContractID() {
-        return AccessType.LOCAL_READ;
+    public @NonNull AccessSettings getAccessOfContractID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfContractSubscriptionDate() {
-        return AccessType.LOCAL_READ;
+    public @NonNull AccessSettings getAccessOfContractSubscriptionDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfContractBeginAndEndDate() {
-        return AccessType.LOCAL_READ;
+    public @NonNull AccessSettings getAccessOfContractBeginAndEndDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfContractSalary() {
-        return AccessType.LOCAL_READ;
+    public @NonNull AccessSettings getAccessOfContractSalary() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfEmployeeRole() {
-        return AccessType.LOCAL_READ;
+    public @NonNull AccessSettings getAccessOfEmployeeRole() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfPersonID() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfPersonID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfPersonName() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfPersonName() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfPersonSurname() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfPersonSurname() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfStaffNationalID() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfStaffNationalID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfStaffDoB() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfStaffDoB() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfStaffBirthPlace() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfStaffBirthPlace() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfStaffGender() {
-        return AccessType.LOCAL_ALL;
+    public @NonNull AccessSettings getAccessOfStaffGender() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfExhibitionDate() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfExhibitionDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfExhibitionTime() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfExhibitionTime() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfExhibitionMaxSeats() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfExhibitionMaxSeats() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfExhibitionSpectatorNum() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfExhibitionSpectatorNum() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfFacilityOpeningAndClosingTimes() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfFacilityOpeningAndClosingTimes() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfMaintenancePrice() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfMaintenancePrice() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfMaintenanceDescription() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfMaintenanceDescription() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfMaintenanceDate() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfMaintenanceDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfParkServiceID() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfParkServiceID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfParkServiceName() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfParkServiceName() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfParkServiceType() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfParkServiceType() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfParkServiceDescription() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfParkServiceDescription() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfPicturePath() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfPicturePath() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideIntensity() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfRideIntensity() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideDuration() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfRideDuration() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideMaxSeats() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfRideMaxSeats() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideHeightValues() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfRideHeightValues() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideWeightValues() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfRideWeightValues() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideStatus() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfRideStatus() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfRideWaitTime() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfRideWaitTime() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfShopRevenue() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfShopRevenue() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfShopExpenses() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfShopExpenses() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfShopMonth() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfShopMonth() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfShopYear() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfShopYear() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfPriceListYear() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfPriceListYear() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfSeasonTicketValidUntil() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfSeasonTicketValidUntil() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfSeasonTicketDuration() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfSeasonTicketDuration() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfSingleDayTicketValidOn() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfSingleDayTicketValidOn() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketID() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfTicketID() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketPurchaseDate() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfTicketPurchaseDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketPunchDate() {
-        return AccessType.GLOBAL_ALL;
+    public @NonNull AccessSettings getAccessOfTicketPunchDate() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketTypePrice() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfTicketTypePrice() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketTypeType() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfTicketTypeType() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketTypeTarget() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfTicketTypeTarget() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessType getAccessOfTicketTypeDuration() {
-        return AccessType.GLOBAL_READ;
+    public @NonNull AccessSettings getAccessOfTicketTypeDuration() {
+        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
     }
 
 }

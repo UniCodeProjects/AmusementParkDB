@@ -5,7 +5,9 @@ import lombok.NonNull;
 import org.apdb4j.core.permissions.AbstractPermission;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AccessSettings;
 import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.ImmutableAccessSettings;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.services.PictureAccess;
 import org.jooq.Record;
@@ -105,8 +107,8 @@ class QueryBuilderTest {
      */
     protected static final class FooPermission extends AbstractPermission implements PictureAccess {
         @Override
-        public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.GLOBAL_WRITE;
+        public @NonNull AccessSettings getAccessOfPicturePath() {
+            return new ImmutableAccessSettings(AccessType.Read.LOCAL, AccessType.Write.NONE);
         }
     }
 
@@ -115,8 +117,8 @@ class QueryBuilderTest {
      */
     protected static final class BarPermission extends AbstractPermission implements PictureAccess {
         @Override
-        public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.GLOBAL_READ;
+        public @NonNull AccessSettings getAccessOfPicturePath() {
+            return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.GLOBAL);
         }
     }
 
