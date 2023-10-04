@@ -141,6 +141,7 @@ public class TicketTypes extends TableImpl<Record> {
             Internal.createCheck(this, DSL.name("CATEGORY_DOMAIN"), "(`Category` in (_utf8mb4\\'Senior\\',_utf8mb4\\'Kids\\',_utf8mb4\\'Adults\\',_utf8mb4\\'Disable\\'))", true),
             Internal.createCheck(this, DSL.name("DURATION_DOMAIN"), "(`Duration` >= 1)", true),
             Internal.createCheck(this, DSL.name("PRICE_NON_NEGATIVITY_CHECK"), "(`Price` > 0)", true),
+            Internal.createCheck(this, DSL.name("TYPE_CONSISTENCY"), "(((`Type` = _utf8mb4\\'Single day ticket\\') and (`Duration` = 1)) or ((`Type` = _utf8mb4\\'Season ticket\\') and (`Duration` > 1)))", true),
             Internal.createCheck(this, DSL.name("TYPE_DOMAIN"), "(`Type` in (_utf8mb4\\'Single day ticket\\',_utf8mb4\\'Season ticket\\'))", true)
         );
     }
