@@ -27,7 +27,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSettings getAccessOfAccountEmail() {
-        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
+        return new ImmutableAccessSettings(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -35,7 +35,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSettings getAccessOfAccountUsername() {
-        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
+        return new ImmutableAccessSettings(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -43,7 +43,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSettings getAccessOfAccountPassword() {
-        return new ImmutableAccessSettings(AccessType.Read.NONE, AccessType.Write.NONE);
+        return new ImmutableAccessSettings(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
