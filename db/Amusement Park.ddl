@@ -194,6 +194,7 @@ create table TICKET_TYPES (
      Duration int not null,
      constraint IDTICKET_TYPE primary key (Year, Type, Category),
      constraint TYPE_DOMAIN check (Type in ('Single day ticket', 'Season ticket')),
+     constraint TYPE_CONSISTENCY check ((Type = 'Single day ticket' and Duration = 1) or (Type = 'Season ticket' and Duration > 1)),
      constraint DURATION_DOMAIN check (Duration >= 1),
      constraint CATEGORY_DOMAIN check (Category in ('Senior', 'Kids', 'Adults', 'Disable')),
      constraint PRICE_NON_NEGATIVITY_CHECK check (Price > 0));
@@ -203,13 +204,13 @@ create table TICKETS ( -- TODO: add check for RemainingEntrances in order that i
      PurchaseDate date not null,
      ValidOn date,
      ValidUntil date,
-     RemainingEntrances int not null,
+     RemainingEntrances int unsigned not null,
      OwnerID char(72) not null,
      constraint IDTICKET_ID primary key (TicketID),
      constraint TICKETID_FORMAT check (TicketID like 'T%'),
      constraint PURCHASE_DATE_CHK check ((ValidOn is not null and PurchaseDate <= ValidOn) or (ValidUntil is not null and PurchaseDate <= ValidUntil)),
-     constraint TICKET_TYPE_CHK check ((ValidOn is not null and ValidUntil is null) or (ValidOn is null and ValidUntil is not null)),
-     constraint REMAINING_ENTRANCES_DOMAIN check (RemainingEntrances >= 0));
+     -- todo: add constraint that states that remainingEntrances cannot be greater than 1 if purchaseDate == validOn?
+     constraint TICKET_TYPE_CHK check ((ValidOn is not null and ValidUntil is null) or (ValidOn is null and ValidUntil is not null)));
 
 create table validations (
      Date date not null,
@@ -259,7 +260,7 @@ alter table GUESTS add constraint FKR_1_FK
 -- Not allowed in MySQL
 -- alter table MAINTENANCES add constraint IDMAINTENANCE_CHK
 --     check(exists(select * from responsibilities
---                  where responsibilities.FacilityID = FacilityID and responsibilities.Date = Date)); 
+--                  where responsibilities.FacilityID = FacilityID and responsibilities.Date = Date));
 
 alter table MAINTENANCES add constraint FKexecution
      foreign key (FacilityID)

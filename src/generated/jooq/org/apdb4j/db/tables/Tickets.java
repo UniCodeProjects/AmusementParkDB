@@ -24,6 +24,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UInteger;
 
 
 /**
@@ -70,7 +71,7 @@ public class Tickets extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.tickets.RemainingEntrances</code>.
      */
-    public final TableField<Record, Integer> REMAININGENTRANCES = createField(DSL.name("RemainingEntrances"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> REMAININGENTRANCES = createField(DSL.name("RemainingEntrances"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.tickets.OwnerID</code>.
@@ -142,7 +143,6 @@ public class Tickets extends TableImpl<Record> {
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
             Internal.createCheck(this, DSL.name("PURCHASE_DATE_CHK"), "(((`ValidOn` is not null) and (`PurchaseDate` <= `ValidOn`)) or ((`ValidUntil` is not null) and (`PurchaseDate` <= `ValidUntil`)))", true),
-            Internal.createCheck(this, DSL.name("REMAINING_ENTRANCES_DOMAIN"), "(`RemainingEntrances` >= 0)", true),
             Internal.createCheck(this, DSL.name("TICKET_TYPE_CHK"), "(((`ValidOn` is not null) and (`ValidUntil` is null)) or ((`ValidOn` is null) and (`ValidUntil` is not null)))", true),
             Internal.createCheck(this, DSL.name("TICKETID_FORMAT"), "(`TicketID` like _utf8mb4\\'T%\\')", true)
         );
