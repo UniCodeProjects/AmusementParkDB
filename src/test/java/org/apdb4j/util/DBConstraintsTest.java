@@ -34,41 +34,41 @@ class DBConstraintsTest {
 
     @Test
     void accountsConstraintsTest() {
-        final var correctUsernameSample = "foo.foo";
+        final var correctUsernameSample = "bar.bar";
         final var correctPasswordSample = "12345678";
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@gmail.com", correctUsernameSample, "pip", null);
+                "bar@gmail.com", correctUsernameSample, "bar", null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippottogmail.com", correctUsernameSample, correctPasswordSample, null);
+                "bargmail.com", correctUsernameSample, correctPasswordSample, null);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                // "pippotto@gmailcom", correctUsernameSample, correctPasswordSample, null); // problem
+                // "bar@gmailcom", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippOTTO@gmail.com", correctUsernameSample, correctPasswordSample, null);
+                "bAR@gmail.com", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@gmAIL.com", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmAIL.com", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@gmail.cOM", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.cOM", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippot-to@gmail.com", correctUsernameSample, correctPasswordSample, null);
+                "b-ar@gmail.com", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@g-mail.com", correctUsernameSample, correctPasswordSample, null);
+                "bar@g-mail.com", correctUsernameSample, correctPasswordSample, null);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                // "pippotto@gmail.c-om", correctUsernameSample, correctPasswordSample, null); // problem
+                // "bar@gmail.c-om", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@gmail.c", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.c", correctUsernameSample, correctPasswordSample, null);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                // "pippotto@gmail", correctUsernameSample, correctPasswordSample, null); // problem
+                // "bar@gmail", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@gmail.", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto", correctUsernameSample, correctPasswordSample, null);
+                "bar", correctUsernameSample, correctPasswordSample, null);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "pippotto@", correctUsernameSample, correctPasswordSample, null);
+                "bar@", correctUsernameSample, correctPasswordSample, null);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                // "pippotto@.com", correctUsernameSample, correctPasswordSample, null); // problem
+                // "bar@.com", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, true,
-                "pippotto_.02%@gmail.com", correctUsernameSample, correctPasswordSample, null);
-        TUPLES_TO_REMOVE.add(new ImmutablePair<>(ACCOUNTS, new Object[]{"pippotto_.02%@gmail.com"}));
+                "bar_.02%@gmail.com", correctUsernameSample, correctPasswordSample, null);
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(ACCOUNTS, new Object[]{"bar_.02%@gmail.com"}));
     }
 
     @Test
