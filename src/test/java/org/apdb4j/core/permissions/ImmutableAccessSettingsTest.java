@@ -18,7 +18,7 @@ class ImmutableAccessSettingsTest {
     private static final Pair<AccessType.Write, Set<Class<? extends Access>>> WRITE = Pair.of(
             AccessType.Write.GLOBAL,
             Set.of(AdminPermission.class));
-    private static final AccessSettings ACCESS_SETTINGS = new ImmutableAccessSettings(READ, WRITE);
+    private static final AccessSetting ACCESS_SETTINGS = new ImmutableAccessSetting(READ, WRITE);
 
     @Test
     void testSetAccess() {

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * An immutable AccessSettings. Set methods will throw an UnsupportedOperationException.
  */
-public class ImmutableAccessSettings implements AccessSettings {
+public class ImmutableAccessSetting implements AccessSetting {
 
     private final Pair<
             Pair<AccessType.Read, Set<Class<? extends Access>>>,
@@ -21,8 +21,8 @@ public class ImmutableAccessSettings implements AccessSettings {
      * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
      */
-    public ImmutableAccessSettings(final @NonNull Pair<AccessType.Read, Set<Class<? extends Access>>> read,
-                                   final @NonNull Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
+    public ImmutableAccessSetting(final @NonNull Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+                                  final @NonNull Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
         pair = new ImmutablePair<>(
                 new ImmutablePair<>(
                         read.getLeft(),
@@ -37,8 +37,8 @@ public class ImmutableAccessSettings implements AccessSettings {
      * @param read a pair containing the {@code READ} or {@code NONE} access type.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
      */
-    public ImmutableAccessSettings(final AccessType.Read read,
-                                   final AccessType.Write write) {
+    public ImmutableAccessSetting(final AccessType.Read read,
+                                  final AccessType.Write write) {
         this(Pair.of(read, Collections.emptySet()), Pair.of(write, Collections.emptySet()));
     }
 
@@ -47,8 +47,8 @@ public class ImmutableAccessSettings implements AccessSettings {
      * @param read a pair containing the {@code READ} or {@code NONE} access type.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
      */
-    public ImmutableAccessSettings(final AccessType.Read read,
-                                   final Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
+    public ImmutableAccessSetting(final AccessType.Read read,
+                                  final Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
         this(Pair.of(read, Collections.emptySet()), write);
     }
 
@@ -57,8 +57,8 @@ public class ImmutableAccessSettings implements AccessSettings {
      * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
      */
-    public ImmutableAccessSettings(final Pair<AccessType.Read, Set<Class<? extends Access>>> read,
-                                   final AccessType.Write write) {
+    public ImmutableAccessSetting(final Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+                                  final AccessType.Write write) {
         this(read, Pair.of(write, Collections.emptySet()));
     }
 
