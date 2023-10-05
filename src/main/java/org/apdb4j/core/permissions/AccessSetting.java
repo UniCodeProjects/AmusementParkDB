@@ -10,7 +10,7 @@ import java.util.Set;
  * {@code WRITE} and {@code NONE}.
  * @see AccessType
  */
-public interface AccessSettings {
+public interface AccessSetting {
 
     /**
      * Sets the access setting for {@code READ}. This can also be set to {@code NONE}.

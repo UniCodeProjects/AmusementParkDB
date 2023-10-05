@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.Access;
+import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.reflections.Reflections;
@@ -139,7 +140,7 @@ public class AppPermissionUID implements PermissionUID {
                 .toList();
         final var sequence = new StringBuilder();
         for (final var method : methods) {
-            sequence.append(method.invoke(source));
+            sequence.append(((AccessSetting) method.invoke(source)));
         }
         return sequence.toString();
     }
