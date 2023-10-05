@@ -26,10 +26,10 @@ public class ImmutableAccessSetting implements AccessSetting {
         pair = new ImmutablePair<>(
                 new ImmutablePair<>(
                         read.getLeft(),
-                        read.getRight()),
+                        Set.copyOf(read.getRight())),
                 new ImmutablePair<>(
                         write.getLeft(),
-                        write.getRight()));
+                        Set.copyOf(write.getRight())));
     }
 
     /**
