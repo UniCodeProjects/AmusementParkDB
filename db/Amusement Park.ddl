@@ -53,10 +53,11 @@ create table EXHIBITION_DETAILS (
      Date date not null,
      Time time not null,
      MaxSeats int not null,
-     Spectators int,
+     Spectators int unsigned,
      constraint IDEXHIBITION_DETAIL primary key (ExhibitionID, Date, Time),
      constraint EX_DET_ID_CHECK check (ExhibitionID like 'EX%'),
-     constraint SPECTATORS_CONSISTENCY check (Spectators is null or (Spectators <= MaxSeats)));
+     constraint SPECTATORS_CONSISTENCY check (Spectators is null or (Spectators <= MaxSeats)),
+     constraint EX_DET_MAX_SEATS_DOMAIN check (MaxSeats > 0));
 
 create table FACILITIES (
      FacilityID char(6) not null,
@@ -90,6 +91,7 @@ create table MONTHLY_RECAPS (
      Date date not null,
      Revenue decimal(9,2) not null,
      constraint IDDAILY_RECAP primary key (Date),
+     constraint DAY_FORMAT check (day(Date) = 1), -- each date must be the first day of the month
      constraint REVENUE_NON_NEGATIVITY_CHECK check (Revenue >= 0));
 
 create table PARK_SERVICES (
@@ -158,12 +160,13 @@ create table RIDES (
      Intensity varchar(50) not null,
      Duration time not null,
      MaxSeats int not null,
-     MinHeight int not null,
-     MaxHeight int not null,
-     MinWeight int not null,
-     MaxWeight int not null,
+     MinHeight int unsigned not null,
+     MaxHeight int unsigned not null,
+     MinWeight int unsigned not null,
+     MaxWeight int unsigned not null,
      constraint FKR_ID primary key (RideID),
      constraint RIDEID_FORMAT check (RideID like 'RI%'),
+     constraint RIDES_MAX_SEATS_DOMAIN check (MaxSeats > 0),
      constraint HEIGHT_VALUES_CONSISTENCY check (MinHeight < MaxHeight),
      constraint WEIGHT_VALUES_CONSISTENCY check (MinWeight < MaxWeight));
 
@@ -323,3 +326,5 @@ alter table validations add constraint FKval_TIC
 alter table validations add constraint FKval_PUN
      foreign key (Date)
      references PUNCH_DATES (Date);
+
+-- todo: add more strict checks for year values?

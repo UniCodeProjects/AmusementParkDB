@@ -25,6 +25,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UInteger;
 
 
 /**
@@ -71,7 +72,7 @@ public class ExhibitionDetails extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.exhibition_details.Spectators</code>.
      */
-    public final TableField<Record, Integer> SPECTATORS = createField(DSL.name("Spectators"), SQLDataType.INTEGER, this, "");
+    public final TableField<Record, UInteger> SPECTATORS = createField(DSL.name("Spectators"), SQLDataType.INTEGERUNSIGNED, this, "");
 
     private ExhibitionDetails(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
@@ -140,6 +141,7 @@ public class ExhibitionDetails extends TableImpl<Record> {
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
             Internal.createCheck(this, DSL.name("EX_DET_ID_CHECK"), "(`ExhibitionID` like _utf8mb4\\'EX%\\')", true),
+            Internal.createCheck(this, DSL.name("EX_DET_MAX_SEATS_DOMAIN"), "(`MaxSeats` > 0)", true),
             Internal.createCheck(this, DSL.name("SPECTATORS_CONSISTENCY"), "((`Spectators` is null) or (`Spectators` <= `MaxSeats`))", true)
         );
     }
