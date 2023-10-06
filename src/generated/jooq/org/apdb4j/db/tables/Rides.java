@@ -24,6 +24,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
+import org.jooq.types.UInteger;
 
 
 /**
@@ -70,22 +71,22 @@ public class Rides extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.rides.MinHeight</code>.
      */
-    public final TableField<Record, Integer> MINHEIGHT = createField(DSL.name("MinHeight"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> MINHEIGHT = createField(DSL.name("MinHeight"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.rides.MaxHeight</code>.
      */
-    public final TableField<Record, Integer> MAXHEIGHT = createField(DSL.name("MaxHeight"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> MAXHEIGHT = createField(DSL.name("MaxHeight"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.rides.MinWeight</code>.
      */
-    public final TableField<Record, Integer> MINWEIGHT = createField(DSL.name("MinWeight"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> MINWEIGHT = createField(DSL.name("MinWeight"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.rides.MaxWeight</code>.
      */
-    public final TableField<Record, Integer> MAXWEIGHT = createField(DSL.name("MaxWeight"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<Record, UInteger> MAXWEIGHT = createField(DSL.name("MaxWeight"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     private Rides(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
@@ -153,6 +154,7 @@ public class Rides extends TableImpl<Record> {
         return Arrays.asList(
             Internal.createCheck(this, DSL.name("HEIGHT_VALUES_CONSISTENCY"), "(`MinHeight` < `MaxHeight`)", true),
             Internal.createCheck(this, DSL.name("RIDEID_FORMAT"), "(`RideID` like _utf8mb4\\'RI%\\')", true),
+            Internal.createCheck(this, DSL.name("RIDES_MAX_SEATS_DOMAIN"), "(`MaxSeats` > 0)", true),
             Internal.createCheck(this, DSL.name("WEIGHT_VALUES_CONSISTENCY"), "(`MinWeight` < `MaxWeight`)", true)
         );
     }

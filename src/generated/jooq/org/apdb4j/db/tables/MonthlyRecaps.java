@@ -106,6 +106,7 @@ public class MonthlyRecaps extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
+            Internal.createCheck(this, DSL.name("DAY_FORMAT"), "(dayofmonth(`Date`) = 1)", true),
             Internal.createCheck(this, DSL.name("REVENUE_NON_NEGATIVITY_CHECK"), "(`Revenue` >= 0)", true)
         );
     }

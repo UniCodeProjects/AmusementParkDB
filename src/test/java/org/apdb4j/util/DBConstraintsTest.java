@@ -155,6 +155,7 @@ class DBConstraintsTest {
 
     @Test
     void exhibitionDetailConstraintsTest() {
+        final var exhibitionIDCorrectSample = "EX-010";
         // test for constraint EX_DET_ID_CHECK
         insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, false, "SADFS",
                 LocalDate.of(2010, 10, 10),
@@ -162,11 +163,22 @@ class DBConstraintsTest {
                 300,
                 null);
         // test for constraint SPECTATORS_CONSISTENCY
-        insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, false, "EX-010",
+        insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, false, exhibitionIDCorrectSample,
                 LocalDate.of(2011, 11, 11),
                 LocalTime.of(10, 10, 45),
                 250,
                 300);
+        // test for constraint EX_DET_MAX_SEATS_DOMAIN
+        insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, false, exhibitionIDCorrectSample,
+                LocalDate.of(2001, 10, 10),
+                LocalTime.of(10, 10, 10),
+                0,
+                null);
+        insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, false, exhibitionIDCorrectSample,
+                LocalDate.of(2002, 10, 10),
+                LocalTime.of(10, 10, 10),
+                -1,
+                null);
         // valid tuples
         insertTupleAndCheckForErrorCode(EXHIBITION_DETAILS, true, EXHIBITIONID_SAMPLE,
                 LocalDate.of(2012, 12, 10),
@@ -235,13 +247,16 @@ class DBConstraintsTest {
 
     @Test
     void monthlyRecapConstraintsTest() {
+        // test for constraint DAY_FORMAT
+        insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, false, LocalDate.of(2004, 10, 10), 15_000.00);
+        // test for constraint REVENUE_NON_NEGATIVITY_CHECK
         insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, false, LocalDate.of(2002, 10, 10),
                 -10.0);
         // valid tuples
-        insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, true, LocalDate.of(2001, 10, 10), 0);
-        TUPLES_TO_REMOVE.add(new ImmutablePair<>(MONTHLY_RECAPS, new Object[]{LocalDate.of(2001, 10, 10)}));
-        insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, true, LocalDate.of(2004, 10, 10), 221_221.00);
-        TUPLES_TO_REMOVE.add(new ImmutablePair<>(MONTHLY_RECAPS, new Object[]{LocalDate.of(2004, 10, 10)}));
+        insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, true, LocalDate.of(2001, 10, 1), 0);
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(MONTHLY_RECAPS, new Object[]{LocalDate.of(2001, 10, 1)}));
+        insertTupleAndCheckForErrorCode(MONTHLY_RECAPS, true, LocalDate.of(2004, 10, 1), 221_221.00);
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(MONTHLY_RECAPS, new Object[]{LocalDate.of(2004, 10, 1)}));
     }
 
     @Test
@@ -257,7 +272,7 @@ class DBConstraintsTest {
                 false);
         // tests for constraint EXHIBITION_CHECK
         insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
-                "EX-010",
+                "EX-050",
                 "name 11",
                 4.7,
                 4534,
@@ -333,6 +348,7 @@ class DBConstraintsTest {
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(REVIEWS, new Object[]{12_431}));
     }
 
+    @SuppressWarnings("CPD-START")
     @Test
     void rideDetailsConstraintsTest() {
         final var rideIDCorrectSample1 = "RI-100";
@@ -440,6 +456,8 @@ class DBConstraintsTest {
         final var rideIDCorrectSample3 = "RI-202";
         final var rideIDCorrectSample4 = "RI-203";
         final var rideIDCorrectSample5 = "RI-204";
+        final var rideIDCorrectSample6 = "RI-205";
+        final var rideIDCorrectSample7 = "RI-206";
         final var rideIDCorrectSamplesFormat = "RI-2%";
 
         // tuples inserted only for tests
@@ -468,9 +486,24 @@ class DBConstraintsTest {
                 rideIDCorrectSample5, "ride 204", 3.8, 1421, "type 204", null, false);
         insertTupleAndCheckForErrorCode(FACILITIES, true, rideIDCorrectSample5, LocalTime.of(9, 0, 0),
                 LocalTime.of(22, 0, 0), false);
+        // tuple 6
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, true,
+                rideIDCorrectSample6, "ride 205", 3.8, 1421, "type 205", null, false);
+        insertTupleAndCheckForErrorCode(FACILITIES, true, rideIDCorrectSample6, LocalTime.of(9, 0, 0),
+                LocalTime.of(22, 0, 0), false);
+        // tuple 7
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, true,
+                rideIDCorrectSample7, "ride 206", 3.8, 1421, "type 206", null, false);
+        insertTupleAndCheckForErrorCode(FACILITIES, true, rideIDCorrectSample7, LocalTime.of(9, 0, 0),
+                LocalTime.of(22, 0, 0), false);
 
         // test for constraint RIDEID_FORMAT
         insertTupleAndCheckForErrorCode(RIDES, false, "AFS", "asfafdgrsgdr", LocalTime.of(0, 3, 0), 342, 100, 200, 30, 100);
+        // tests for constraint RIDES_MAX_SEATS_DOMAIN
+        insertTupleAndCheckForErrorCode(RIDES, false,
+                rideIDCorrectSample6, "intensity 205", LocalTime.of(0, 2, 30), 0, 100, 200, 30, 100);
+        insertTupleAndCheckForErrorCode(RIDES, false,
+                rideIDCorrectSample7, "intensity 206", LocalTime.of(0, 2, 30), -1, 100, 200, 30, 100);
         // tests for constraint HEIGHT_VALUES_CONSISTENCY
         insertTupleAndCheckForErrorCode(RIDES, false,
                 rideIDCorrectSample1, "intensity 200", LocalTime.of(0, 2, 30), 342, 200, 100, 30, 100);
@@ -491,12 +524,12 @@ class DBConstraintsTest {
                 .getResultAsInt());
 
         // removal of tuples added for tests
-        assertEquals(5, QUERY_BUILDER.createConnection()
+        assertEquals(7, QUERY_BUILDER.createConnection()
                 .queryAction(db -> db.deleteFrom(FACILITIES).
                         where(FACILITIES.FACILITYID.like(rideIDCorrectSamplesFormat)).execute())
                 .closeConnection()
                 .getResultAsInt());
-        assertEquals(5, QUERY_BUILDER.createConnection()
+        assertEquals(7, QUERY_BUILDER.createConnection()
                 .queryAction(db -> db.deleteFrom(PARK_SERVICES).
                         where(PARK_SERVICES.PARKSERVICEID.like(rideIDCorrectSamplesFormat)).execute())
                 .closeConnection()
@@ -504,6 +537,7 @@ class DBConstraintsTest {
 
     }
 
+    @SuppressWarnings("CPD-END")
     @Test
     void staffConstraintsTest() {
         final var accountsNum = 7;
