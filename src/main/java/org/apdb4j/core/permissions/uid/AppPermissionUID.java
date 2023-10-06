@@ -127,14 +127,14 @@ public class AppPermissionUID implements PermissionUID {
     @SneakyThrows
     private @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
-        // If the source class implements the AllAccess interface always put ALL.
+        // If the source class implements the AllAccess interface always put Read and Write to GLOBAL.
         if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
             final AccessSetting sequence = new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
             final String result = (new ReturnSequence(sequence).getHash() + '.')
                     .repeat(actualInterface.getDeclaredMethods().length);
             return result.substring(0, result.length() - 1);
         }
-        // If the source class does not implement the interface, a 'None' sequence in returned.
+        // If the source class does not implement the interface, a 'None' Read and Write setting in returned.
         if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
             final AccessSetting sequence = new ImmutableAccessSetting(AccessType.Read.NONE, AccessType.Write.NONE);
             final String result = (new ReturnSequence(sequence).getHash() + '.')
