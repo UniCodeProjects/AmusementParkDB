@@ -8,6 +8,9 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessSetting;
+import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.AllAccess;
+import org.apdb4j.core.permissions.ImmutableAccessSetting;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.reflections.Reflections;
@@ -125,13 +128,19 @@ public class AppPermissionUID implements PermissionUID {
     private @NonNull String generateReturnSequence(final @NonNull String interfaceName) {
         final var actualInterface = Class.forName(interfaceName).asSubclass(Access.class);
         // If the source class implements the AllAccess interface always put ALL.
-//        if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
-//            return AccessType.GLOBAL_ALL.toString().repeat(actualInterface.getDeclaredMethods().length);
-//        }
+        if (Arrays.asList(source.getClass().getInterfaces()).contains(AllAccess.class)) {
+            final AccessSetting sequence = new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+            final String result = (new ReturnSequence(sequence).getHash() + '.')
+                    .repeat(actualInterface.getDeclaredMethods().length);
+            return result.substring(0, result.length() - 1);
+        }
         // If the source class does not implement the interface, a 'None' sequence in returned.
-//        if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
-//            return AccessType.NONE.toString().repeat(actualInterface.getDeclaredMethods().length);
-//        }
+        if (!Arrays.asList(source.getClass().getInterfaces()).contains(actualInterface)) {
+            final AccessSetting sequence = new ImmutableAccessSetting(AccessType.Read.NONE, AccessType.Write.NONE);
+            final String result = (new ReturnSequence(sequence).getHash() + '.')
+                    .repeat(actualInterface.getDeclaredMethods().length);
+            return result.substring(0, result.length() - 1);
+        }
         // Gets only the methods that are actively implemented by source.
         final var methods = Arrays.stream(source.getClass().getDeclaredMethods())
                 .filter(method -> Arrays.stream(actualInterface.getMethods())
@@ -140,8 +149,11 @@ public class AppPermissionUID implements PermissionUID {
                 .toList();
         final var sequence = new StringBuilder();
         for (final var method : methods) {
-            sequence.append(((AccessSetting) method.invoke(source)));
+            final AccessSetting returnedValue = (AccessSetting) method.invoke(source);
+            sequence.append(new ReturnSequence(returnedValue).getHash())
+                    .append('.');
         }
+        sequence.deleteCharAt(sequence.length() - 1);
         return sequence.toString();
     }
 
