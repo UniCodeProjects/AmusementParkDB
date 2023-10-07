@@ -7,11 +7,10 @@ import org.apdb4j.core.permissions.Access;
 /**
  * Represents the UID section that contains the package and interface information.
  */
-@Getter
 @ToString
 public class PackageInterfaceSequence extends HashableSequence implements Sequence {
 
-    private final String hash;
+    @Getter private final String hash;
     private final Package aPackage;
     private final Class<? extends Access> aInterface;
 
@@ -24,6 +23,22 @@ public class PackageInterfaceSequence extends HashableSequence implements Sequen
         this.aPackage = aPackage;
         this.aInterface = aInterface;
         hash = generateHash(this, aPackage.getName() + aInterface.getName());
+    }
+
+    /**
+     * Retrieves the package contained in the sequence.
+     * @return the package
+     */
+    public Package getPackage() {
+        return aPackage;
+    }
+
+    /**
+     * Retrieves the interface contained in the sequence.
+     * @return the interface
+     */
+    public Class<? extends Access> getInterface() {
+        return aInterface;
     }
 
 }
