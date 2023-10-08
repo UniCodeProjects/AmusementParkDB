@@ -11,5 +11,5 @@ import java.util.List;
  */
 @SuppressFBWarnings("EI_EXPOSE_REP")
 public record UIDSection(PackageInterfaceSequence packageInterfaceSequence,
-                         List<Sequence> returnSequence) implements Sequence {
+                         List<ReturnSequence> returnSequence) implements Sequence {
 }

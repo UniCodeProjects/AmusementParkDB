@@ -35,7 +35,10 @@ public final class UIDParser {
         final List<UIDSection> result = new ArrayList<>();
         sectionMap.keySet().forEach(key -> {
             final Collection<String> values = sectionMap.get(key);
-            final List<Sequence> valuesHashes = values.stream().map(ReturnSequence::getFromHash).toList();
+            final List<ReturnSequence> valuesHashes = values.stream()
+                    .map(ReturnSequence::getFromHash)
+                    .map(sequence -> (ReturnSequence) sequence)
+                    .toList();
             result.add(new UIDSection((PackageInterfaceSequence) PackageInterfaceSequence.getFromHash(key), valuesHashes));
         });
         return result;
