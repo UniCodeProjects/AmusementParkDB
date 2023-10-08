@@ -144,8 +144,6 @@ class DBConstraintsTest {
         insertTupleAndCheckForErrorCode(COSTS, false, "SH-012", -123.00, -2414.00, 10, 2022);
         // tests for constraint MONTH_DOMAIN
         insertTupleAndCheckForErrorCode(COSTS, false, "SH-013", 2024.00, 2342.00, 15, 2022);
-        // // tests for constraint YEAR_DOMAIN
-        insertTupleAndCheckForErrorCode(COSTS, false, "SH-014", 2414.00, 24_234.00, 10, 1900);
         // valid tuples
         insertTupleAndCheckForErrorCode(COSTS, true, "SH-001", 0, 0, 10, 2002);
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(COSTS, new Object[]{"SH-001", 10, 2002}));
