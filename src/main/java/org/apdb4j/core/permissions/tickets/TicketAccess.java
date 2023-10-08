@@ -27,4 +27,10 @@ public interface TicketAccess extends Access {
      */
     @NonNull AccessSetting getAccessOfTicketPunchDate();
 
+    /**
+     * The access permission for the {@code RemainingEntrances} attribute.
+     * @return the type of access
+     */
+    @NonNull AccessSetting getAccessOfTicketRemainingEntrances();
+
 }
