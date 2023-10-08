@@ -1,7 +1,8 @@
-package org.apdb4j.core.permissions;
+package org.apdb4j.core.permissions.uid;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.apdb4j.core.permissions.Access;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
