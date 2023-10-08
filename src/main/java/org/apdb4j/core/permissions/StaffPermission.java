@@ -394,14 +394,6 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessSetting getAccessOfSeasonTicketDuration() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public @NonNull AccessSetting getAccessOfSingleDayTicketValidOn() {
         return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
@@ -427,6 +419,14 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketPunchDate() {
+        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public @NonNull AccessSetting getAccessOfTicketRemainingEntrances() {
         return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 

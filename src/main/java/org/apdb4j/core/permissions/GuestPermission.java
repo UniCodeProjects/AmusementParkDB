@@ -226,16 +226,8 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      * {@inheritDoc}
      */
     @Override
-    public @NonNull AccessSetting getAccessOfSeasonTicketDuration() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public @NonNull AccessSetting getAccessOfSingleDayTicketValidOn() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);    // todo: only for the first time?
+        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -259,6 +251,14 @@ public class GuestPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketPunchDate() {
+        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public @NonNull AccessSetting getAccessOfTicketRemainingEntrances() {
         return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
