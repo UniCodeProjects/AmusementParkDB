@@ -45,7 +45,6 @@ create table COSTS (
      constraint COST_ID_CHECK check ((ShopID like 'SH%') or (ShopID like 'RE%')),
      constraint MONEY_DATA_NON_NEGATIVITY_CHECK check (Revenue >= 0 and Expenses >= 0),
      constraint MONTH_DOMAIN check (Month between 1 and 12),
-     constraint YEAR_DOMAIN check (Year >= 2000),
      constraint IDCOST primary key (ShopID, Month, Year));
 
 create table EXHIBITION_DETAILS (
@@ -326,5 +325,3 @@ alter table validations add constraint FKval_TIC
 alter table validations add constraint FKval_PUN
      foreign key (Date)
      references PUNCH_DATES (Date);
-
--- todo: add more strict checks for year values?
