@@ -4,11 +4,14 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.uid.DBPermissionUID;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.Table;
+import org.jooq.TableField;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -29,16 +32,21 @@ public class QueryBuilder {
 
     /**
      * Defines the access that allows the execution of the following query(ies).
-     * @param required the required permissions
+     * @param requiredTable the required table
+     * @param recordTableField the required table field
+     * @param values the required access setting values
      * @param actualAccountEmail the account's email used to check its permissions from the database
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the access objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Access required,
+    public QueryBuilder definePermissions(final @NonNull Access requiredAccess,
+                                          final @NonNull Table<Record> requiredTable,
+                                          final @NonNull TableField<Record, ?> recordTableField,
+                                          final @NonNull AccessSetting values,
                                           final @NonNull String actualAccountEmail) throws AccessDeniedException {
-        if (invalidAccess(required, actualAccountEmail)) {
-            throw new AccessDeniedException();
-        }
+//        if (invalidAccess(required, actualAccountEmail)) {
+//            throw new AccessDeniedException();
+//        }
         return this;
     }
 
@@ -153,8 +161,13 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidAccess(final @NonNull Access required, final @NonNull String actual) {
-        return !Objects.equals(new AppPermissionUID(required).getUid(), new DBPermissionUID(actual).getUid());
+    private boolean invalidAccess(final @NonNull Access requiredAccess,
+                                  final @NonNull Table<Record> requiredTable,
+                                  final @NonNull TableField<Record, ?> recordTableField,
+                                  final @NonNull AccessSetting values,
+                                  final @NonNull String actualAccountEmail) {
+        return !Objects.equals(new AppPermissionUID(requiredAccess).getUid(), new DBPermissionUID(actualAccountEmail).getUid())
+                && !Objects.equals(recordTableField.getTable(), requiredTable);
     }
 
     private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull String actual) {

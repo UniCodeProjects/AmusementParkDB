@@ -15,6 +15,10 @@ import org.apdb4j.core.permissions.tickets.SeasonTicketAccess;
 import org.apdb4j.core.permissions.tickets.SingleDayTicketAccess;
 import org.apdb4j.core.permissions.tickets.TicketTypeAccess;
 
+import java.util.Set;
+
+import static org.apdb4j.db.Tables.*;
+
 /**
  * Specifies the permissions for a staff account.
  */
@@ -27,7 +31,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfAccountEmail() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(ACCOUNTS.EMAIL, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -35,7 +39,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfAccountUsername() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -43,7 +47,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfAccountPassword() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
+        return AccessSetting.of(ACCOUNTS.PASSWORD, AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -51,7 +55,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfReviewID() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(REVIEWS.REVIEWID, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -59,7 +63,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfReviewRating() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(REVIEWS.RATING, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -67,7 +71,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfReviewDate() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(REVIEWS.DATE, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -75,7 +79,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfReviewTime() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(REVIEWS.TIME, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -83,7 +87,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfReviewDescription() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(REVIEWS.DESCRIPTION, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -91,7 +95,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfContractID() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -99,7 +103,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfContractSubscriptionDate() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(CONTRACTS.SUBSCRIPTIONDATE, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -107,7 +111,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfContractBeginAndEndDate() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(Set.of(CONTRACTS.BEGINDATE, CONTRACTS.ENDDATE), AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -115,7 +119,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfContractSalary() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(CONTRACTS.SALARY, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -123,7 +127,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfEmployeeRole() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.ROLE, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -131,7 +135,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfPersonID() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.STAFFID, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -139,7 +143,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfPersonName() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.NAME, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -147,7 +151,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfPersonSurname() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.SURNAME, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -155,7 +159,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfStaffNationalID() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.NATIONALID, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -163,7 +167,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfStaffDoB() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.DOB, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -171,7 +175,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfStaffBirthPlace() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.BIRTHPLACE, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -179,7 +183,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfStaffGender() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.NONE);
+        return AccessSetting.of(STAFF.GENDER, AccessType.Read.LOCAL, AccessType.Write.NONE);
     }
 
     /**
@@ -187,7 +191,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfExhibitionDate() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(EXHIBITION_DETAILS.DATE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -195,7 +199,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfExhibitionTime() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(EXHIBITION_DETAILS.TIME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -203,7 +207,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfExhibitionMaxSeats() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(EXHIBITION_DETAILS.MAXSEATS, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -211,7 +215,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfExhibitionSpectatorNum() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(EXHIBITION_DETAILS.SPECTATORS, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -219,7 +223,9 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfFacilityOpeningAndClosingTimes() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
+                AccessType.Read.GLOBAL,
+                AccessType.Write.NONE);
     }
 
     /**
@@ -227,7 +233,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfMaintenancePrice() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(MAINTENANCES.PRICE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -235,7 +241,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfMaintenanceDescription() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(MAINTENANCES.DESCRIPTION, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -243,7 +249,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfMaintenanceDate() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(MAINTENANCES.DATE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -251,7 +257,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfParkServiceID() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(PARK_SERVICES.PARKSERVICEID, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -259,7 +265,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfParkServiceName() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PARK_SERVICES.NAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -267,7 +273,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfParkServiceType() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PARK_SERVICES.TYPE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -275,7 +281,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfParkServiceDescription() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PARK_SERVICES.DESCRIPTION, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -283,7 +289,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfPicturePath() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PICTURES.PATH, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -291,7 +297,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideIntensity() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(RIDES.INTENSITY, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -299,7 +305,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideDuration() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(RIDES.DURATION, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -307,7 +313,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideMaxSeats() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(RIDES.MAXSEATS, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -315,7 +321,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideHeightValues() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(Set.of(RIDES.MINHEIGHT, RIDES.MAXHEIGHT), AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -323,7 +329,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideWeightValues() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(Set.of(RIDES.MINWEIGHT, RIDES.MAXWEIGHT), AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -331,7 +337,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideStatus() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(RIDE_DETAILS.STATUS, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -339,7 +345,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfRideWaitTime() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(RIDE_DETAILS.ESTIMATEDWAITTIME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -347,7 +353,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfShopRevenue() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
+        return AccessSetting.of(COSTS.REVENUE, AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -355,7 +361,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfShopExpenses() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
+        return AccessSetting.of(COSTS.EXPENSES, AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -363,7 +369,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfShopMonth() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
+        return AccessSetting.of(COSTS.MONTH, AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -371,7 +377,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfShopYear() {
-        return new ImmutableAccessSetting(AccessType.Read.LOCAL, AccessType.Write.LOCAL);
+        return AccessSetting.of(COSTS.YEAR, AccessType.Read.LOCAL, AccessType.Write.LOCAL);
     }
 
     /**
@@ -379,7 +385,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfPriceListYear() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PRICE_LISTS.YEAR, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -387,7 +393,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfSeasonTicketValidUntil() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKETS.VALIDUNTIL, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -395,7 +401,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfSingleDayTicketValidOn() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKETS.VALIDON, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -403,7 +409,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketID() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.NONE);
+        return AccessSetting.of(TICKETS.TICKETID, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }
 
     /**
@@ -411,7 +417,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketPurchaseDate() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKETS.PURCHASEDATE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -419,7 +425,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketPunchDate() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(PUNCH_DATES.DATE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -427,7 +433,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketRemainingEntrances() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKETS.REMAININGENTRANCES, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -435,7 +441,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketTypePrice() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKET_TYPES.PRICE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -443,7 +449,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketTypeType() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKET_TYPES.TYPE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -451,7 +457,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketTypeTarget() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKET_TYPES.CATEGORY, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
     /**
@@ -459,7 +465,7 @@ public class StaffPermission extends AbstractPermission implements AccountAccess
      */
     @Override
     public @NonNull AccessSetting getAccessOfTicketTypeDuration() {
-        return new ImmutableAccessSetting(AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+        return AccessSetting.of(TICKET_TYPES.DURATION, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
     }
 
 }
