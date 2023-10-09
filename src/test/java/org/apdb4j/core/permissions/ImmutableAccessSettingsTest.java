@@ -2,6 +2,8 @@ package org.apdb4j.core.permissions;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jooq.Record;
+import org.jooq.TableField;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -18,7 +20,7 @@ class ImmutableAccessSettingsTest {
     private static final Pair<AccessType.Write, Set<Class<? extends Access>>> WRITE = Pair.of(
             AccessType.Write.GLOBAL,
             Set.of(AdminPermission.class));
-    private static final AccessSetting ACCESS_SETTINGS = new ImmutableAccessSetting(READ, WRITE);
+    private static final AccessSetting ACCESS_SETTINGS = new ImmutableAccessSetting((TableField<Record, ?>) null, READ, WRITE);
 
     @Test
     void testSetAccess() {

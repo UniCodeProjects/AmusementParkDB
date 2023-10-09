@@ -3,6 +3,8 @@ package org.apdb4j.core.permissions;
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jooq.Record;
+import org.jooq.TableField;
 
 import java.util.Collections;
 import java.util.Set;
@@ -12,17 +14,21 @@ import java.util.Set;
  */
 public class ImmutableAccessSetting implements AccessSetting {
 
+    private final Set<TableField<Record, ?>> attributes;
     private final Pair<
             Pair<AccessType.Read, Set<Class<? extends Access>>>,
             Pair<AccessType.Write, Set<Class<? extends Access>>>> pair;
 
     /**
      * Creates an immutable access settings object.
+     * @param attribute the attribute related to the access setting
      * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
      */
-    public ImmutableAccessSetting(final @NonNull Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+    public ImmutableAccessSetting(final @NonNull TableField<Record, ?> attribute,
+                                  final @NonNull Pair<AccessType.Read, Set<Class<? extends Access>>> read,
                                   final @NonNull Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
+        attributes = Set.of(attribute);
         pair = new ImmutablePair<>(
                 new ImmutablePair<>(
                         read.getLeft(),
@@ -34,32 +40,93 @@ public class ImmutableAccessSetting implements AccessSetting {
 
     /**
      * Creates an immutable access settings object.
-     * @param read a pair containing the {@code READ} or {@code NONE} access type.
-     * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
+     * @param attributes the attributes related to the access setting
+     * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
+     * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
      */
-    public ImmutableAccessSetting(final AccessType.Read read,
-                                  final AccessType.Write write) {
-        this(Pair.of(read, Collections.emptySet()), Pair.of(write, Collections.emptySet()));
+    public ImmutableAccessSetting(final @NonNull Set<TableField<Record, ?>> attributes,
+                                  final @NonNull Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+                                  final @NonNull Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
+        this.attributes = Set.copyOf(attributes);
+        pair = new ImmutablePair<>(
+                new ImmutablePair<>(
+                        read.getLeft(),
+                        Set.copyOf(read.getRight())),
+                new ImmutablePair<>(
+                        write.getLeft(),
+                        Set.copyOf(write.getRight())));
     }
 
     /**
      * Creates an immutable access settings object.
+     * @param attribute the attribute related to the access setting
+     * @param read a pair containing the {@code READ} or {@code NONE} access type.
+     * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
+     */
+    public ImmutableAccessSetting(final TableField<Record, ?> attribute,
+                                  final AccessType.Read read,
+                                  final AccessType.Write write) {
+        this(attribute, Pair.of(read, Collections.emptySet()), Pair.of(write, Collections.emptySet()));
+    }
+
+    /**
+     * Creates an immutable access settings object.
+     * @param attributes the attributes related to the access setting
+     * @param read a pair containing the {@code READ} or {@code NONE} access type.
+     * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
+     */
+    public ImmutableAccessSetting(final Set<TableField<Record, ?>> attributes,
+                                  final AccessType.Read read,
+                                  final AccessType.Write write) {
+        this(attributes, Pair.of(read, Collections.emptySet()), Pair.of(write, Collections.emptySet()));
+    }
+
+    /**
+     * Creates an immutable access settings object.
+     * @param attribute the attribute related to the access setting
      * @param read a pair containing the {@code READ} or {@code NONE} access type.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
      */
-    public ImmutableAccessSetting(final AccessType.Read read,
+    public ImmutableAccessSetting(final TableField<Record, ?> attribute,
+                                  final AccessType.Read read,
                                   final Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
-        this(Pair.of(read, Collections.emptySet()), write);
+        this(attribute, Pair.of(read, Collections.emptySet()), write);
     }
 
     /**
      * Creates an immutable access settings object.
+     * @param attributes the attributes related to the access setting
+     * @param read a pair containing the {@code READ} or {@code NONE} access type.
+     * @param write a pair containing the {@code WRITE} or {@code NONE} access type and its targets.
+     */
+    public ImmutableAccessSetting(final Set<TableField<Record, ?>> attributes,
+                                  final AccessType.Read read,
+                                  final Pair<AccessType.Write, Set<Class<? extends Access>>> write) {
+        this(attributes, Pair.of(read, Collections.emptySet()), write);
+    }
+
+    /**
+     * Creates an immutable access settings object.
+     * @param attribute the attribute related to the access setting
      * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
      * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
      */
-    public ImmutableAccessSetting(final Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+    public ImmutableAccessSetting(final TableField<Record, ?> attribute,
+                                  final Pair<AccessType.Read, Set<Class<? extends Access>>> read,
                                   final AccessType.Write write) {
-        this(read, Pair.of(write, Collections.emptySet()));
+        this(attribute, read, Pair.of(write, Collections.emptySet()));
+    }
+
+    /**
+     * Creates an immutable access settings object.
+     * @param attributes the attributes related to the access setting
+     * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets.
+     * @param write a pair containing the {@code WRITE} or {@code NONE} access type.
+     */
+    public ImmutableAccessSetting(final Set<TableField<Record, ?>> attributes,
+                                  final Pair<AccessType.Read, Set<Class<? extends Access>>> read,
+                                  final AccessType.Write write) {
+        this(attributes, read, Pair.of(write, Collections.emptySet()));
     }
 
     /**
@@ -94,6 +161,25 @@ public class ImmutableAccessSetting implements AccessSetting {
     public @NonNull Pair<AccessType.Write, Set<Class<? extends Access>>> getWriteAccess() {
         final var write = pair.getRight();
         return new ImmutablePair<>(write.getLeft(), write.getRight());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public @NonNull TableField<Record, ?> getAttribute() {
+        if (attributes.size() != 1) {
+            throw new IllegalStateException();
+        }
+        return attributes.iterator().next();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public @NonNull Set<TableField<Record, ?>> getAttributes() {
+        return Set.copyOf(attributes);
     }
 
 }
