@@ -34,7 +34,7 @@ create table CONTRACTS (
      constraint CONTRACTID_FORMAT check (ContractID like 'C%'),
      constraint DATES_CONSISTENCY_1 check (SubscriptionDate <= BeginDate),
      constraint DATES_CONSISTENCY_2 check (EndDate is null or (BeginDate < EndDate)),
-     constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0)); -- TODO: should this check be more strict?
+     constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0));
 
 create table COSTS (
      ShopID char(6) not null,
@@ -82,7 +82,6 @@ create table MAINTENANCES (
      Price decimal(8,2) not null,
      Description varchar(4000) not null,
      Date date not null,
-     -- TODO: add check for Date? A maintenance can be carried out only by employees that have a valid contract in that date!
      constraint IDMAINTENANCE_ID primary key (FacilityID, Date),
      constraint PRICE_NOT_NEGATIVITY_CHECK check (Price >= 0));
 
@@ -184,7 +183,7 @@ create table STAFF (
      constraint IDSTAFF primary key (NationalID),
      constraint IDSTAFF_1 unique (StaffID),
      constraint FKR_ID unique (Email), 
-     constraint GENDER_DOMAIN check (Gender in ('M', 'F')), -- TODO: best way to do this?
+     constraint GENDER_DOMAIN check (Gender in ('M', 'F')),
      constraint ROLE_CHECK check ((Role is null and isAdmin = true) or (Role is not null and isEmployee = true)),
      constraint FLAGS_CONSISTENCY check ((isAdmin = true and isEmployee = false) or (isAdmin = false and isEmployee = true)));
 
@@ -201,7 +200,7 @@ create table TICKET_TYPES (
      constraint CATEGORY_DOMAIN check (Category in ('Senior', 'Kids', 'Adults', 'Disable')),
      constraint PRICE_NON_NEGATIVITY_CHECK check (Price > 0));
 
-create table TICKETS ( -- TODO: add check for RemainingEntrances in order that its valus is <= to TICKET_TYPE.Duration?
+create table TICKETS (
      TicketID char(65) not null,
      PurchaseDate date not null,
      ValidOn date,
@@ -211,7 +210,6 @@ create table TICKETS ( -- TODO: add check for RemainingEntrances in order that i
      constraint IDTICKET_ID primary key (TicketID),
      constraint TICKETID_FORMAT check (TicketID like 'T%'),
      constraint PURCHASE_DATE_CHK check ((ValidOn is not null and PurchaseDate <= ValidOn) or (ValidUntil is not null and PurchaseDate <= ValidUntil)),
-     -- todo: add constraint that states that remainingEntrances cannot be greater than 1 if purchaseDate == validOn?
      constraint TICKET_TYPE_CHK check ((ValidOn is not null and ValidUntil is null) or (ValidOn is null and ValidUntil is not null)));
 
 create table validations (
