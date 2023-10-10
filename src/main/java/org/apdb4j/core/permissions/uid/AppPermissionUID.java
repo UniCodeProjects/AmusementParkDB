@@ -8,7 +8,8 @@ import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.AllAccess;
-import org.apdb4j.core.permissions.ImmutableAccessSetting;
+import org.apdb4j.core.permissions.ImmutableGlobalAccessSetting;
+import org.apdb4j.core.permissions.ImmutableNoneAccessSetting;
 import org.apdb4j.util.QueryBuilder;
 import org.reflections.Reflections;
 
@@ -113,7 +114,8 @@ public class AppPermissionUID implements PermissionUID {
 
     private String getReturnSequenceOf(final Class<? extends Access> actualInterface,
                                        final AccessType.Read type, final AccessType.Write type2) {
-        final AccessSetting sequence = new ImmutableAccessSetting(type, type2);
+        final AccessSetting sequence = type.equals(AccessType.Read.GLOBAL) && type2.equals(AccessType.Write.GLOBAL)
+                ? new ImmutableGlobalAccessSetting() : new ImmutableNoneAccessSetting();
         final String result = (new ReturnSequence(sequence).getHash() + RETURN_SEQUENCE_SEPARATOR)
                 .repeat(actualInterface.getDeclaredMethods().length);
         return result.substring(0, result.length() - 1);
