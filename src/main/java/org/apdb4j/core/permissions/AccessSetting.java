@@ -6,6 +6,7 @@ import org.jooq.Record;
 import org.jooq.TableField;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -155,12 +156,12 @@ public interface AccessSetting {
      * Retrieves the attribute referred to te access setting.
      * @return the attribute
      */
-    @NonNull TableField<Record, ?> getAttribute();
+    @NonNull Optional<TableField<Record, ?>> getAttribute();
 
     /**
      * Retrieves the attributes referred to te access setting.
      * @return the attributes
      */
-    @NonNull Set<TableField<Record, ?>> getAttributes();
+    @NonNull Optional<Set<TableField<Record, ?>>> getAttributes();
 
 }

@@ -32,6 +32,7 @@ public class QueryBuilder {
 
     /**
      * Defines the access that allows the execution of the following query(ies).
+     * @param requiredAccess the required permission
      * @param requiredTable the required table
      * @param recordTableField the required table field
      * @param values the required access setting values

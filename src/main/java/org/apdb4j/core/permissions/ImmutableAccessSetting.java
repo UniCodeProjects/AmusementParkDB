@@ -7,6 +7,7 @@ import org.jooq.Record;
 import org.jooq.TableField;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -167,19 +168,16 @@ public class ImmutableAccessSetting implements AccessSetting {
      * {@inheritDoc}
      */
     @Override
-    public @NonNull TableField<Record, ?> getAttribute() {
-        if (attributes.size() != 1) {
-            throw new IllegalStateException();
-        }
-        return attributes.iterator().next();
+    public @NonNull Optional<TableField<Record, ?>> getAttribute() {
+        return attributes.size() == 1 ? Optional.of(attributes.iterator().next()) : Optional.empty();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public @NonNull Set<TableField<Record, ?>> getAttributes() {
-        return Set.copyOf(attributes);
+    public @NonNull Optional<Set<TableField<Record, ?>>> getAttributes() {
+        return Optional.of(Set.copyOf(attributes));
     }
 
 }

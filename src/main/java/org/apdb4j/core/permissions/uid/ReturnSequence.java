@@ -9,6 +9,7 @@ import org.apdb4j.core.permissions.AccessType;
 import org.jooq.Record;
 import org.jooq.TableField;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Set;
 public final class ReturnSequence extends HashableSequence implements Sequence {
 
     private final String hash;
-    private final TableField<Record, ?> attribute;
+    private final Optional<TableField<Record, ?>> attribute;
     private final AccessType.Read read;
     private final AccessType.Write write;
     private final Set<Class<? extends Access>> readTargets;
