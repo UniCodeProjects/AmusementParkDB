@@ -2,11 +2,17 @@ package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessSetting;
+import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.uid.DBPermissionUID;
+import org.apdb4j.core.permissions.uid.PackageInterfaceSequence;
+import org.apdb4j.core.permissions.uid.ReturnSequence;
+import org.apdb4j.core.permissions.uid.Sequence;
+import org.apdb4j.core.permissions.uid.UID;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -18,7 +24,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -41,13 +49,12 @@ public class QueryBuilder {
      * @throws AccessDeniedException when the access objects are incompatible
      */
     public QueryBuilder definePermissions(final @NonNull Access requiredAccess,
-                                          final @NonNull Table<Record> requiredTable,
                                           final @NonNull TableField<Record, ?> recordTableField,
                                           final @NonNull AccessSetting values,
                                           final @NonNull String actualAccountEmail) throws AccessDeniedException {
-//        if (invalidAccess(required, actualAccountEmail)) {
-//            throw new AccessDeniedException();
-//        }
+        if (invalidAccess(requiredAccess, recordTableField, values, actualAccountEmail)) {
+            throw new AccessDeniedException();
+        }
         return this;
     }
 
@@ -163,12 +170,50 @@ public class QueryBuilder {
     }
 
     private boolean invalidAccess(final @NonNull Access requiredAccess,
-                                  final @NonNull Table<Record> requiredTable,
                                   final @NonNull TableField<Record, ?> recordTableField,
                                   final @NonNull AccessSetting values,
                                   final @NonNull String actualAccountEmail) {
-        return !Objects.equals(new AppPermissionUID(requiredAccess).getUid(), new DBPermissionUID(actualAccountEmail).getUid())
-                && !Objects.equals(recordTableField.getTable(), requiredTable);
+        final UID uidFromDb;
+        try {
+            uidFromDb = new DBPermissionUID(actualAccountEmail).getUid();
+        } catch (final NoSuchElementException e) {
+            System.out.println("Catching...");
+            return true;
+        }
+        if (Objects.equals(new AppPermissionUID(requiredAccess).getUid(), uidFromDb)) {
+            System.out.println("UID !=");
+            return false;
+        }
+        // TODO: null pointer from getInterface.
+        final var interfaceFromHash = ((PackageInterfaceSequence) PackageInterfaceSequence.getFromHash(uidFromDb.uid())).getInterface();
+        if (interfaceFromHash.equals(requiredAccess.getClass())) {
+            return false;
+        }
+        final ReturnSequence returnSequenceFromHash = (ReturnSequence) ReturnSequence.getFromHash(uidFromDb.uid());
+        final Optional<TableField<Record, ?>> attributeFromHash = returnSequenceFromHash.getAttribute();
+        if (attributeFromHash.isPresent() && attributeFromHash.get().equals(recordTableField)
+                && values.getReadAccess().equals(getReadAccessFromDb(uidFromDb, returnSequenceFromHash))
+                && values.getWriteAccess().equals(getWriteAccessFromDb(uidFromDb, returnSequenceFromHash))) {
+            return false;
+        }
+        if (attributeFromHash.isEmpty()
+                && values.getReadAccess().equals(getReadAccessFromDb(uidFromDb, returnSequenceFromHash))
+                && values.getWriteAccess().equals(getWriteAccessFromDb(uidFromDb, returnSequenceFromHash))) {
+            return false;
+        }
+        return true;
+    }
+
+    private Pair<AccessType.Read, Set<Class<? extends Access>>> getReadAccessFromDb(final UID uid, final Sequence returnSequence) {
+        final AccessType.Read readFromHash = ((ReturnSequence) returnSequence).getRead();
+        final Set<Class<? extends Access>> readTargetsFromHash = ((ReturnSequence) ReturnSequence.getFromHash(uid.uid())).getReadTargets();
+        return Pair.of(readFromHash, readTargetsFromHash);
+    }
+
+    private Pair<AccessType.Write, Set<Class<? extends Access>>> getWriteAccessFromDb(final UID uid, final Sequence returnSequence) {
+        final AccessType.Write writeFromHash = ((ReturnSequence) returnSequence).getWrite();
+        final Set<Class<? extends Access>> writeTargetsFromHash = ((ReturnSequence) ReturnSequence.getFromHash(uid.uid())).getWriteTargets();
+        return Pair.of(writeFromHash, writeTargetsFromHash);
     }
 
     private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull String actual) {

@@ -7,6 +7,8 @@ import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
 
+import java.util.NoSuchElementException;
+
 import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.PERMISSIONS;
 
@@ -25,7 +27,18 @@ public class DBPermissionUID implements PermissionUID {
      * Retrieves the UID associated with an account.
      * @param accountEmail the account's email from where to get the UID
      */
-    public DBPermissionUID(final @NonNull String accountEmail) {
+    public DBPermissionUID(final @NonNull String accountEmail) throws NoSuchElementException {
+        final int accountsFound = new QueryBuilder()
+                .createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.EMAIL.eq(accountEmail))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt();
+        if (accountsFound == 0) {
+            throw new NoSuchElementException();
+        }
         final String type = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.select(ACCOUNTS.PERMISSIONTYPE)
@@ -34,7 +47,9 @@ public class DBPermissionUID implements PermissionUID {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords()
-                .get(0)
+                .stream().filter(record -> record.size() > 0)
+                .findFirst()
+                .orElseThrow()
                 .getValue(ACCOUNTS.PERMISSIONTYPE);
         final Result<Record> uid = new QueryBuilder()
                 .createConnection()
