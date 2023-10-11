@@ -31,43 +31,44 @@ class DBConstraintsTest {
     private static final Collection<Pair<Table<Record>, Object[]>> TUPLES_TO_REMOVE = new ArrayList<>();
     private static final String EXHIBITIONID_SAMPLE = "EX-001";
     private static final String RIDEID_SAMPLE = "RI-001";
+    private static final String PERMISSION_TYPE_SAMPLE = "Guest";
 
     @Test
     void accountsConstraintsTest() {
         final var correctUsernameSample = "bar.bar";
         final var correctPasswordSample = "12345678";
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@gmail.com", correctUsernameSample, "bar", null);
+                "bar@gmail.com", correctUsernameSample, "bar", PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bargmail.com", correctUsernameSample, correctPasswordSample, null);
+                "bargmail.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
                 // "bar@gmailcom", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bAR@gmail.com", correctUsernameSample, correctPasswordSample, null);
+                "bAR@gmail.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@gmAIL.com", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmAIL.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@gmail.cOM", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.cOM", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "b-ar@gmail.com", correctUsernameSample, correctPasswordSample, null);
+                "b-ar@gmail.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@g-mail.com", correctUsernameSample, correctPasswordSample, null);
+                "bar@g-mail.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
                 // "bar@gmail.c-om", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@gmail.c", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.c", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
                 // "bar@gmail", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@gmail.", correctUsernameSample, correctPasswordSample, null);
+                "bar@gmail.", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar", correctUsernameSample, correctPasswordSample, null);
+                "bar", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         insertTupleAndCheckForErrorCode(ACCOUNTS, false,
-                "bar@", correctUsernameSample, correctPasswordSample, null);
+                "bar@", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         // insertTupleAndCheckForErrorCode(ACCOUNTS, false,
                 // "bar@.com", correctUsernameSample, correctPasswordSample, null); // problem
         insertTupleAndCheckForErrorCode(ACCOUNTS, true,
-                "bar_.02%@gmail.com", correctUsernameSample, correctPasswordSample, null);
+                "bar_.02%@gmail.com", correctUsernameSample, correctPasswordSample, PERMISSION_TYPE_SAMPLE);
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(ACCOUNTS, new Object[]{"bar_.02%@gmail.com"}));
     }
 
@@ -540,13 +541,20 @@ class DBConstraintsTest {
     void staffConstraintsTest() {
         final var accountsNum = 7;
         // tuples inserted only for tests
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo1@gmail.com", "foo1.foo1", "foo1foo1foo1", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo2@gmail.com", "foo2.foo2", "foo2foo2foo2", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo3@gmail.com", "foo3.foo3", "foo3foo3foo3", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo4@gmail.com", "foo4.foo4", "foo4foo4foo4", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo5@gmail.com", "foo5.foo5", "foo5foo5foo5", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo6@gmail.com", "foo6.foo6", "foo6foo6foo6", null);
-        insertTupleAndCheckForErrorCode(ACCOUNTS, true, "foo7@gmail.com", "foo7.foo7", "foo7foo7foo7", null);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo1@gmail.com", "foo1.foo1", "foo1foo1foo1", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo2@gmail.com", "foo2.foo2", "foo2foo2foo2", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo3@gmail.com", "foo3.foo3", "foo3foo3foo3", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo4@gmail.com", "foo4.foo4", "foo4foo4foo4", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo5@gmail.com", "foo5.foo5", "foo5foo5foo5", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo6@gmail.com", "foo6.foo6", "foo6foo6foo6", PERMISSION_TYPE_SAMPLE);
+        insertTupleAndCheckForErrorCode(ACCOUNTS, true,
+                "foo7@gmail.com", "foo7.foo7", "foo7foo7foo7", PERMISSION_TYPE_SAMPLE);
 
         // test for constraint GENDER_DOMAIN
         insertTupleAndCheckForErrorCode(STAFF, false,

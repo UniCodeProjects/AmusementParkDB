@@ -8,7 +8,7 @@ create table ACCOUNTS (
      Email varchar(256) not null,
      Username varchar(30),
      Password varchar(30),
-     PermissionType varchar(30) /*not null*/, -- TODO: make null for deployment
+     PermissionType varchar(30) not null,
      constraint IDACCOUNT primary key (Email),
      constraint IDACCOUNT_1 unique (Username),
      constraint EMAIL_FORMAT check (regexp_like(Email, '^([a-z0-9._%]+@[a-z0-9.]+\.[a-z]{2,})$', 'c')),
