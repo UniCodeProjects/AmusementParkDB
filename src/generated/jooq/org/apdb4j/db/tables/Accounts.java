@@ -135,7 +135,6 @@ public class Accounts extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
-            Internal.createCheck(this, DSL.name("EMAIL_FORMAT"), "regexp_like(`Email`,_utf8mb4\\'^([a-z0-9._%]+@[a-z0-9.]+.[a-z]{2,})$\\',_utf8mb4\\'c\\')", true),
             Internal.createCheck(this, DSL.name("PSW_LENGTH"), "(length(`Password`) >= 8)", true)
         );
     }

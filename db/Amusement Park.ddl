@@ -11,7 +11,6 @@ create table ACCOUNTS (
      PermissionType varchar(30) not null,
      constraint IDACCOUNT primary key (Email),
      constraint IDACCOUNT_1 unique (Username),
-     constraint EMAIL_FORMAT check (regexp_like(Email, '^([a-z0-9._%]+@[a-z0-9.]+\.[a-z]{2,})$', 'c')),
      constraint PSW_LENGTH check (length(Password) >= 8));
 
 create table attributions (
