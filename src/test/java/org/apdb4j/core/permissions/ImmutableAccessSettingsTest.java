@@ -38,4 +38,16 @@ class ImmutableAccessSettingsTest {
         assertInstanceOf(ImmutablePair.class, ACCESS_SETTINGS.getWriteAccess());
     }
 
+    @Test
+    void testAttributePresence() {
+        assertTrue(ACCESS_SETTINGS.getAttribute().isPresent());
+        assertTrue(ACCESS_SETTINGS.getAttributes().isPresent());
+        final var a1 = new ImmutableGlobalAccessSetting();
+        assertTrue(a1.getAttribute().isEmpty());
+        assertTrue(a1.getAttributes().isEmpty());
+        final var a2 = new ImmutableNoneAccessSetting();
+        assertTrue(a2.getAttribute().isEmpty());
+        assertTrue(a2.getAttributes().isEmpty());
+    }
+
 }
