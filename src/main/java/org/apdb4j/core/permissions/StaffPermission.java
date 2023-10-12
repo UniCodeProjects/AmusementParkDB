@@ -17,7 +17,22 @@ import org.apdb4j.core.permissions.tickets.TicketTypeAccess;
 
 import java.util.Set;
 
-import static org.apdb4j.db.Tables.*;
+import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.COSTS;
+import static org.apdb4j.db.Tables.EXHIBITION_DETAILS;
+import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.MAINTENANCES;
+import static org.apdb4j.db.Tables.PARK_SERVICES;
+import static org.apdb4j.db.Tables.PICTURES;
+import static org.apdb4j.db.Tables.PRICE_LISTS;
+import static org.apdb4j.db.Tables.PUNCH_DATES;
+import static org.apdb4j.db.Tables.REVIEWS;
+import static org.apdb4j.db.Tables.RIDES;
+import static org.apdb4j.db.Tables.RIDE_DETAILS;
+import static org.apdb4j.db.Tables.STAFF;
+import static org.apdb4j.db.Tables.TICKETS;
+import static org.apdb4j.db.Tables.TICKET_TYPES;
 
 /**
  * Specifies the permissions for a staff account.
