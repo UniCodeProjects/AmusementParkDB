@@ -37,7 +37,7 @@ import static org.apdb4j.db.Tables.TICKET_TYPES;
 /**
  * Specifies the permissions for a staff account.
  */
-public class StaffPermission extends AbstractPermission implements AccountAccess, ReviewAccess, ContractAccess,
+public class StaffPermission implements AccountAccess, ReviewAccess, ContractAccess,
         EmployeeAccess, ExhibitionAccess, RideAccess, ShopAccess, MaintenanceAccess, PictureAccess, PriceListAccess,
         SeasonTicketAccess, SingleDayTicketAccess, TicketTypeAccess {
 

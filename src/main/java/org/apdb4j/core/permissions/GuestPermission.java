@@ -26,7 +26,7 @@ import static org.apdb4j.db.Tables.TICKET_TYPES;
 /**
  * Specifies the permissions for a guest account.
  */
-public class GuestPermission extends AbstractPermission implements AccountAccess, ReviewAccess, ExhibitionAccess, RideAccess,
+public class GuestPermission implements AccountAccess, ReviewAccess, ExhibitionAccess, RideAccess,
         SeasonTicketAccess, SingleDayTicketAccess, TicketTypeAccess {
 
     /**
