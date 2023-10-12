@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
+import lombok.ToString;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.Record;
 import org.jooq.TableField;
@@ -12,6 +13,7 @@ import java.util.Set;
  * An immutable access setting with all {@code AccessTypes} set to {@code NONE}.
  * @see AccessType
  */
+@ToString
 public class ImmutableNoneAccessSetting implements AccessSetting {
 
     private final AccessType.Read read;

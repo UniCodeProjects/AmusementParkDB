@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
+import lombok.ToString;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jooq.Record;
@@ -13,6 +14,7 @@ import java.util.Set;
 /**
  * An immutable AccessSettings. Set methods will throw an UnsupportedOperationException.
  */
+@ToString
 public class ImmutableAccessSetting implements AccessSetting {
 
     private final Set<TableField<Record, ?>> attributes;
