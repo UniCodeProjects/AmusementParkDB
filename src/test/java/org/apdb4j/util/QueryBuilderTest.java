@@ -71,4 +71,26 @@ class QueryBuilderTest {
                         AccessType.Write.NONE))));
     }
 
+    @Test
+    void accessDeniedBySetTest() {
+        final var set = Set.of(
+                Pair.of(
+                        new QueryBuilder.CheckingValues(new StaffPermission(), "mariorossi@gmail.com"),
+                        new QueryBuilder.ActualValues(AccessSetting.of(ACCOUNTS.USERNAME,
+                                AccessType.Read.GLOBAL,
+                                AccessType.Write.GLOBAL))),
+                Pair.of(
+                        new QueryBuilder.CheckingValues(new AdminPermission(), "sofiaverdi@gmail.com"),
+                        new QueryBuilder.ActualValues(AccessSetting.of(PICTURES.PATH,
+                                AccessType.Read.GLOBAL,
+                                AccessType.Write.GLOBAL))),
+                Pair.of(
+                        new QueryBuilder.CheckingValues(new GuestPermission(), "alessandrogialli@gmail.com"),
+                        new QueryBuilder.ActualValues(AccessSetting.of(ACCOUNTS.EMAIL,
+                                AccessType.Read.GLOBAL,
+                                Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class)))))
+        );
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(set));
+    }
+
 }
