@@ -5,6 +5,8 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.apdb4j.core.permissions.Access;
 
+import java.util.Objects;
+
 /**
  * Represents the UID section that contains the package and interface information.
  */
@@ -40,6 +42,30 @@ public class PackageInterfaceSequence extends HashableSequence implements Sequen
      */
     public @NonNull Class<? extends Access> getInterface() {
         return aInterface;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final PackageInterfaceSequence that = (PackageInterfaceSequence) o;
+        return Objects.equals(hash, that.hash) && Objects.equals(aPackage, that.aPackage)
+                && Objects.equals(aInterface, that.aInterface);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(hash, aPackage, aInterface);
     }
 
 }
