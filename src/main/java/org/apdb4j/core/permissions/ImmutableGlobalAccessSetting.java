@@ -30,6 +30,7 @@ public class ImmutableGlobalAccessSetting implements AccessSetting {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("CPD-START")
     @Override
     public void setReadAccess(final AccessType.Read type, final Set<Class<? extends Access>> targets) {
         throw new UnsupportedOperationException();
@@ -70,6 +71,7 @@ public class ImmutableGlobalAccessSetting implements AccessSetting {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("CPD-END")
     @Override
     public @NonNull Optional<Set<TableField<Record, ?>>> getAttributes() {
         return Optional.empty();
