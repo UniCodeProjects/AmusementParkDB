@@ -13,7 +13,7 @@ import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.PERMISSIONS;
 
 /**
- * Represents an UID (Unique ID) for a set of access settings (permission).
+ * Represents an UID (Unique ID) for a set of requiredPermission settings (permission).
  * It represents the database-side permission UID.
  * @see Access
  */
@@ -24,10 +24,11 @@ public class DBPermissionUID implements PermissionUID {
     private static final String CLASS_NAME_PATTERN_TO_MATCH = "Permission";
 
     /**
-     * Retrieves the UID associated with an account.
+     * Retrieves the UID associated with an account.<br>
+     * A {@link NoSuchElementException} is thrown if no account is linked to the given email.
      * @param accountEmail the account's email from where to get the UID
      */
-    public DBPermissionUID(final @NonNull String accountEmail) throws NoSuchElementException {
+    public DBPermissionUID(final @NonNull String accountEmail) {
         final int accountsFound = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.selectCount()
