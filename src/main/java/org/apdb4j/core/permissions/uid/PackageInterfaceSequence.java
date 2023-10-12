@@ -1,6 +1,7 @@
 package org.apdb4j.core.permissions.uid;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 import org.apdb4j.core.permissions.Access;
 
@@ -19,7 +20,7 @@ public class PackageInterfaceSequence extends HashableSequence implements Sequen
      * @param aPackage the package
      * @param aInterface the interface
      */
-    public PackageInterfaceSequence(final Package aPackage, final Class<? extends Access> aInterface) {
+    public PackageInterfaceSequence(final @NonNull Package aPackage, final @NonNull Class<? extends Access> aInterface) {
         this.aPackage = aPackage;
         this.aInterface = aInterface;
         hash = generateHash(this, aPackage.getName() + aInterface.getName());
@@ -29,7 +30,7 @@ public class PackageInterfaceSequence extends HashableSequence implements Sequen
      * Retrieves the package contained in the sequence.
      * @return the package
      */
-    public Package getPackage() {
+    public @NonNull Package getPackage() {
         return aPackage;
     }
 
@@ -37,7 +38,7 @@ public class PackageInterfaceSequence extends HashableSequence implements Sequen
      * Retrieves the interface contained in the sequence.
      * @return the interface
      */
-    public Class<? extends Access> getInterface() {
+    public @NonNull Class<? extends Access> getInterface() {
         return aInterface;
     }
 
