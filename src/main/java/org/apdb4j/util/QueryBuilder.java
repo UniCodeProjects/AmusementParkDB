@@ -1,7 +1,9 @@
 package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.Getter;
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessSetting;
@@ -20,7 +22,6 @@ import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -53,14 +54,13 @@ public class QueryBuilder {
 
     /**
      * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param required the required permissions
-     * @param actualAccountEmail the account's email used to check its permissions from the database
+     * @param checkingAndActualValues a set of pairs containing the {@link CheckingValues} and {@link ActualValues}
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Set<Access> required,
-                                          final @NonNull String actualAccountEmail) throws AccessDeniedException {
-        if (invalidAccess(required, actualAccountEmail)) {
+    public QueryBuilder definePermissions(final @NonNull Set<Pair<CheckingValues, ActualValues>> checkingAndActualValues)
+            throws AccessDeniedException {
+        if (invalidAccess(checkingAndActualValues)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -177,13 +177,7 @@ public class QueryBuilder {
         }
         final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
         // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
-        final boolean isAdmin = parsed.stream()
-                .map(UIDSection::returnSequence)
-                .allMatch(returnSequences -> returnSequences.stream()
-                        .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
-                                && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
-                                && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
-        if (isAdmin) {
+        if (isAdmin(parsed)) {
             return false;
         }
         // Otherwise, it is a normal permission.
@@ -191,14 +185,22 @@ public class QueryBuilder {
                 .map(UIDSection::returnSequence)
                 .flatMap(Collection::stream)
                 .toList();
-        return actualValues.getValues().stream()
-                .allMatch(accessSetting -> returnSequences.stream()
-                        .noneMatch(sequence -> sequence.equals(new ReturnSequence(accessSetting))));
+        return returnSequences.stream()
+                .noneMatch(returnSequence -> returnSequence.equals(new ReturnSequence(actualValues.values)));
     }
 
-    private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull String actual) {
-        return required.stream()
-                .noneMatch(req -> Objects.equals(new AppPermissionUID(req).getUid(), new DBPermissionUID(actual).getUid()));
+    private boolean isAdmin(final List<UIDSection> parsed) {
+        return parsed.stream()
+                .map(UIDSection::returnSequence)
+                .allMatch(returnSequences -> returnSequences.stream()
+                        .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
+                                && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
+                                && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
+    }
+
+    private boolean invalidAccess(final @NonNull Set<Pair<CheckingValues, ActualValues>> checkingAndActualValues) {
+        return checkingAndActualValues.stream()
+                .anyMatch(pair -> invalidAccess(pair.getLeft(), pair.getRight()));
     }
 
     /**
@@ -214,24 +216,21 @@ public class QueryBuilder {
      * Contains the values to check.
      * @see CheckingValues
      */
+    @Getter
     public static class ActualValues {
-
-        private final List<AccessSetting> values;
-
-        /**
-         * Creates a new {@code ActualValues} instance.
-         * @param values the values to check
-         */
-        public ActualValues(final @NonNull AccessSetting... values) {
-            this.values = List.of(values);
-        }
 
         /**
          * Returns the values to check.
          * @return a list containing a copy of the values
          */
-        public List<AccessSetting> getValues() {
-            return new ArrayList<>(values);
+        private final AccessSetting values;
+
+        /**
+         * Creates a new {@code ActualValues} instance.
+         * @param values the values to check
+         */
+        public ActualValues(final @NonNull AccessSetting values) {
+            this.values = AccessSetting.of(values);
         }
 
     }
