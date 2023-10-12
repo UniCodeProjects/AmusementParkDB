@@ -59,6 +59,29 @@ class DBConstraintsTest {
                 1100.00,
                 employerNIDSample,
                 employeeNIDSample);
+        // test for constraint BEGINDATE_FORMAT
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2013, 1, 1),
+                LocalDate.of(2013, 1, 5),
+                null,
+                1240.00,
+                employerNIDSample,
+                employeeNIDSample);
+        // tests for constraint ENDDATE_FORMAT
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2013, 2, 1),
+                LocalDate.of(2013, 2, 1),
+                LocalDate.of(2014, 2, 1),
+                1500.00,
+                employerNIDSample,
+                employeeNIDSample);
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2014, 1, 1),
+                LocalDate.of(2014, 1, 1),
+                LocalDate.of(2015, 1, 20),
+                1600.00,
+                employerNIDSample,
+                employeeNIDSample);
         // test for constraint DATES_CONSISTENCY_1
         insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
                 LocalDate.of(2023, 6, 6),
@@ -101,8 +124,8 @@ class DBConstraintsTest {
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(CONTRACTS, new Object[]{"C-010"}));
         insertTupleAndCheckForErrorCode(CONTRACTS, true, "C-011",
                 LocalDate.of(2021, 12, 29),
-                LocalDate.of(2021, 12, 29),
-                LocalDate.of(2022, 12, 10),
+                LocalDate.of(2022, 1, 1),
+                LocalDate.of(2022, 12, 31),
                 1500.00,
                 employerNIDSample,
                 employeeNIDSample);

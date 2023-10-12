@@ -31,6 +31,8 @@ create table CONTRACTS (
      constraint IDCONTRATTO primary key (ContractID),
      constraint IDCONTRACT unique (SubscriptionDate, EmployeeNID),
      constraint CONTRACTID_FORMAT check (ContractID like 'C%'),
+     constraint BEGINDATE_FORMAT check (day(BeginDate) = 1),
+     constraint ENDDATE_FORMAT check (EndDate is null or EndDate = last_day(EndDate)),
      constraint DATES_CONSISTENCY_1 check (SubscriptionDate <= BeginDate),
      constraint DATES_CONSISTENCY_2 check (EndDate is null or (BeginDate < EndDate)),
      constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0));
