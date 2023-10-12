@@ -1,8 +1,10 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
 import org.jooq.Result;
 import org.jooq.Record;
+import org.jooq.SelectFieldOrAsterisk;
 
 /**
  * An SQL query manager for general purpose operations.
@@ -21,7 +23,10 @@ public final class Manager {
      * @return all the tuples of the table with the provided name.
      */
     public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull String tableName, final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select().from(tableName).fetch())
+                .closeConnection()
+                .getResultAsRecords();
     }
 
     /**
@@ -35,8 +40,11 @@ public final class Manager {
      * @return all the tuples of the table projected on the given attributes.
      */
     public static @NonNull Result<Record> viewPartialInfoFromTable(final @NonNull String tableName, final @NonNull String account,
-                                                                   final @NonNull String... attributes) {
-        throw new UnsupportedOperationException("Not implemented yet");
+                                                                   final @NonNull SelectFieldOrAsterisk... attributes) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(attributes).from(tableName).fetch())
+                .closeConnection()
+                .getResultAsRecords();
     }
 
 }
