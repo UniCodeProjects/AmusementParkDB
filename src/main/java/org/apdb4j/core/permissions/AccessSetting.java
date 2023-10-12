@@ -17,6 +17,34 @@ import java.util.Set;
 public interface AccessSetting {
 
     /**
+     * Creates an immutable access settings given another {@code AccessSetting}.
+     * @param accessSetting the access setting
+     * @return {@link ImmutableAccessSetting} if the {@code attribute} is present,
+     *         {@link ImmutableGlobalAccessSetting} or {@link ImmutableNoneAccessSetting}
+     *         is returned otherwise depending on the {@code Read} and {@code Write} values.
+     */
+    static AccessSetting of(final @NonNull AccessSetting accessSetting) {
+        if (accessSetting.getAttribute().isEmpty() || accessSetting.getAttributes().isEmpty()) {
+            if (accessSetting.getReadAccess().getLeft().equals(AccessType.Read.GLOBAL)
+                    && accessSetting.getWriteAccess().getLeft().equals(AccessType.Write.GLOBAL)) {
+                return new ImmutableGlobalAccessSetting();
+            }
+            if (accessSetting.getReadAccess().getLeft().equals(AccessType.Read.NONE)
+                    && accessSetting.getWriteAccess().getLeft().equals(AccessType.Write.NONE)) {
+                return new ImmutableNoneAccessSetting();
+            }
+        }
+        if (accessSetting.getAttributes().isPresent()) {
+            return new ImmutableAccessSetting(accessSetting.getAttributes().get(),
+                    accessSetting.getReadAccess(),
+                    accessSetting.getWriteAccess());
+        }
+        return new ImmutableAccessSetting(accessSetting.getAttribute().get(),
+                accessSetting.getReadAccess(),
+                accessSetting.getWriteAccess());
+    }
+
+    /**
      * Creates an {@link ImmutableAccessSetting}.
      * @param attribute the attribute related to the access setting
      * @param read a pair containing the {@code READ} or {@code NONE} access type and its targets
