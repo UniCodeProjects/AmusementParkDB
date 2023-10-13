@@ -2,10 +2,15 @@ package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
-import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.Permission;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.uid.DBPermissionUID;
+import org.apdb4j.core.permissions.uid.ReturnSequence;
+import org.apdb4j.core.permissions.uid.UID;
+import org.apdb4j.core.permissions.uid.UIDParser;
+import org.apdb4j.core.permissions.uid.UIDSection;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -15,6 +20,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -28,30 +35,27 @@ public class QueryBuilder {
     private Object queryResult;
 
     /**
-     * Defines the access that allows the execution of the following query(ies).
-     * @param required the required permissions
-     * @param actualAccountEmail the account's email used to check its permissions from the database
+     * Defines the requiredPermission that allows the execution of the following query(ies).
+     * @param permission the object that defines the permission for the query
      * @return {@link QueryBuilder} for fluent style
-     * @throws AccessDeniedException when the access objects are incompatible
+     * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Access required,
-                                          final @NonNull String actualAccountEmail) throws AccessDeniedException {
-        if (invalidAccess(required, actualAccountEmail)) {
+    public QueryBuilder definePermissions(final @NonNull Permission permission) throws AccessDeniedException {
+        if (invalidAccess(permission)) {
             throw new AccessDeniedException();
         }
         return this;
     }
 
     /**
-     * Defines the access that allows the execution of the following query(ies).
-     * @param required the required permissions
-     * @param actualAccountEmail the account's email used to check its permissions from the database
+     * Defines the requiredPermission that allows the execution of the following query(ies).
+     * @param permissions the objects that define the permissions for the query
      * @return {@link QueryBuilder} for fluent style
-     * @throws AccessDeniedException when the access objects are incompatible
+     * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Set<Access> required,
-                                          final @NonNull String actualAccountEmail) throws AccessDeniedException {
-        if (invalidAccess(required, actualAccountEmail)) {
+    public QueryBuilder definePermissions(final @NonNull Set<? extends Permission> permissions)
+            throws AccessDeniedException {
+        if (invalidAccess(permissions)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -153,13 +157,43 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidAccess(final @NonNull Access required, final @NonNull String actual) {
-        return !Objects.equals(new AppPermissionUID(required).getUid(), new DBPermissionUID(actual).getUid());
+    private boolean invalidAccess(final @NonNull Permission permission) {
+        final UID uidFromDb;
+        try {
+            uidFromDb = new DBPermissionUID(permission.email()).getUid();
+        } catch (final NoSuchElementException e) {
+            // The provided email does not exist in the DB.
+            return true;
+        }
+        // The UID from the database and the one just generated are not equals.
+        if (!Objects.equals(new AppPermissionUID(permission.requiredPermission()).getUid(), uidFromDb)) {
+            return true;
+        }
+        final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
+        // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
+        if (isAdmin(parsed)) {
+            return false;
+        }
+        // Otherwise, it is a normal permission.
+        final var returnSequences = parsed.stream()
+                .map(UIDSection::returnSequence)
+                .flatMap(Collection::stream)
+                .toList();
+        return returnSequences.stream()
+                .noneMatch(returnSequence -> returnSequence.equals(new ReturnSequence(permission.values())));
     }
 
-    private boolean invalidAccess(final @NonNull Collection<Access> required, final @NonNull String actual) {
-        return required.stream()
-                .noneMatch(req -> Objects.equals(new AppPermissionUID(req).getUid(), new DBPermissionUID(actual).getUid()));
+    private boolean isAdmin(final List<UIDSection> parsed) {
+        return parsed.stream()
+                .map(UIDSection::returnSequence)
+                .allMatch(returnSequences -> returnSequences.stream()
+                        .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
+                                && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
+                                && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
+    }
+
+    private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
+        return permissions.stream().anyMatch(this::invalidAccess);
     }
 
 }

@@ -49,7 +49,7 @@ public class Permissions extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.permissions.AccessSequence</code>.
      */
-    public final TableField<Record, String> ACCESSSEQUENCE = createField(DSL.name("AccessSequence"), SQLDataType.VARCHAR(1000).nullable(false), this, "");
+    public final TableField<Record, String> ACCESSSEQUENCE = createField(DSL.name("AccessSequence"), SQLDataType.VARCHAR(1500).nullable(false), this, "");
 
     private Permissions(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

@@ -108,7 +108,7 @@ create table PARK_SERVICES (
 
 create table PERMISSIONS (
      PermissionType varchar(30) not null,
-     AccessSequence varchar(1000) not null,
+     AccessSequence varchar(1500) not null,
      constraint IDACCESS primary key (PermissionType));
 
 create table PICTURES (
