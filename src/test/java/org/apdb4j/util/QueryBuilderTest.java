@@ -3,12 +3,12 @@ package org.apdb4j.util;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.AdminPermission;
 import org.apdb4j.core.permissions.GuestPermission;
+import org.apdb4j.core.permissions.Permission;
 import org.apdb4j.core.permissions.StaffPermission;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,62 +33,74 @@ class QueryBuilderTest {
     private static Stream<Arguments> accessDeniedTestCases() {
         return Stream.of(
                 // Wrong permission case
-                Arguments.of(new StaffPermission(),
-                        "mariorossi@gmail.com",
-                        AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL)),
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission())
+                        .setEmail("mariorossi@gmail.com")
+                        .setValues(AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .build()),
                 // Wrong email case
-                Arguments.of(new AdminPermission(),
-                        "sofiaverdi@gmail.com",
-                        AccessSetting.of(PICTURES.PATH, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL),
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new AdminPermission())
+                        .setEmail("sofiaverdi@gmail.com")
+                        .setValues(AccessSetting.of(PICTURES.PATH, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .build()),
                 // Wrong AccessSetting case
-                Arguments.of(new GuestPermission(),
-                        "alessandrogialli@gmail.com",
-                        AccessSetting.of(ACCOUNTS.EMAIL,
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setEmail("alessandrogialli@gmail.com")
+                        .setValues(AccessSetting.of(ACCOUNTS.EMAIL,
                                 AccessType.Read.GLOBAL,
                                 Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class))))
-        ));
+                        .build())
+        );
     }
 
     @ParameterizedTest
     @MethodSource("accessDeniedTestCases")
-    void accessDeniedTest(final @NonNull Access requiredPermission,
-                          final @NonNull String actualAccountEmail,
-                          final @NonNull AccessSetting values) {
-        assertThrows(AccessDeniedException.class,
-                () -> DB.definePermissions(new QueryBuilder.CheckingValues(requiredPermission, actualAccountEmail),
-                        new QueryBuilder.ActualValues(values)));
+    void accessDeniedTest(final @NonNull Permission permissionBuilder) {
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(permissionBuilder));
     }
 
     @Test
     void adminPermissionTest() {
-        assertDoesNotThrow(() -> DB.definePermissions(
-                new QueryBuilder.CheckingValues(new AdminPermission(), "mariorossi@gmail.com"),
-                new QueryBuilder.ActualValues(AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.NONE, AccessType.Write.NONE))));
-        assertDoesNotThrow(() -> DB.definePermissions(
-                new QueryBuilder.CheckingValues(new GuestPermission(), "alessandrogialli@gmail.com"),
-                new QueryBuilder.ActualValues(AccessSetting.of(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
+        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new AdminPermission())
+                .setEmail("mariorossi@gmail.com")
+                .setValues(AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.NONE, AccessType.Write.NONE))
+                .build()));
+        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new GuestPermission())
+                .setEmail("alessandrogialli@gmail.com")
+                .setValues(AccessSetting.of(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
                         AccessType.Read.GLOBAL,
-                        AccessType.Write.NONE))));
+                        AccessType.Write.NONE))
+                .build()));
     }
 
     @Test
     void accessDeniedBySetTest() {
         final var set = Set.of(
-                Pair.of(
-                        new QueryBuilder.CheckingValues(new StaffPermission(), "mariorossi@gmail.com"),
-                        new QueryBuilder.ActualValues(AccessSetting.of(ACCOUNTS.USERNAME,
+                new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission())
+                        .setEmail("mariorossi@gmail.com")
+                        .setValues(AccessSetting.of(ACCOUNTS.USERNAME,
                                 AccessType.Read.GLOBAL,
-                                AccessType.Write.GLOBAL))),
-                Pair.of(
-                        new QueryBuilder.CheckingValues(new AdminPermission(), "sofiaverdi@gmail.com"),
-                        new QueryBuilder.ActualValues(AccessSetting.of(PICTURES.PATH,
+                                AccessType.Write.GLOBAL))
+                        .build(),
+                new Permission.Builder()
+                        .setRequiredPermission(new AdminPermission())
+                        .setEmail("sofiaverdi@gmail.com")
+                        .setValues(AccessSetting.of(PICTURES.PATH,
                                 AccessType.Read.GLOBAL,
-                                AccessType.Write.GLOBAL))),
-                Pair.of(
-                        new QueryBuilder.CheckingValues(new GuestPermission(), "alessandrogialli@gmail.com"),
-                        new QueryBuilder.ActualValues(AccessSetting.of(ACCOUNTS.EMAIL,
+                                AccessType.Write.GLOBAL))
+                        .build(),
+                new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setEmail("alessandrogialli@gmail.com")
+                        .setValues(AccessSetting.of(ACCOUNTS.EMAIL,
                                 AccessType.Read.GLOBAL,
-                                Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class)))))
+                                Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class))))
+                        .build()
         );
         assertThrows(AccessDeniedException.class, () -> DB.definePermissions(set));
     }

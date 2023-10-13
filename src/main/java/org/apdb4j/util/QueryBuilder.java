@@ -1,13 +1,10 @@
 package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import lombok.Getter;
 import lombok.NonNull;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.Permission;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
 import org.apdb4j.core.permissions.uid.DBPermissionUID;
 import org.apdb4j.core.permissions.uid.ReturnSequence;
@@ -39,14 +36,12 @@ public class QueryBuilder {
 
     /**
      * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param checkingValues the values that will check the validity of the actual values
-     * @param actualValues the values to check
+     * @param permission the object that defines the permission for the query
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull CheckingValues checkingValues,
-                                          final @NonNull ActualValues actualValues) throws AccessDeniedException {
-        if (invalidAccess(checkingValues, actualValues)) {
+    public QueryBuilder definePermissions(final @NonNull Permission permission) throws AccessDeniedException {
+        if (invalidAccess(permission)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -54,13 +49,13 @@ public class QueryBuilder {
 
     /**
      * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param checkingAndActualValues a set of pairs containing the {@link CheckingValues} and {@link ActualValues}
+     * @param permissions the objects that define the permissions for the query
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Set<Pair<CheckingValues, ActualValues>> checkingAndActualValues)
+    public QueryBuilder definePermissions(final @NonNull Set<? extends Permission> permissions)
             throws AccessDeniedException {
-        if (invalidAccess(checkingAndActualValues)) {
+        if (invalidAccess(permissions)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -162,17 +157,16 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidAccess(final @NonNull CheckingValues checkingValues,
-                                  final @NonNull ActualValues actualValues) {
+    private boolean invalidAccess(final @NonNull Permission permission) {
         final UID uidFromDb;
         try {
-            uidFromDb = new DBPermissionUID(checkingValues.email()).getUid();
+            uidFromDb = new DBPermissionUID(permission.email()).getUid();
         } catch (final NoSuchElementException e) {
             // The provided email does not exist in the DB.
             return true;
         }
         // The UID from the database and the one just generated are not equals.
-        if (!Objects.equals(new AppPermissionUID(checkingValues.requiredPermission()).getUid(), uidFromDb)) {
+        if (!Objects.equals(new AppPermissionUID(permission.requiredPermission()).getUid(), uidFromDb)) {
             return true;
         }
         final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
@@ -186,7 +180,7 @@ public class QueryBuilder {
                 .flatMap(Collection::stream)
                 .toList();
         return returnSequences.stream()
-                .noneMatch(returnSequence -> returnSequence.equals(new ReturnSequence(actualValues.values)));
+                .noneMatch(returnSequence -> returnSequence.equals(new ReturnSequence(permission.values())));
     }
 
     private boolean isAdmin(final List<UIDSection> parsed) {
@@ -198,41 +192,8 @@ public class QueryBuilder {
                                 && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
     }
 
-    private boolean invalidAccess(final @NonNull Set<Pair<CheckingValues, ActualValues>> checkingAndActualValues) {
-        return checkingAndActualValues.stream()
-                .anyMatch(pair -> invalidAccess(pair.getLeft(), pair.getRight()));
-    }
-
-    /**
-     * Contains the values that will check the validity of the {@link ActualValues}.
-     * @param requiredPermission the required permission to perform the query
-     * @param email the account's email used to check its permissions from the database
-     * @see ActualValues
-     */
-    public record CheckingValues(@NonNull Access requiredPermission, @NonNull String email) {
-    }
-
-    /**
-     * Contains the values to check.
-     * @see CheckingValues
-     */
-    @Getter
-    public static class ActualValues {
-
-        /**
-         * Returns the values to check.
-         * @return a list containing a copy of the values
-         */
-        private final AccessSetting values;
-
-        /**
-         * Creates a new {@code ActualValues} instance.
-         * @param values the values to check
-         */
-        public ActualValues(final @NonNull AccessSetting values) {
-            this.values = AccessSetting.of(values);
-        }
-
+    private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
+        return permissions.stream().anyMatch(this::invalidAccess);
     }
 
 }
