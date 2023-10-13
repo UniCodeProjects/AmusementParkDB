@@ -35,7 +35,7 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
     /**
      * A builder for {@link Permission}.
      */
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
+    @SuppressWarnings("PMD.LinguisticNaming")
     public static class Builder {
 
         private Access requiredPermission;
@@ -47,7 +47,6 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
          * @param requiredPermission the required permission
          * @return {@code this} for fluent style
          */
-        @SuppressWarnings("PMD.LinguisticNaming")
         public Builder setRequiredPermission(final @NonNull Access requiredPermission) {
             this.requiredPermission = requiredPermission;
             return this;
@@ -58,8 +57,7 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
          * @param email the executor's actual email
          * @return {@code this} for fluent style
          */
-        @SuppressWarnings("PMD.LinguisticNaming")
-        public Builder setEmail(final @NonNull String email) {
+        public Builder setActualEmail(final @NonNull String email) {
             this.email = email;
             return this;
         }
@@ -69,8 +67,7 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
          * @param values the required {@code AccessSetting}
          * @return {@code this} for fluent style
          */
-        @SuppressWarnings("PMD.LinguisticNaming")
-        public Builder setValues(final @NonNull AccessSetting values) {
+        public Builder setRequiredValues(final @NonNull AccessSetting values) {
             this.values = AccessSetting.of(values);
             return this;
         }
@@ -79,7 +76,6 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
          * Creates a new instance of {@link Permission}.
          * @return the permission instance
          */
-        @SuppressWarnings("PMD.LinguisticNaming")
         public Permission build() {
             return new Permission(requiredPermission, email, values);
         }
