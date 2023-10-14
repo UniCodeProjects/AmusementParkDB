@@ -2,6 +2,7 @@ package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
  * @param email the executor's actual email
  * @param values the required {@link AccessSetting}
  */
-public record Permission(Access requiredPermission, String email, Set<AccessSetting> values) {
+public record Permission(String email, Set<AccessSetting> values, Access... requiredPermission) {
 
     /**
      * Creates a new {@code Permission} record instance.
@@ -20,12 +21,20 @@ public record Permission(Access requiredPermission, String email, Set<AccessSett
      * @param email the executor's actual email
      * @param values the required {@link AccessSetting}
      */
-    public Permission(final @NonNull Access requiredPermission,
-                      final @NonNull String email,
-                      final @NonNull Set<AccessSetting> values) {
-        this.requiredPermission = requiredPermission;
+    public Permission(final @NonNull String email,
+                      final @NonNull Set<AccessSetting> values,
+                      final @NonNull Access... requiredPermission) {
+        this.requiredPermission = Arrays.stream(requiredPermission).toArray(Access[]::new);
         this.email = email;
         this.values = values.stream().map(AccessSetting::of).collect(Collectors.toSet());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Access[] requiredPermission() {
+        return Arrays.stream(requiredPermission).toArray(Access[]::new);
     }
 
     /**
@@ -42,7 +51,7 @@ public record Permission(Access requiredPermission, String email, Set<AccessSett
     @SuppressWarnings("PMD.LinguisticNaming")
     public static class Builder {
 
-        private Access requiredPermission;
+        private Access[] requiredPermission;
         private String email;
         private final Set<AccessSetting> values = new HashSet<>();
 
@@ -51,8 +60,8 @@ public record Permission(Access requiredPermission, String email, Set<AccessSett
          * @param requiredPermission the required permission
          * @return {@code this} for fluent style
          */
-        public Builder setRequiredPermission(final @NonNull Access requiredPermission) {
-            this.requiredPermission = requiredPermission;
+        public Builder setRequiredPermission(final @NonNull Access... requiredPermission) {
+            this.requiredPermission = Arrays.stream(requiredPermission).toArray(Access[]::new);
             return this;
         }
 
@@ -81,7 +90,7 @@ public record Permission(Access requiredPermission, String email, Set<AccessSett
          * @return the permission instance
          */
         public Permission build() {
-            return new Permission(requiredPermission, email, values);
+            return new Permission(email, values, requiredPermission);
         }
 
     }

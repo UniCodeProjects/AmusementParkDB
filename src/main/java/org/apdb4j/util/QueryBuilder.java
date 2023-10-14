@@ -2,6 +2,7 @@ package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
+import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.Permission;
@@ -166,8 +167,10 @@ public class QueryBuilder {
             return true;
         }
         // The UID from the database and the one just generated are not equals.
-        if (!Objects.equals(new AppPermissionUID(permission.requiredPermission()).getUid(), uidFromDb)) {
-            return true;
+        for (final Access access : permission.requiredPermission()) {
+            if (!Objects.equals(new AppPermissionUID(access).getUid(), uidFromDb)) {
+                return true;
+            }
         }
         final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
         // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
