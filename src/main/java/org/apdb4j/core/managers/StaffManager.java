@@ -1,13 +1,20 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
 
 import java.time.LocalDate;
+
+import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
  */
 public final class StaffManager {
+
+    private static final QueryBuilder DB = new QueryBuilder();
 
     private StaffManager() {
     }
@@ -27,15 +34,38 @@ public final class StaffManager {
      * @param isEmployee determines whether the provided staff is an employee or not.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
+    public static boolean hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
                                           final @NonNull String email,
                                           final @NonNull String name, final @NonNull String surname,
                                           final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
                                           final char gender,
                                           final String role, final boolean isAdmin, final boolean isEmployee,
                                           final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        final int insertedAccountTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(ACCOUNTS)
+                        .values(email, isAdmin ? "Admin" : "Staff")
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        final int insertedStaffTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(STAFF)
+                        .values(nationalID,
+                                staffID,
+                                email,
+                                name,
+                                surname,
+                                dateOfBirth,
+                                birthPlace,
+                                gender,
+                                role,
+                                isAdmin,
+                                isEmployee)
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return insertedAccountTuples == 1 && insertedStaffTuples == 1;
     }
 
     /**
@@ -44,9 +74,16 @@ public final class StaffManager {
      *                        is not the national identifier of a staff member, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static boolean fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
+        final int deletedTuples = DB.createConnection()
+                .queryAction(db -> db.update(CONTRACTS)
+                        .set(CONTRACTS.ENDDATE, LocalDate.now())
+                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID)))
+                .closeConnection()
+                .getResultAsInt();
+        return deletedTuples == 1;
     }
 
     /**

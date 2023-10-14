@@ -27,10 +27,20 @@ public final class AccountManager {
      *                       in the database, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-     public static void addNewAccount(final @NonNull String email, final @NonNull String permissionType,
+     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
                                       final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+         if (permissionTypeNotExists(permissionType)) {
+             throw new IllegalStateException(permissionType + " is not present in the DB.");
+         }
+         final int insertedTuple = DB.createConnection()
+                 .queryAction(db -> db.insertInto(ACCOUNTS)
+                         .values(email, permissionType)
+                         .execute())
+                 .closeConnection()
+                 .getResultAsInt();
+         return insertedTuple == 1;
      }
 
     /**
@@ -51,32 +61,20 @@ public final class AccountManager {
                                         final @NonNull String password,
                                         final @NonNull String permissionType,
                                         final String account) throws AccessDeniedException {
-        final Result<Record> count = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        if (count.size() != 1 || count.get(0).get(0, Integer.class) != 1) {
+        if (permissionTypeNotExists(permissionType)) {
             throw new IllegalStateException(permissionType + " is not present in the DB.");
         }
         // todo: create permissions.
 //        if (Objects.nonNull(account)) {
 //            DB.definePermissions();
 //        }
-        final int tuplesAdded = DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS,
-                                ACCOUNTS.EMAIL,
-                                ACCOUNTS.USERNAME,
-                                ACCOUNTS.PASSWORD,
-                                ACCOUNTS.PERMISSIONTYPE)
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(ACCOUNTS)
                         .values(email, username, password, permissionType)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return tuplesAdded == 1;
+        return insertedTuples == 1;
     }
 
     /**
@@ -89,29 +87,60 @@ public final class AccountManager {
      * @param password the password provided for the account.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void addCredentialsForAccount(final @NonNull String email,
+    public static boolean addCredentialsForAccount(final @NonNull String email,
                                                 final @NonNull String username,
                                                 final @NonNull String password,
                                                 final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        final int updatedTuples = DB.createConnection()
+                .queryAction(db -> db.update(ACCOUNTS)
+                        .set(ACCOUNTS.USERNAME, username)
+                        .set(ACCOUNTS.PASSWORD, password)
+                        .where(ACCOUNTS.EMAIL.eq(email))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return updatedTuples == 1;
     }
 
     /**
      * Performs the SQL query that changes the password of the provided account.
      * @param email the email associated with the account. If the value of this parameter is not the email of an
      *              account, the query will not be executed.
-     * @param actualPassword the actual password of the account. If the value of this parameter is not the
-     *                       password of the provided account, the query will not be executed.
+     * @param oldPassword the actual password of the account.
+     *                    If the value of this parameter is not the password of the provided account,
+     *                    the query will not be executed.
      * @param newPassword the new password for the account.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-     public static void updateAccountPassword(final @NonNull String email,
-                                              final @NonNull String actualPassword,
+     public static boolean updateAccountPassword(final @NonNull String email,
+                                              final @NonNull String oldPassword,
                                               final @NonNull String newPassword,
                                               final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+         final int updatedTuples = DB.createConnection()
+                 .queryAction(db -> db.update(ACCOUNTS)
+                         .set(ACCOUNTS.PASSWORD, newPassword)
+                         .where(ACCOUNTS.EMAIL.eq(email))
+                         .and(ACCOUNTS.PASSWORD.eq(oldPassword))
+                         .execute())
+                 .closeConnection()
+                 .getResultAsInt();
+         return updatedTuples == 1;
      }
+
+    private static boolean permissionTypeNotExists(String permissionType) {
+        final Result<Record> count = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(PERMISSIONS)
+                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        // Checking if got only one result, and it is unique (accounts are unique).
+        return count.size() != 1 || count.get(0).get(0, int.class) != 1;
+    }
 
 }
