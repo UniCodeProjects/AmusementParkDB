@@ -180,7 +180,8 @@ public class QueryBuilder {
                 .flatMap(Collection::stream)
                 .toList();
         return returnSequences.stream()
-                .noneMatch(returnSequence -> returnSequence.equals(new ReturnSequence(permission.values())));
+                .noneMatch(returnSequence -> permission.values().stream()
+                        .allMatch(accessSetting -> returnSequence.equals(new ReturnSequence(accessSetting))));
     }
 
     private boolean isAdmin(final List<UIDSection> parsed) {

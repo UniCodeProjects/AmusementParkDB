@@ -2,13 +2,17 @@ package org.apdb4j.core.permissions;
 
 import lombok.NonNull;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Represents an account's privileges required to execute a query.
  * @param requiredPermission the required permission
  * @param email the executor's actual email
  * @param values the required {@link AccessSetting}
  */
-public record Permission(Access requiredPermission, String email, AccessSetting values) {
+public record Permission(Access requiredPermission, String email, Set<AccessSetting> values) {
 
     /**
      * Creates a new {@code Permission} record instance.
@@ -18,18 +22,18 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
      */
     public Permission(final @NonNull Access requiredPermission,
                       final @NonNull String email,
-                      final @NonNull AccessSetting values) {
+                      final @NonNull Set<AccessSetting> values) {
         this.requiredPermission = requiredPermission;
         this.email = email;
-        this.values = AccessSetting.of(values);
+        this.values = values.stream().map(AccessSetting::of).collect(Collectors.toSet());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AccessSetting values() {
-        return AccessSetting.of(values);
+    public Set<AccessSetting> values() {
+        return Set.copyOf(values);
     }
 
     /**
@@ -40,7 +44,7 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
 
         private Access requiredPermission;
         private String email;
-        private AccessSetting values;
+        private final Set<AccessSetting> values = new HashSet<>();
 
         /**
          * Sets the required permission.
@@ -68,7 +72,7 @@ public record Permission(Access requiredPermission, String email, AccessSetting 
          * @return {@code this} for fluent style
          */
         public Builder setRequiredValues(final @NonNull AccessSetting values) {
-            this.values = AccessSetting.of(values);
+            this.values.add(AccessSetting.of(values));
             return this;
         }
 
