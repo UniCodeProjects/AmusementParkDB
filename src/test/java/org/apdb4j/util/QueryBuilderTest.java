@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
 import static org.apdb4j.db.Tables.FACILITIES;
 import static org.apdb4j.db.Tables.PICTURES;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -50,6 +51,7 @@ class QueryBuilderTest {
                         .setRequiredValues(AccessSetting.of(ACCOUNTS.EMAIL,
                                 AccessType.Read.GLOBAL,
                                 Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class))))
+                        .setRequiredValues(AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
                         .setActualEmail("alessandrogialli@gmail.com")
                         .build())
         );
