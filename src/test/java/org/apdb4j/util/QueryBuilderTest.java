@@ -39,6 +39,12 @@ class QueryBuilderTest {
                         .setRequiredValues(AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
                         .setActualEmail("mariorossi@gmail.com")
                         .build()),
+                // Multiple wrong permission case
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission(), new GuestPermission())
+                        .setRequiredValues(AccessSetting.of(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setActualEmail("mariorossi@gmail.com")
+                        .build()),
                 // Wrong email case
                 Arguments.of(new Permission.Builder()
                         .setRequiredPermission(new AdminPermission())
