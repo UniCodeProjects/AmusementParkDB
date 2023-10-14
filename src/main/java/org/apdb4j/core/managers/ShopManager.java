@@ -1,6 +1,7 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -9,6 +10,8 @@ import java.time.LocalTime;
  * Contains all the SQL queries that are related to the SHOP entity.
  */
 public final class ShopManager {
+
+    private static final QueryBuilder DB = new QueryBuilder();
 
     private ShopManager() {
     }
