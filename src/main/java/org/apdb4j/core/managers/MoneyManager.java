@@ -53,12 +53,6 @@ public final class MoneyManager {
         final BigDecimal revenue = previousMonthTicketsIncome().add(previousMonthShopIncome());
         final BigDecimal expenses = previousMonthSalaries().add(previousMonthMaintenancesCosts());
         final BigDecimal result = revenue.subtract(expenses);
-        /*
-        final BigDecimal revenue = previousMonthTicketsIncome() +
-                previousMonthShopIncome() -
-                previousMonthSalaries() -
-                previousMonthMaintenancesCosts();
-         */
         new QueryBuilder().createConnection()
                 .queryAction(db -> db.insertInto(MONTHLY_RECAPS)
                         .values(getPreviousMonthFirstDate(), result)
