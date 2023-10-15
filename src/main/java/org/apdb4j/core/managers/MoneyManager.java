@@ -48,17 +48,18 @@ public final class MoneyManager {
      * with the economic data of the previous month.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the tuple is inserted, {@code false} otherwise.
      */
-    public static void addRecapForPreviousMonth(final @NonNull String account) {
+    public static boolean addRecapForPreviousMonth(final @NonNull String account) {
         final BigDecimal revenue = previousMonthTicketsIncome().add(previousMonthShopIncome());
         final BigDecimal expenses = previousMonthSalaries().add(previousMonthMaintenancesCosts());
         final BigDecimal result = revenue.subtract(expenses);
-        new QueryBuilder().createConnection()
+        return new QueryBuilder().createConnection()
                 .queryAction(db -> db.insertInto(MONTHLY_RECAPS)
                         .values(getPreviousMonthFirstDate(), result)
                         .execute())
                 .closeConnection()
-                .getResultAsInt();
+                .getResultAsInt() == 1;
     }
     // This operation needs to be done automatically at the end of every month.
 
