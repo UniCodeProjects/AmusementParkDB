@@ -31,7 +31,7 @@ public final class MaintenanceManager {
      * @param employeeNIDs the employees that are responsible for the maintenance. If also one of the values
      *                     of this parameter is not the national identifier of an employee,
      *                     the query will not be executed.
-     * @return {@code true} if the maintenances is inserted, {@code false} otherwise.
+     * @return {@code true} if the maintenance is inserted, {@code false} otherwise.
      */
     public static boolean addNewMaintenance(final @NonNull String facilityID,
                                   final double price,
