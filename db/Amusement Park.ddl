@@ -133,7 +133,7 @@ create table responsibilities (
      constraint IDresponsibility primary key (EmployeeNID, FacilityID, Date));
 
 create table REVIEWS (
-     ReviewID int unsigned not null,
+     ReviewID int unsigned auto_increment not null,
      Rating decimal(1,0) not null,
      Date date not null,
      Time time not null,
