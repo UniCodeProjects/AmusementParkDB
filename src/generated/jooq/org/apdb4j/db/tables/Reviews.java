@@ -14,7 +14,6 @@ import org.apdb4j.db.Keys;
 import org.jooq.Check;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
@@ -53,7 +52,7 @@ public class Reviews extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.reviews.ReviewID</code>.
      */
-    public final TableField<Record, UInteger> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.INTEGERUNSIGNED.nullable(false).identity(true), this, "");
+    public final TableField<Record, UInteger> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.reviews.Rating</code>.
@@ -121,11 +120,6 @@ public class Reviews extends TableImpl<Record> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : AmusementPark.AMUSEMENT_PARK;
-    }
-
-    @Override
-    public Identity<Record, UInteger> getIdentity() {
-        return (Identity<Record, UInteger>) super.getIdentity();
     }
 
     @Override
