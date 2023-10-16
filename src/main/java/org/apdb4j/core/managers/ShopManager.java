@@ -108,6 +108,7 @@ public final class ShopManager {
                                        final YearMonth actualMonth,
                                        final YearMonth newMonth,
                                        final @NonNull String account) {
+        // TODO: use where not exists?
         if (costTableNotPresent(actualMonth)) {
             return false;
         }
