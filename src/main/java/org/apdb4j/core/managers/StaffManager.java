@@ -37,12 +37,12 @@ public final class StaffManager {
      * @return {@code true} on successful tuple insertion
      */
     public static boolean hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
-                                          final @NonNull String email,
-                                          final @NonNull String name, final @NonNull String surname,
-                                          final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
-                                          final char gender,
-                                          final String role, final boolean isAdmin, final boolean isEmployee,
-                                          final @NonNull String account) {
+                                             final @NonNull String email,
+                                             final @NonNull String name, final @NonNull String surname,
+                                             final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
+                                             final char gender,
+                                             final String role, final boolean isAdmin, final boolean isEmployee,
+                                             final @NonNull String account) {
         final int insertedAccountTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(ACCOUNTS)
                         .values(email, isAdmin ? "Admin" : "Staff")

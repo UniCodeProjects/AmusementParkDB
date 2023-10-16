@@ -30,7 +30,7 @@ public final class AccountManager {
      * @return {@code true} on successful tuple insertion
      */
      public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
-                                      final @NonNull String account) {
+                                         final @NonNull String account) {
          if (permissionTypeNotExists(permissionType)) {
              throw new IllegalStateException(permissionType + " is not present in the DB.");
          }
@@ -90,9 +90,9 @@ public final class AccountManager {
      * @return {@code true} on successful tuple update
      */
     public static boolean addCredentialsForAccount(final @NonNull String email,
-                                                final @NonNull String username,
-                                                final @NonNull String password,
-                                                final @NonNull String account) {
+                                                   final @NonNull String username,
+                                                   final @NonNull String password,
+                                                   final @NonNull String account) {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
                         .set(ACCOUNTS.USERNAME, username)
@@ -117,9 +117,9 @@ public final class AccountManager {
      * @return {@code true} on successful tuple update
      */
      public static boolean updateAccountPassword(final @NonNull String email,
-                                              final @NonNull String oldPassword,
-                                              final @NonNull String newPassword,
-                                              final @NonNull String account) {
+                                                 final @NonNull String oldPassword,
+                                                 final @NonNull String newPassword,
+                                                 final @NonNull String account) {
          final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)

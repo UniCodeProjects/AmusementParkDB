@@ -3,8 +3,12 @@ package org.apdb4j.core.managers;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.time.YearMonth;
+
+import static org.apdb4j.db.Tables.COSTS;
+import static org.apdb4j.db.Tables.FACILITIES;
 
 /**
  * Contains all the SQL queries that are related to the SHOP entity.
@@ -25,13 +29,14 @@ public final class ShopManager {
      * @param type the type of the new shop.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void addNewShop(final @NonNull String shopID,
-                                  final @NonNull String name,
-                                  final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                  final @NonNull String type,
-                                  final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewShop(final @NonNull String shopID,
+                                     final @NonNull String name,
+                                     final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                     final @NonNull String type,
+                                     final @NonNull String account) {
+        return addNewShopWithDescription(shopID, name, openingTime, closingTime, type, null, account);
     }
 
     /**
@@ -46,14 +51,21 @@ public final class ShopManager {
      *                    {@link ShopManager#addNewShop(String, String, LocalTime, LocalTime, String, String)}.
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void addNewShopWithDescription(final @NonNull String shopID,
-                                                 final @NonNull String name,
-                                                 final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                                 final @NonNull String type,
-                                                 final String description,
-                                                 final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewShopWithDescription(final @NonNull String shopID,
+                                                    final @NonNull String name,
+                                                    final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                                    final @NonNull String type,
+                                                    final String description,
+                                                    final @NonNull String account) {
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(FACILITIES)
+                        .values(shopID, name, openingTime, closingTime, type, description, true)
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return insertedTuples == 1;
     }
 
     /**
@@ -65,11 +77,18 @@ public final class ShopManager {
      * @param revenue the revenue made by the provided shop.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void addNewMonthlyCost(final @NonNull String shopID, final LocalDate month,
-                                         final double expense, final double revenue,
-                                         final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewMonthlyCost(final @NonNull String shopID, final YearMonth month,
+                                            final double expense, final double revenue,
+                                            final @NonNull String account) {
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(COSTS)
+                        .values(shopID, month.getMonthValue(), month.getYear(), expense, revenue)
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return insertedTuples == 1;
     }
 
     /**
@@ -83,12 +102,24 @@ public final class ShopManager {
      * @param newMonth the new month of the money info.
      * @param account the account that is performing this operation.
      *                If this account has not the permissions to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion 
      */
-    public static void editCostDate(final @NonNull String shopID,
-                                    final LocalDate actualMonth,
-                                    final LocalDate newMonth,
-                                    final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean editCostDate(final @NonNull String shopID,
+                                       final YearMonth actualMonth,
+                                       final YearMonth newMonth,
+                                       final @NonNull String account) {
+        if (costTableNotPresent(actualMonth)) {
+            return false;
+        }
+        final int modifiedTuples = DB.createConnection()
+                .queryAction(db -> db.update(COSTS)
+                        .set(COSTS.MONTH, newMonth.getMonthValue())
+                        .set(COSTS.YEAR, newMonth.getYear())
+                        .where(COSTS.SHOPID.eq(shopID))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return modifiedTuples == 1;
     }
 
     /**
@@ -103,12 +134,36 @@ public final class ShopManager {
      * @param newExpense the new expense of the money info.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion 
      */
-    public static void editCostMoney(final @NonNull String shopID,
-                                     final LocalDate month,
-                                     final double newRevenue, final double newExpense,
-                                     final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean editCostMoney(final @NonNull String shopID,
+                                        final YearMonth month,
+                                        final double newRevenue, final double newExpense,
+                                        final @NonNull String account) {
+        if (costTableNotPresent(month)) {
+            return false;
+        }
+        final int modifiedTuples = DB.createConnection()
+                .queryAction(db -> db.update(COSTS)
+                        .set(COSTS.REVENUE, BigDecimal.valueOf(newRevenue))
+                        .set(COSTS.EXPENSES, BigDecimal.valueOf(newExpense))
+                        .where(COSTS.SHOPID.eq(shopID))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return modifiedTuples == 1;
+    }
+
+    private static boolean costTableNotPresent(YearMonth currentDate) {
+        final int countedTuples = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(COSTS)
+                        .where(COSTS.MONTH.eq(currentDate.getMonthValue()))
+                        .and(COSTS.YEAR.eq(currentDate.getYear()))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt();
+        return countedTuples == 0;
     }
 
 }
