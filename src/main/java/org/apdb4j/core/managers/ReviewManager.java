@@ -1,14 +1,12 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apache.commons.codec.digest.XXHash32;
 import org.apdb4j.util.QueryBuilder;
-import org.jooq.impl.DSL;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Random;
-
-import static org.apdb4j.db.Tables.GUESTS;
 import static org.apdb4j.db.Tables.REVIEWS;
 
 /**
@@ -31,18 +29,26 @@ public final class ReviewManager {
      */
     public static boolean addReview(final @NonNull String parkServiceID, final byte rating, final String description,
                                     final @NonNull String account) {
+        final LocalDate currentDate = LocalDate.now();
+        final LocalTime currentTime = LocalTime.now();
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.insertInto(REVIEWS)
-                        .values(new Random().nextInt(),
+                        .values(computeHash(currentDate.toString() + currentTime.toString()),
                                 rating,
-                                LocalDate.now(),
-                                LocalTime.now(),
+                                currentDate,
+                                currentTime,
                                 description,
                                 account,
                                 parkServiceID)
                         .execute())
                 .closeConnection()
                 .getResultAsInt() == 1;
+    }
+
+    public static String computeHash(final String str) {
+        final var hash = new XXHash32();
+        hash.update(str.getBytes(StandardCharsets.UTF_8));
+        return Long.toHexString(hash.getValue());
     }
 
 }
