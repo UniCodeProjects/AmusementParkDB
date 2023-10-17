@@ -325,7 +325,7 @@ class DBConstraintsTest {
     void reviewConstraintsTest() {
         // test for constraint RATING_FORMAT
         insertTupleAndCheckForErrorCode(REVIEWS, false,
-                "12312",
+                "aaaaaaaa",
                 0,
                 LocalDate.of(2001, 10, 10),
                 LocalTime.of(12, 0, 0),
@@ -334,7 +334,7 @@ class DBConstraintsTest {
                 EXHIBITIONID_SAMPLE);
         // valid tuple
         insertTupleAndCheckForErrorCode(REVIEWS, true,
-                "12431",
+                "bbbbbbbb",
                 4,
                 LocalDate.of(2001, 10, 10),
                 LocalTime.of(12, 0, 0),
