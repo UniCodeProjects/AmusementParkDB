@@ -3,7 +3,6 @@ package org.apdb4j.core.managers;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
-import org.jooq.Result;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,6 +26,7 @@ public final class ParkServiceManager {
      * @param newName the new name of the provided park service.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean changeName(final @NonNull String parkServiceID, final @NonNull String newName,
                                      final @NonNull String account) {
@@ -47,6 +47,7 @@ public final class ParkServiceManager {
      * @param newAverageRating the new average rating of the given park service.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean editAverageRating(final @NonNull String parkServiceID, final double newAverageRating,
                                             final @NonNull String account) {
@@ -66,6 +67,7 @@ public final class ParkServiceManager {
      *                      park service, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean incrementReviews(final @NonNull String parkServiceID, final @NonNull String account) {
         final int beforeNum = DB.createConnection()
@@ -99,6 +101,7 @@ public final class ParkServiceManager {
      * @param newType the new type of the provided park service.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean changeType(final @NonNull String parkServiceID, final @NonNull String newType,
                                      final @NonNull String account) {
@@ -120,6 +123,7 @@ public final class ParkServiceManager {
      * @param description the description to add for the provided park service.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean addDescription(final @NonNull String parkServiceID,
                                          final @NonNull String description,
@@ -141,14 +145,14 @@ public final class ParkServiceManager {
      * @return the park's best services.
      */
     public static @NonNull List<Record> getBestParkServices(final @NonNull String account) {
-        // TODO
-        final Result<Record> bestParkServices = DB.createConnection()
-                .queryAction(db -> {
-                    throw new UnsupportedOperationException();
-                })
+        return DB.createConnection()
+                .queryAction(db -> db.select()
+                        .from(PARK_SERVICES)
+                        .orderBy(PARK_SERVICES.AVGRATING.desc())
+                        .limit(5)
+                        .fetch())
                 .closeConnection()
                 .getResultAsRecords();
-        return bestParkServices.stream().toList();
     }
 
 }
