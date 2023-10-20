@@ -33,14 +33,14 @@ public final class GuestManager {
         if (isStaff(email)) {
             return false;
         }
-        AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
+        final boolean insertedAccount = AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(GUESTS)
                         .values(guestID, name, surname, email)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedTuples == 1;
+        return insertedAccount && insertedTuples == 1;
     }
 
     /**
@@ -65,7 +65,7 @@ public final class GuestManager {
         if (isStaff(email)) {
             return false;
         }
-        AccountManager.addNewAccount(email,
+        final boolean insertedAccount = AccountManager.addNewAccount(email,
                 username,
                 password,
                 PERMISSION_TYPE,
@@ -76,7 +76,7 @@ public final class GuestManager {
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedTuples == 1;
+        return insertedAccount && insertedTuples == 1;
     }
 
     private static boolean isStaff(final String email) {

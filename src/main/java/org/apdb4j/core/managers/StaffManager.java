@@ -1,13 +1,13 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.core.permissions.AdminPermission;
+import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
 
 import java.time.LocalDate;
 
-import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.CONTRACTS;
-import static org.apdb4j.db.Tables.STAFF;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
@@ -15,6 +15,8 @@ import static org.apdb4j.db.Tables.STAFF;
 public final class StaffManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
+    private static final String ADMIN_PERMISSION = AdminPermission.class.getSimpleName().replace("Permission", "");
+    private static final String STAFF_PERMISSION = StaffPermission.class.getSimpleName().replace("Permission", "");
 
     private StaffManager() {
     }
@@ -43,12 +45,10 @@ public final class StaffManager {
                                              final char gender,
                                              final String role, final boolean isAdmin, final boolean isEmployee,
                                              final @NonNull String account) {
-        final int insertedAccountTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS)
-                        .values(email, isAdmin ? "Admin" : "Staff")
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
+        if (isGuest(email)) {
+            return false;
+        }
+        final var insertedAccount = AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
         final int insertedStaffTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(STAFF)
                         .values(nationalID,
@@ -65,7 +65,7 @@ public final class StaffManager {
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedAccountTuples == 1 && insertedStaffTuples == 1;
+        return insertedAccount && insertedStaffTuples == 1;
     }
 
     /**
@@ -94,6 +94,20 @@ public final class StaffManager {
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      */
-    // void updateStaffSalary(@NonNull String staffNationalID, double newSalary, @NonNull String account);
+     public static void updateStaffSalary(final @NonNull String staffNationalID,
+                                          final double newSalary,
+                                          final @NonNull String account) {
+         // TODO: end date = LocalDate.now() for old contract. Copies all the info and creates a new contract with new salary.
+     }
+
+    private static boolean isGuest(final String email) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(GUESTS)
+                        .where(GUESTS.EMAIL.eq(email))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
 
 }
