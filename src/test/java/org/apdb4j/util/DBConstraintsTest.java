@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.apdb4j.db.Tables.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -283,7 +280,16 @@ class DBConstraintsTest {
                 "type 24",
                 null,
                 true);
-        // tests for AVGRATING_DOMAIN
+        // test for AVGRATING_DOMAIN
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-042",
+                "name 42",
+                -1,
+                342,
+                "type 42",
+                null,
+                true);
+        // tests for AVGRATING_CHECK
         insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
                 "EX-021",
                 "name 21",
@@ -293,11 +299,27 @@ class DBConstraintsTest {
                 null,
                 true);
         insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
-                "EX-042",
-                "name 42",
-                -1,
-                342,
-                "type 42",
+                "RE-089",
+                "name re089",
+                0.6,
+                15,
+                "type re089",
+                null,
+                false);
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-088",
+                "name 88",
+                1.5,
+                0,
+                "type 88",
+                null,
+                true);
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-089",
+                "name 89",
+                0.6,
+                0,
+                "type 89",
                 null,
                 true);
         // valid tuples
@@ -319,6 +341,15 @@ class DBConstraintsTest {
                 null,
                 false);
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(PARK_SERVICES, new Object[]{"RE-021"}));
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, true,
+                "RE-088",
+                "name re088",
+                0.0,
+                0,
+                "type re088",
+                null,
+                false);
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(PARK_SERVICES, new Object[]{"RE-088"}));
     }
 
     @Test
@@ -341,7 +372,7 @@ class DBConstraintsTest {
                 null,
                 "mariorossi@gmail.com",
                 "EX-002");
-        TUPLES_TO_REMOVE.add(new ImmutablePair<>(REVIEWS, new Object[]{12_431}));
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(REVIEWS, new Object[]{"bbbbbbbb"}));
     }
 
     @SuppressWarnings("CPD-START")
