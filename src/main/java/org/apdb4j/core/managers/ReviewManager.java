@@ -45,7 +45,7 @@ public final class ReviewManager {
                 .getResultAsInt() == 1;
     }
 
-    public static String computeHash(final String str) {
+    private static String computeHash(final String str) {
         final var hash = new XXHash32();
         hash.update(str.getBytes(StandardCharsets.UTF_8));
         return Long.toHexString(hash.getValue());
