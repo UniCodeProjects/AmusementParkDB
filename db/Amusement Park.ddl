@@ -106,7 +106,8 @@ create table PARK_SERVICES (
      constraint PARKSERVICEID_CHECK check (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%' or ParkServiceID like 'EX%'),
      -- if IsExhibition is true, then the park service must be an exhibition. If IsExhibition is false, then the park service must not be an exhibition.
      constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%'))),
-     constraint AVGRATING_DOMAIN check (AvgRating between 1 and 5));
+     constraint AVGRATING_DOMAIN check (AvgRating between 0 and 5),
+     constraint AVGRATING_CHECK check ((AvgRating = 0.0 and NumReviews = 0) or (AvgRating >= 1.0 and NumReviews >= 1)));
 
 create table PERMISSIONS (
      PermissionType varchar(30) not null,
