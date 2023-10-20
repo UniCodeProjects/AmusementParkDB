@@ -155,7 +155,7 @@ public final class ShopManager {
         return modifiedTuples == 1;
     }
 
-    private static boolean costTableNotPresent(YearMonth currentDate) {
+    private static boolean costTableNotPresent(final YearMonth currentDate) {
         final int countedTuples = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(COSTS)
