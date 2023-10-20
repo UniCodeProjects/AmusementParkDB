@@ -2,11 +2,6 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessSetting;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AdminPermission;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
 
 import java.math.BigDecimal;
@@ -19,16 +14,15 @@ import static org.apdb4j.db.Tables.CONTRACTS;
  */
 public final class ContractManager {
 
-    // TODO: finish up.
-    private static final Permission.Builder PERMS_BUILDER = new Permission.Builder()
-            .setRequiredPermission(new AdminPermission(), new StaffPermission())
-            .setRequiredValues(AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYEENID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYERNID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.SUBSCRIPTIONDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.BEGINDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.ENDDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-            .setRequiredValues(AccessSetting.of(CONTRACTS.SALARY, AccessType.Read.NONE, AccessType.Write.GLOBAL));
+//    private static final Permission.Builder PERMS_BUILDER = new Permission.Builder()
+//            .setRequiredPermission(new AdminPermission(), new StaffPermission())
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYEENID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYERNID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.SUBSCRIPTIONDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.BEGINDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.ENDDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+//            .setRequiredValues(AccessSetting.of(CONTRACTS.SALARY, AccessType.Read.NONE, AccessType.Write.GLOBAL));
 
     private ContractManager() {
     }
