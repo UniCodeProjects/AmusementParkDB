@@ -108,15 +108,16 @@ public final class ShopManager {
                                        final YearMonth actualMonth,
                                        final YearMonth newMonth,
                                        final @NonNull String account) {
-        // TODO: use where not exists?
-        if (costTableNotPresent(actualMonth)) {
-            return false;
-        }
         final int modifiedTuples = DB.createConnection()
                 .queryAction(db -> db.update(COSTS)
                         .set(COSTS.MONTH, newMonth.getMonthValue())
                         .set(COSTS.YEAR, newMonth.getYear())
-                        .where(COSTS.SHOPID.eq(shopID))
+                        .whereExists(db.select()
+                                .from(COSTS)
+                                .where(COSTS.SHOPID.eq(shopID)
+                                .and(COSTS.MONTH.eq(actualMonth.getMonthValue()))
+                                .and(COSTS.YEAR.eq(actualMonth.getYear()))))
+                        .and(COSTS.SHOPID.eq(shopID))
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
@@ -141,30 +142,20 @@ public final class ShopManager {
                                         final YearMonth month,
                                         final double newRevenue, final double newExpense,
                                         final @NonNull String account) {
-        if (costTableNotPresent(month)) {
-            return false;
-        }
         final int modifiedTuples = DB.createConnection()
                 .queryAction(db -> db.update(COSTS)
                         .set(COSTS.REVENUE, BigDecimal.valueOf(newRevenue))
                         .set(COSTS.EXPENSES, BigDecimal.valueOf(newExpense))
-                        .where(COSTS.SHOPID.eq(shopID))
+                        .whereExists(db.select()
+                                .from(COSTS)
+                                .where(COSTS.SHOPID.eq(shopID))
+                                .and(COSTS.MONTH.eq(month.getMonthValue()))
+                                .and(COSTS.YEAR.eq(month.getYear())))
+                        .and(COSTS.SHOPID.eq(shopID))
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
         return modifiedTuples == 1;
-    }
-
-    private static boolean costTableNotPresent(final YearMonth currentDate) {
-        final int countedTuples = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(COSTS)
-                        .where(COSTS.MONTH.eq(currentDate.getMonthValue()))
-                        .and(COSTS.YEAR.eq(currentDate.getYear()))
-                        .fetchOne(0, int.class))
-                .closeConnection()
-                .getResultAsInt();
-        return countedTuples == 0;
     }
 
 }
