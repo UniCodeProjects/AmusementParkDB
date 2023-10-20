@@ -91,14 +91,14 @@ values ("SH-001", 14500.00, 5000.00, 9, 2023),
 insert into reviews
 values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "andreaverdi@gmail.com", "RI-001"),
        ("7602814a", 4, '2023-09-01', '22:12:55', null, "tommasorusso@gmail.com", "RI-001"),
-       ("22222222", 4, '2023-07-22', '10:01:33', null, "tommasorusso@gmail.com", "RI-002"),
-       ("33333333", 5, '2023-06-27', '16:25:00', null, "francescoesposito@gmail.com", "RI-003"),
-       ("44444444", 5, '2023-05-13', '11:22:54', null, "mariagialli@gmail.com", "EX-001"),
-       ("55555555", 4, '2023-03-03', '17:31:45', null, "tommasorusso@gmail.com", "EX-001"),
-       ("66666666", 5, '2023-09-03', '18:20:13', null, "francescoesposito@gmail.com", "EX-002"),
-       ("77777777", 5, '2023-01-14', '19:43:43', null, "andreaverdi@gmail.com", "SH-001"),
-       ("88888888", 4, '2023-01-19', '16:14:59', null, "mariagialli@gmail.com", "SH-001"),
-       ("99999999", 4, '2023-05-19', '19:19:19', null, "tommasorusso@gmail.com", "SH-002");
+       ("2595bb41", 4, '2023-07-22', '10:01:33', null, "tommasorusso@gmail.com", "RI-002"),
+       ("6e946d3", 5, '2023-06-27', '16:25:00', null, "francescoesposito@gmail.com", "RI-003"),
+       ("924fa3cf", 5, '2023-05-13', '11:22:54', null, "mariagialli@gmail.com", "EX-001"),
+       ("240bace7", 4, '2023-03-03', '17:31:45', null, "tommasorusso@gmail.com", "EX-001"),
+       ("a1141a57", 5, '2023-09-03', '18:20:13', null, "francescoesposito@gmail.com", "EX-002"),
+       ("cb362766", 5, '2023-01-14', '19:43:43', null, "andreaverdi@gmail.com", "SH-001"),
+       ("2f150ea4", 4, '2023-01-19', '16:14:59', null, "mariagialli@gmail.com", "SH-001"),
+       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "tommasorusso@gmail.com", "SH-002");
        
 insert into maintenances
 values ("RI-001", 500.00, "maintenance1", '2023-06-10'),
