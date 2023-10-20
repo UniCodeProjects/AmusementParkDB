@@ -131,7 +131,7 @@ public final class AccountManager {
          return updatedTuples == 1;
      }
 
-    private static boolean permissionTypeNotExists(String permissionType) {
+    private static boolean permissionTypeNotExists(final String permissionType) {
         final Result<Record> count = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(PERMISSIONS)

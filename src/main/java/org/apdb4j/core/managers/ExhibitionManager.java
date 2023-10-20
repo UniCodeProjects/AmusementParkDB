@@ -37,6 +37,7 @@ public final class ExhibitionManager {
      * @param type the type of the new exhibition.
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibition(final @NonNull String exhibitionID,
                                            final @NonNull String name,
@@ -55,6 +56,7 @@ public final class ExhibitionManager {
      *                    {@link ExhibitionManager#addNewExhibition(String, String, String, String)}.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibitionWithDescription(final @NonNull String exhibitionID,
                                                           final @NonNull String name,
@@ -85,6 +87,7 @@ public final class ExhibitionManager {
      * @param maxSeats the maximum number of seats of the exhibition venue.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
     public static boolean planNewExhibition(final @NonNull String exhibitionID,
                                             final @NonNull LocalDate date, final @NonNull LocalTime time,
@@ -111,6 +114,7 @@ public final class ExhibitionManager {
      * @param newMaxSeats the new maximum number of seats.
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean changeMaxSeats(final @NonNull String exhibitionID,
                                          final @NonNull LocalDate date, final @NonNull LocalTime time,
@@ -141,6 +145,7 @@ public final class ExhibitionManager {
      * @param spectators the number of people that watched the exhibition.
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
     public static boolean addSpectatorsNum(final @NonNull String exhibitionID,
                                            final @NonNull LocalDate date, final @NonNull LocalTime time,
