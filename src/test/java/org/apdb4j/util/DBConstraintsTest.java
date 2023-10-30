@@ -541,6 +541,9 @@ class DBConstraintsTest {
                 rideIDCorrectSample3, "intensity 202", LocalTime.of(0, 2, 30), 342, 100, 200, 100, 30);
         insertTupleAndCheckForErrorCode(RIDES, false,
                 rideIDCorrectSample4, "intensity 203", LocalTime.of(0, 2, 30), 342, 100, 200, 30, 30);
+        // test for constraint DURATION_CHECK
+        insertTupleAndCheckForErrorCode(RIDES, false,
+                rideIDCorrectSample1, "intensity 200", LocalTime.of(0, 0, 0), 300, 100, 200, 30, 120);
         // valid tuples
         insertTupleAndCheckForErrorCode(RIDES, true,
                 rideIDCorrectSample5, "intensity 204", LocalTime.of(0, 3, 30), 300, 100, 200, 30, 120);
