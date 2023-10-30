@@ -165,6 +165,7 @@ create table RIDES (
      MinWeight int unsigned not null,
      MaxWeight int unsigned not null,
      constraint FKR_ID primary key (RideID),
+     constraint DURATION_CHECK check (Duration != CAST('00:00:00' AS time)),
      constraint RIDEID_FORMAT check (RideID like 'RI%'),
      constraint RIDES_MAX_SEATS_DOMAIN check (MaxSeats > 0),
      constraint HEIGHT_VALUES_CONSISTENCY check (MinHeight < MaxHeight),

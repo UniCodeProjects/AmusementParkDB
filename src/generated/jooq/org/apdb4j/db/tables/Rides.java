@@ -152,6 +152,7 @@ public class Rides extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
+            Internal.createCheck(this, DSL.name("DURATION_CHECK"), "(`Duration` <> \\'00:00:00\\')", true),
             Internal.createCheck(this, DSL.name("HEIGHT_VALUES_CONSISTENCY"), "(`MinHeight` < `MaxHeight`)", true),
             Internal.createCheck(this, DSL.name("RIDEID_FORMAT"), "(`RideID` like _utf8mb4\\'RI%\\')", true),
             Internal.createCheck(this, DSL.name("RIDES_MAX_SEATS_DOMAIN"), "(`MaxSeats` > 0)", true),
