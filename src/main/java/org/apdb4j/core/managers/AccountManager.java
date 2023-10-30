@@ -3,6 +3,7 @@ package org.apdb4j.core.managers;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
@@ -15,6 +16,7 @@ import static org.apdb4j.db.Tables.PERMISSIONS;
 public final class AccountManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
+    private static final String EMAIL_REGEX = "^([a-z0-9._%]+@[a-z0-9.]+\\.[a-z]{2,})$";
 
     private AccountManager() {
     }
@@ -33,6 +35,9 @@ public final class AccountManager {
                                          final @NonNull String account) {
          if (permissionTypeNotExists(permissionType)) {
              throw new IllegalStateException(permissionType + " is not present in the DB.");
+         }
+         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
+             return false;
          }
          final int insertedTuple = DB.createConnection()
                  .queryAction(db -> db.insertInto(ACCOUNTS)
@@ -63,6 +68,9 @@ public final class AccountManager {
                                         final String account) throws AccessDeniedException {
         if (permissionTypeNotExists(permissionType)) {
             throw new IllegalStateException(permissionType + " is not present in the DB.");
+        }
+        if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
+            return false;
         }
         // todo: create permissions.
 //        if (Objects.nonNull(account)) {
