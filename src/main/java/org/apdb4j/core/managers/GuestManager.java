@@ -34,13 +34,19 @@ public final class GuestManager {
             return false;
         }
         final boolean insertedAccount = AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
+        if (!insertedAccount) {
+            return false;
+        }
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(GUESTS)
                         .values(guestID, name, surname, email)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedAccount && insertedTuples == 1;
+        if (insertedTuples == 0) {
+            return deleteAccountTuple(email);
+        }
+        return insertedTuples == 1;
     }
 
     /**
@@ -70,13 +76,19 @@ public final class GuestManager {
                 password,
                 PERMISSION_TYPE,
                 account);
+        if (!insertedAccount) {
+            return false;
+        }
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(GUESTS)
                         .values(guestID, name, surname, email)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedAccount && insertedTuples == 1;
+        if (insertedTuples == 0) {
+            return deleteAccountTuple(email);
+        }
+        return insertedTuples == 1;
     }
 
     private static boolean isStaff(final String email) {
@@ -85,6 +97,15 @@ public final class GuestManager {
                         .from(STAFF)
                         .where(STAFF.EMAIL.eq(email))
                         .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
+
+    private static boolean deleteAccountTuple(final String email) {
+        return DB.createConnection()
+                .queryAction(db -> db.deleteFrom(ACCOUNTS)
+                        .where(ACCOUNTS.EMAIL.eq(email))
+                        .execute())
                 .closeConnection()
                 .getResultAsInt() == 1;
     }
