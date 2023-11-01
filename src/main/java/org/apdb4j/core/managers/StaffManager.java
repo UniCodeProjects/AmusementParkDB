@@ -49,6 +49,9 @@ public final class StaffManager {
             return false;
         }
         final var insertedAccount = AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
+        if (!insertedAccount) {
+            return false;
+        }
         final int insertedStaffTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(STAFF)
                         .values(nationalID,
@@ -65,7 +68,15 @@ public final class StaffManager {
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return insertedAccount && insertedStaffTuples == 1;
+        if (insertedStaffTuples == 0) {
+            return DB.createConnection()
+                    .queryAction(db -> db.deleteFrom(ACCOUNTS)
+                            .where(ACCOUNTS.EMAIL.eq(email))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt() == 1;
+        }
+        return insertedStaffTuples == 1;
     }
 
     /**
@@ -77,13 +88,13 @@ public final class StaffManager {
      * @return {@code true} on successful tuple update
      */
     public static boolean fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
-        final int deletedTuples = DB.createConnection()
+        final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(CONTRACTS)
                         .set(CONTRACTS.ENDDATE, LocalDate.now())
                         .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID)))
                 .closeConnection()
                 .getResultAsInt();
-        return deletedTuples == 1;
+        return updatedTuples == 1;
     }
 
     /**
