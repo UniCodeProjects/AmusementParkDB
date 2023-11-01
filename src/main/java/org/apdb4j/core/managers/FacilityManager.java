@@ -3,6 +3,8 @@ package org.apdb4j.core.managers;
 import java.time.LocalTime;
 
 import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
+import static org.apdb4j.db.Tables.FACILITIES;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Facilities} table.
@@ -22,7 +24,12 @@ public final class FacilityManager {
      */
     public static void changeOpeningTime(final @NonNull String facilityID, final @NonNull LocalTime newOpeningTime,
                                          final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(FACILITIES)
+                        .set(FACILITIES.OPENINGTIME, newOpeningTime)
+                        .where(FACILITIES.FACILITYID.eq(facilityID))
+                        .execute())
+                .closeConnection();
     }
 
     /**
@@ -35,7 +42,12 @@ public final class FacilityManager {
      */
     public static void changeClosingTime(final @NonNull String facilityID, final @NonNull LocalTime newClosingTime,
                                          final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(FACILITIES)
+                        .set(FACILITIES.CLOSINGTIME, newClosingTime)
+                        .where(FACILITIES.FACILITYID.eq(facilityID))
+                        .execute())
+                .closeConnection();
     }
 
 }

@@ -164,9 +164,11 @@ public class Contracts extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
+            Internal.createCheck(this, DSL.name("BEGINDATE_FORMAT"), "(dayofmonth(`BeginDate`) = 1)", true),
             Internal.createCheck(this, DSL.name("CONTRACTID_FORMAT"), "(`ContractID` like _utf8mb4\\'C%\\')", true),
             Internal.createCheck(this, DSL.name("DATES_CONSISTENCY_1"), "(`SubscriptionDate` <= `BeginDate`)", true),
             Internal.createCheck(this, DSL.name("DATES_CONSISTENCY_2"), "((`EndDate` is null) or (`BeginDate` < `EndDate`))", true),
+            Internal.createCheck(this, DSL.name("ENDDATE_FORMAT"), "((`EndDate` is null) or (`EndDate` = last_day(`EndDate`)))", true),
             Internal.createCheck(this, DSL.name("SALARY_NON_NEGATIVITY_CHECK"), "(`Salary` > 0)", true)
         );
     }

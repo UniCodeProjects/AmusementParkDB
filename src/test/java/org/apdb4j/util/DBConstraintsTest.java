@@ -1,8 +1,8 @@
 package org.apdb4j.util;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.core.managers.Manager;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.exception.DataAccessException;
@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.apdb4j.db.Tables.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,6 +54,29 @@ class DBConstraintsTest {
                 LocalDate.of(2022, 1, 1),
                 null,
                 1100.00,
+                employerNIDSample,
+                employeeNIDSample);
+        // test for constraint BEGINDATE_FORMAT
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2013, 1, 1),
+                LocalDate.of(2013, 1, 5),
+                null,
+                1240.00,
+                employerNIDSample,
+                employeeNIDSample);
+        // tests for constraint ENDDATE_FORMAT
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2013, 2, 1),
+                LocalDate.of(2013, 2, 1),
+                LocalDate.of(2014, 2, 1),
+                1500.00,
+                employerNIDSample,
+                employeeNIDSample);
+        insertTupleAndCheckForErrorCode(CONTRACTS, false, correctContractIDSample,
+                LocalDate.of(2014, 1, 1),
+                LocalDate.of(2014, 1, 1),
+                LocalDate.of(2015, 1, 20),
+                1600.00,
                 employerNIDSample,
                 employeeNIDSample);
         // test for constraint DATES_CONSISTENCY_1
@@ -101,8 +121,8 @@ class DBConstraintsTest {
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(CONTRACTS, new Object[]{"C-010"}));
         insertTupleAndCheckForErrorCode(CONTRACTS, true, "C-011",
                 LocalDate.of(2021, 12, 29),
-                LocalDate.of(2021, 12, 29),
-                LocalDate.of(2022, 12, 10),
+                LocalDate.of(2022, 1, 1),
+                LocalDate.of(2022, 12, 31),
                 1500.00,
                 employerNIDSample,
                 employeeNIDSample);
@@ -260,7 +280,16 @@ class DBConstraintsTest {
                 "type 24",
                 null,
                 true);
-        // tests for AVGRATING_DOMAIN
+        // test for AVGRATING_DOMAIN
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-042",
+                "name 42",
+                -1,
+                342,
+                "type 42",
+                null,
+                true);
+        // tests for AVGRATING_CHECK
         insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
                 "EX-021",
                 "name 21",
@@ -270,11 +299,27 @@ class DBConstraintsTest {
                 null,
                 true);
         insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
-                "EX-042",
-                "name 42",
-                -1,
-                342,
-                "type 42",
+                "RE-089",
+                "name re089",
+                0.6,
+                15,
+                "type re089",
+                null,
+                false);
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-088",
+                "name 88",
+                1.5,
+                0,
+                "type 88",
+                null,
+                true);
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, false,
+                "EX-089",
+                "name 89",
+                0.6,
+                0,
+                "type 89",
                 null,
                 true);
         // valid tuples
@@ -296,13 +341,22 @@ class DBConstraintsTest {
                 null,
                 false);
         TUPLES_TO_REMOVE.add(new ImmutablePair<>(PARK_SERVICES, new Object[]{"RE-021"}));
+        insertTupleAndCheckForErrorCode(PARK_SERVICES, true,
+                "RE-088",
+                "name re088",
+                0.0,
+                0,
+                "type re088",
+                null,
+                false);
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(PARK_SERVICES, new Object[]{"RE-088"}));
     }
 
     @Test
     void reviewConstraintsTest() {
         // test for constraint RATING_FORMAT
         insertTupleAndCheckForErrorCode(REVIEWS, false,
-                "12312",
+                "aaaaaaaa",
                 0,
                 LocalDate.of(2001, 10, 10),
                 LocalTime.of(12, 0, 0),
@@ -311,14 +365,14 @@ class DBConstraintsTest {
                 EXHIBITIONID_SAMPLE);
         // valid tuple
         insertTupleAndCheckForErrorCode(REVIEWS, true,
-                "12431",
+                "bbbbbbbb",
                 4,
                 LocalDate.of(2001, 10, 10),
                 LocalTime.of(12, 0, 0),
                 null,
                 "mariorossi@gmail.com",
                 "EX-002");
-        TUPLES_TO_REMOVE.add(new ImmutablePair<>(REVIEWS, new Object[]{12_431}));
+        TUPLES_TO_REMOVE.add(new ImmutablePair<>(REVIEWS, new Object[]{"bbbbbbbb"}));
     }
 
     @SuppressWarnings("CPD-START")
@@ -487,6 +541,9 @@ class DBConstraintsTest {
                 rideIDCorrectSample3, "intensity 202", LocalTime.of(0, 2, 30), 342, 100, 200, 100, 30);
         insertTupleAndCheckForErrorCode(RIDES, false,
                 rideIDCorrectSample4, "intensity 203", LocalTime.of(0, 2, 30), 342, 100, 200, 30, 30);
+        // test for constraint DURATION_CHECK
+        insertTupleAndCheckForErrorCode(RIDES, false,
+                rideIDCorrectSample1, "intensity 200", LocalTime.of(0, 0, 0), 300, 100, 200, 30, 120);
         // valid tuples
         insertTupleAndCheckForErrorCode(RIDES, true,
                 rideIDCorrectSample5, "intensity 204", LocalTime.of(0, 3, 30), 300, 100, 200, 30, 120);
@@ -711,41 +768,10 @@ class DBConstraintsTest {
 
     @AfterAll
     static void tearDown() {
-        TUPLES_TO_REMOVE.forEach(pair -> assertEquals(1, QUERY_BUILDER.createConnection()
-                .queryAction(db -> db.execute(generateDeletionQuery(pair)))
-                .closeConnection()
-                .getResultAsInt()));
+        TUPLES_TO_REMOVE.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 
     static void removeTuplesFromDB(final Collection<Pair<Table<Record>, Object[]>> tuplesToRemove) {
-        tuplesToRemove.forEach(pair -> assertEquals(1, QUERY_BUILDER.createConnection()
-                .queryAction(db -> db.execute(generateDeletionQuery(pair)))
-                .closeConnection()
-                .getResultAsInt()));
-    }
-
-    private static String generateDeletionQuery(final Pair<Table<Record>, Object[]> pair) {
-        final var tableName = pair.getLeft().getName();
-        final var pk = getPrimaryKey(pair.getLeft());
-        final var builder = new StringBuilder();
-        for (int i = 0; i < pk.length; i++) {
-            builder.append(pk[i]).append(" = '").append(pair.getRight()[i]).append("' and ");
-            if (i == pk.length - 1) {
-                builder.replace(builder.length() - 4, builder.length(), "");
-            }
-        }
-        return "delete from " + tableName + " where " + builder;
-    }
-
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH",
-            justification = "False positive. Check done with Objects.requireNonNull()")
-    private static String[] getPrimaryKey(final Table<Record> table) {
-        final var str = Objects.requireNonNull(table.getPrimaryKey()).toString();
-        final var finalStr = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
-        final var arr = finalStr.split(", ");
-        for (var i = 0; i < arr.length; i++) {
-            arr[i] = arr[i].replace("\"", ""); // NOPMD // unable to use StringBuilder
-        }
-        return arr;
+        tuplesToRemove.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 }
