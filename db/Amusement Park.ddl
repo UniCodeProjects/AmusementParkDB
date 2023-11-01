@@ -31,6 +31,8 @@ create table CONTRACTS (
      constraint IDCONTRATTO primary key (ContractID),
      constraint IDCONTRACT unique (SubscriptionDate, EmployeeNID),
      constraint CONTRACTID_FORMAT check (ContractID like 'C%'),
+     constraint BEGINDATE_FORMAT check (day(BeginDate) = 1),
+     constraint ENDDATE_FORMAT check (EndDate is null or EndDate = last_day(EndDate)),
      constraint DATES_CONSISTENCY_1 check (SubscriptionDate <= BeginDate),
      constraint DATES_CONSISTENCY_2 check (EndDate is null or (BeginDate < EndDate)),
      constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0));
@@ -104,7 +106,8 @@ create table PARK_SERVICES (
      constraint PARKSERVICEID_CHECK check (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%' or ParkServiceID like 'EX%'),
      -- if IsExhibition is true, then the park service must be an exhibition. If IsExhibition is false, then the park service must not be an exhibition.
      constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%'))),
-     constraint AVGRATING_DOMAIN check (AvgRating between 1 and 5));
+     constraint AVGRATING_DOMAIN check (AvgRating between 0 and 5),
+     constraint AVGRATING_CHECK check ((AvgRating = 0.0 and NumReviews = 0) or (AvgRating >= 1.0 and NumReviews >= 1)));
 
 create table PERMISSIONS (
      PermissionType varchar(30) not null,
@@ -131,7 +134,7 @@ create table responsibilities (
      constraint IDresponsibility primary key (EmployeeNID, FacilityID, Date));
 
 create table REVIEWS (
-     ReviewID int unsigned not null,
+     ReviewID char(8) not null,
      Rating decimal(1,0) not null,
      Date date not null,
      Time time not null,
@@ -162,6 +165,7 @@ create table RIDES (
      MinWeight int unsigned not null,
      MaxWeight int unsigned not null,
      constraint FKR_ID primary key (RideID),
+     constraint DURATION_CHECK check (Duration != CAST('00:00:00' AS time)),
      constraint RIDEID_FORMAT check (RideID like 'RI%'),
      constraint RIDES_MAX_SEATS_DOMAIN check (MaxSeats > 0),
      constraint HEIGHT_VALUES_CONSISTENCY check (MinHeight < MaxHeight),
