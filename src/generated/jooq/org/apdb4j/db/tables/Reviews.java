@@ -25,7 +25,6 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 
 /**
@@ -52,7 +51,7 @@ public class Reviews extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.reviews.ReviewID</code>.
      */
-    public final TableField<Record, UInteger> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.INTEGERUNSIGNED.nullable(false), this, "");
+    public final TableField<Record, String> REVIEWID = createField(DSL.name("ReviewID"), SQLDataType.CHAR(8).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.reviews.Rating</code>.

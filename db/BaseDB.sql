@@ -30,8 +30,8 @@ values ("A-001", "MRARSS77E15A944I", "mariorossi@gmail.com", "Mario", "Rossi", '
 
 insert into contracts 
 values ("C-001", '2021-12-10', '2022-01-01', null, 1100.00, "MRARSS77E15A944I", "RSSLRD89L17C573J"),
-       ("C-002", '2023-05-04', '2023-06-01', '2024-01-01', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
-       ("C-003", '2023-02-22', '2023-04-01', '2024-04-01', 1500.00, "MRARSS77E15A944I", "GLLLSN66T22F839A"),
+       ("C-002", '2023-05-04', '2023-06-01', '2024-01-31', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
+       ("C-003", '2023-02-22', '2023-04-01', '2024-04-30', 1500.00, "MRARSS77E15A944I", "GLLLSN66T22F839A"),
        ("C-004", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "FRRRCR79H09H501F");
 
 insert into price_lists
@@ -79,30 +79,34 @@ values ("EX-001", '2023-09-15', '16:00:00', 200, null),
        ("EX-002", '2023-09-20', '15:30:00', 400, null);
        
 insert into costs
-values ("SH-001", 10000.00, 3000.00, 8, 2023),
+values ("SH-001", 14500.00, 5000.00, 9, 2023),
+	   ("SH-001", 10000.00, 3000.00, 8, 2023),
        ("SH-001", 17000.00, 2000.00, 7, 2023),
        ("SH-001", 20000.00, 4000.00, 6, 2023),
+       ("SH-002", 15500.00, 6000.00, 9, 2023),
        ("SH-002", 15000.00, 3500.00, 8, 2023),
        ("SH-002", 14500.00, 2000.00, 7, 2023),
        ("SH-002", 11000.00, 2450.00, 6, 2023);
        
 insert into reviews
-values (000001, 5, '2023-09-08', '15:30:04', null, "andreaverdi@gmail.com", "RI-001"),
-       (000002, 4, '2023-09-01', '22:12:55', null, "tommasorusso@gmail.com", "RI-001"),
-       (000003, 4, '2023-07-22', '10:01:33', null, "tommasorusso@gmail.com", "RI-002"),
-       (000004, 5, '2023-06-27', '16:25:00', null, "francescoesposito@gmail.com", "RI-003"),
-       (000005, 5, '2023-05-13', '11:22:54', null, "mariagialli@gmail.com", "EX-001"),
-       (000006, 4, '2023-03-03', '17:31:45', null, "tommasorusso@gmail.com", "EX-001"),
-       (000007, 5, '2023-09-03', '18:20:13', null, "francescoesposito@gmail.com", "EX-002"),
-       (000008, 5, '2023-01-14', '19:43:43', null, "andreaverdi@gmail.com", "SH-001"),
-       (000009, 4, '2023-01-19', '16:14:59', null, "mariagialli@gmail.com", "SH-001"),
-       (000010, 4, '2023-05-19', '19:19:19', null, "tommasorusso@gmail.com", "SH-002");
+values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "andreaverdi@gmail.com", "RI-001"),
+       ("7602814a", 4, '2023-09-01', '22:12:55', null, "tommasorusso@gmail.com", "RI-001"),
+       ("2595bb41", 4, '2023-07-22', '10:01:33', null, "tommasorusso@gmail.com", "RI-002"),
+       ("6e946d3", 5, '2023-06-27', '16:25:00', null, "francescoesposito@gmail.com", "RI-003"),
+       ("924fa3cf", 5, '2023-05-13', '11:22:54', null, "mariagialli@gmail.com", "EX-001"),
+       ("240bace7", 4, '2023-03-03', '17:31:45', null, "tommasorusso@gmail.com", "EX-001"),
+       ("a1141a57", 5, '2023-09-03', '18:20:13', null, "francescoesposito@gmail.com", "EX-002"),
+       ("cb362766", 5, '2023-01-14', '19:43:43', null, "andreaverdi@gmail.com", "SH-001"),
+       ("2f150ea4", 4, '2023-01-19', '16:14:59', null, "mariagialli@gmail.com", "SH-001"),
+       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "tommasorusso@gmail.com", "SH-002");
        
 insert into maintenances
 values ("RI-001", 500.00, "maintenance1", '2023-06-10'),
        ("RI-001", 100.00, "maintenance2", '2023-05-15'),
        ("RI-002", 1000.00, "maintenance3", '2023-07-17'),
-       ("RI-003", 400.00, "maintenance4", '2023-08-05');
+       ("RI-002", 550.00, "maintenance4", '2023-09-15'),
+       ("RI-003", 400.00, "maintenance5", '2023-08-05'),
+       ("RI-003", 450.00, "maintenance6", '2023-09-25');
        
 insert into responsibilities
 values ("RI-001", '2023-06-10', "VRDSFO93R45D704B"),
@@ -110,7 +114,9 @@ values ("RI-001", '2023-06-10', "VRDSFO93R45D704B"),
        ("RI-001", '2023-05-15', "GLLLSN66T22F839A"),
        ("RI-002", '2023-07-17', "VRDSFO93R45D704B"),
        ("RI-002", '2023-07-17', "GLLLSN66T22F839A"),
-       ("RI-003", '2023-08-05', "VRDSFO93R45D704B");
+       ("RI-002", '2023-09-15', "GLLLSN66T22F839A"),
+       ("RI-003", '2023-08-05', "VRDSFO93R45D704B"),
+       ("RI-003", '2023-09-25', "VRDSFO93R45D704B");
        
 insert into tickets
 values ("T-001", '2023-05-05', '2023-05-05', null, 0, "G-001"),
