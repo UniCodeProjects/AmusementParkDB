@@ -771,7 +771,7 @@ class DBConstraintsTest {
         TUPLES_TO_REMOVE.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 
-    static void removeTuplesFromDB(final Collection<Pair<Table<Record>, Object[]>> tuplesToRemove) {
+    private static void removeTuplesFromDB(final Collection<Pair<Table<Record>, Object[]>> tuplesToRemove) {
         tuplesToRemove.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 }
