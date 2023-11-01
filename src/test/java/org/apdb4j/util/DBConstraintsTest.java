@@ -1,8 +1,8 @@
 package org.apdb4j.util;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.core.managers.Manager;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.exception.DataAccessException;
@@ -768,41 +768,10 @@ class DBConstraintsTest {
 
     @AfterAll
     static void tearDown() {
-        TUPLES_TO_REMOVE.forEach(pair -> assertEquals(1, QUERY_BUILDER.createConnection()
-                .queryAction(db -> db.execute(generateDeletionQuery(pair)))
-                .closeConnection()
-                .getResultAsInt()));
+        TUPLES_TO_REMOVE.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 
     static void removeTuplesFromDB(final Collection<Pair<Table<Record>, Object[]>> tuplesToRemove) {
-        tuplesToRemove.forEach(pair -> assertEquals(1, QUERY_BUILDER.createConnection()
-                .queryAction(db -> db.execute(generateDeletionQuery(pair)))
-                .closeConnection()
-                .getResultAsInt()));
-    }
-
-    private static String generateDeletionQuery(final Pair<Table<Record>, Object[]> pair) {
-        final var tableName = pair.getLeft().getName();
-        final var pk = getPrimaryKey(pair.getLeft());
-        final var builder = new StringBuilder();
-        for (int i = 0; i < pk.length; i++) {
-            builder.append(pk[i]).append(" = '").append(pair.getRight()[i]).append("' and ");
-            if (i == pk.length - 1) {
-                builder.replace(builder.length() - 4, builder.length(), "");
-            }
-        }
-        return "delete from " + tableName + " where " + builder;
-    }
-
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH",
-            justification = "False positive. Check done with Objects.requireNonNull()")
-    private static String[] getPrimaryKey(final Table<Record> table) {
-        final var str = Objects.requireNonNull(table.getPrimaryKey()).toString();
-        final var finalStr = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
-        final var arr = finalStr.split(", ");
-        for (var i = 0; i < arr.length; i++) {
-            arr[i] = arr[i].replace("\"", ""); // NOPMD // unable to use StringBuilder
-        }
-        return arr;
+        tuplesToRemove.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
     }
 }
