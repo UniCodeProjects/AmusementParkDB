@@ -1,13 +1,18 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AdminPermission;
 import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
+import org.jooq.Record;
 
 import java.time.LocalDate;
 
-import static org.apdb4j.db.Tables.*;
+import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.GUESTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
@@ -101,14 +106,47 @@ public final class StaffManager {
      * Performs the SQL query that updates the salary of the provided staff member.
      * @param staffNationalID the staff's national identifier. If the value of this parameter is not the national
      *                        identifier of a staff member, the query will not be executed and the controller will be informed.
+     * @param newContractID the new ID used for the updated contract.
      * @param newSalary the new salary for the provided staff member.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-     public static void updateStaffSalary(final @NonNull String staffNationalID,
-                                          final double newSalary,
-                                          final @NonNull String account) {
-         // TODO: end date = LocalDate.now() for old contract. Copies all the info and creates a new contract with new salary.
+    @SuppressWarnings("PMD.PrematureDeclaration")   // Not a premature declaration, changes happen in DB.
+     public static boolean updateStaffSalary(final @NonNull String staffNationalID,
+                                             final @NonNull String newContractID,
+                                             final double newSalary,
+                                             final @NonNull String account) throws AccessDeniedException {
+         final Record oldContract = DB.createConnection()
+                 .queryAction(db -> db.select()
+                         .from(CONTRACTS)
+                         .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
+                         .fetch())
+                 .closeConnection()
+                 .getResultAsRecords()
+                 .get(0);
+         final boolean updatedOldContract = fireStaffMember(staffNationalID, account);
+         if (!updatedOldContract) {
+             return false;
+         }
+         final boolean updatedNewContract = ContractManager.signNewContract(newContractID,
+                 oldContract.get(CONTRACTS.EMPLOYEENID),
+                 oldContract.get(CONTRACTS.EMPLOYERNID),
+                 LocalDate.now(),
+                 LocalDate.now(),
+                 oldContract.get(CONTRACTS.ENDDATE),
+                 newSalary,
+                 account);
+         // Rollback changes to old contract.
+         if (!updatedNewContract) {
+             return DB.createConnection()
+                     .queryAction(db -> db.update(CONTRACTS)
+                             .set(CONTRACTS.ENDDATE, oldContract.get(CONTRACTS.ENDDATE))
+                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID))))
+                     .closeConnection()
+                     .getResultAsInt() == 1;
+         }
+         return true;
      }
 
     private static boolean isGuest(final String email) {
