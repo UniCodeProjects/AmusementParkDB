@@ -1,14 +1,24 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
+import org.jooq.Record;
+import org.jooq.types.UInteger;
 
 import java.time.LocalTime;
+import java.util.Collection;
+
+import static org.apdb4j.db.Tables.PARK_SERVICES;
+import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.RIDES;
+import static org.apdb4j.db.Tables.RIDE_DETAILS;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Rides} table.
  */
 public final class RideManager {
 
+    // TODO: implement rollback for addNewRide(), see Notion (AmusementPark to-do list) for further details
     private RideManager() {
     }
 
@@ -30,19 +40,34 @@ public final class RideManager {
      * @param status the status of the new ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the ride is added successfully, {@code false} otherwise.
      */
-    public static void addNewRide(final @NonNull String rideID,
-                                  final @NonNull String name,
-                                  final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                  final @NonNull String type,
-                                  final @NonNull String intensity,
-                                  final @NonNull LocalTime duration,
-                                  final int maxSeats,
-                                  final int minHeight, final int maxHeight,
-                                  final int minWeight, final int maxWeight,
-                                  final char status,
-                                  final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewRide(final @NonNull String rideID,
+                                     final @NonNull String name,
+                                     final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                     final @NonNull String type,
+                                     final @NonNull String intensity,
+                                     final @NonNull LocalTime duration,
+                                     final int maxSeats,
+                                     final int minHeight, final int maxHeight,
+                                     final int minWeight, final int maxWeight,
+                                     final char status,
+                                     final @NonNull String account) {
+        return addNewRide(rideID,
+                name,
+                openingTime,
+                closingTime,
+                type,
+                intensity,
+                duration,
+                maxSeats,
+                null,
+                minHeight,
+                maxHeight,
+                minWeight,
+                maxWeight,
+                status,
+                account);
     }
 
     /**
@@ -66,20 +91,50 @@ public final class RideManager {
      * @param status the status of the new ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the ride is added successfully, {@code false} otherwise.
      */
-    public static void addNewRideWithDescription(final @NonNull String rideID,
-                                                 final @NonNull String name,
-                                                 final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                                 final @NonNull String type,
-                                                 final @NonNull String intensity,
-                                                 final @NonNull LocalTime duration,
-                                                 final int maxSeats,
-                                                 final String description,
-                                                 final int minHeight, final int maxHeight,
-                                                 final int minWeight, final int maxWeight,
-                                                 final char status,
-                                                 final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewRide(final @NonNull String rideID,
+                                                    final @NonNull String name,
+                                                    final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                                    final @NonNull String type,
+                                                    final @NonNull String intensity,
+                                                    final @NonNull LocalTime duration,
+                                                    final int maxSeats,
+                                                    final String description,
+                                                    final int minHeight, final int maxHeight,
+                                                    final int minWeight, final int maxWeight,
+                                                    final char status,
+                                                    final @NonNull String account) {
+        final boolean isInsertedInParkServices = new QueryBuilder().createConnection()
+                .queryAction(db -> db.insertInto(PARK_SERVICES)
+                        .values(rideID, name, 0, 0, type, description, false).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
+        final boolean isInsertedInFacilities = new QueryBuilder().createConnection()
+                .queryAction(db -> db.insertInto(FACILITIES)
+                        .values(rideID, openingTime, closingTime, false).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
+        final boolean isInsertedInRides = new QueryBuilder().createConnection()
+                .queryAction(db -> db.insertInto(RIDES)
+                        .values(rideID, intensity, duration, maxSeats, minHeight, maxHeight, minWeight, maxWeight).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
+        final boolean isInsertedInRideDetails;
+        if (status == 'C' || status == 'M') {
+            isInsertedInRideDetails = new QueryBuilder().createConnection()
+                    .queryAction(db -> db.insertInto(RIDE_DETAILS)
+                            .values(rideID, status, null).execute())
+                    .closeConnection()
+                    .getResultAsInt() == 1;
+        } else {
+            isInsertedInRideDetails = new QueryBuilder().createConnection()
+                    .queryAction(db -> db.insertInto(RIDE_DETAILS)
+                            .values(rideID, status, LocalTime.of(0, 0, 0)).execute())
+                    .closeConnection()
+                    .getResultAsInt() == 1;
+        }
+        return isInsertedInParkServices && isInsertedInFacilities && isInsertedInRides && isInsertedInRideDetails;
     }
 
     /**
@@ -89,10 +144,17 @@ public final class RideManager {
      * @param newIntensity the new intensity of the provided ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the intensity is modified successfully, {@code false} otherwise.
      */
-    public static void changeIntensity(final @NonNull String rideID, final @NonNull String newIntensity,
-                                       final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeIntensity(final @NonNull String rideID, final @NonNull String newIntensity,
+                                          final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDES)
+                        .set(RIDES.INTENSITY, newIntensity)
+                        .where(RIDES.RIDEID.eq(rideID))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -102,10 +164,17 @@ public final class RideManager {
      * @param newDuration the new duration of the ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the duration is modified successfully, {@code false} otherwise.
      */
-    public static void changeDuration(final @NonNull String rideID, final @NonNull LocalTime newDuration,
-                                      final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeDuration(final @NonNull String rideID, final @NonNull LocalTime newDuration,
+                                         final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDES)
+                        .set(RIDES.DURATION, newDuration)
+                        .where(RIDES.RIDEID.eq(rideID))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
 
@@ -116,9 +185,16 @@ public final class RideManager {
      * @param newMaxSeats the new maximum number of seats.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeMaxSeats(final @NonNull String rideID, final int newMaxSeats, final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeMaxSeats(final @NonNull String rideID, final int newMaxSeats, final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDES)
+                        .set(RIDES.MAXSEATS, newMaxSeats)
+                        .where(RIDES.RIDEID.eq(rideID))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -130,10 +206,17 @@ public final class RideManager {
      * @param maxHeight the new maximum height requirements for the ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeHeightRequirements(final @NonNull String rideID, final int minHeight,  final int maxHeight,
-                                                final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeHeightRequirements(final @NonNull String rideID, final int minHeight,  final int maxHeight,
+                                                   final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDES)
+                        .set(RIDES.MINHEIGHT, UInteger.valueOf(minHeight))
+                        .set(RIDES.MAXHEIGHT, UInteger.valueOf(maxHeight))
+                        .where(RIDES.RIDEID.eq(rideID)).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -145,10 +228,17 @@ public final class RideManager {
      * @param maxWeight the new maximum weight requirements for the ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeWeightRequirements(final @NonNull String rideID, final int minWeight, final int maxWeight,
-                                                final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeWeightRequirements(final @NonNull String rideID, final int minWeight, final int maxWeight,
+                                                   final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDES)
+                        .set(RIDES.MINWEIGHT, UInteger.valueOf(minWeight))
+                        .set(RIDES.MAXWEIGHT, UInteger.valueOf(maxWeight))
+                        .where(RIDES.RIDEID.eq(rideID)).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -158,10 +248,16 @@ public final class RideManager {
      * @param estimatedWaitTime the estimated wait time to get in the ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
-    public static void addEstimatedWaitTime(final @NonNull String rideID, final @NonNull LocalTime estimatedWaitTime,
-                                            final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addEstimatedWaitTime(final @NonNull String rideID, final @NonNull LocalTime estimatedWaitTime,
+                                               final @NonNull String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(RIDE_DETAILS)
+                        .set(RIDE_DETAILS.ESTIMATEDWAITTIME, estimatedWaitTime)
+                        .where(RIDE_DETAILS.RIDEID.eq(rideID)).execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -171,17 +267,63 @@ public final class RideManager {
      *                  will not be executed.
      * @param account the account that is performing this operation. If the account has not the permissions to
      *                accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeRideStatus(final @NonNull String rideID, final char newStatus, final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeRideStatus(final @NonNull String rideID, final char newStatus, final @NonNull String account) {
+        if (newStatus == 'C' || newStatus == 'M') {
+            return new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(RIDE_DETAILS)
+                            .set(RIDE_DETAILS.STATUS, String.valueOf(newStatus))
+                            .set(RIDE_DETAILS.ESTIMATEDWAITTIME, (LocalTime) null)
+                            .where(RIDE_DETAILS.RIDEID.eq(rideID))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt() == 1;
+        } else {
+            return new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(RIDE_DETAILS)
+                            .set(RIDE_DETAILS.STATUS, String.valueOf(newStatus))
+                            .set(RIDE_DETAILS.ESTIMATEDWAITTIME, LocalTime.of(0, 0, 0))
+                            .where(RIDE_DETAILS.RIDEID.eq(rideID))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt() == 1;
+        }
     }
-    // Note that if the new status is 'C', the estimatedWaitTime of the provided ride must be set to null!
     // This operation must be done every day when the park closes.
 
-    // Collection<Record> viewAllRidesInfo(String account);
-    // This method can return not only all the static information of the rides, but also their dynamic information,
-    // by joining the values of the table RIDES and RIDE_DETAILS.
+    /**
+     * Retrieves all the rides paired with their estimated wait time.
+     * @param account the account that is performing the operation. If the account has not the permissions to
+     *                accomplish the operation, the query will not be executed.
+     * @return all the rides with their estimated wait time.
+     */
+    public static Collection<Record> viewRidesEstimatedWaitTime(final String account) {
+        return Manager.viewPartialInfoFromTable("ride_details", account, RIDE_DETAILS.RIDEID, RIDE_DETAILS.ESTIMATEDWAITTIME);
+    }
 
-    // Collection<Record> viewRidesEstimatedWaitTime(String account);
-
+    /**
+     * Retrieves the static and dynamic ride info.
+     * @param account the account that is performing the operation. If the account has not the permissions to
+     *                accomplish the operation, the query will not be executed.
+     * @return the static and dynamic ride info.
+     */
+    public static Collection<Record> viewAllRidesInfo(final String account) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(RIDES.RIDEID,
+                                RIDES.INTENSITY,
+                                RIDES.DURATION,
+                                RIDES.MAXSEATS,
+                                RIDES.MINHEIGHT,
+                                RIDES.MAXHEIGHT,
+                                RIDES.MINWEIGHT,
+                                RIDES.MAXWEIGHT,
+                                RIDE_DETAILS.STATUS,
+                                RIDE_DETAILS.ESTIMATEDWAITTIME)
+                        .from(RIDES)
+                        .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+    }
 }
