@@ -74,12 +74,7 @@ public final class StaffManager {
                 .closeConnection()
                 .getResultAsInt();
         if (insertedStaffTuples == 0) {
-            return DB.createConnection()
-                    .queryAction(db -> db.deleteFrom(ACCOUNTS)
-                            .where(ACCOUNTS.EMAIL.eq(email))
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
+            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
         }
         return insertedStaffTuples == 1;
     }
