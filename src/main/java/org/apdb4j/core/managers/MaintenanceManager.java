@@ -1,14 +1,16 @@
 package org.apdb4j.core.managers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
-import static org.apdb4j.db.Tables.MAINTENANCES;
-import static org.apdb4j.db.Tables.RESPONSIBILITIES;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Maintenances} table.
@@ -28,9 +30,11 @@ public final class MaintenanceManager {
      * @param date the date on which the maintenance will be carried out.
      * @param account the account that performs this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @param employeeNIDs the employees that are responsible for the maintenance. If also one of the values
-     *                     of this parameter is not the national identifier of an employee,
-     *                     the query will not be executed.
+     * @param employeeNIDs the employees that are responsible for the maintenance.<br/>
+     *                     The query will not be executed if: <ul>
+     *                     <li>Also one of the values of this parameter is not the national identifier of an employee, or</li>
+     *                     <li>also one of the provided employees has not a valid contract on the provided date</li>
+     *                     </ul>
      * @return {@code true} if the maintenance is inserted, {@code false} otherwise.
      */
     public static boolean addNewMaintenance(final @NonNull String facilityID,
@@ -39,23 +43,27 @@ public final class MaintenanceManager {
                                   final @NonNull LocalDate date,
                                   final @NonNull String account,
                                   final @NonNull String... employeeNIDs) {
-        final var maintenancesInserted = new QueryBuilder().createConnection()
-                .queryAction(db -> db.insertInto(MAINTENANCES)
-                        .values(facilityID, price, description, date)
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
-        final var builder = new QueryBuilder();
-        var responsibilitiesInserted = 0;
-        for (final var employee : employeeNIDs) {
-            responsibilitiesInserted += builder.createConnection()
-                    .queryAction(db -> db.insertInto(RESPONSIBILITIES)
-                            .values(facilityID, date, employee)
+        if (!areAllContractsValid(date, employeeNIDs)) {
+            return false;
+        } else {
+            final var maintenancesInserted = new QueryBuilder().createConnection()
+                    .queryAction(db -> db.insertInto(MAINTENANCES)
+                            .values(facilityID, price, description, date)
                             .execute())
                     .closeConnection()
                     .getResultAsInt();
+            final var builder = new QueryBuilder();
+            var responsibilitiesInserted = 0;
+            for (final var employee : employeeNIDs) {
+                responsibilitiesInserted += builder.createConnection()
+                        .queryAction(db -> db.insertInto(RESPONSIBILITIES)
+                                .values(facilityID, date, employee)
+                                .execute())
+                        .closeConnection()
+                        .getResultAsInt();
+            }
+            return maintenancesInserted == 1 && responsibilitiesInserted == employeeNIDs.length;
         }
-        return maintenancesInserted == 1 && responsibilitiesInserted == employeeNIDs.length;
     }
 
     /**
@@ -73,6 +81,28 @@ public final class MaintenanceManager {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
+    }
+
+    // Checks if the contracts of the provided employees are valid in the provided date
+    private static boolean areAllContractsValid(final LocalDate targetDate, final String... employeeNIDs) {
+        final QueryBuilder queryBuilder = new QueryBuilder();
+        final Collection<LocalDate> employeesContractsEndDate = new ArrayList<>();
+        int validContracts = 0;
+        for (final var employee : employeeNIDs) {
+            queryBuilder.createConnection()
+                    .queryAction(db -> db.select(CONTRACTS.ENDDATE)
+                            .from(CONTRACTS)
+                            .where(CONTRACTS.EMPLOYEENID.eq(employee))
+                            .fetch())
+                    .closeConnection()
+                    .getResultAsRecords().forEach(record -> employeesContractsEndDate.add(record.get(CONTRACTS.ENDDATE)));
+        }
+        for (final var date : employeesContractsEndDate) {
+            if (Objects.isNull(date) || date.isAfter(targetDate)) {
+                validContracts++;
+            }
+        }
+        return validContracts == employeeNIDs.length;
     }
 
     // viewAllPlannedMaintenances();
