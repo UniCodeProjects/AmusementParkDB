@@ -18,7 +18,6 @@ import static org.apdb4j.db.Tables.RIDE_DETAILS;
  */
 public final class RideManager {
 
-    // TODO: implement rollback for addNewRide(), see Notion (AmusementPark to-do list) for further details
     private RideManager() {
     }
 
