@@ -44,7 +44,7 @@ public final class GuestManager {
                 .closeConnection()
                 .getResultAsInt();
         if (insertedTuples == 0) {
-            return deleteAccountTuple(email);
+            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
         }
         return insertedTuples == 1;
     }
@@ -86,7 +86,7 @@ public final class GuestManager {
                 .closeConnection()
                 .getResultAsInt();
         if (insertedTuples == 0) {
-            return deleteAccountTuple(email);
+            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
         }
         return insertedTuples == 1;
     }
@@ -97,15 +97,6 @@ public final class GuestManager {
                         .from(STAFF)
                         .where(STAFF.EMAIL.eq(email))
                         .fetchOne(0, int.class))
-                .closeConnection()
-                .getResultAsInt() == 1;
-    }
-
-    private static boolean deleteAccountTuple(final String email) {
-        return DB.createConnection()
-                .queryAction(db -> db.deleteFrom(ACCOUNTS)
-                        .where(ACCOUNTS.EMAIL.eq(email))
-                        .execute())
                 .closeConnection()
                 .getResultAsInt() == 1;
     }
