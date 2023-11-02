@@ -34,13 +34,13 @@ public final class AccountManager {
      public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
                                          final @NonNull String account) {
          if (permissionTypeNotExists(permissionType)) {
-             throw new IllegalStateException(permissionType + " is not present in the DB.");
+             throw new IllegalArgumentException(permissionType + " is not present in the DB.");
          }
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
          final int insertedTuple = DB.createConnection()
-                 .queryAction(db -> db.insertInto(ACCOUNTS)
+                 .queryAction(db -> db.insertInto(ACCOUNTS, ACCOUNTS.EMAIL, ACCOUNTS.PERMISSIONTYPE)
                          .values(email, permissionType)
                          .execute())
                  .closeConnection()
