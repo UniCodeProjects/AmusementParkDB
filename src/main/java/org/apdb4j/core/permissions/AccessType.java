@@ -10,6 +10,7 @@ import lombok.Getter;
  *     <li>{@code GLOBAL}: allows the user to access the attribute all across every tuple that contains it.</li>
  *     <li>{@code LOCAL}: allows the user to access only its own attribute.</li>
  *     <li>{@code NONE}: forbids the user to access the attribute on all access levels.</li>
+ *     <li>{@code EMPTY}: the access type does not have any set value.</li>
  * </ul>
  */
 public interface AccessType {
@@ -31,7 +32,11 @@ public interface AccessType {
         /**
          * The user has no access for this database's specific attribute on all levels.
          */
-        NONE('N');
+        NONE('N'),
+        /**
+         * There is no value set for the read access.
+         */
+        EMPTY('E');
 
         private final char type;
 
@@ -62,7 +67,11 @@ public interface AccessType {
         /**
          * The user has no access for this database's specific attribute on all levels.
          */
-        NONE('N');
+        NONE('N'),
+        /**
+         * There is no value set for the write access.
+         */
+        EMPTY('E');
 
         private final char type;
 
