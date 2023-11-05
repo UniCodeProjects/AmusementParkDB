@@ -81,13 +81,14 @@ public record Permission(String email, Set<AccessSetting> values, Access... requ
 
         /**
          * Sets the required {@link AccessSetting}.
-         * @param value
+         * @param value the required value
          * @return {@code this} for fluent style
+         * @see Value
          */
         public Builder setRequiredValues(final @NonNull Value value) {
             this.values.add(AccessSetting.of(value.getAttribute(),
-                    value.getRead().orElse(AccessType.Read.NONE),
-                    value.getWrite().orElse(AccessType.Write.NONE)));
+                    value.getRead().orElse(AccessType.Read.EMPTY),
+                    value.getWrite().orElse(AccessType.Write.EMPTY)));
             return this;
         }
 
@@ -99,6 +100,9 @@ public record Permission(String email, Set<AccessSetting> values, Access... requ
             return new Permission(email, values, requiredPermission);
         }
 
+        /**
+         * The required value for defining a permission.
+         */
         @Getter
         public static class Value {
 
@@ -113,18 +117,34 @@ public record Permission(String email, Set<AccessSetting> values, Access... requ
              * @param read the read value
              * @param write the write value
              */
-            public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Read read, final @NonNull AccessType.Write write) {
+            public Value(final @NonNull TableField<Record, ?> attribute,
+                         final @NonNull AccessType.Read read,
+                         final @NonNull AccessType.Write write) {
                 this.attribute = attribute;
                 this.read = Optional.of(read);
                 this.write = Optional.of(write);
             }
 
+            /**
+             * Defines the {@code Read} value for the provided attribute.
+             * Only {@code AccessType.Read} is required to be
+             * valid by {@link org.apdb4j.util.QueryBuilder#definePermissions(Permission)}.
+             * @param attribute the attribute
+             * @param read the read value
+             */
             public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Read read) {
                 this.attribute = attribute;
                 this.read = Optional.of(read);
                 this.write = Optional.empty();
             }
 
+            /**
+             * Defines the {@code Write} value for the provided attribute.
+             * Only {@code AccessType.Write} is required to be
+             * valid by {@link org.apdb4j.util.QueryBuilder#definePermissions(Permission)}.
+             * @param attribute the attribute
+             * @param write the write value
+             */
             public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Write write) {
                 this.attribute = attribute;
                 this.read = Optional.empty();
