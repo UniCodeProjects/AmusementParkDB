@@ -2,12 +2,12 @@ package org.apdb4j.core.permissions;
 
 import lombok.Getter;
 import lombok.NonNull;
-import org.apdb4j.db.Tables;
 import org.jooq.Record;
 import org.jooq.TableField;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,7 +85,9 @@ public record Permission(String email, Set<AccessSetting> values, Access... requ
          * @return {@code this} for fluent style
          */
         public Builder setRequiredValues(final @NonNull Value value) {
-            this.values.add(AccessSetting.of(value.getAttribute(), value.getRead(), value.getWrite()));
+            this.values.add(AccessSetting.of(value.getAttribute(),
+                    value.getRead().orElse(AccessType.Read.NONE),
+                    value.getWrite().orElse(AccessType.Write.NONE)));
             return this;
         }
 
@@ -101,26 +103,34 @@ public record Permission(String email, Set<AccessSetting> values, Access... requ
         public static class Value {
 
             private final TableField<Record, ?> attribute;
-            private AccessType.Read read;
-            private AccessType.Write write;
+            private final Optional<AccessType.Read> read;
+            private final Optional<AccessType.Write> write;
 
-            public Value(final @NonNull TableField<Record, ?> attribute) {
+            /**
+             * Defines the {@code Read} and {@code Write} values for the provided attribute.
+             * {@link org.apdb4j.util.QueryBuilder#definePermissions(Permission)} requires BOTH {@code AccessType} to be valid.
+             * @param attribute the attribute
+             * @param read the read value
+             * @param write the write value
+             */
+            public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Read read, final @NonNull AccessType.Write write) {
                 this.attribute = attribute;
+                this.read = Optional.of(read);
+                this.write = Optional.of(write);
             }
 
-            // the permission is valid if at least one accesstype is valid for the XPermission.
-            public Value withAny(final @NonNull AccessType.Read read, final @NonNull AccessType.Write write) {
-                this.read = read;
-                this.write = write;
-                return this;
+            public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Read read) {
+                this.attribute = attribute;
+                this.read = Optional.of(read);
+                this.write = Optional.empty();
             }
-        }
 
-        public static void main(String[] args) {
-            // TODO: Perhaps stop using a builder and put this directly in the query builder?
-            new Permission.Builder()
-                    .setRequiredPermission(new AdminPermission())
-                    .setRequiredValues(new Value(Tables.ACCOUNTS.EMAIL).withAny(AccessType.Read.NONE, AccessType.Write.NONE));
+            public Value(final @NonNull TableField<Record, ?> attribute, final @NonNull AccessType.Write write) {
+                this.attribute = attribute;
+                this.read = Optional.empty();
+                this.write = Optional.of(write);
+            }
+
         }
 
     }
