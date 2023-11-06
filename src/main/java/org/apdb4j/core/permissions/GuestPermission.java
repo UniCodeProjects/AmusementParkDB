@@ -63,6 +63,14 @@ public class GuestPermission implements AccountAccess, ReviewAccess, ExhibitionA
      * {@inheritDoc}
      */
     @Override
+    public @NonNull AccessSetting getAccessOfAccountPermissionType() {
+        return AccessSetting.of(ACCOUNTS.PERMISSIONTYPE, AccessType.Read.NONE, AccessType.Write.NONE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull AccessSetting getAccessOfReviewID() {
         return AccessSetting.of(REVIEWS.REVIEWID, AccessType.Read.NONE, AccessType.Write.NONE);
     }
