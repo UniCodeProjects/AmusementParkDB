@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -92,8 +93,6 @@ public final class TicketManager {
      *                the query will not be executed.
      * @param year the year on which the ticket is valid. If the value of this parameter is in the past, the query
      *             will not be executed.
-     * @param type the ticket type. If the value of this parameter is not a ticket type,
-     *             the query will not be executed.
      * @param category the category of the ticket type.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
@@ -105,12 +104,12 @@ public final class TicketManager {
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
                                        final int year,
-                                       final @NonNull String type,
                                        final @NonNull String category,
                                        final @NonNull String account) {
         if (year < LocalDate.now().getYear() || !isGuestId(ownerID)) {
             return false;
         } else {
+            final String type = Objects.isNull(validOn) ? "Season ticket" : "Single day ticket";
             final int initialRemainingEntrances = new QueryBuilder().createConnection()
                     .queryAction(db -> db.select(TICKET_TYPES.DURATION)
                             .from(TICKET_TYPES)
