@@ -21,6 +21,7 @@ class UIDParserTest {
     private static final UID PERMISSION_UID = new AppPermissionUID(new GuestPermission()).getUid();
     private static final List<UIDSection> PARSED = UIDParser.parse(PERMISSION_UID.uid());
     private static final UIDSection ACCOUNT_ACCESS_SECTION = UIDParser.get(PARSED, AccountAccess.class);
+    private static final int NUMBER_OF_METHODS = 4;
 
     @Test
     void packageInterfaceSequenceTest() {
@@ -33,7 +34,7 @@ class UIDParserTest {
     @SuppressFBWarnings("UPM_UNCALLED_PRIVATE_METHOD")
     private static Stream<Arguments> provideExpectedValuesForReturnSequenceTest() {
         final List<ReturnSequence> sequences = ACCOUNT_ACCESS_SECTION.returnSequence();
-        assertEquals(3, sequences.size());
+        assertEquals(NUMBER_OF_METHODS, sequences.size());
         return Stream.of(
                 Arguments.of(sequences.get(0),
                         AccessType.Read.LOCAL,
@@ -46,6 +47,11 @@ class UIDParserTest {
                         Set.of(),
                         Set.of()),
                 Arguments.of(sequences.get(2),
+                        AccessType.Read.NONE,
+                        AccessType.Write.NONE,
+                        Set.of(),
+                        Set.of()),
+                Arguments.of(sequences.get(3),
                         AccessType.Read.GLOBAL,
                         AccessType.Write.LOCAL,
                         Set.of(),

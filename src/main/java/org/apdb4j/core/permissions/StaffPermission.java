@@ -69,6 +69,14 @@ public class StaffPermission implements AccountAccess, ReviewAccess, ContractAcc
      * {@inheritDoc}
      */
     @Override
+    public @NonNull AccessSetting getAccessOfAccountPermissionType() {
+        return AccessSetting.of(ACCOUNTS.PERMISSIONTYPE, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull AccessSetting getAccessOfReviewID() {
         return AccessSetting.of(REVIEWS.REVIEWID, AccessType.Read.GLOBAL, AccessType.Write.NONE);
     }

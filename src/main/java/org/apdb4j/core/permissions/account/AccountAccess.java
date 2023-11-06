@@ -27,4 +27,10 @@ public interface AccountAccess extends Access {
      */
     @NonNull AccessSetting getAccessOfAccountPassword();
 
+    /**
+     * The access permission for the {@code PermissionType} attribute.
+     * @return the type of access
+     */
+    @NonNull AccessSetting getAccessOfAccountPermissionType();
+
 }
