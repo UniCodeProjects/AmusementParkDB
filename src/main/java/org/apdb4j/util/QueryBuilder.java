@@ -183,26 +183,7 @@ public class QueryBuilder {
                 .flatMap(Collection::stream)
                 .toList();
         return permission.values().stream()
-                .allMatch(accessSetting -> {
-                    final AccessType.Write write = accessSetting.getWriteAccess().getLeft();
-                    final AccessType.Read read = accessSetting.getReadAccess().getLeft();
-                    // Both are present.
-                    if (!write.equals(AccessType.Write.EMPTY) && !read.equals(AccessType.Read.EMPTY)) {
-                        return returnSequences.contains(new ReturnSequence(accessSetting));
-                    }
-                    // Only Write is present.
-                    if (!write.equals(AccessType.Write.EMPTY)) {
-                        return returnSequences.stream()
-                                .map(ReturnSequence::getWrite)
-                                .toList()
-                                .contains(write);
-                    }
-                    // Only Read is present.
-                    return returnSequences.stream()
-                            .map(ReturnSequence::getRead)
-                            .toList()
-                            .contains(read);
-                });
+                .noneMatch(accessSetting -> returnSequences.contains(new ReturnSequence(accessSetting)));
     }
 
     private boolean isAdmin(final List<UIDSection> parsed) {

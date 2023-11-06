@@ -2,6 +2,7 @@ package org.apdb4j.util;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.AdminPermission;
@@ -18,6 +19,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.FACILITIES;
 import static org.apdb4j.db.Tables.PICTURES;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,25 +42,23 @@ class QueryBuilderTest {
                 // Multiple wrong permission case
                 Arguments.of(new Permission.Builder()
                         .setRequiredPermission(new StaffPermission(), new GuestPermission())
-                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL))
                         .setActualEmail("mariorossi@gmail.com")
                         .build()),
                 // Wrong email case
                 Arguments.of(new Permission.Builder()
                         .setRequiredPermission(new AdminPermission())
-                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Write.GLOBAL))
                         .setActualEmail("sofiaverdi@gmail.com")
-                        .build())
+                        .build()),
                 // Wrong AccessSetting case
-                // TODO: add overloads.
-//                Arguments.of(new Permission.Builder()
-//                        .setRequiredPermission(new GuestPermission())
-//                        .setRequiredValues(AccessSetting.of(ACCOUNTS.EMAIL,
-//                                AccessType.Read.GLOBAL,
-//                                Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class))))
-//                        .setRequiredValues(AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//                        .setActualEmail("alessandrogialli@gmail.com")
-//                        .build())
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Read.GLOBAL, Pair.of(AccessType.Write.GLOBAL,
+                                Set.of(GuestPermission.class))))
+                        .setRequiredValues(new Value(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+                        .setActualEmail("alessandrogialli@gmail.com")
+                        .build())
         );
     }
 
@@ -74,13 +75,13 @@ class QueryBuilderTest {
                 .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.NONE, AccessType.Write.NONE))
                 .setActualEmail("mariorossi@gmail.com")
                 .build()));
-//        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
-//                .setRequiredPermission(new GuestPermission())
-//                .setRequiredValues(AccessSetting.of(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
-//                        AccessType.Read.GLOBAL,
-//                        AccessType.Write.NONE))
-//                .setActualEmail("alessandrogialli@gmail.com")
-//                .build()));
+        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new GuestPermission())
+                .setRequiredValues(new Value(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
+                        AccessType.Read.GLOBAL,
+                        AccessType.Write.NONE))
+                .setActualEmail("alessandrogialli@gmail.com")
+                .build()));
     }
 
     @Test
@@ -93,16 +94,15 @@ class QueryBuilderTest {
                         .build(),
                 new Permission.Builder()
                         .setRequiredPermission(new AdminPermission())
-                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Read.GLOBAL))
                         .setActualEmail("sofiaverdi@gmail.com")
+                        .build(),
+                new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Read.GLOBAL, Pair.of(AccessType.Write.GLOBAL,
+                                Set.of(GuestPermission.class))))
+                        .setActualEmail("alessandrogialli@gmail.com")
                         .build()
-//                new Permission.Builder()
-//                        .setRequiredPermission(new GuestPermission())
-//                        .setRequiredValues(AccessSetting.of(ACCOUNTS.EMAIL,
-//                                AccessType.Read.GLOBAL,
-//                                Pair.of(AccessType.Write.GLOBAL, Set.of(GuestPermission.class))))
-//                        .setActualEmail("alessandrogialli@gmail.com")
-//                        .build()
         );
         assertThrows(AccessDeniedException.class, () -> DB.definePermissions(set));
     }
