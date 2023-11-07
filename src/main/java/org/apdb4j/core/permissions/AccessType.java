@@ -22,21 +22,21 @@ public interface AccessType {
     @AllArgsConstructor
     enum Read {
         /**
-         * The user can read this database's specific attribute on a global level.
+         * There is no value set for the read access.
          */
-        GLOBAL('R'),
-        /**
-         * The user can read this database's specific attribute on a local level.
-         */
-        LOCAL('r'),
+        EMPTY('E'),
         /**
          * The user has no access for this database's specific attribute on all levels.
          */
         NONE('N'),
         /**
-         * There is no value set for the read access.
+         * The user can read this database's specific attribute on a local level.
          */
-        EMPTY('E');
+        LOCAL('r'),
+        /**
+         * The user can read this database's specific attribute on a global level.
+         */
+        GLOBAL('R');
 
         private final char type;
 
@@ -57,21 +57,21 @@ public interface AccessType {
     @AllArgsConstructor
     enum Write {
         /**
-         * The user can write on this database's specific attribute on a global level.
+         * There is no value set for the write access.
          */
-        GLOBAL('W'),
-        /**
-         * The user can write on this database's specific attribute on a local level.
-         */
-        LOCAL('w'),
+        EMPTY('E'),
         /**
          * The user has no access for this database's specific attribute on all levels.
          */
         NONE('N'),
         /**
-         * There is no value set for the write access.
+         * The user can write on this database's specific attribute on a local level.
          */
-        EMPTY('E');
+        LOCAL('w'),
+        /**
+         * The user can write on this database's specific attribute on a global level.
+         */
+        GLOBAL('W');
 
         private final char type;
 
