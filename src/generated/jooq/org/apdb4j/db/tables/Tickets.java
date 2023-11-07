@@ -51,7 +51,7 @@ public class Tickets extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.tickets.TicketID</code>.
      */
-    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(65).nullable(false), this, "");
+    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(9).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.tickets.PurchaseDate</code>.
