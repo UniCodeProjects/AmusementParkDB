@@ -204,7 +204,7 @@ create table TICKET_TYPES (
      constraint PRICE_NON_NEGATIVITY_CHECK check (Price > 0));
 
 create table TICKETS (
-     TicketID char(65) not null,
+     TicketID char(9) not null,
      PurchaseDate date not null,
      ValidOn date,
      ValidUntil date,

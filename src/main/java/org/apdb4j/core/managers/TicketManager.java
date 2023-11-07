@@ -2,6 +2,7 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apdb4j.util.HashUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -9,6 +10,7 @@ import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,8 +84,6 @@ public final class TicketManager {
 
     /**
      * Performs the SQL query that adds a new ticket.
-     * @param ticketID the identifier of the new ticket.
-     * @param purchaseDate the date on which the ticket has been purchased.
      * @param validOn if the ticket is a single-day ticket, this parameter represents the date on which the ticket
      *                is valid and can be punched. Otherwise, if the ticket is a season ticket, this parameter
      *                has to be {@code null}.
@@ -98,9 +98,7 @@ public final class TicketManager {
      *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
-    public static boolean addNewTicket(final @NonNull String ticketID,
-                                       final @NonNull LocalDate purchaseDate,
-                                       final LocalDate validOn,
+    public static boolean addNewTicket(final LocalDate validOn,
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
                                        final int year,
@@ -110,6 +108,8 @@ public final class TicketManager {
             return false;
         } else {
             final String type = Objects.isNull(validOn) ? "Season ticket" : "Single day ticket";
+            final LocalDateTime purchaseDateTime = LocalDateTime.now();
+            final String ticketID = "T" + HashUtils.generate(purchaseDateTime);
             final int initialRemainingEntrances = new QueryBuilder().createConnection()
                     .queryAction(db -> db.select(TICKET_TYPES.DURATION)
                             .from(TICKET_TYPES)
@@ -121,7 +121,12 @@ public final class TicketManager {
                     .getResultAsInt();
             final var isTicketInserted = new QueryBuilder().createConnection()
                     .queryAction(db -> db.insertInto(TICKETS)
-                            .values(ticketID, purchaseDate, validOn, validUntil, initialRemainingEntrances, ownerID)
+                            .values(ticketID,
+                                    purchaseDateTime.toLocalDate(),
+                                    validOn,
+                                    validUntil,
+                                    initialRemainingEntrances,
+                                    ownerID)
                             .execute())
                     .closeConnection()
                     .getResultAsInt() == 1;
