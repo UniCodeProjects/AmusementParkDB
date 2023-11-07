@@ -298,7 +298,7 @@ public final class RideManager {
      * @return all the rides with their estimated wait time.
      */
     public static Collection<Record> viewRidesEstimatedWaitTime(final String account) {
-        return Manager.viewPartialInfoFromTable("ride_details", account, RIDE_DETAILS.RIDEID, RIDE_DETAILS.ESTIMATEDWAITTIME);
+        return Manager.viewPartialInfoFromTable(RIDE_DETAILS, account, RIDE_DETAILS.RIDEID, RIDE_DETAILS.ESTIMATEDWAITTIME);
     }
 
     /**
