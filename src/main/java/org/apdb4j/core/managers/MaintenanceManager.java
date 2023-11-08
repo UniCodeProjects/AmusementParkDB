@@ -32,8 +32,8 @@ public final class MaintenanceManager {
      *                to accomplish the operation, the query will not be executed.
      * @param employeeNIDs the employees that are responsible for the maintenance.<br/>
      *                     The query will not be executed if: <ul>
-     *                     <li>Also one of the values of this parameter is not the national identifier of an employee, or</li>
-     *                     <li>also one of the provided employees has not a valid contract on the provided date</li>
+     *                     <li>at least one of the values of this parameter is not the national identifier of an employee, or</li>
+     *                     <li>at least one of the provided employees has not a valid contract on the provided date</li>
      *                     </ul>
      * @return {@code true} if the maintenance is inserted, {@code false} otherwise.
      */
