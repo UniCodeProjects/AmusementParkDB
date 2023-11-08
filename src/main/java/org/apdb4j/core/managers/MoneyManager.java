@@ -2,15 +2,19 @@ package org.apdb4j.core.managers;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.util.QueryBuilder;
-import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
+import org.jooq.Record;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import static org.apdb4j.db.Tables.*;
@@ -24,21 +28,21 @@ public final class MoneyManager {
     }
 
     /**
-     * Performs the SQL query that retrieves the list of the provided months with the related income.
+     * Performs the SQL query that retrieves a collection of the provided months with the related income.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      * @param months the months to be examined. If there is no money data for at least one of the provided months,
      *               the query will not be executed.
-     * @return a list of months and years paired with the related income.
+     * @return a collection of months and years paired with the related income.
      */
-    public static @NonNull Result<Record> getIncomes(final @NonNull String account,
-                                                     final @NonNull LocalDate... months) {
+    public static @NonNull Collection<Pair<YearMonth, Double>> getIncomes(final @NonNull String account,
+                                                                          final @NonNull YearMonth... months) {
         if (months.length == 0) {
             throw new IllegalArgumentException("months cannot be empty");
         }
-        final var result = executeSelectionForSingleMonth(months[0]);
-        for (int i = 1; i < months.length; i++) {
-            result.add(executeSelectionForSingleMonth(months[i]).get(0));
+        final Collection<Pair<YearMonth, Double>> result = new ArrayList<>();
+        for (final YearMonth month : months) {
+            result.add(executeSelectionForSingleMonth(month));
         }
         return result;
     }
@@ -60,18 +64,23 @@ public final class MoneyManager {
                         .execute())
                 .closeConnection()
                 .getResultAsInt() == 1;
-    }
-    // This operation needs to be done automatically at the end of every month.
+    } // This operation needs to be done automatically at the end of every month.
 
-    private static Result<Record> executeSelectionForSingleMonth(final LocalDate month) {
-        final QueryBuilder queryBuilder = new QueryBuilder();
-        return queryBuilder.createConnection()
+    // Returns the tuple of MONTHLY_RECAPS with the provided date as primary key
+    private static Pair<YearMonth, Double> executeSelectionForSingleMonth(final YearMonth month) {
+        final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
                         .from(MONTHLY_RECAPS)
-                        .where(MONTHLY_RECAPS.DATE.eq(month))
+                        .where(MONTHLY_RECAPS.DATE.eq(LocalDate.of(month.getYear(), month.getMonth(), 1)))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
+        if (result.isNotEmpty()) {
+            final Record record = result.get(0);
+            return new ImmutablePair<>(month, record.get(MONTHLY_RECAPS.REVENUE).doubleValue());
+        } else {
+            throw new IllegalArgumentException("Money info for " + month + " do not exist in the database");
+        }
     }
 
     private static int getPreviousMonth() {
