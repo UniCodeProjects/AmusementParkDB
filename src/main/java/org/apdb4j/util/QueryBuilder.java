@@ -4,6 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.Permission;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
@@ -183,7 +184,8 @@ public class QueryBuilder {
                 .flatMap(Collection::stream)
                 .toList();
         return permission.values().stream()
-                .noneMatch(accessSetting -> returnSequences.contains(new ReturnSequence(accessSetting)));
+                .noneMatch(accessSetting -> returnSequences.contains(new ReturnSequence(accessSetting))
+                        && accessTypesHaveEqualsOrHigherPriority(accessSetting, returnSequences));
     }
 
     private boolean isAdmin(final List<UIDSection> parsed) {
@@ -193,6 +195,23 @@ public class QueryBuilder {
                         .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
                                 && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
                                 && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
+    }
+
+    private boolean accessTypesHaveEqualsOrHigherPriority(final AccessSetting access,
+                                                          final List<ReturnSequence> returnSequences) {
+        return returnSequences.stream().allMatch(returned -> {
+            final var isReadPriorityValid = hasHigherOrEqualPriority(access.getReadAccess().getLeft(), returned.getRead());
+            final var isWritePriorityValid = hasHigherOrEqualPriority(access.getWriteAccess().getLeft(), returned.getWrite());
+            return isReadPriorityValid || isWritePriorityValid;
+        });
+    }
+
+    private boolean hasHigherOrEqualPriority(final AccessType.Read r1, final AccessType.Read r2) {
+        return r1.compareTo(r2) >= 0;
+    }
+
+    private boolean hasHigherOrEqualPriority(final AccessType.Write w1, final AccessType.Write w2) {
+        return w1.compareTo(w2) >= 0;
     }
 
     private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {

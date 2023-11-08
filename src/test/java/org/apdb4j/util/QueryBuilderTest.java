@@ -107,4 +107,13 @@ class QueryBuilderTest {
         assertThrows(AccessDeniedException.class, () -> DB.definePermissions(set));
     }
 
+    @Test
+    void accessTypePriorityTest() {
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new GuestPermission())
+                .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Read.GLOBAL))
+                .setActualEmail("alessandrogialli@gmail.com")
+                .build()));
+    }
+
 }
