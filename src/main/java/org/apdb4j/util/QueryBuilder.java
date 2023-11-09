@@ -2,7 +2,6 @@ package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
-import org.apdb4j.core.permissions.Access;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
@@ -21,6 +20,7 @@ import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -167,11 +167,10 @@ public class QueryBuilder {
             // The provided email does not exist in the DB.
             return true;
         }
-        // The UID from the database and the one just generated are not equals.
-        for (final Access access : permission.requiredPermission()) {
-            if (!Objects.equals(new AppPermissionUID(access).getUid(), uidFromDb)) {
-                return true;
-            }
+        // The UID from the database and none of the newly generated ones from the provided permission are equals.
+        if (Arrays.stream(permission.requiredPermission())
+                .noneMatch(access -> Objects.equals(new AppPermissionUID(access).getUid(), uidFromDb))) {
+            return true;
         }
         final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
         // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
