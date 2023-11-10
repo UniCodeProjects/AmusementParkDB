@@ -198,19 +198,20 @@ public class QueryBuilder {
 
     private boolean accessTypesHaveEqualsOrHigherPriority(final AccessSetting access,
                                                           final List<ReturnSequence> returnSequences) {
-        return returnSequences.stream().allMatch(returned -> {
-            final var isReadPriorityValid = hasHigherOrEqualPriority(access.getReadAccess().getLeft(), returned.getRead());
-            final var isWritePriorityValid = hasHigherOrEqualPriority(access.getWriteAccess().getLeft(), returned.getWrite());
+        // At least one has to match.
+        return returnSequences.stream().anyMatch(returned -> {
+            final var isReadPriorityValid = hasHigherOrEqualPriority(returned.getRead(), access.getReadAccess().getLeft());
+            final var isWritePriorityValid = hasHigherOrEqualPriority(returned.getWrite(), access.getWriteAccess().getLeft());
             return isReadPriorityValid || isWritePriorityValid;
         });
     }
 
-    private boolean hasHigherOrEqualPriority(final AccessType.Read r1, final AccessType.Read r2) {
-        return r1.compareTo(r2) >= 0;
+    private boolean hasHigherOrEqualPriority(final AccessType.Read actual, final AccessType.Read given) {
+        return actual.compareTo(given) >= 0;
     }
 
-    private boolean hasHigherOrEqualPriority(final AccessType.Write w1, final AccessType.Write w2) {
-        return w1.compareTo(w2) >= 0;
+    private boolean hasHigherOrEqualPriority(final AccessType.Write actual, final AccessType.Write given) {
+        return actual.compareTo(given) >= 0;
     }
 
     private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
