@@ -90,50 +90,47 @@ public final class RideManager {
      * @param status the status of the new ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the ride is added successfully, {@code false} otherwise.
+     * @return {@code true} if the ride is added successfully.
      */
     public static boolean addNewRide(final @NonNull String rideID,
-                                                    final @NonNull String name,
-                                                    final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                                    final @NonNull String type,
-                                                    final @NonNull String intensity,
-                                                    final @NonNull LocalTime duration,
-                                                    final int maxSeats,
-                                                    final String description,
-                                                    final int minHeight, final int maxHeight,
-                                                    final int minWeight, final int maxWeight,
-                                                    final char status,
-                                                    final @NonNull String account) {
-        final boolean isInsertedInParkServices = new QueryBuilder().createConnection()
-                .queryAction(db -> db.insertInto(PARK_SERVICES)
-                        .values(rideID, name, 0, 0, type, description, false).execute())
-                .closeConnection()
-                .getResultAsInt() == 1;
-        final boolean isInsertedInFacilities = new QueryBuilder().createConnection()
-                .queryAction(db -> db.insertInto(FACILITIES)
-                        .values(rideID, openingTime, closingTime, false).execute())
-                .closeConnection()
-                .getResultAsInt() == 1;
-        final boolean isInsertedInRides = new QueryBuilder().createConnection()
-                .queryAction(db -> db.insertInto(RIDES)
-                        .values(rideID, intensity, duration, maxSeats, minHeight, maxHeight, minWeight, maxWeight).execute())
-                .closeConnection()
-                .getResultAsInt() == 1;
-        final boolean isInsertedInRideDetails;
-        if (status == 'C' || status == 'M') {
-            isInsertedInRideDetails = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(RIDE_DETAILS)
-                            .values(rideID, status, null).execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-        } else {
-            isInsertedInRideDetails = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(RIDE_DETAILS)
-                            .values(rideID, status, LocalTime.of(0, 0, 0)).execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-        }
-        return isInsertedInParkServices && isInsertedInFacilities && isInsertedInRides && isInsertedInRideDetails;
+                                     final @NonNull String name,
+                                     final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
+                                     final @NonNull String type,
+                                     final @NonNull String intensity,
+                                     final @NonNull LocalTime duration,
+                                     final int maxSeats,
+                                     final String description,
+                                     final int minHeight, final int maxHeight,
+                                     final int minWeight, final int maxWeight,
+                                     final char status,
+                                     final @NonNull String account) {
+        new QueryBuilder().createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        final var dslContext = configuration.dsl();
+                        dslContext.insertInto(PARK_SERVICES)
+                                .values(rideID, name, 0, 0, type, description, false)
+                                .execute();
+                        dslContext.insertInto(FACILITIES)
+                                .values(rideID, openingTime, closingTime, false)
+                                .execute();
+                        dslContext.insertInto(RIDES)
+                                .values(rideID, intensity, duration, maxSeats, minHeight, maxHeight, minWeight, maxWeight)
+                                .execute();
+                        if (status == 'C' || status == 'M') {
+                            dslContext.insertInto(RIDE_DETAILS)
+                                    .values(rideID, status, null)
+                                    .execute();
+                        } else {
+                            dslContext.insertInto(RIDE_DETAILS)
+                                    .values(rideID, status, LocalTime.of(0, 0, 0))
+                                    .execute();
+                        }
+                    });
+                    return 1; // TODO: how to handle return value?
+                })
+                .closeConnection();
+        return true;
     }
 
     /**
