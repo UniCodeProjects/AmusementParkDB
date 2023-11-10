@@ -35,34 +35,33 @@ public final class MaintenanceManager {
      *                     <li>at least one of the values of this parameter is not the national identifier of an employee, or</li>
      *                     <li>at least one of the provided employees has not a valid contract on the provided date</li>
      *                     </ul>
-     * @return {@code true} if the maintenance is inserted, {@code false} otherwise.
+     * @return {@code true} if the maintenance is inserted.
      */
     public static boolean addNewMaintenance(final @NonNull String facilityID,
-                                  final double price,
-                                  final @NonNull String description,
-                                  final @NonNull LocalDate date,
-                                  final @NonNull String account,
-                                  final @NonNull String... employeeNIDs) {
-        if (!areAllContractsValid(date, employeeNIDs)) {
+                                            final double price,
+                                            final @NonNull String description,
+                                            final @NonNull LocalDate date,
+                                            final @NonNull String account,
+                                            final @NonNull String... employeeNIDs) {
+        if (employeeNIDs.length == 0 || !areAllContractsValid(date, employeeNIDs)) {
             return false;
         } else {
-            final var maintenancesInserted = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(MAINTENANCES)
-                            .values(facilityID, price, description, date)
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt();
-            final var builder = new QueryBuilder();
-            var responsibilitiesInserted = 0;
-            for (final var employee : employeeNIDs) {
-                responsibilitiesInserted += builder.createConnection()
-                        .queryAction(db -> db.insertInto(RESPONSIBILITIES)
-                                .values(facilityID, date, employee)
-                                .execute())
-                        .closeConnection()
-                        .getResultAsInt();
-            }
-            return maintenancesInserted == 1 && responsibilitiesInserted == employeeNIDs.length;
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> {
+                        db.transaction(configuration -> {
+                            final var dslContext = configuration.dsl();
+                            dslContext.insertInto(MAINTENANCES)
+                                    .values(facilityID, price, description, date)
+                                    .execute();
+                            for (final var employee : employeeNIDs) {
+                                dslContext.insertInto(RESPONSIBILITIES)
+                                        .values(facilityID, date, employee)
+                                        .execute();
+                            }
+                        });
+                        return 1; // TODO: how to handle return value?
+                    }).closeConnection();
+            return true;
         }
     }
 
