@@ -91,8 +91,6 @@ public final class TicketManager {
      *                   valid. If the ticket is a single-day ticket, this parameter has to be {@code null}.
      * @param ownerID the identifier of the ticket owner. If the value of this parameter is not a guest identifier,
      *                the query will not be executed.
-     * @param year the year on which the ticket is valid. If the value of this parameter is in the past, the query
-     *             will not be executed.
      * @param category the category of the ticket type.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
@@ -101,14 +99,14 @@ public final class TicketManager {
     public static boolean addNewTicket(final LocalDate validOn,
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
-                                       final int year,
                                        final @NonNull String category,
                                        final @NonNull String account) {
-        if (year < LocalDate.now().getYear() || !isGuestId(ownerID)) {
+        if (!isGuestId(ownerID)) {
             return false;
         } else {
             final String type = Objects.isNull(validOn) ? "Season ticket" : "Single day ticket";
             final LocalDateTime purchaseDateTime = LocalDateTime.now();
+            final int year = purchaseDateTime.getYear();
             final String ticketID = "T" + HashUtils.generate(purchaseDateTime);
             final int initialRemainingEntrances = new QueryBuilder().createConnection()
                     .queryAction(db -> db.select(TICKET_TYPES.DURATION)
@@ -119,24 +117,26 @@ public final class TicketManager {
                             .fetchOne(0, int.class))
                     .closeConnection()
                     .getResultAsInt();
-            final var isTicketInserted = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(TICKETS)
-                            .values(ticketID,
-                                    purchaseDateTime.toLocalDate(),
-                                    validOn,
-                                    validUntil,
-                                    initialRemainingEntrances,
-                                    ownerID)
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-            final var isAttributionInserted = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(ATTRIBUTIONS)
-                            .values(ticketID, year, type, category)
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-            return isTicketInserted && isAttributionInserted;
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> {
+                        db.transaction(configuration -> {
+                            final var dslContext = configuration.dsl();
+                            dslContext.insertInto(TICKETS)
+                                    .values(ticketID,
+                                            purchaseDateTime.toLocalDate(),
+                                            validOn,
+                                            validUntil,
+                                            initialRemainingEntrances,
+                                            ownerID)
+                                    .execute();
+                            dslContext.insertInto(ATTRIBUTIONS)
+                                    .values(ticketID, year, type, category)
+                                    .execute();
+                        });
+                        return 1; // TODO: how to handle return value?
+                    })
+                    .closeConnection();
+            return true;
         }
     }
 
@@ -192,27 +192,26 @@ public final class TicketManager {
         if (!isTicketID(ticketID) || !isTicketValid(punchDate, ticketID) || getRemainingEntrances(ticketID) == 0) {
             return false;
         } else {
-            final boolean areRemainingEntrancesDecreased = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.update(TICKETS)
-                            .set(TICKETS.REMAININGENTRANCES, TICKETS.REMAININGENTRANCES.minus(1))
-                            .where(TICKETS.TICKETID.eq(ticketID))
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-            // no check on the insertion because of the method onDuplicateKeyIgnore()
             new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(PUNCH_DATES)
-                            .values(punchDate)
-                            .onDuplicateKeyIgnore()
-                            .execute())
+                    .queryAction(db -> {
+                        db.transaction(configuration -> {
+                            final var dslContext = configuration.dsl();
+                            dslContext.update(TICKETS)
+                                    .set(TICKETS.REMAININGENTRANCES, TICKETS.REMAININGENTRANCES.minus(1))
+                                    .where(TICKETS.TICKETID.eq(ticketID))
+                                    .execute();
+                            dslContext.insertInto(PUNCH_DATES)
+                                    .values(punchDate)
+                                    .onDuplicateKeyIgnore()
+                                    .execute();
+                            dslContext.insertInto(VALIDATIONS)
+                                    .values(punchDate, ticketID)
+                                    .execute();
+                        });
+                        return 1; // TODO: how to handle return value?
+                    })
                     .closeConnection();
-            final boolean isInsertedInValidations = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(VALIDATIONS)
-                            .values(punchDate, ticketID)
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
-            return areRemainingEntrancesDecreased && isInsertedInValidations;
+            return true;
         }
     }
 
