@@ -30,7 +30,7 @@ public final class ReviewManager {
      *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the review is added successfully.
      */
-    public static boolean addReview(final @NonNull String parkServiceID, final byte rating, final String description,
+    public static boolean addReview(final @NonNull String parkServiceID, final int rating, final String description,
                                     final @NonNull String account) {
         final LocalDate currentDate = LocalDate.now();
         final LocalTime currentTime = LocalTime.now();
@@ -64,7 +64,7 @@ public final class ReviewManager {
         return true;
     }
 
-    private static BigDecimal calculateNewAvgRating(final Record parkServiceOldStats, final byte newReviewRating) {
+    private static BigDecimal calculateNewAvgRating(final Record parkServiceOldStats, final int newReviewRating) {
         final double oldAvgRating = parkServiceOldStats.get(PARK_SERVICES.AVGRATING).doubleValue();
         final int oldNumReviews = parkServiceOldStats.get(PARK_SERVICES.NUMREVIEWS).intValue();
         return BigDecimal.valueOf((oldAvgRating * oldNumReviews + newReviewRating) / (oldNumReviews + 1));
