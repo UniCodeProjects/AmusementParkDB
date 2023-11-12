@@ -60,7 +60,7 @@ public final class MoneyManager {
         final BigDecimal result = revenue.subtract(expenses);
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.insertInto(MONTHLY_RECAPS)
-                        .values(getPreviousMonthFirstDate(), result)
+                        .values(getPreviousMonthFirstDay(), result)
                         .execute())
                 .closeConnection()
                 .getResultAsInt() == 1;
@@ -94,11 +94,11 @@ public final class MoneyManager {
         return getPreviousMonth() == Month.DECEMBER.getValue() ? currentDate.getYear() - 1 : currentDate.getYear();
     }
 
-    private static LocalDate getPreviousMonthFirstDate() {
+    private static LocalDate getPreviousMonthFirstDay() {
         return LocalDate.of(getPreviousYear(), getPreviousMonth(), 1);
     }
 
-    private static LocalDate getPreviousMonthLastDate() {
+    private static LocalDate getPreviousMonthLastDay() {
         final var previousYear = getPreviousYear();
         final var previousMonth = getPreviousMonth();
         return LocalDate.of(previousYear, previousMonth,
@@ -110,7 +110,7 @@ public final class MoneyManager {
                 .queryAction(db -> db.select(DSL.sum(CONTRACTS.SALARY))
                         .from(CONTRACTS)
                         .where(CONTRACTS.ENDDATE.isNull()
-                                .or(CONTRACTS.ENDDATE.greaterOrEqual(getPreviousMonthLastDate())))
+                                .or(CONTRACTS.ENDDATE.greaterOrEqual(getPreviousMonthLastDay())))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords()
@@ -126,7 +126,7 @@ public final class MoneyManager {
                                 .and(ATTRIBUTIONS.YEAR.eq(TICKET_TYPES.YEAR))
                                 .and(ATTRIBUTIONS.TYPE.eq(TICKET_TYPES.TYPE))
                                 .and(ATTRIBUTIONS.CATEGORY.eq(TICKET_TYPES.CATEGORY))
-                                .and(TICKETS.PURCHASEDATE.between(getPreviousMonthFirstDate(), getPreviousMonthLastDate())))
+                                .and(TICKETS.PURCHASEDATE.between(getPreviousMonthFirstDay(), getPreviousMonthLastDay())))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords()
@@ -138,7 +138,7 @@ public final class MoneyManager {
         return (BigDecimal) new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(DSL.sum(MAINTENANCES.PRICE))
                         .from(MAINTENANCES)
-                        .where(MAINTENANCES.DATE.between(getPreviousMonthFirstDate(), getPreviousMonthLastDate()))
+                        .where(MAINTENANCES.DATE.between(getPreviousMonthFirstDay(), getPreviousMonthLastDay()))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords()
