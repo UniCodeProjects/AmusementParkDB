@@ -3,12 +3,12 @@ package org.apdb4j.core.managers;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
+import java.util.Map;
+import java.util.HashMap;
 
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
-import org.jooq.Record;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -66,20 +66,39 @@ public final class MaintenanceManager {
     }
 
     /**
-     * Performs the SQL query that retrieves a list of all the facilities sorted
-     * by the date of their last maintenance.
+     * Performs the SQL query that retrieves all the facilities with the date of their last maintenance.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return a list containing all the park's facilities, sorted by the date of their last maintenance.
+     * @return all the park's facilities, with the date of their last maintenance. The date is {@code null} if the
+     *         facility has never been maintained.
      */
-    public static @NonNull List<Record> sortFacilitiesByLastMaintenanceDate(final @NonNull String account) {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select()
-                        .from(MAINTENANCES)
+    public static @NonNull Map<String, LocalDate> sortFacilitiesByLastMaintenanceDate(final @NonNull String account) {
+        final var sortedMaintenances = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(FACILITIES.FACILITYID, MAINTENANCES.DATE)
+                        .from(FACILITIES)
+                        .leftOuterJoin(MAINTENANCES).on(FACILITIES.FACILITYID.eq(MAINTENANCES.FACILITYID))
                         .orderBy(MAINTENANCES.DATE.desc())
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
+        final Map<String, LocalDate> result = new HashMap<>();
+        for (final var maintenance : sortedMaintenances) {
+            final var facilityMaintained = maintenance.get(MAINTENANCES.FACILITYID);
+            final var maintenanceDate = maintenance.get(MAINTENANCES.DATE);
+            if (!result.containsKey(facilityMaintained)
+                    && (maintenanceDate == null || maintenanceDate.isBefore(LocalDate.now()))) {
+                result.put(facilityMaintained, maintenanceDate);
+            }
+        }
+        if (result.size() < sortedMaintenances.size()) {
+            for (final var maintenance : sortedMaintenances) {
+                final var facilityMaintained = maintenance.get(MAINTENANCES.FACILITYID);
+                if (!result.containsKey(facilityMaintained)) {
+                    result.put(facilityMaintained, null);
+                }
+            }
+        }
+        return result;
     }
 
     // Checks if the contracts of the provided employees are valid in the provided date
