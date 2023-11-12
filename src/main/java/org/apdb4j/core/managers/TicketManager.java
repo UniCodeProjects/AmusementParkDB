@@ -133,7 +133,7 @@ public final class TicketManager {
                                     .values(ticketID, year, type, category)
                                     .execute();
                         });
-                        return 1; // TODO: how to handle return value?
+                        return 1;
                     })
                     .closeConnection();
             return true;
@@ -208,7 +208,7 @@ public final class TicketManager {
                                     .values(punchDate, ticketID)
                                     .execute();
                         });
-                        return 1; // TODO: how to handle return value?
+                        return 1;
                     })
                     .closeConnection();
             return true;
