@@ -127,7 +127,7 @@ public final class RideManager {
                                     .execute();
                         }
                     });
-                    return 1; // TODO: how to handle return value?
+                    return 1;
                 })
                 .closeConnection();
         return true;
