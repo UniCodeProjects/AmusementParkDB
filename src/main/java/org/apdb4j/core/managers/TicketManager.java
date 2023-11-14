@@ -94,7 +94,7 @@ public final class TicketManager {
      * @param category the category of the ticket type.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the insertion is successful, {@code false} otherwise.
+     * @return {@code true} if the insertion is successful.
      */
     public static boolean addNewTicket(final LocalDate validOn,
                                        final LocalDate validUntil,
@@ -185,7 +185,7 @@ public final class TicketManager {
      *                 the query will not be executed.
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the insertion is successful, {@code false} otherwise.
+     * @return {@code true} if the insertion is successful.
      */
     public static boolean punchTicket(final @NonNull String ticketID, final @NonNull String account) {
         final LocalDate punchDate = LocalDate.now();
