@@ -39,7 +39,7 @@ public final class RideManager {
      * @param status the status of the new ride.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the ride is added successfully, {@code false} otherwise.
+     * @return {@code true} if the ride is added successfully.
      */
     public static boolean addNewRide(final @NonNull String rideID,
                                      final @NonNull String name,
@@ -265,11 +265,11 @@ public final class RideManager {
      *                accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeRideStatus(final @NonNull String rideID, final char newStatus, final @NonNull String account) {
-        if (newStatus == 'C' || newStatus == 'M') {
+    public static boolean changeRideStatus(final @NonNull String rideID, final String newStatus, final @NonNull String account) {
+        if ("C".equals(newStatus) || "M".equals(newStatus)) {
             return new QueryBuilder().createConnection()
                     .queryAction(db -> db.update(RIDE_DETAILS)
-                            .set(RIDE_DETAILS.STATUS, String.valueOf(newStatus))
+                            .set(RIDE_DETAILS.STATUS, newStatus)
                             .set(RIDE_DETAILS.ESTIMATEDWAITTIME, (LocalTime) null)
                             .where(RIDE_DETAILS.RIDEID.eq(rideID))
                             .execute())
@@ -278,7 +278,7 @@ public final class RideManager {
         } else {
             return new QueryBuilder().createConnection()
                     .queryAction(db -> db.update(RIDE_DETAILS)
-                            .set(RIDE_DETAILS.STATUS, String.valueOf(newStatus))
+                            .set(RIDE_DETAILS.STATUS, newStatus)
                             .set(RIDE_DETAILS.ESTIMATEDWAITTIME, LocalTime.of(0, 0, 0))
                             .where(RIDE_DETAILS.RIDEID.eq(rideID))
                             .execute())

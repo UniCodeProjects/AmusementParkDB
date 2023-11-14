@@ -59,11 +59,7 @@ public final class PictureManager {
      * @return {@code true} if the picture is removed successfully, {@code false} otherwise.
      */
     public static boolean removePicture(final @NonNull String path, final @NonNull String account) {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.deleteFrom(PICTURES)
-                        .where(PICTURES.PATH.eq(path)).execute())
-                .closeConnection()
-                .getResultAsInt() == 1;
+        return Manager.removeTupleFromDB(PICTURES, account, path);
     }
 
 }
