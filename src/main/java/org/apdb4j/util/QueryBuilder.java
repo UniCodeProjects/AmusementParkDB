@@ -3,7 +3,6 @@ package org.apdb4j.util;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessSetting;
 import org.apdb4j.core.permissions.AccessType;
 import org.apdb4j.core.permissions.Permission;
 import org.apdb4j.core.permissions.uid.AppPermissionUID;
@@ -12,6 +11,7 @@ import org.apdb4j.core.permissions.uid.ReturnSequence;
 import org.apdb4j.core.permissions.uid.UID;
 import org.apdb4j.core.permissions.uid.UIDParser;
 import org.apdb4j.core.permissions.uid.UIDSection;
+import org.apdb4j.db.Tables;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -178,13 +178,29 @@ public class QueryBuilder {
             return false;
         }
         // Otherwise, it is a normal permission.
-        final var returnSequences = parsed.stream()
+        final List<String> requiredPermissions = Arrays.stream(permission.requiredPermission())
+                .map(access -> access.getClass().getSimpleName().replace("Permission", ""))
+                .toList();
+        final String actualPermission = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(Tables.ACCOUNTS.PERMISSIONTYPE)
+                        .from(Tables.ACCOUNTS)
+                        .where(Tables.ACCOUNTS.EMAIL.eq(permission.email()))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords()
+                .getValue(0, Tables.ACCOUNTS.PERMISSIONTYPE);
+        final List<ReturnSequence> requiredReturnSequence = permission.values().stream()
+                .map(ReturnSequence::new)
+                .toList();
+        final List<ReturnSequence> actualReturnSequences = parsed.stream()  // Actual return values from XPermission file
                 .map(UIDSection::returnSequence)
                 .flatMap(Collection::stream)
                 .toList();
-        return permission.values().stream()
-                .noneMatch(accessSetting -> returnSequences.contains(new ReturnSequence(accessSetting))
-                        && accessTypesHaveEqualsOrHigherPriority(accessSetting, returnSequences));
+        return requiredPermissions.stream()
+                .noneMatch(required -> required.equals(actualPermission)
+                        && requiredReturnSequence.stream().allMatch(req -> actualReturnSequences.stream()
+                                .anyMatch(actual -> req.getAttribute().equals(actual.getAttribute())))
+                        && accessTypesHaveEqualsOrHigherPriority(actualReturnSequences, requiredReturnSequence));
     }
 
     private boolean isAdmin(final List<UIDSection> parsed) {
@@ -196,22 +212,21 @@ public class QueryBuilder {
                                 && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
     }
 
-    private boolean accessTypesHaveEqualsOrHigherPriority(final AccessSetting access,
-                                                          final List<ReturnSequence> returnSequences) {
-        // At least one has to match.
-        return returnSequences.stream().anyMatch(returned -> {
-            final var isReadPriorityValid = hasHigherOrEqualPriority(returned.getRead(), access.getReadAccess().getLeft());
-            final var isWritePriorityValid = hasHigherOrEqualPriority(returned.getWrite(), access.getWriteAccess().getLeft());
-            return isReadPriorityValid || isWritePriorityValid;
-        });
+    private boolean accessTypesHaveEqualsOrHigherPriority(final List<ReturnSequence> access1,
+                                                          final List<ReturnSequence> access2) {
+        return access1.stream()
+                .allMatch(a1 -> access2.stream()
+                        .anyMatch(a2 -> hasHigherOrEqualPriority(a2.getRead(), a1.getRead())
+                                && hasHigherOrEqualPriority(a2.getWrite(), a1.getWrite())));
+
     }
 
-    private boolean hasHigherOrEqualPriority(final AccessType.Read actual, final AccessType.Read given) {
-        return actual.compareTo(given) >= 0;
+    private boolean hasHigherOrEqualPriority(final AccessType.Read r1, final AccessType.Read r2) {
+        return r1.compareTo(r2) >= 0;
     }
 
-    private boolean hasHigherOrEqualPriority(final AccessType.Write actual, final AccessType.Write given) {
-        return actual.compareTo(given) >= 0;
+    private boolean hasHigherOrEqualPriority(final AccessType.Write w1, final AccessType.Write w2) {
+        return w1.compareTo(w2) >= 0;
     }
 
     private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
