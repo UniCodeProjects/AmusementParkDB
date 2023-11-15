@@ -29,7 +29,7 @@ public final class GuestManager {
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewGuest(final @NonNull String guestID, final @NonNull String name, final @NonNull String surname,
-                                      final @NonNull String email, final @NonNull String account) {
+                                      final @NonNull String email, final @NonNull String account) throws AccessDeniedException {
         if (isStaff(email)) {
             return false;
         }
