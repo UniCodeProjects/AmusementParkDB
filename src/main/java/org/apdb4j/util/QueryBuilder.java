@@ -22,6 +22,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -198,8 +199,7 @@ public class QueryBuilder {
                 .toList();
         return requiredPermissions.stream()
                 .noneMatch(required -> required.equals(actualPermission)
-                        && requiredReturnSequence.stream().allMatch(req -> actualReturnSequences.stream()
-                                .anyMatch(actual -> req.getAttribute().equals(actual.getAttribute())))
+                        && areAttributesEquals(requiredReturnSequence, actualReturnSequences)
                         && accessTypesHaveEqualsOrHigherPriority(actualReturnSequences, requiredReturnSequence));
     }
 
@@ -210,6 +210,13 @@ public class QueryBuilder {
                         .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
                                 && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
                                 && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
+    }
+
+    private static boolean areAttributesEquals(final List<ReturnSequence> required,
+                                               final List<ReturnSequence> actual) {
+//        return required.stream().allMatch(req -> actual.stream()
+//                .anyMatch(act -> req.getAttribute().equals(act.getAttribute())));
+        return new HashSet<>(actual).containsAll(required);
     }
 
     private boolean accessTypesHaveEqualsOrHigherPriority(final List<ReturnSequence> access1,
