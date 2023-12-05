@@ -1,0 +1,30 @@
+[
+  {
+    "type": "admin",
+    "attributes": null
+  },
+  {
+    "type": "staff",
+    "attributes": [
+      {
+        "attribute": "sampleDbAttribute",
+        "access": [
+          {"target": "foo", "type": "local", "read": true, "write": false},
+          {"target": "bar", "type": "global", "read": false, "write": true}
+        ]
+      }
+    ]
+  },
+  {
+    "type": "guest",
+    "attributes": [
+      {
+        "attribute": "sampleDbAttribute",
+        "access": [
+          {"target": "foo", "type": "local", "read": true, "write": false},
+          {"target": "bar", "type": "global", "read": false, "write": true}
+        ]
+      }
+    ]
+  }
+]
