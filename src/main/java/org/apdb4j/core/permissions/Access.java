@@ -1,8 +1,11 @@
 package org.apdb4j.core.permissions;
 
 /**
- * Symbolises a group of access settings for the database's columns
- * based on a common concept/affinity to a certain access theme.
+ * The access that is related to a specific database attribute.
+ * @param target the access' target account
+ * @param type the type of access - local or global
+ * @param read enables read for this access
+ * @param write enables write for this access
  */
-public interface Access {
+public record Access(String target, String type, boolean read, boolean write) {
 }

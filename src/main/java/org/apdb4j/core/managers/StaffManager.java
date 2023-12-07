@@ -2,8 +2,6 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AdminPermission;
-import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
@@ -19,8 +17,8 @@ import static org.apdb4j.db.Tables.STAFF;
 public final class StaffManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
-    private static final String ADMIN_PERMISSION = AdminPermission.class.getSimpleName().replace("Permission", "");
-    private static final String STAFF_PERMISSION = StaffPermission.class.getSimpleName().replace("Permission", "");
+    private static final String ADMIN_PERMISSION = "admin";
+    private static final String STAFF_PERMISSION = "staff";
 
     private StaffManager() {
     }

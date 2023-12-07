@@ -1,25 +1,13 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AdminPermission;
-import org.apdb4j.core.permissions.GuestPermission;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.Permission.Builder.Value;
-import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.Objects;
-import java.util.Set;
-
-import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.GUESTS;
-import static org.apdb4j.db.Tables.PERMISSIONS;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Accounts} table.
@@ -50,13 +38,7 @@ public final class AccountManager {
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
-         final int insertedTuple = DB.definePermissions(new Permission.Builder()
-                         .setRequiredPermission(new AdminPermission(), new StaffPermission())
-                         .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Write.GLOBAL))
-                         .setRequiredValues(new Value(ACCOUNTS.PERMISSIONTYPE, AccessType.Write.GLOBAL))
-                         .setActualEmail(account)
-                         .build())
-                 .createConnection()
+         final int insertedTuple = DB.createConnection()
                  .queryAction(db -> db.insertInto(ACCOUNTS, ACCOUNTS.EMAIL, ACCOUNTS.PERMISSIONTYPE)
                          .values(email, permissionType)
                          .execute())
@@ -90,17 +72,17 @@ public final class AccountManager {
             return false;
         }
         // A user that is not a guest is creating an account.
-        if (Objects.nonNull(account)) {
-            DB.definePermissions(new Permission.Builder()
-                    .setRequiredPermission(new AdminPermission(), new StaffPermission())
-                    .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PERMISSIONTYPE, AccessType.Write.GLOBAL))
-                    .setActualEmail(account)
-                    .build());
-        }
+//        if (Objects.nonNull(account)) {
+//            DB.definePermissions(new Permission.Builder()
+//                    .setRequiredPermission(new AdminPermission(), new StaffPermission())
+//                    .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Write.GLOBAL))
+//                    .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.GLOBAL))
+//                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.GLOBAL))
+//                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
+//                    .setRequiredValues(new Value(ACCOUNTS.PERMISSIONTYPE, AccessType.Write.GLOBAL))
+//                    .setActualEmail(account)
+//                    .build());
+//        }
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(ACCOUNTS)
                         .values(email, username, password, permissionType)
@@ -145,13 +127,7 @@ public final class AccountManager {
         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
             throw new AccessDeniedException("Guest account has no permission over " + email);
         }
-        final int updatedTuples = DB.definePermissions(new Permission.Builder()
-                        .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
-                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.LOCAL))
-                        .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
-                        .setActualEmail(account)
-                        .build())
-                .createConnection()
+        final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
                         .set(ACCOUNTS.USERNAME, username)
                         .set(ACCOUNTS.PASSWORD, password)
@@ -181,15 +157,7 @@ public final class AccountManager {
          if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
              throw new AccessDeniedException("Guest account has no permission over " + email);
          }
-         final int updatedTuples = DB.definePermissions(new Permission.Builder()
-                         .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
-                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Read.LOCAL, AccessType.Write.LOCAL))
-                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD,
-                                 Pair.of(AccessType.Read.LOCAL, Set.of(GuestPermission.class)),
-                                 Pair.of(AccessType.Write.LOCAL, Set.of(GuestPermission.class))))
-                         .setActualEmail(account)
-                         .build())
-                 .createConnection()
+         final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)
                          .where(ACCOUNTS.EMAIL.eq(email))
