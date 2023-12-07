@@ -50,6 +50,9 @@ dependencies {
     val commonsCodecVersion = "1.16.0"
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
 
+    val gsonVersion = "2.10.1"
+    implementation("com.google.code.gson:gson:$gsonVersion")
+
     val javaFxVersion = "15"
 
     for (platform in supportedPlatforms) {
