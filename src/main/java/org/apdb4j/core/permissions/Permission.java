@@ -4,19 +4,22 @@ import java.util.List;
 
 /**
  * Represents an account's permission.
- * @param type the type of permission
- * @param attributes a list of attributes related to the permission
+ * @param forUserType a list that contains the user types to which the read and write values are applied to
+ * @param read the {@code read} value
+ * @param write the {@code write} value
  */
-public record Permission(String type, List<Attribute> attributes) {
+public record Permission(List<String> forUserType, boolean read, boolean write) {
 
     /**
      * Permission constructor.
-     * @param type the type of permission
-     * @param attributes the list of attributes
+     * @param forUserType a list that contains the user types to which the read and write values are applied to
+     * @param read the {@code read} value
+     * @param write the {@code write} value
      */
-    public Permission(final String type, final List<Attribute> attributes) {
-        this.type = type;
-        this.attributes = List.copyOf(attributes);
+    public Permission(final List<String> forUserType, final boolean read, final boolean write) {
+        this.forUserType = List.copyOf(forUserType);
+        this.read = read;
+        this.write = write;
     }
 
 }
