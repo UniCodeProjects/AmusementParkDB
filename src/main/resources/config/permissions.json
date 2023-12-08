@@ -1,28 +1,90 @@
 [
   {
-    "type": "admin",
-    "attributes": null
-  },
-  {
-    "type": "staff",
-    "attributes": [
+    "attribute": "table.foo",
+    "userTypePermissions": [
       {
-        "attribute": "sampleDbAttribute",
-        "access": [
-          {"target": "foo", "type": "local", "read": true, "write": false},
-          {"target": "bar", "type": "global", "read": false, "write": true}
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest", "staff", "self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["admin"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["admin", "staff", "guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["admin", "staff"],
+            "read": false,
+            "write": false
+          }
         ]
       }
     ]
   },
   {
-    "type": "guest",
-    "attributes": [
+    "attribute": "table.bar",
+    "userTypePermissions": [
       {
-        "attribute": "sampleDbAttribute",
-        "access": [
-          {"target": "foo", "type": "local", "read": true, "write": false},
-          {"target": "bar", "type": "global", "read": false, "write": true}
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
         ]
       }
     ]
