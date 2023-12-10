@@ -1,12 +1,12 @@
 [
   {
-    "attribute": "table.foo",
+    "attribute": "accounts.Email",
     "userTypePermissions": [
       {
         "userType": "admin",
         "permissions": [
           {
-            "forUserType": ["guest", "staff", "self"],
+            "forUserType": ["self", "guest", "staff"],
             "read": true,
             "write": true
           },
@@ -21,14 +21,14 @@
         "userType": "staff",
         "permissions": [
           {
-            "forUserType": ["self"],
+            "forUserType": ["self", "staff", "admin"],
             "read": true,
             "write": false
           },
           {
-            "forUserType": ["admin", "staff", "guest"],
-            "read": false,
-            "write": false
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
           }
         ]
       },
@@ -55,7 +55,716 @@
     ]
   },
   {
-    "attribute": "table.bar",
+    "attribute": "accounts.Username",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["self", "guest", "staff"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["admin"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self", "staff", "admin"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["admin", "staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "accounts.Password",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["staff", "guest"],
+            "read": false,
+            "write": true
+          },
+          {
+            "forUserType": ["admin"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": true
+          },
+          {
+            "forUserType": ["staff", "admin"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest", "staff", "admin"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "attributions.TicketID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "attributions.Year",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "attributions.Type",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "attributions.Category",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.ContractID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          }, {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.SubscriptionDate",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.BeginDate",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.EndDate",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.Salary",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.EmployerNID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "contracts.EmployeeNID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "costs.ShopID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "costs.Revenue",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "costs.Expenses",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "costs.Month",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "costs.Year",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "exhibition_details.ExhibitionID",
     "userTypePermissions": [
       {
         "userType": "admin",
@@ -74,6 +783,2711 @@
             "forUserType": null,
             "read": true,
             "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "exhibition_details.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "exhibition_details.Time",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "exhibition_details.MaxSeats",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "exhibition_details.Spectators",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "facilities.FacilityID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "facilities.OpeningTime",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "facilities.ClosingTime",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "facilities.IsShop",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "guests.GuestID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": false,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "guests.Email",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "guests.Name",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "guests.Surname",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "maintenances.FacilityID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "maintenances.Price",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "maintenances.Description",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "maintenances.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "monthly_recaps.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "monthly_recaps.Revenue",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.ParkServiceID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.Name",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.AvgRating",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.NumReviews",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.Type",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.Description",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "park_services.IsExhibition",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "pictures.Path",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "pictures.ParkServiceID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "price_lists.Year",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "punch_dates.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "responsibilities.FacilityID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "responsibilities.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "responsibilities.EmployeeNID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.ReviewID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": false,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.Rating",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.Time",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.Description",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.Account",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "reviews.ParkServiceID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ride_details.RideID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ride_details.Status",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ride_details.EstimatedWaitTime",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.RideID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.Intensity",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.Duration",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.MaxSeats",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.MinHeight",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.MaxHeight",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.MinWeight",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "rides.MaxWeight",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.StaffID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.NationalID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.Email",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self", "staff"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.Name",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self","staff"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.Surname",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self","staff"],
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.DoB",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.BirthPlace",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.Gender",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.Role",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": false
+          },
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.IsAdmin",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self", "staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "staff.IsEmployee",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["self", "staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["staff"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ticket_types.Year",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ticket_types.Price",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ticket_types.Type",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ticket_types.Category",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "ticket_types.Duration",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.TicketID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.PurchaseDate",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.ValidOn",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.ValidUntil",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.RemainingEntrances",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": true,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "tickets.OwnerID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": ["guest"],
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": ["self"],
+            "read": false,
+            "write": true
+          },
+          {
+            "forUserType": ["guest"],
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "validations.Date",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "guest",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": false,
+            "write": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "attribute": "validations.TicketID",
+    "userTypePermissions": [
+      {
+        "userType": "admin",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
+          }
+        ]
+      },
+      {
+        "userType": "staff",
+        "permissions": [
+          {
+            "forUserType": null,
+            "read": true,
+            "write": true
           }
         ]
       },
