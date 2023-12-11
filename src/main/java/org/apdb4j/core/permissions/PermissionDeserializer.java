@@ -52,19 +52,4 @@ public class PermissionDeserializer implements JsonDeserializer<Attribute> {
         return new Attribute(attribute, userTypePermissions);
     }
 
-//    public static void main(final String[] args) {
-//        final Gson gson = new GsonBuilder()
-//                .registerTypeAdapter(Attribute.class, new PermissionDeserializer())
-//                .setPrettyPrinting()
-//                .create();
-//        try (FileReader reader = new FileReader("src/main/resources/config/permissions.json", StandardCharsets.UTF_8)) {
-//            final Type permissions = TypeToken.getParameterized(List.class, Attribute.class).getType();
-//            final List<Attribute> perms = gson.fromJson(reader, permissions);
-//            final String prettyJson = gson.toJson(JsonParser.parseString(gson.toJson(perms)));
-//            System.out.println(prettyJson);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
 }

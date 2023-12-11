@@ -1,5 +1,7 @@
 package org.apdb4j.core.permissions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  * @param attribute the database attribute
  * @param userTypePermissions a list of userTypePermissions related to the attribute
  */
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "The constructor creates a defensive immutable copy of the list")
 public record Attribute(String attribute, List<UserTypePermission> userTypePermissions) {
 
     /**
