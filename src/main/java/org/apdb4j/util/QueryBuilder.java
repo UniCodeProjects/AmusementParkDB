@@ -3,18 +3,24 @@ package org.apdb4j.util;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.Attribute;
 import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.PermissionHandler;
+import org.apdb4j.core.permissions.UserTypePermission;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.TableField;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
+
+import static org.apdb4j.db.Tables.ACCOUNTS;
 
 /**
  * This builder class makes managing queries with jOOQ easy and fluent.
@@ -26,26 +32,20 @@ public class QueryBuilder {
 
     /**
      * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param permission the object that defines the permission for the query
+     * @param attribute the attribute
+     * @param userEmail the user's email address
+     * @param forUserType the list that contains the required user types
+     * @param read the required {@code read} value
+     * @param write the required {@code write} value
      * @return {@link QueryBuilder} for fluent style
      * @throws AccessDeniedException when the requiredPermission objects are incompatible
      */
-    public QueryBuilder definePermissions(final @NonNull Permission permission) throws AccessDeniedException {
-        if (invalidAccess(permission)) {
-            throw new AccessDeniedException();
-        }
-        return this;
-    }
-
-    /**
-     * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param permissions the objects that define the permissions for the query
-     * @return {@link QueryBuilder} for fluent style
-     * @throws AccessDeniedException when the requiredPermission objects are incompatible
-     */
-    public QueryBuilder definePermissions(final @NonNull Set<? extends Permission> permissions)
-            throws AccessDeniedException {
-        if (invalidAccess(permissions)) {
+    public QueryBuilder definePermissions(final TableField<Record, ?> attribute,
+                                          final String userEmail,
+                                          final List<String> forUserType,
+                                          final boolean read,
+                                          final boolean write) throws AccessDeniedException {
+        if (invalidAccess(attribute, userEmail, forUserType, read, write)) {
             throw new AccessDeniedException();
         }
         return this;
@@ -147,85 +147,40 @@ public class QueryBuilder {
         }
     }
 
-    private boolean invalidAccess(final @NonNull Permission permission) {
-//        final UID uidFromDb;
-//        try {
-//            uidFromDb = new DBPermissionUID(permission.email()).getUid();
-//        } catch (final NoSuchElementException e) {
-//            // The provided email does not exist in the DB.
-//            return true;
-//        }
-//        // The UID from the database and none of the newly generated ones from the provided permission are equals.
-//        if (Arrays.stream(permission.requiredPermission())
-//                .noneMatch(access -> Objects.equals(new AppPermissionUID(access).getUid(), uidFromDb))) {
-//            return true;
-//        }
-//        final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
-//        // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
-//        if (isAdmin(parsed)) {
-//            return false;
-//        }
-//        // Otherwise, it is a normal permission.
-//        final List<String> requiredPermissions = Arrays.stream(permission.requiredPermission())
-//                .map(access -> access.getClass().getSimpleName().replace("Permission", ""))
-//                .toList();
-//        final String actualPermission = new QueryBuilder().createConnection()
-//                .queryAction(db -> db.select(Tables.ACCOUNTS.PERMISSIONTYPE)
-//                        .from(Tables.ACCOUNTS)
-//                        .where(Tables.ACCOUNTS.EMAIL.eq(permission.email()))
-//                        .fetch())
-//                .closeConnection()
-//                .getResultAsRecords()
-//                .getValue(0, Tables.ACCOUNTS.PERMISSIONTYPE);
-//        final List<ReturnSequence> requiredReturnSequence = permission.values().stream()
-//                .map(ReturnSequence::new)
-//                .toList();
-//        final List<ReturnSequence> actualReturnSequences = parsed.stream()  // Actual return values from XPermission file
-//                .map(UIDSection::returnSequence)
-//                .flatMap(Collection::stream)
-//                .toList();
-//        return requiredPermissions.stream()
-//                .noneMatch(required -> required.equals(actualPermission)
-//                        && areAttributesEquals(requiredReturnSequence, actualReturnSequences)
-//                        && accessTypesHaveEqualsOrHigherPriority(actualReturnSequences, requiredReturnSequence));
-        return permission == null;
+    private boolean invalidAccess(final @NonNull TableField<Record, ?> attribute,
+                                  final @NonNull String userEmail,
+                                  final List<String> forUserType,
+                                  final boolean read,
+                                  final boolean write) {
+        // TODO: add support for "self"
+        final String userType = new QueryBuilder()
+                .createConnection()
+                .queryAction(db -> db.select(ACCOUNTS.PERMISSIONTYPE)
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.EMAIL.eq(userEmail))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords()
+                .getValue(0, ACCOUNTS.PERMISSIONTYPE);
+        final Attribute permissions = PermissionHandler.getPermissions(attribute, userType);
+        final List<Permission> result = permissions.userTypePermissions().stream()
+                .filter(userTypePermission -> userTypePermission.userType().equalsIgnoreCase(userType))
+                .map(UserTypePermission::permissions)
+                .flatMap(List::stream)
+                .filter(permission -> permission.forUserType().stream()
+                        .anyMatch(s -> forUserType.stream().anyMatch(s::equalsIgnoreCase)))
+                .peek(System.out::println)
+                .toList();
+        if (result.size() != 1) {
+            throw new IllegalStateException("Found multiple matches for: "
+                    + attribute.getQualifiedName().unquotedName() + " " + userEmail);
+        }
+        return result.get(0).read() != read || result.get(0).write() != write;
     }
 
-//    private boolean isAdmin(final List<UIDSection> parsed) {
-//        return parsed.stream()
-//                .map(UIDSection::returnSequence)
-//                .allMatch(returnSequences -> returnSequences.stream()
-//                        .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
-//                                && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
-//                                && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
+//    public static void main(String[] args) throws AccessDeniedException {
+//        new QueryBuilder().definePermissions(ACCOUNTS.EMAIL, "mariorossi@gmail.com", List.of("guest"), true, true)
+//                .definePermissions(ACCOUNTS.EMAIL, "sofiaverdi@gmail.com", List.of("admin"), true, false);
 //    }
-//
-//    private static boolean areAttributesEquals(final List<ReturnSequence> required,
-//                                               final List<ReturnSequence> actual) {
-//        return required.stream().allMatch(req -> actual.stream()
-//                .anyMatch(act -> req.getAttribute().equals(act.getAttribute())));
-//        return new HashSet<>(actual).containsAll(required);
-//    }
-
-//    private boolean accessTypesHaveEqualsOrHigherPriority(final List<ReturnSequence> access1,
-//                                                          final List<ReturnSequence> access2) {
-//        return access1.stream()
-//                .allMatch(a1 -> access2.stream()
-//                        .anyMatch(a2 -> hasHigherOrEqualPriority(a2.getRead(), a1.getRead())
-//                                && hasHigherOrEqualPriority(a2.getWrite(), a1.getWrite())));
-//
-//    }
-
-//    private boolean hasHigherOrEqualPriority(final AccessType.Read r1, final AccessType.Read r2) {
-//        return r1.compareTo(r2) >= 0;
-//    }
-
-//    private boolean hasHigherOrEqualPriority(final AccessType.Write w1, final AccessType.Write w2) {
-//        return w1.compareTo(w2) >= 0;
-//    }
-
-    private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
-        return permissions.stream().anyMatch(this::invalidAccess);
-    }
 
 }
