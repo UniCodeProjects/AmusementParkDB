@@ -56,9 +56,9 @@ public final class AccountManager {
      * @param password the password of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is performing this operation.
      *                Its value must be {@code null} when a guest is creating his account.
+     * @throws AccessDeniedException if the account has not the permissions to accomplish the operation.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewAccount(final @NonNull String email,

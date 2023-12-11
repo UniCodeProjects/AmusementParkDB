@@ -44,8 +44,8 @@ public final class ContractManager {
      *                contract is a permanent contract. It has to be in the future compared to {@code beginDate},
      *                otherwise the query will not be executed.
      * @param salary the salary of the provided employee.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is performing this operation.
+     * @throws AccessDeniedException if the account has not the permissions to accomplish the operation.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean signNewContract(final @NonNull String contractID,

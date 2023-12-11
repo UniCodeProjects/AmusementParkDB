@@ -57,8 +57,8 @@ public final class GuestManager {
      * @param email the guest's email.
      * @param username the username of the new account.
      * @param password the password of the new account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is performing this operation.
+     * @throws AccessDeniedException if the account has not the permissions to accomplish this operation.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewGuest(final @NonNull String guestID,
