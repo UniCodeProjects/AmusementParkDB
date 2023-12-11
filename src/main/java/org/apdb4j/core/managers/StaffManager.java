@@ -103,8 +103,8 @@ public final class StaffManager {
      *                        identifier of a staff member, the query will not be executed and the controller will be informed.
      * @param newContractID the new ID used for the updated contract.
      * @param newSalary the new salary for the provided staff member.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is performing this operation.
+     * @throws AccessDeniedException if the account has not the permissions to accomplish the operation.
      * @return {@code true} on successful tuple update
      */
     @SuppressWarnings("PMD.PrematureDeclaration")   // Not a premature declaration, changes happen in DB.

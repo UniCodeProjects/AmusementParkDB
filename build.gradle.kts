@@ -128,6 +128,11 @@ fun loadEnvFromFile(envFilePath: String) {
     }
 }
 
+tasks.withType<Javadoc> {
+    source = sourceSets.main.get().allJava
+    exclude("**/org/apdb4j/db/**")
+}
+
 spotbugs {
     excludeFilter.set(file("config/spotbugs-excludes.xml"))
 }
