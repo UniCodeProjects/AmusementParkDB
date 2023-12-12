@@ -169,7 +169,6 @@ public class QueryBuilder {
                 .flatMap(List::stream)
                 .filter(permission -> permission.forUserType().stream()
                         .anyMatch(s -> forUserType.stream().anyMatch(s::equalsIgnoreCase)))
-                .peek(System.out::println)
                 .toList();
         if (result.size() != 1) {
             throw new IllegalStateException("Found multiple matches for: "
