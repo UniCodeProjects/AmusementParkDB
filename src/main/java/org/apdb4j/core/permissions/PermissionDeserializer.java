@@ -24,32 +24,44 @@ public class PermissionDeserializer implements JsonDeserializer<Attribute> {
     public Attribute deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) {
         final JsonObject jsonObject = json.getAsJsonObject();
         final String attribute = jsonObject.get("attribute").getAsString();
+        return new Attribute(attribute, getUserTypePermissions(jsonObject));
+    }
+
+    private static List<UserTypePermission> getUserTypePermissions(final JsonObject jsonObject) {
         final JsonArray userTypePermsArray = jsonObject.getAsJsonArray("userTypePermissions");
         final List<UserTypePermission> userTypePermissions = new ArrayList<>();
         for (final JsonElement userTypePermElement : userTypePermsArray) {
             final JsonObject userTypePermObject = userTypePermElement.getAsJsonObject();
             final String userType = userTypePermObject.get("userType").getAsString();
-            final JsonArray permissionArray = userTypePermObject.getAsJsonArray("permissions");
-            final List<Permission> permissions = new ArrayList<>();
-            for (final JsonElement permissionElement : permissionArray) {
-                final JsonObject permissionObject = permissionElement.getAsJsonObject();
-                final JsonElement forUserTypeArray = permissionObject.get("forUserType");
-                List<String> forUserTypeList;
-                if (forUserTypeArray.isJsonNull()) {
-                    forUserTypeList = Collections.emptyList();
-                } else {
-                    forUserTypeList = forUserTypeArray.getAsJsonArray()
-                            .asList().stream()
-                            .map(JsonElement::getAsString)
-                            .toList();
-                }
-                final boolean read = permissionObject.get("read").getAsBoolean();
-                final boolean write = permissionObject.get("write").getAsBoolean();
-                permissions.add(new Permission(forUserTypeList, read, write));
-            }
-            userTypePermissions.add(new UserTypePermission(userType, permissions));
+            userTypePermissions.add(new UserTypePermission(userType, getPermissions(userTypePermObject)));
         }
-        return new Attribute(attribute, userTypePermissions);
+        return userTypePermissions;
+    }
+
+    private static List<Permission> getPermissions(final JsonObject userTypePermObject) {
+        final JsonArray permissionArray = userTypePermObject.getAsJsonArray("permissions");
+        final List<Permission> permissions = new ArrayList<>();
+        for (final JsonElement permissionElement : permissionArray) {
+            final JsonObject permissionObject = permissionElement.getAsJsonObject();
+            final boolean read = permissionObject.get("read").getAsBoolean();
+            final boolean write = permissionObject.get("write").getAsBoolean();
+            permissions.add(new Permission(getForUserTypeList(permissionObject), read, write));
+        }
+        return permissions;
+    }
+
+    private static List<String> getForUserTypeList(final JsonObject permissionObject) {
+        final JsonElement forUserTypeArray = permissionObject.get("forUserType");
+        List<String> forUserTypeList;
+        if (forUserTypeArray.isJsonNull()) {
+            forUserTypeList = Collections.emptyList();
+        } else {
+            forUserTypeList = forUserTypeArray.getAsJsonArray()
+                    .asList().stream()
+                    .map(JsonElement::getAsString)
+                    .toList();
+        }
+        return forUserTypeList;
     }
 
 }
