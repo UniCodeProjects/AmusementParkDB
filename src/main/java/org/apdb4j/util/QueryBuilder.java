@@ -149,9 +149,9 @@ public class QueryBuilder {
 
     private boolean invalidAccess(final @NonNull TableField<Record, ?> attribute,
                                   final @NonNull String userEmail,
-                                  final List<String> forUserType,
-                                  final boolean read,
-                                  final boolean write) {
+                                  final List<String> requiredForUserType,
+                                  final boolean requiredRead,
+                                  final boolean requiredWrite) {
         // TODO: add support for "self"
         final String userType = new QueryBuilder()
                 .createConnection()
@@ -167,19 +167,26 @@ public class QueryBuilder {
                 .filter(userTypePermission -> userTypePermission.userType().equalsIgnoreCase(userType))
                 .map(UserTypePermission::permissions)
                 .flatMap(List::stream)
-                .filter(permission -> permission.forUserType().stream()
-                        .anyMatch(s -> forUserType.stream().anyMatch(s::equalsIgnoreCase)))
+                .filter(permission -> containsAllUserTypes(permission.forUserType(), requiredForUserType))
                 .toList();
-        if (result.size() != 1) {
-            throw new IllegalStateException("Found multiple matches for: "
+        if (result.isEmpty()) {
+            return true;
+        }
+        if (result.size() > 1) {
+            throw new IllegalStateException("Found " + result.size() + " matches for: "
                     + attribute.getQualifiedName().unquotedName() + " " + userEmail);
         }
-        return result.get(0).read() != read || result.get(0).write() != write;
+        return result.get(0).read() != requiredRead || result.get(0).write() != requiredWrite;
+    }
+
+    private boolean containsAllUserTypes(final List<String> actualForUserType, final List<String> requiredForUserType) {
+        return actualForUserType.stream()
+                .allMatch(actual -> requiredForUserType.stream()
+                        .anyMatch(required -> required.equalsIgnoreCase(actual)));
     }
 
 //    public static void main(String[] args) throws AccessDeniedException {
-//        new QueryBuilder().definePermissions(ACCOUNTS.EMAIL, "mariorossi@gmail.com", List.of("guest"), true, true)
-//                .definePermissions(ACCOUNTS.EMAIL, "sofiaverdi@gmail.com", List.of("admin"), true, false);
+//        new QueryBuilder().definePermissions(ACCOUNTS.EMAIL, "mariorossi@gmail.com", List.of("self"), true, true);
 //    }
 
 }
