@@ -14,7 +14,6 @@ import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.Objects;
 import java.util.Set;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
@@ -50,13 +49,7 @@ public final class AccountManager {
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
-         final int insertedTuple = DB.definePermissions(new Permission.Builder()
-                         .setRequiredPermission(new AdminPermission(), new StaffPermission())
-                         .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Write.GLOBAL))
-                         .setRequiredValues(new Value(ACCOUNTS.PERMISSIONTYPE, AccessType.Write.GLOBAL))
-                         .setActualEmail(account)
-                         .build())
-                 .createConnection()
+         final int insertedTuple = DB.createConnection()
                  .queryAction(db -> db.insertInto(ACCOUNTS, ACCOUNTS.EMAIL, ACCOUNTS.PERMISSIONTYPE)
                          .values(email, permissionType)
                          .execute())
@@ -88,18 +81,6 @@ public final class AccountManager {
         }
         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
             return false;
-        }
-        // A user that is not a guest is creating an account.
-        if (Objects.nonNull(account)) {
-            DB.definePermissions(new Permission.Builder()
-                    .setRequiredPermission(new AdminPermission(), new StaffPermission())
-                    .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.GLOBAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
-                    .setRequiredValues(new Value(ACCOUNTS.PERMISSIONTYPE, AccessType.Write.GLOBAL))
-                    .setActualEmail(account)
-                    .build());
         }
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(ACCOUNTS)
