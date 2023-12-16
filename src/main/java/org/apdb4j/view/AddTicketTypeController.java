@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The FXML controller for the add ticket screen.
+ * The FXML controller for the add ticket type screen.
  */
 public class AddTicketTypeController implements Initializable {
 
