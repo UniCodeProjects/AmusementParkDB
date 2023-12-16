@@ -40,7 +40,7 @@ public class TicketSelectorController implements Initializable {
      */
     @FXML
     void onTicketTypeBtnPress(final ActionEvent event) {
-
+        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket-type.fxml", "Add ticket type", 1.2, 1.3);
     }
 
     /**
