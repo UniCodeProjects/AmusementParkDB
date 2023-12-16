@@ -3,9 +3,15 @@ package org.apdb4j.view;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Setter;
+import org.apdb4j.view.tableview.Employee;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +23,31 @@ public class HireController implements Initializable {
 
     @FXML
     private GridPane gridPane;
+    @FXML
+    private TextField nationalIDField;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField surnameField;
+    @FXML
+    private DatePicker dobPicker;
+    @FXML
+    private TextField birthplaceField;
+    @FXML
+    private ChoiceBox<String> genderChoiceBox;
+    @FXML
+    private TextField roleField;
+    @FXML
+    private RadioButton adminRadioBtn;
+    @FXML
+    private RadioButton employeeRadioBtn;
+    @FXML
+    private TextField emailField;
+
+    @Setter
+    private static boolean editMode;
+    @Setter
+    private static Employee employee;
 
     /**
      * {@inheritDoc}
@@ -27,6 +58,18 @@ public class HireController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             stage.setHeight(gridPane.getHeight());
+            if (editMode) {
+                nationalIDField.setText(employee.getNationalID());
+                nameField.setText(employee.getName());
+                surnameField.setText(employee.getSurname());
+                dobPicker.setValue(employee.getDob());
+                birthplaceField.setText(employee.getBirthplace());
+                genderChoiceBox.setValue(employee.getGender());
+                roleField.setText(employee.getRole());
+                adminRadioBtn.setSelected(employee.isAdmin());
+                employeeRadioBtn.setSelected(!employee.isAdmin());
+                emailField.setText(employee.getEmail());
+            }
         });
     }
 
