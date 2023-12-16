@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,7 +31,7 @@ public class TicketSelectorController implements Initializable {
      */
     @FXML
     void onTicketBtnPress(final ActionEvent event) {
-
+        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket.fxml", "Add ticket", 1.2, 1.3);
     }
 
     /**
