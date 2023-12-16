@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 public class AddTicketController implements Initializable {
 
     @FXML
-    private ChoiceBox<?> categoryChoiceBox;
+    private ChoiceBox<String> categoryChoiceBox;
     @FXML
     private GridPane gridPane;
     @FXML
