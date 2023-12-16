@@ -8,15 +8,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.tableview.Employee;
 
 import java.net.URL;
 import java.util.Objects;
@@ -41,6 +44,8 @@ public class StaffScreenController implements Initializable {
     private ToggleGroup radioBtnToggle;
     @FXML
     private VBox vBox;
+    @FXML
+    private TableView<Employee> employeeTableView;
     private int addRowCounter = 1;
     private static final int MAX_ROWS = 10;
 
@@ -140,8 +145,27 @@ public class StaffScreenController implements Initializable {
      * @param event the event
      */
     @FXML
-    void onHire(final ActionEvent event) {
-        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire an employee", 0.4, 0.6);
+    void onEmployeeHire(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire employee", 0.4, 0.6);
+    }
+
+    /**
+     * Opens the edit employee popup screen.
+     * @param event the event
+     */
+    @FXML
+    void onEmployeeEdit(final ActionEvent event) {
+        final Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedEmployee)) {
+            final var alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("An error has occurred.");
+            alert.setContentText("A row must be selected to edit the employee entry!");
+            alert.show();
+            return;
+        }
+        HireController.setEditMode(true);
+        HireController.setEmployee(selectedEmployee);
+        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Edit employee", 0.4, 0.6);
     }
 
     /**
