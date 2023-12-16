@@ -7,6 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -37,6 +38,8 @@ public class HireController implements Initializable {
     private ChoiceBox<String> genderChoiceBox;
     @FXML
     private TextField roleField;
+    @FXML
+    private ToggleGroup accountTypeToggleGroup;
     @FXML
     private RadioButton adminRadioBtn;
     @FXML
