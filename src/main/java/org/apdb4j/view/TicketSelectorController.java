@@ -49,7 +49,7 @@ public class TicketSelectorController implements Initializable {
      */
     @FXML
     void onPriceListBtnPress(final ActionEvent event) {
-
+        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket-price.fxml", "Add ticket price", 1.2, 1.3);
     }
 
     /**
