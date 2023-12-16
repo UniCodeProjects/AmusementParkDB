@@ -7,6 +7,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.StaffScreenController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -128,8 +129,8 @@
                               <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHire" text="Hire" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeHire" text="Hire" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeEdit" text="Edit" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Fire" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
@@ -140,10 +141,53 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="employeeTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn editable="false" prefWidth="75.0" text="National ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="nationalID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Name">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="name" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Surname">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="surname" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="DoB">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="dob" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Birthplace">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="birthplace" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Gender">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="gender" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Role">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="role" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Admin">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="admin" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Email">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="email" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
