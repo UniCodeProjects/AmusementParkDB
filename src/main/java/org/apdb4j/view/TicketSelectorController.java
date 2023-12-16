@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Getter;
+import lombok.Setter;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -24,6 +26,9 @@ public class TicketSelectorController implements Initializable {
     private Button ticketTypeBtn;
     @FXML
     private Button priceListBtn;
+    @Setter
+    @Getter
+    private static boolean editMode;
 
     /**
      * Opens the scene to allow the insertion of a new ticket.

@@ -42,6 +42,12 @@ public class AddTicketTypeController implements Initializable {
         Platform.runLater(() -> {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
+            // CPD-OFF
+            if (TicketSelectorController.isEditMode()) {
+                // TODO
+                throw new UnsupportedOperationException();
+            }
+            // CPD-ON
         });
     }
 
