@@ -59,6 +59,7 @@ public class UserScreenController implements Initializable {
         logOutButton.setCursor(Cursor.HAND);
         accountInfo.getItems().add(accountPurchases);
         accountInfo.getItems().add(accountPersonalData);
+        accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
