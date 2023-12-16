@@ -3,6 +3,7 @@ package org.apdb4j.view;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
@@ -54,10 +55,11 @@ public class UserScreenController implements Initializable {
         // ToolBar initalization
         final Hyperlink accountPurchases = new Hyperlink("My purchases");
         final Hyperlink accountPersonalData = new Hyperlink("My personal data");
-        final Button logOut = new Button("Log out");
+        final Button logOutButton = new Button("Log out");
+        logOutButton.setCursor(Cursor.HAND);
         accountInfo.getItems().add(accountPurchases);
         accountInfo.getItems().add(accountPersonalData);
-        accountInfo.getItems().add(logOut);
+        accountInfo.getItems().add(logOutButton);
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
         }
