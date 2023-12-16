@@ -183,6 +183,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditTicketBtnPress(final ActionEvent event) {
+        TicketSelectorController.setEditMode(true);
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
