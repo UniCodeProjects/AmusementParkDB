@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.AddTicketTypeController">
    <center>
@@ -30,12 +27,12 @@
             <Label text="Duration:" GridPane.rowIndex="4" />
              <Spinner fx:id="durationSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
                  <valueFactory>
-                     <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="2147483647" />
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
             <TextField fx:id="typeField" GridPane.columnIndex="1" />
-            <DatePicker fx:id="yearDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />
