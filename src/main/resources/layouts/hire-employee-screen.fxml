@@ -41,8 +41,11 @@
             <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
-                  <RadioButton fx:id="adminRadioBtn" mnemonicParsing="false" text="Admin" />
-                  <RadioButton fx:id="employeeRadioBtn" mnemonicParsing="false" text="Employee" />
+                  <RadioButton fx:id="adminRadioBtn" mnemonicParsing="false" text="Admin">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="accountTypeToggleGroup" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="employeeRadioBtn" mnemonicParsing="false" text="Employee" toggleGroup="$accountTypeToggleGroup" />
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
