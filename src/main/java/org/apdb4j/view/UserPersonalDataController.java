@@ -21,17 +21,12 @@ public class UserPersonalDataController implements Initializable {
     private static final String EDIT_BUTTON_IMAGE_PATH = "img/edit_button.png";
     private static final double EDIT_BUTTON_IMAGE_HEIGHT = 15;
     private static final double EDIT_BUTTON_IMAGE_WIDTH = 15;
-    @FXML
-    private VBox credentialsContainer;
 
     @FXML
-    private Label credentialsLabel;
+    private Button backButton;
 
     @FXML
     private Button editEmailButton;
-
-    @FXML
-    private HBox editFieldsContainer;
 
     @FXML
     private Button editNameButton;
@@ -46,10 +41,16 @@ public class UserPersonalDataController implements Initializable {
     private HBox emailContainer;
 
     @FXML
+    private Label emailLabel;
+
+    @FXML
     private TextField emailTextField;
 
     @FXML
     private HBox nameContainer;
+
+    @FXML
+    private Label nameLabel;
 
     @FXML
     private TextField nameTextField;
@@ -64,6 +65,9 @@ public class UserPersonalDataController implements Initializable {
     private PasswordField passwordField;
 
     @FXML
+    private Label passwordLabel;
+
+    @FXML
     private VBox personalDataContainer;
 
     @FXML
@@ -73,25 +77,10 @@ public class UserPersonalDataController implements Initializable {
     private HBox surnameContainer;
 
     @FXML
-    private TextField surnameTextField;
-
-    @FXML
-    private Label windowTitle;
-
-    @FXML
-    private Label nameLabel;
-
-    @FXML
     private Label surnameLabel;
 
     @FXML
-    private Label emailLabel;
-
-    @FXML
-    private Label passwordLabel;
-
-    @FXML
-    private Button backButton;
+    private TextField surnameTextField;
 
     /**
      * {@inheritDoc}

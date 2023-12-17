@@ -17,8 +17,8 @@ public class App extends Application {
 
     private static final double WIDTH_FACTOR = 0.8;
     private static final double HEIGHT_FACTOR = 0.8;
-    private static final double MIN_WIDTH_FACTOR = 0.5;
-    private static final double MIN_HEIGHT_FACTOR = 0.5;
+    private static final double MIN_WIDTH_FACTOR = 0.7;
+    private static final double MIN_HEIGHT_FACTOR = 0.7;
 
     /**
      * {@inheritDoc}
