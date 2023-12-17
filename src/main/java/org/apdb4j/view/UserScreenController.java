@@ -9,6 +9,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -61,6 +62,8 @@ public class UserScreenController implements Initializable {
         accountInfo.getItems().add(accountPersonalData);
         accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
+        accountPersonalData.onMouseClickedProperty().setValue(event ->
+                LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true));
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
         }
