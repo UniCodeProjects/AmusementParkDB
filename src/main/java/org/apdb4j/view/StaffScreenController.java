@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.tableview.EmployeeTableView;
+import org.apdb4j.view.tableview.TicketTableView;
 
 import java.net.URL;
 import java.util.Objects;
@@ -46,6 +47,8 @@ public class StaffScreenController implements Initializable {
     private VBox vBox;
     @FXML
     private TableView<EmployeeTableView> employeeTableView;
+    @FXML
+    private TableView<TicketTableView> ticketTableView;
     private int addRowCounter = 1;
     private static final int MAX_ROWS = 10;
 
@@ -157,10 +160,7 @@ public class StaffScreenController implements Initializable {
     void onEmployeeEdit(final ActionEvent event) {
         final EmployeeTableView selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
         if (Objects.isNull(selectedEmployee)) {
-            final var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("An error has occurred.");
-            alert.setContentText("A row must be selected to edit the employee entry!");
-            alert.show();
+            showAlertForUnselectedRowInTableView("employee");
             return;
         }
         HireController.setEditMode(true);
@@ -183,7 +183,13 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditTicketBtnPress(final ActionEvent event) {
+        final TicketTableView selectedTicket = ticketTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedTicket)) {
+            showAlertForUnselectedRowInTableView("ticket");
+            return;
+        }
         TicketSelectorController.setEditMode(true);
+        AddTicketController.setTicket(selectedTicket);
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
@@ -233,6 +239,13 @@ public class StaffScreenController implements Initializable {
         datePicker1.getEditor().setText("");
         datePicker2.getEditor().setText("");
         clearButton.setDisable(true);
+    }
+
+    private static void showAlertForUnselectedRowInTableView(final String rowName) {
+        final var alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("An error has occurred.");
+        alert.setContentText("A row must be selected to edit the " + rowName + " entry!");
+        alert.show();
     }
 
 }
