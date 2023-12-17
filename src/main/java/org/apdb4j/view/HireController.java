@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Setter;
-import org.apdb4j.view.tableview.Employee;
+import org.apdb4j.view.tableview.EmployeeTableView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,7 +50,7 @@ public class HireController implements Initializable {
     @Setter
     private static boolean editMode;
     @Setter
-    private static Employee employee;
+    private static EmployeeTableView employee;
 
     /**
      * {@inheritDoc}
