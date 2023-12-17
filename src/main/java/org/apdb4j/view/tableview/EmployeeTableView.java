@@ -17,7 +17,7 @@ import java.time.LocalDate;
  */
 @ToString
 @EqualsAndHashCode
-public final class Employee {
+public final class EmployeeTableView {
 
     private final StringProperty nationalID;
     private final StringProperty name;
@@ -41,7 +41,7 @@ public final class Employee {
      * @param isAdmin {@code true} if the employee is an admin, {@code false} otherwise
      * @param email the employee's email
      */
-    public Employee(
+    public EmployeeTableView(
             final String nationalID,
             final String name,
             final String surname,

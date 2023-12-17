@@ -19,7 +19,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
-import org.apdb4j.view.tableview.Employee;
+import org.apdb4j.view.tableview.EmployeeTableView;
 
 import java.net.URL;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     private VBox vBox;
     @FXML
-    private TableView<Employee> employeeTableView;
+    private TableView<EmployeeTableView> employeeTableView;
     private int addRowCounter = 1;
     private static final int MAX_ROWS = 10;
 
@@ -155,7 +155,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEmployeeEdit(final ActionEvent event) {
-        final Employee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        final EmployeeTableView selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
         if (Objects.isNull(selectedEmployee)) {
             final var alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("An error has occurred.");
