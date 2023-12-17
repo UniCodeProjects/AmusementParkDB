@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Setter;
+import org.apdb4j.view.tableview.TicketTableView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,6 +33,8 @@ public class AddTicketController implements Initializable {
     private DatePicker validUntilDatePicker;
     @FXML
     private Button acceptAndCloseBtn;
+    @Setter
+    private static TicketTableView ticket;
 
     /**
      * {@inheritDoc}
@@ -40,12 +44,12 @@ public class AddTicketController implements Initializable {
         Platform.runLater(() -> {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
-            // CPD-OFF
             if (TicketSelectorController.isEditMode()) {
-                // TODO
-                throw new UnsupportedOperationException();
+                validOnDatePicker.setValue(ticket.getValidOn());
+                validUntilDatePicker.setValue(ticket.getValidUntil());
+                ownerIDField.setText(ticket.getOwnerID());
+                categoryChoiceBox.setValue(ticket.getCategory());
             }
-            // CPD-ON
         });
     }
 
