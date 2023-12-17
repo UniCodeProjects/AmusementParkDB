@@ -34,6 +34,8 @@ public class AddTicketController implements Initializable {
     @FXML
     private Button acceptAndCloseBtn;
     @Setter
+    private static boolean editMode;
+    @Setter
     private static TicketTableView ticket;
 
     /**
@@ -44,7 +46,7 @@ public class AddTicketController implements Initializable {
         Platform.runLater(() -> {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
-            if (TicketSelectorController.isEditMode()) {
+            if (editMode) {
                 validOnDatePicker.setValue(ticket.getValidOn());
                 validUntilDatePicker.setValue(ticket.getValidUntil());
                 ownerIDField.setText(ticket.getOwnerID());

@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,6 +24,8 @@ public class AddTicketPriceController implements Initializable {
     private TextField yearField;
     @FXML
     private Button acceptAndCloseBtn;
+    @Setter
+    private static boolean editMode;
 
     /**
      * {@inheritDoc}
@@ -33,7 +36,7 @@ public class AddTicketPriceController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             // CPD-OFF
-            if (TicketSelectorController.isEditMode()) {
+            if (editMode) {
                 // TODO
                 throw new UnsupportedOperationException();
             }

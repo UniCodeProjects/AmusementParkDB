@@ -149,6 +149,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEmployeeHire(final ActionEvent event) {
+        HireController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire employee", 0.4, 0.6);
     }
 
@@ -174,6 +175,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onAddTicketBtnPress(final ActionEvent event) {
+        TicketSelectorController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
@@ -183,13 +185,8 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditTicketBtnPress(final ActionEvent event) {
-        final TicketTableView selectedTicket = ticketTableView.getSelectionModel().getSelectedItem();
-        if (Objects.isNull(selectedTicket)) {
-            showAlertForUnselectedRowInTableView("ticket");
-            return;
-        }
         TicketSelectorController.setEditMode(true);
-        AddTicketController.setTicket(selectedTicket);
+        TicketSelectorController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
@@ -241,7 +238,11 @@ public class StaffScreenController implements Initializable {
         clearButton.setDisable(true);
     }
 
-    private static void showAlertForUnselectedRowInTableView(final String rowName) {
+    /**
+     * Shows a popup alert when it is attempted to edit a row without selecting one first.
+     * @param rowName the row name to display in the alert
+     */
+    protected static void showAlertForUnselectedRowInTableView(final String rowName) {
         final var alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText("An error has occurred.");
         alert.setContentText("A row must be selected to edit the " + rowName + " entry!");
