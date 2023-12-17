@@ -62,6 +62,8 @@ public class UserScreenController implements Initializable {
         accountInfo.getItems().add(accountPersonalData);
         accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
+        accountPurchases.onMouseClickedProperty().setValue(event ->
+                LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, false));
         accountPersonalData.onMouseClickedProperty().setValue(event ->
                 LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true));
         for (final var accountInfoItem : accountInfo.getItems()) {
