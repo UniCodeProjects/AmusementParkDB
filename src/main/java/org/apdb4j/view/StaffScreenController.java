@@ -297,6 +297,8 @@ public class StaffScreenController implements Initializable {
         final Button clearButton = (Button) firstRow.getChildren().get(3);
         clearButton.setDisable(true);
         addListenersToDatePicker(datePicker1, datePicker2, clearButton);
+        // Loading the ride tableview by default.
+        onRideBtnClick(null);
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
