@@ -13,16 +13,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.tableview.AttractionTableView;
 import org.apdb4j.view.tableview.EmployeeTableView;
 import org.apdb4j.view.tableview.TicketTableView;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -49,6 +55,14 @@ public class StaffScreenController implements Initializable {
     private TableView<EmployeeTableView> employeeTableView;
     @FXML
     private TableView<TicketTableView> ticketTableView;
+    @FXML
+    private TableView<AttractionTableView> attractionsTableView;
+    @FXML
+    private ToggleGroup attractionsToggleGroup;
+    @FXML
+    private RadioButton ridesRadioBtn;
+    @FXML
+    private RadioButton exhibitionsRadioBtn;
     private int addRowCounter = 1;
     private static final int MAX_ROWS = 10;
 
@@ -188,6 +202,78 @@ public class StaffScreenController implements Initializable {
         TicketSelectorController.setEditMode(true);
         TicketSelectorController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    }
+
+    /**
+     * Adds the specific rides columns to the attractions table view.
+     * @param event the event
+     */
+    @FXML
+    void onRideBtnClick(final ActionEvent event) {
+        attractionsTableView.getColumns().clear();
+        final TableColumn<AttractionTableView, String> id = new TableColumn<>("Ride ID");
+        final TableColumn<AttractionTableView, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableView, LocalTime> openingTime = new TableColumn<>("Opening");
+        final TableColumn<AttractionTableView, LocalTime> closingTime = new TableColumn<>("Closing");
+        final TableColumn<AttractionTableView, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableView, String> intensity = new TableColumn<>("Intensity");
+        final TableColumn<AttractionTableView, LocalTime> duration = new TableColumn<>("Duration");
+        final TableColumn<AttractionTableView, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableView, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableView, Integer> minHeight = new TableColumn<>("Min height");
+        final TableColumn<AttractionTableView, Integer> maxHeight = new TableColumn<>("Max height");
+        final TableColumn<AttractionTableView, Integer> minWeight = new TableColumn<>("Min weight");
+        final TableColumn<AttractionTableView, Integer> maxWeight = new TableColumn<>("Max weight");
+        final TableColumn<AttractionTableView, Character> status = new TableColumn<>("Status");
+        final TableColumn<AttractionTableView, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableView, Integer> numRating = new TableColumn<>("Ratings");
+        final List<TableColumn<AttractionTableView, ?>> columns = List.of(id,
+                name,
+                openingTime,
+                closingTime,
+                type,
+                intensity,
+                duration,
+                maxSeats,
+                description,
+                minHeight,
+                maxHeight,
+                minWeight,
+                maxWeight,
+                status,
+                averageRating,
+                numRating);
+        attractionsTableView.getColumns().addAll(columns);
+    }
+
+    /**
+     * Adds the specific exhibition columns to the attractions table view.
+     * @param event the event
+     */
+    @FXML
+    void onExhibitionBtnClick(final ActionEvent event) {
+        attractionsTableView.getColumns().clear();
+        final TableColumn<AttractionTableView, String> id = new TableColumn<>("Exhibition ID");
+        final TableColumn<AttractionTableView, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableView, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableView, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableView, LocalDate> date = new TableColumn<>("Date");
+        final TableColumn<AttractionTableView, LocalTime> time = new TableColumn<>("Time");
+        final TableColumn<AttractionTableView, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableView, Integer> spectators = new TableColumn<>("Spectators");
+        final TableColumn<AttractionTableView, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableView, Integer> numRating = new TableColumn<>("Ratings");
+        final List<TableColumn<AttractionTableView, ?>> columns = List.of(id,
+                name,
+                type,
+                description,
+                date,
+                time,
+                maxSeats,
+                spectators,
+                averageRating,
+                numRating);
+        attractionsTableView.getColumns().addAll(columns);
     }
 
     /**
