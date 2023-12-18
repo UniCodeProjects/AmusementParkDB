@@ -37,13 +37,18 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="editNameButton" mnemonicParsing="false">
+                  <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </Button>
+                  <Button fx:id="confirmNewNameButton" mnemonicParsing="false" text="Confirm" visible="false">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
@@ -65,13 +70,18 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="editSurnameButton" mnemonicParsing="false">
+                  <Button fx:id="editSurnameButton" mnemonicParsing="false" onMouseClicked="#onEditSurnameButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </Button>
+                  <Button fx:id="confirmNewSurnameButton" mnemonicParsing="false" text="Confirm" visible="false">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
@@ -90,13 +100,18 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </TextField>
-                  <Button fx:id="editEmailButton" mnemonicParsing="false">
+                  <Button fx:id="editEmailButton" mnemonicParsing="false" onMouseClicked="#onEditEmailButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                  </Button>
+                  <Button fx:id="confirmNewEmailButton" mnemonicParsing="false" text="Confirm" visible="false">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
@@ -112,7 +127,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </PasswordField>
-                  <Button fx:id="editPasswordButton" mnemonicParsing="false">
+                  <Button fx:id="editPasswordButton" mnemonicParsing="false" onMouseClicked="#onEditPasswordButtonClick">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -121,6 +136,9 @@
                      </cursor>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets right="64.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

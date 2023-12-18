@@ -6,10 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +26,15 @@ public class UserPersonalDataController implements Initializable {
 
     @FXML
     private Button backButton;
+
+    @FXML
+    private Button confirmNewEmailButton;
+
+    @FXML
+    private Button confirmNewNameButton;
+
+    @FXML
+    private Button confirmNewSurnameButton;
 
     @FXML
     private Button editEmailButton;
@@ -103,5 +114,40 @@ public class UserPersonalDataController implements Initializable {
         editSurnameButton.setGraphic(editImage2);
         editEmailButton.setGraphic(editImage3);
         editPasswordButton.setGraphic(editImage4);
+        confirmNewNameButton.setOnMouseClicked(event -> {
+            confirmNewNameButton.setVisible(false);
+            nameTextField.setEditable(false);
+        });
+        confirmNewSurnameButton.setOnMouseClicked(event -> {
+            confirmNewSurnameButton.setVisible(false);
+            surnameTextField.setEditable(false);
+        });
+        confirmNewEmailButton.setOnMouseClicked(event -> {
+            confirmNewEmailButton.setVisible(false);
+            emailTextField.setEditable(false);
+        });
+    }
+
+    @FXML
+    void onEditNameButtonClick(final MouseEvent event) {
+        nameTextField.setEditable(true);
+        confirmNewNameButton.setVisible(true);
+    }
+
+    @FXML
+    void onEditSurnameButtonClick(final MouseEvent event) {
+        surnameTextField.setEditable(true);
+        confirmNewSurnameButton.setVisible(true);
+    }
+
+    @FXML
+    void onEditEmailButtonClick(final MouseEvent event) {
+        emailTextField.setEditable(true);
+        confirmNewEmailButton.setVisible(true);
+    }
+
+    @FXML
+    void onEditPasswordButtonClick(final MouseEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
     }
 }
