@@ -297,7 +297,7 @@
                            <children>
                               <TextField promptText="Attraction name" />
                               <Label text="Attraction type:" />
-                               <RadioButton fx:id="ridesRadioBtn" mnemonicParsing="false" onAction="#onRideBtnClick" text="Rides">
+                               <RadioButton fx:id="ridesRadioBtn" mnemonicParsing="false" onAction="#onRideBtnClick" selected="true" text="Rides">
                                    <toggleGroup>
                                        <ToggleGroup fx:id="attractionsToggleGroup" />
                                    </toggleGroup>
