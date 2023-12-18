@@ -37,6 +37,9 @@ public class UserPersonalDataController implements Initializable {
     private Button confirmNewSurnameButton;
 
     @FXML
+    private Button confirmNewUsernameButton;
+
+    @FXML
     private Button editEmailButton;
 
     @FXML
@@ -47,6 +50,9 @@ public class UserPersonalDataController implements Initializable {
 
     @FXML
     private Button editSurnameButton;
+
+    @FXML
+    private Button editUsernameButton;
 
     @FXML
     private HBox emailContainer;
@@ -93,27 +99,40 @@ public class UserPersonalDataController implements Initializable {
     @FXML
     private TextField surnameTextField;
 
+    @FXML
+    private HBox usernameContainer;
+
+    @FXML
+    private Label usernameLabel;
+
+    @FXML
+    private TextField usernameTextField;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        final ImageView editImage1 = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editImage1.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editImage1.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editImage2 = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editImage2.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editImage2.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editImage3 = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editImage3.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editImage3.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editImage4 = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editImage4.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editImage4.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        editNameButton.setGraphic(editImage1);
-        editSurnameButton.setGraphic(editImage2);
-        editEmailButton.setGraphic(editImage3);
-        editPasswordButton.setGraphic(editImage4);
+        final ImageView editNameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
+        editNameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
+        editNameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
+        final ImageView editSurnameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
+        editSurnameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
+        editSurnameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
+        final ImageView editUsernameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
+        editUsernameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
+        editUsernameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
+        final ImageView editEmailImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
+        editEmailImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
+        editEmailImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
+        final ImageView editPasswordImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
+        editPasswordImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
+        editPasswordImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
+        editNameButton.setGraphic(editNameImage);
+        editSurnameButton.setGraphic(editSurnameImage);
+        editUsernameButton.setGraphic(editUsernameImage);
+        editEmailButton.setGraphic(editEmailImage);
+        editPasswordButton.setGraphic(editPasswordImage);
         confirmNewNameButton.setOnMouseClicked(event -> {
             confirmNewNameButton.setVisible(false);
             nameTextField.setEditable(false);
@@ -121,6 +140,10 @@ public class UserPersonalDataController implements Initializable {
         confirmNewSurnameButton.setOnMouseClicked(event -> {
             confirmNewSurnameButton.setVisible(false);
             surnameTextField.setEditable(false);
+        });
+        confirmNewUsernameButton.setOnMouseClicked(event -> {
+            confirmNewUsernameButton.setVisible(false);
+            usernameTextField.setEditable(false);
         });
         confirmNewEmailButton.setOnMouseClicked(event -> {
             confirmNewEmailButton.setVisible(false);
@@ -146,6 +169,16 @@ public class UserPersonalDataController implements Initializable {
     void onEditSurnameButtonClick(final MouseEvent event) {
         surnameTextField.setEditable(true);
         confirmNewSurnameButton.setVisible(true);
+    }
+
+    /**
+     * Allows the user to edit the username of their account.
+     * @param event the click on the edit username button.
+     */
+    @FXML
+    void onEditUsernameButtonClick(final MouseEvent event) {
+        usernameTextField.setEditable(true);
+        confirmNewUsernameButton.setVisible(true);
     }
 
     /**
