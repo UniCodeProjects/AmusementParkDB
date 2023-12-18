@@ -297,8 +297,12 @@
                            <children>
                               <TextField promptText="Attraction name" />
                               <Label text="Attraction type:" />
-                              <CheckBox mnemonicParsing="false" text="Rides" />
-                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
+                               <RadioButton fx:id="ridesRadioBtn" mnemonicParsing="false" onAction="#onRideBtnClick" text="Rides">
+                                   <toggleGroup>
+                                       <ToggleGroup fx:id="attractionsToggleGroup" />
+                                   </toggleGroup>
+                               </RadioButton>
+                              <RadioButton fx:id="exhibitionsRadioBtn" mnemonicParsing="false" onAction="#onExhibitionBtnClick" text="Exhibitions" toggleGroup="$attractionsToggleGroup" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
@@ -312,12 +316,7 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
+                        <TableView fx:id="attractionsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </content>
