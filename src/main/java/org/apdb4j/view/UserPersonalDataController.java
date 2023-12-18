@@ -128,24 +128,40 @@ public class UserPersonalDataController implements Initializable {
         });
     }
 
+    /**
+     * Allows the user to edit the name in their account.
+     * @param event the click on the edit name button.
+     */
     @FXML
     void onEditNameButtonClick(final MouseEvent event) {
         nameTextField.setEditable(true);
         confirmNewNameButton.setVisible(true);
     }
 
+    /**
+     * Allows the user to edit the surname in their account.
+     * @param event the click on the edit surname button.
+     */
     @FXML
     void onEditSurnameButtonClick(final MouseEvent event) {
         surnameTextField.setEditable(true);
         confirmNewSurnameButton.setVisible(true);
     }
 
+    /**
+     * Allows the user to edit the email of their account.
+     * @param event the click on the edit email button.
+     */
     @FXML
     void onEditEmailButtonClick(final MouseEvent event) {
         emailTextField.setEditable(true);
         confirmNewEmailButton.setVisible(true);
     }
 
+    /**
+     * Allows the user to edit the password of their account.
+     * @param event the click on the edit password button.
+     */
     @FXML
     void onEditPasswordButtonClick(final MouseEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
