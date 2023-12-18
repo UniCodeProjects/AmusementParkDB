@@ -78,7 +78,7 @@ public class UserScreenController implements Initializable {
      * @param event the event.
      */
     @FXML
-    void openPersonalArea(final MouseEvent event) {
+    void onAccountLabelClick(final MouseEvent event) {
         if (!isPersonalAreaOpen) {
             pane.setRight(accountInfo);
             isPersonalAreaOpen = true;
