@@ -277,20 +277,21 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
-     * @param event
+     * Opens the add attraction screen.
+     * @param event the event
      */
     @FXML
     void onAddAttraction(final ActionEvent event) {
         if (ridesRadioBtn.isSelected()) {
             LoadFXML.fromEventAsPopup(event, "layouts/add-ride.fxml", "Add ride", 0.4, 0.6);
         } else {
-            // TODO
-            throw new UnsupportedOperationException();
+            LoadFXML.fromEventAsPopup(event, "layouts/add-exhibition.fxml", "Add exhibition", 0.4, 0.5);
         }
     }
 
     /**
-     * @param event
+     * Opens the edit attraction screen.
+     * @param event the event
      */
     @FXML
     void onEditAttraction(final ActionEvent event) {
