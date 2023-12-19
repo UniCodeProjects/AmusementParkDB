@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.UserPurchasesController">
+<VBox fx:id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.UserPurchasesController">
    <children>
       <Label alignment="CENTER" text="My purchases">
          <font>
@@ -17,12 +16,17 @@
             <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
          </VBox.margin>
       </Label>
-      <Button fx:id="ticketsButton" mnemonicParsing="false" prefWidth="90.0" text="Tickets">
+      <Button fx:id="ticketsButton" mnemonicParsing="false" onMouseClicked="#onTicketsButtonPressed" prefWidth="90.0" text="Tickets">
          <VBox.margin>
             <Insets bottom="5.0" />
          </VBox.margin>
       </Button>
-      <Button fx:id="seasonTicketsButton" mnemonicParsing="false" text="Season tickets" />
+      <Button fx:id="seasonTicketsButton" mnemonicParsing="false" onMouseClicked="#onSeasonTicketsButtonPressed" text="Season tickets" />
+      <Button fx:id="backButton" mnemonicParsing="false" text="Back">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Button>
    </children>
    <padding>
       <Insets bottom="150.0" left="150.0" right="150.0" top="150.0" />
