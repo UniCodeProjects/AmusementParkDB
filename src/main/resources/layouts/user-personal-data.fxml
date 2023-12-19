@@ -179,11 +179,11 @@
          </children>
       </VBox>
    </center>
-   <bottom>
+   <top>
       <Button fx:id="backButton" mnemonicParsing="false" BorderPane.alignment="TOP_LEFT">
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" />
+            <Insets left="5.0" top="5.0" />
          </BorderPane.margin>
       </Button>
-   </bottom>
+   </top>
 </BorderPane>
