@@ -22,7 +22,7 @@
          </VBox.margin>
       </Button>
       <Button fx:id="seasonTicketsButton" mnemonicParsing="false" onMouseClicked="#onSeasonTicketsButtonPressed" text="Season tickets" />
-      <Button fx:id="backButton" mnemonicParsing="false" text="Back">
+      <Button fx:id="backButton" mnemonicParsing="false">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
