@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -23,6 +24,8 @@ public class UserPersonalDataController implements Initializable {
     private static final String EDIT_BUTTON_IMAGE_PATH = "img/edit_button.png";
     private static final double EDIT_BUTTON_IMAGE_HEIGHT = 15;
     private static final double EDIT_BUTTON_IMAGE_WIDTH = 15;
+    private static final double LEFT_ARROW_IMAGE_HEIGHT = 25;
+    private static final double LEFT_ARROW_IMAGE_WIDTH = 25;
 
     @FXML
     private Button backButton;
@@ -149,6 +152,10 @@ public class UserPersonalDataController implements Initializable {
             confirmNewEmailButton.setVisible(false);
             emailTextField.setEditable(false);
         });
+        final var leftArrowImageView = new ImageView(new Image("img/left_arrow.png"));
+        leftArrowImageView.setFitWidth(LEFT_ARROW_IMAGE_WIDTH);
+        leftArrowImageView.setFitHeight(LEFT_ARROW_IMAGE_HEIGHT);
+        backButton.setGraphic(leftArrowImageView);
     }
 
     /**

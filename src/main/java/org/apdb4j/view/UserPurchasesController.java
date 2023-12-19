@@ -1,16 +1,25 @@
 package org.apdb4j.view;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 /**
  * FXML controller for the scene that allows the user to see their purchases in the park.
  */
-public class UserPurchasesController {
+public class UserPurchasesController implements Initializable {
+
+    private static final double LEFT_ARROW_IMAGE_HEIGHT = 25;
+    private static final double LEFT_ARROW_IMAGE_WIDTH = 25;
 
     @FXML
     private Button backButton;
@@ -42,5 +51,16 @@ public class UserPurchasesController {
     void onSeasonTicketsButtonPressed(final MouseEvent event) {
         JavaFXUtils.setStageTitle(event, "My season tickets");
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        final var leftArrowImageView = new ImageView(new Image("img/left_arrow.png"));
+        leftArrowImageView.setFitHeight(LEFT_ARROW_IMAGE_HEIGHT);
+        leftArrowImageView.setFitWidth(LEFT_ARROW_IMAGE_WIDTH);
+        backButton.setGraphic(leftArrowImageView);
     }
 }
