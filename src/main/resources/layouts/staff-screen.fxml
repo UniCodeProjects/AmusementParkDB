@@ -305,8 +305,8 @@
                               <RadioButton fx:id="exhibitionsRadioBtn" mnemonicParsing="false" onAction="#onExhibitionBtnClick" text="Exhibitions" toggleGroup="$attractionsToggleGroup" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddAttraction" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditAttraction" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
