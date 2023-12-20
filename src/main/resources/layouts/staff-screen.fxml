@@ -344,15 +344,15 @@
                      <center>
                         <TableView fx:id="shopsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Shop ID" />
-                              <TableColumn prefWidth="75.0" text="Name" />
-                              <TableColumn prefWidth="75.0" text="Opening" />
-                              <TableColumn prefWidth="75.0" text="Closing" />
-                              <TableColumn prefWidth="75.0" text="Type" />
-                              <TableColumn prefWidth="75.0" text="Description" />
-                              <TableColumn prefWidth="75.0" text="Expense" />
-                              <TableColumn prefWidth="75.0" text="Revenue" />
-                              <TableColumn prefWidth="75.0" text="Month" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Shop ID" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Name" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Opening" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Closing" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Type" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Description" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Expense" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Revenue" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Month" />
                            </columns>
                         </TableView>
                      </center>
