@@ -56,8 +56,14 @@ public class AddExhibitionController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             if (editMode) {
-                // TODO
-                throw new UnsupportedOperationException();
+                nameField.setText(exhibition.getName());
+                typeChoiceBox.setValue(exhibition.getType());
+                descriptionField.setText(exhibition.getDescription());
+                datePicker.setValue(exhibition.getDate());
+                timeHourField.setText(String.valueOf(exhibition.getTime().getHour()));
+                timeMinuteField.setText(String.valueOf(exhibition.getTime().getMinute()));
+                maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
+                spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
             }
         });
     }

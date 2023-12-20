@@ -69,8 +69,21 @@ public class AddRideController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             if (editMode) {
-                // TODO
-                throw new UnsupportedOperationException();
+                nameField.setText(ride.getName());
+                openingHourField.setText(String.valueOf(ride.getOpeningTime().getHour()));
+                openingMinuteField.setText(String.valueOf(ride.getOpeningTime().getMinute()));
+                closingHourField.setText(String.valueOf(ride.getClosingTime().getHour()));
+                closingMinuteField.setText(String.valueOf(ride.getClosingTime().getMinute()));
+                typeChoiceBox.setValue(ride.getType());
+                intensityChoiceBox.setValue(ride.getIntensity());
+                durationField.setText(String.valueOf(ride.getDuration()));
+                maxSeatsSpinner.getValueFactory().setValue(ride.getMaxSeats());
+                descriptionField.setText(ride.getDescription());
+                minHeightSpinner.getValueFactory().setValue(ride.getMinHeight());
+                maxHeightSpinner.getValueFactory().setValue(ride.getMaxHeight());
+                minWeightSpinner.getValueFactory().setValue(ride.getMinWeight());
+                maxWeightSpinner.getValueFactory().setValue(ride.getMaxWeight());
+                statusChoiceBox.setValue(ride.getStatus());
             }
         });
     }
