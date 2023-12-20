@@ -344,8 +344,15 @@
                      <center>
                         <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn prefWidth="75.0" text="Shop ID" />
+                              <TableColumn prefWidth="75.0" text="Name" />
+                              <TableColumn prefWidth="75.0" text="Opening" />
+                              <TableColumn prefWidth="75.0" text="Closing" />
+                              <TableColumn prefWidth="75.0" text="Type" />
+                              <TableColumn prefWidth="75.0" text="Description" />
+                              <TableColumn prefWidth="75.0" text="Expense" />
+                              <TableColumn prefWidth="75.0" text="Revenue" />
+                              <TableColumn prefWidth="75.0" text="Month" />
                            </columns>
                         </TableView>
                      </center>
