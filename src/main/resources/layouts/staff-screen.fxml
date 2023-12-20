@@ -342,7 +342,7 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="shopsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
                               <TableColumn prefWidth="75.0" text="Shop ID" />
                               <TableColumn prefWidth="75.0" text="Name" />

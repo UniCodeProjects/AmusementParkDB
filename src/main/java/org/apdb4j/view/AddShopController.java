@@ -14,6 +14,8 @@ import lombok.Setter;
 import org.apdb4j.view.tableview.ShopTableView;
 
 import java.net.URL;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -59,7 +61,16 @@ public class AddShopController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             if (editMode) {
-                throw new UnsupportedOperationException();
+                nameField.setText(shop.getName());
+                openingHourField.setText(String.valueOf(shop.getOpeningTime().getHour()));
+                openingMinuteField.setText(String.valueOf(shop.getOpeningTime().getMinute()));
+                closingHourField.setText(String.valueOf(shop.getClosingTime().getHour()));
+                closingMinuteField.setText(String.valueOf(shop.getClosingTime().getMinute()));
+                typeChoiceBox.setValue(shop.getType());
+                descriptionField.setText(shop.getDescription());
+                expensesSpinner.getValueFactory().setValue(shop.getExpenses());
+                revenueSpinner.getValueFactory().setValue(shop.getRevenue());
+                monthField.setText(shop.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
             }
         });
     }

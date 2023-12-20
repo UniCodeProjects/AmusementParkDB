@@ -25,6 +25,7 @@ import org.apdb4j.view.tableview.AttractionTableView;
 import org.apdb4j.view.tableview.EmployeeTableView;
 import org.apdb4j.view.tableview.ExhibitionTableView;
 import org.apdb4j.view.tableview.RideTableView;
+import org.apdb4j.view.tableview.ShopTableView;
 import org.apdb4j.view.tableview.TicketTableView;
 
 import java.net.URL;
@@ -59,6 +60,8 @@ public class StaffScreenController implements Initializable {
     private TableView<TicketTableView> ticketTableView;
     @FXML
     private TableView<AttractionTableView> attractionsTableView;
+    @FXML
+    private TableView<ShopTableView> shopsTableView;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
@@ -285,8 +288,10 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onAddAttraction(final ActionEvent event) {
         if (ridesRadioBtn.isSelected()) {
+            AddRideController.setEditMode(false);
             LoadFXML.fromEventAsPopup(event, "layouts/add-ride.fxml", "Add ride", 0.4, 0.6);
         } else {
+            AddExhibitionController.setEditMode(false);
             LoadFXML.fromEventAsPopup(event, "layouts/add-exhibition.fxml", "Add exhibition", 0.4, 0.5);
         }
     }
@@ -319,6 +324,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onAddShop(final ActionEvent event) {
+        AddShopController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/add-shop.fxml", "Add shop", 0.4, 0.5);
     }
 
@@ -328,7 +334,14 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditShop(final ActionEvent event) {
-        // TODO
+        final var selectedShop = shopsTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedShop)) {
+            showAlertForUnselectedRowInTableView("shop");
+            return;
+        }
+        AddShopController.setEditMode(true);
+        AddShopController.setShop(selectedShop);
+        LoadFXML.fromEventAsPopup(event, "layouts/add-shop.fxml", "Edit shop", 0.4, 0.5);
     }
 
     /**
