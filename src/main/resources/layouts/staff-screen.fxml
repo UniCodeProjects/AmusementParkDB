@@ -386,8 +386,11 @@
                      <center>
                         <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Facility ID" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Price" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Description" />
+                              <TableColumn editable="false" prefWidth="75.0" text="Date" />
+                              <TableColumn editable="false" prefWidth="110.0" text="Employee IDs" />
                            </columns>
                         </TableView>
                      </center>
