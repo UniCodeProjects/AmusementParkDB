@@ -314,6 +314,24 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Opens the add-shop screen.
+     * @param event the event
+     */
+    @FXML
+    void onAddShop(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/add-shop.fxml", "Add shop", 0.4, 0.5);
+    }
+
+    /**
+     * Opens the edit shop screen.
+     * @param event the event
+     */
+    @FXML
+    void onEditShop(final ActionEvent event) {
+        // TODO
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
