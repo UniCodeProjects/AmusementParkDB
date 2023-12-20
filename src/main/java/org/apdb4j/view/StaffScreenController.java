@@ -23,6 +23,8 @@ import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.tableview.AttractionTableView;
 import org.apdb4j.view.tableview.EmployeeTableView;
+import org.apdb4j.view.tableview.ExhibitionTableView;
+import org.apdb4j.view.tableview.RideTableView;
 import org.apdb4j.view.tableview.TicketTableView;
 
 import java.net.URL;
@@ -295,12 +297,19 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditAttraction(final ActionEvent event) {
+        final AttractionTableView selectedAttraction = attractionsTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedAttraction)) {
+            showAlertForUnselectedRowInTableView("attraction");
+            return;
+        }
         if (ridesRadioBtn.isSelected()) {
-            // TODO
-            throw new UnsupportedOperationException();
+            AddRideController.setEditMode(true);
+            AddRideController.setRide((RideTableView) selectedAttraction);
+            LoadFXML.fromEventAsPopup(event, "layouts/add-ride.fxml", "Edit ride", 0.4, 0.6);
         } else {
-            // TODO
-            throw new UnsupportedOperationException();
+            AddExhibitionController.setEditMode(true);
+            AddExhibitionController.setExhibition((ExhibitionTableView) selectedAttraction);
+            LoadFXML.fromEventAsPopup(event, "layouts/add-exhibition.fxml", "Edit exhibition", 0.4, 0.5);
         }
     }
 
