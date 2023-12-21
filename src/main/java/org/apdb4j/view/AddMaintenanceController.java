@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -26,8 +25,6 @@ public class AddMaintenanceController implements Initializable {
     private GridPane gridPane;
     @FXML
     private Spinner<Double> priceSpinner;
-    @FXML
-    private TextField priceField;
     @FXML
     private TextArea descriptionTextArea;
     @FXML
@@ -50,8 +47,10 @@ public class AddMaintenanceController implements Initializable {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
             if (editMode) {
-                // TODO
-                throw new UnsupportedOperationException();
+                priceSpinner.getValueFactory().setValue(maintenance.getPrice());
+                descriptionTextArea.setText(maintenance.getDescription());
+                datePicker.setValue(maintenance.getDate());
+                employeeIDsTextArea.setText(maintenance.getEmployeeIDs());
             }
         });
     }
