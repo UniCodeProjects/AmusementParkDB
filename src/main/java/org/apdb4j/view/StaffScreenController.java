@@ -24,6 +24,7 @@ import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.tableview.AttractionTableView;
 import org.apdb4j.view.tableview.EmployeeTableView;
 import org.apdb4j.view.tableview.ExhibitionTableView;
+import org.apdb4j.view.tableview.MaintenanceTableView;
 import org.apdb4j.view.tableview.RideTableView;
 import org.apdb4j.view.tableview.ShopTableView;
 import org.apdb4j.view.tableview.TicketTableView;
@@ -62,6 +63,8 @@ public class StaffScreenController implements Initializable {
     private TableView<AttractionTableView> attractionsTableView;
     @FXML
     private TableView<ShopTableView> shopsTableView;
+    @FXML
+    private TableView<MaintenanceTableView> maintenanceTableView;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
@@ -342,6 +345,32 @@ public class StaffScreenController implements Initializable {
         AddShopController.setEditMode(true);
         AddShopController.setShop(selectedShop);
         LoadFXML.fromEventAsPopup(event, "layouts/add-shop.fxml", "Edit shop", 0.4, 0.5);
+    }
+
+    /**
+     * Opens the add maintenance screen.
+     * @param event the event
+     */
+    @FXML
+    void onAddMaintenance(final ActionEvent event) {
+        AddMaintenanceController.setEditMode(false);
+        LoadFXML.fromEventAsPopup(event, "layouts/add-maintenance.fxml", "Add maintenance", 0.5, 0.6);
+    }
+
+    /**
+     * Opens the edit maintenance screen.
+     * @param event the event
+     */
+    @FXML
+    void onEditMaintenance(final ActionEvent event) {
+        final var selectedMaintenance = maintenanceTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedMaintenance)) {
+            showAlertForUnselectedRowInTableView("maintenance");
+            return;
+        }
+        AddMaintenanceController.setEditMode(true);
+        AddMaintenanceController.setMaintenance(selectedMaintenance);
+        LoadFXML.fromEventAsPopup(event, "layouts/add-maintenance.fxml", "Edit maintenance", 0.5, 0.6);
     }
 
     /**
