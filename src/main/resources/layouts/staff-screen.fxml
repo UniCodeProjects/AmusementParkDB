@@ -373,8 +373,8 @@
                               <CheckBox mnemonicParsing="false" text="Shops" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddMaintenance" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditMaintenance" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -384,7 +384,7 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="maintenanceTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
                               <TableColumn editable="false" prefWidth="75.0" text="Facility ID" />
                               <TableColumn editable="false" prefWidth="75.0" text="Price" />
