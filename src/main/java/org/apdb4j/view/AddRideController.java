@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -42,7 +43,7 @@ public class AddRideController implements Initializable {
     @FXML
     private Spinner<Integer> maxSeatsSpinner;
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionTextArea;
     @FXML
     private Spinner<Integer> minHeightSpinner;
     @FXML
@@ -78,7 +79,7 @@ public class AddRideController implements Initializable {
                 intensityChoiceBox.setValue(ride.getIntensity());
                 durationField.setText(String.valueOf(ride.getDuration()));
                 maxSeatsSpinner.getValueFactory().setValue(ride.getMaxSeats());
-                descriptionField.setText(ride.getDescription());
+                descriptionTextArea.setText(ride.getDescription());
                 minHeightSpinner.getValueFactory().setValue(ride.getMinHeight());
                 maxHeightSpinner.getValueFactory().setValue(ride.getMaxHeight());
                 minWeightSpinner.getValueFactory().setValue(ride.getMinWeight());
