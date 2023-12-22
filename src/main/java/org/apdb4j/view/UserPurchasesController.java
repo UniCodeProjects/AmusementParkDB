@@ -6,7 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -39,7 +38,7 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      * @param event the event.
      */
     @FXML
-    void onTicketsButtonPressed(final MouseEvent event) {
+    void onTicketsButtonPressed(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
         JavaFXUtils.setStageTitle(event, "My tickets");
     }
@@ -49,7 +48,7 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      * @param event the event.
      */
     @FXML
-    void onSeasonTicketsButtonPressed(final MouseEvent event) {
+    void onSeasonTicketsButtonPressed(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
         JavaFXUtils.setStageTitle(event, "My season tickets");
     }

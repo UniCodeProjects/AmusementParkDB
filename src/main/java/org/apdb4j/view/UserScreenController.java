@@ -62,9 +62,9 @@ public class UserScreenController extends AbstractFXMLController implements Init
         accountInfo.getItems().add(accountPersonalData);
         accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
-        accountPurchases.onMouseClickedProperty().setValue(event ->
+        accountPurchases.setOnAction(event ->
                 LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true));
-        accountPersonalData.onMouseClickedProperty().setValue(event ->
+        accountPersonalData.setOnAction(event ->
                 LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true));
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);

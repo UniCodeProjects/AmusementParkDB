@@ -37,7 +37,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="editNameButton" mnemonicParsing="false" onMouseClicked="#onEditNameButtonClick">
+                  <Button fx:id="editNameButton" mnemonicParsing="false" onAction="#onEditNameButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
@@ -70,7 +70,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="editSurnameButton" mnemonicParsing="false" onMouseClicked="#onEditSurnameButtonClick">
+                  <Button fx:id="editSurnameButton" mnemonicParsing="false" onAction="#onEditSurnameButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
@@ -100,7 +100,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </TextField>
-                  <Button fx:id="editUsernameButton" mnemonicParsing="false" onMouseClicked="#onEditUsernameButtonClick">
+                  <Button fx:id="editUsernameButton" mnemonicParsing="false" onAction="#onEditUsernameButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
@@ -133,7 +133,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </TextField>
-                  <Button fx:id="editEmailButton" mnemonicParsing="false" onMouseClicked="#onEditEmailButtonClick">
+                  <Button fx:id="editEmailButton" mnemonicParsing="false" onAction="#onEditEmailButtonClick">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" />
                      </HBox.margin>
@@ -163,7 +163,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
                   </PasswordField>
-                  <Button fx:id="editPasswordButton" mnemonicParsing="false" onMouseClicked="#onEditPasswordButtonClick">
+                  <Button fx:id="editPasswordButton" mnemonicParsing="false" onAction="#onEditPasswordButtonClick">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

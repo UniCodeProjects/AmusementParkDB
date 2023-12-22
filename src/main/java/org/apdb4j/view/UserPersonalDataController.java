@@ -8,7 +8,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -138,19 +137,19 @@ public class UserPersonalDataController extends AbstractFXMLController implement
         editUsernameButton.setGraphic(editUsernameImage);
         editEmailButton.setGraphic(editEmailImage);
         editPasswordButton.setGraphic(editPasswordImage);
-        confirmNewNameButton.setOnMouseClicked(event -> {
+        confirmNewNameButton.setOnAction(event -> {
             confirmNewNameButton.setVisible(false);
             nameTextField.setEditable(false);
         });
-        confirmNewSurnameButton.setOnMouseClicked(event -> {
+        confirmNewSurnameButton.setOnAction(event -> {
             confirmNewSurnameButton.setVisible(false);
             surnameTextField.setEditable(false);
         });
-        confirmNewUsernameButton.setOnMouseClicked(event -> {
+        confirmNewUsernameButton.setOnAction(event -> {
             confirmNewUsernameButton.setVisible(false);
             usernameTextField.setEditable(false);
         });
-        confirmNewEmailButton.setOnMouseClicked(event -> {
+        confirmNewEmailButton.setOnAction(event -> {
             confirmNewEmailButton.setVisible(false);
             emailTextField.setEditable(false);
         });
@@ -165,7 +164,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      * @param event the click on the edit name button.
      */
     @FXML
-    void onEditNameButtonClick(final MouseEvent event) {
+    void onEditNameButtonClick(final ActionEvent event) {
         nameTextField.setEditable(true);
         confirmNewNameButton.setVisible(true);
     }
@@ -175,7 +174,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      * @param event the click on the edit surname button.
      */
     @FXML
-    void onEditSurnameButtonClick(final MouseEvent event) {
+    void onEditSurnameButtonClick(final ActionEvent event) {
         surnameTextField.setEditable(true);
         confirmNewSurnameButton.setVisible(true);
     }
@@ -185,7 +184,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      * @param event the click on the edit username button.
      */
     @FXML
-    void onEditUsernameButtonClick(final MouseEvent event) {
+    void onEditUsernameButtonClick(final ActionEvent event) {
         usernameTextField.setEditable(true);
         confirmNewUsernameButton.setVisible(true);
     }
@@ -195,7 +194,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      * @param event the click on the edit email button.
      */
     @FXML
-    void onEditEmailButtonClick(final MouseEvent event) {
+    void onEditEmailButtonClick(final ActionEvent event) {
         emailTextField.setEditable(true);
         confirmNewEmailButton.setVisible(true);
     }
@@ -205,7 +204,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      * @param event the click on the edit password button.
      */
     @FXML
-    void onEditPasswordButtonClick(final MouseEvent event) {
+    void onEditPasswordButtonClick(final ActionEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
     }
 
