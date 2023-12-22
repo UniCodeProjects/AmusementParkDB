@@ -18,7 +18,7 @@ import java.util.Locale;
 /**
  * The FXML controller for the add-shop screen.
  */
-public class AddShopController extends PopupInitializer implements Initializable {
+public class AddShopController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
