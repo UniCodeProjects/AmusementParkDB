@@ -2,24 +2,18 @@ package org.apdb4j.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Setter;
 import org.apdb4j.view.tableview.MaintenanceTableView;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * The FXML controller for the add-maintenance screen.
  */
-public class AddMaintenanceController implements Initializable {
+public class AddMaintenanceController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -39,30 +33,27 @@ public class AddMaintenanceController implements Initializable {
     private static MaintenanceTableView maintenance;
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public AddMaintenanceController() {
         Platform.runLater(() -> {
-            final var stage = safeCastToStage(gridPane.getScene().getWindow());
-            stage.setResizable(false);
-            if (editMode) {
-                priceSpinner.getValueFactory().setValue(maintenance.getPrice());
-                descriptionTextArea.setText(maintenance.getDescription());
-                datePicker.setValue(maintenance.getDate());
-                employeeIDsTextArea.setText(maintenance.getEmployeeIDs());
-            }
+            super.setStage(gridPane.getScene().getWindow());
+            super.setRoot(gridPane.getScene().getRoot());
         });
     }
 
-    private Stage safeCastToStage(final Window window) {
-        Stage stage;
-        if (window instanceof Stage) {
-            stage = (Stage) window;
-        } else {
-            throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void editMode() {
+        if (!editMode) {
+            return;
         }
-        return stage;
+        priceSpinner.getValueFactory().setValue(maintenance.getPrice());
+        descriptionTextArea.setText(maintenance.getDescription());
+        datePicker.setValue(maintenance.getDate());
+        employeeIDsTextArea.setText(maintenance.getEmployeeIDs());
     }
 
 }
