@@ -22,14 +22,17 @@ public final class LoadFXML {
     private LoadFXML() {
     }
 
-    // TODO: change name and add parameters showLoading and removeFocus
+    // TODO: change name and add parameters showLoading and removeFocus. Move this method in JavaFXUtils
     /**
      * Sets the provided scene from the provided event.
      * @param event an event.
      * @param scene the scene that has to be shown when {@code event} occurs.
+     * @param stageTitle the stage title that has to be set when {@code scene} is shown.
      */
-    public static void fromEvent(final Event event, final Scene scene) {
-        JavaFXUtils.getStage(event).setScene(scene);
+    public static void fromEvent(final Event event, final Scene scene, final String stageTitle) {
+        final var stage = JavaFXUtils.getStage(event);
+        stage.setTitle(stageTitle);
+        stage.setScene(scene);
     }
 
     /**
@@ -47,6 +50,7 @@ public final class LoadFXML {
                                  final boolean removeFocus, final boolean showLoading,
                                  final boolean setPreviousScene) {
         final var stage = JavaFXUtils.getStage(event);
+        final var previousSceneStageTitle = stage.getTitle();
         final var stageWidth = stage.getScene().getWidth();
         final var stageHeight = stage.getScene().getHeight();
         final Task<Parent> task = new Task<>() {
@@ -56,7 +60,7 @@ public final class LoadFXML {
                 final var root = (Parent) loader.load();
                 if (setPreviousScene) {
                     final FXMLController controller = loader.getController();
-                    controller.setPreviousScene(((Node) event.getSource()).getScene());
+                    controller.setPreviousScene(((Node) event.getSource()).getScene(), previousSceneStageTitle);
                 }
                 return root;
             }
