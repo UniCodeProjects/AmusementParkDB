@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.staff;
 
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -21,14 +21,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
-import org.apdb4j.view.tableview.AttractionTableView;
-import org.apdb4j.view.tableview.EmployeeTableView;
-import org.apdb4j.view.tableview.ExhibitionTableView;
-import org.apdb4j.view.tableview.MaintenanceTableView;
-import org.apdb4j.view.tableview.ReviewTableView;
-import org.apdb4j.view.tableview.RideTableView;
-import org.apdb4j.view.tableview.ShopTableView;
-import org.apdb4j.view.tableview.TicketTableView;
+import org.apdb4j.view.staff.tableview.AttractionTableView;
+import org.apdb4j.view.staff.tableview.EmployeeTableView;
+import org.apdb4j.view.staff.tableview.ExhibitionTableView;
+import org.apdb4j.view.staff.tableview.MaintenanceTableView;
+import org.apdb4j.view.staff.tableview.ReviewTableView;
+import org.apdb4j.view.staff.tableview.RideTableView;
+import org.apdb4j.view.staff.tableview.ShopTableView;
+import org.apdb4j.view.staff.tableview.TicketTableView;
 
 import java.net.URL;
 import java.time.LocalDate;

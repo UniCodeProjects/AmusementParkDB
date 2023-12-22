@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,7 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
-import org.apdb4j.view.tableview.EmployeeTableView;
+import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.EmployeeTableView;
 
 /**
  * The FXML controller for the employee hiring screen.

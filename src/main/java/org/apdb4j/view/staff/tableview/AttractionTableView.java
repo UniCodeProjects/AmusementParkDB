@@ -1,4 +1,4 @@
-package org.apdb4j.view.tableview;
+package org.apdb4j.view.staff.tableview;
 
 /**
  * An attraction representation used by the table view in the GUI.

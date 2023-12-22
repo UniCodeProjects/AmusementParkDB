@@ -1,41 +1,41 @@
-package org.apdb4j.view;
+package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
-import org.apdb4j.view.tableview.TicketTableView;
+import org.apdb4j.view.PopupInitializer;
 
 /**
- * The FXML controller for the ticket screen.
+ * The FXML controller for the ticket type screen.
  */
-public class TicketController extends PopupInitializer {
+public class TicketTypeController extends PopupInitializer {
 
-    @FXML
-    private ChoiceBox<String> categoryChoiceBox;
     @FXML
     private GridPane gridPane;
     @FXML
-    private TextField ownerIDField;
+    private TextField typeField;
     @FXML
-    private DatePicker validOnDatePicker;
+    private TextField priceField;
     @FXML
-    private DatePicker validUntilDatePicker;
+    private TextField yearField;
+    @FXML
+    private ChoiceBox<String> categoryChoiceBox;
+    @FXML
+    private Spinner<Integer> durationSpinner;
     @FXML
     private Button acceptAndCloseBtn;
     @Setter
     private static boolean editMode;
-    @Setter
-    private static TicketTableView ticket;
 
     /**
      * Default constructor.
      */
-    public TicketController() {
+    public TicketTypeController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
@@ -50,10 +50,8 @@ public class TicketController extends PopupInitializer {
         if (!editMode) {
             return;
         }
-        validOnDatePicker.setValue(ticket.getValidOn());
-        validUntilDatePicker.setValue(ticket.getValidUntil());
-        ownerIDField.setText(ticket.getOwnerID());
-        categoryChoiceBox.setValue(ticket.getCategory());
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
 }

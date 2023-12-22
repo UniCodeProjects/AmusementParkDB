@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -8,7 +8,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
-import org.apdb4j.view.tableview.MaintenanceTableView;
+import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.MaintenanceTableView;
 
 /**
  * The FXML controller for the maintenance screen.
