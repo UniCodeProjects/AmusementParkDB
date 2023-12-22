@@ -30,9 +30,9 @@ public class LoginCommonController {
         Platform.runLater(() -> {
             JavaFXUtils.setStageTitle(event, username);
             if (getController().isStaff(username)) {
-                LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true);
+                LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true, false);
             } else if (getController().isGuest(username)) {
-                LoadFXML.fromEvent(event, "layouts/user-screen.fxml", false, true);
+                LoadFXML.fromEvent(event, "layouts/user-screen.fxml", false, true, false);
             } else {
                 throw new IllegalStateException("Unknown permission type for '" + username + "'.");
             }

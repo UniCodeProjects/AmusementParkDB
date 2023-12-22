@@ -1,5 +1,6 @@
 package org.apdb4j.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the screen that allows the user to see and edit their personal data.
  */
-public class UserPersonalDataController implements Initializable {
+public class UserPersonalDataController extends AbstractFXMLController implements Initializable {
     private static final String EDIT_BUTTON_IMAGE_PATH = "img/edit_button.png";
     private static final double EDIT_BUTTON_IMAGE_HEIGHT = 15;
     private static final double EDIT_BUTTON_IMAGE_WIDTH = 15;
@@ -205,5 +206,14 @@ public class UserPersonalDataController implements Initializable {
     @FXML
     void onEditPasswordButtonClick(final MouseEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
+    }
+
+    /**
+     * Returns to the previous scene.
+     * @param event the click on the "back" button.
+     */
+    @FXML
+    void onBackButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEvent(event, getPreviousScene());
     }
 }

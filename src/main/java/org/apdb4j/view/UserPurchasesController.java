@@ -1,5 +1,6 @@
 package org.apdb4j.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the scene that allows the user to see their purchases in the park.
  */
-public class UserPurchasesController implements Initializable {
+public class UserPurchasesController extends AbstractFXMLController implements Initializable {
 
     private static final double LEFT_ARROW_IMAGE_HEIGHT = 25;
     private static final double LEFT_ARROW_IMAGE_WIDTH = 25;
@@ -40,7 +41,7 @@ public class UserPurchasesController implements Initializable {
     @FXML
     void onTicketsButtonPressed(final MouseEvent event) {
         JavaFXUtils.setStageTitle(event, "My tickets");
-        LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true);
+        LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
     }
 
     /**
@@ -50,7 +51,16 @@ public class UserPurchasesController implements Initializable {
     @FXML
     void onSeasonTicketsButtonPressed(final MouseEvent event) {
         JavaFXUtils.setStageTitle(event, "My season tickets");
-        LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true);
+        LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
+    }
+
+    /**
+     * Returns to the previous scene.
+     * @param event the click on the "back" button.
+     */
+    @FXML
+    void onBackButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEvent(event, getPreviousScene());
     }
 
     /**
