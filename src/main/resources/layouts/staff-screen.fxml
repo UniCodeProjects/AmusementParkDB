@@ -428,10 +428,11 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="reviewsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                              <TableColumn prefWidth="75.0" text="Service ID" />
+                              <TableColumn prefWidth="75.0" text="Rating" />
+                              <TableColumn prefWidth="75.0" text="Description" />
                            </columns>
                         </TableView>
                      </center>
