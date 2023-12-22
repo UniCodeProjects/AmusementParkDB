@@ -12,9 +12,9 @@ import lombok.Setter;
 import org.apdb4j.view.tableview.RideTableView;
 
 /**
- * The FXML controller for the add ride screen.
+ * The FXML controller for the ride screen.
  */
-public class AddRideController extends PopupInitializer {
+public class RideController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -58,7 +58,7 @@ public class AddRideController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public AddRideController() {
+    public RideController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

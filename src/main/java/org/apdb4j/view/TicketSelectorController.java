@@ -44,16 +44,16 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onTicketBtnPress(final ActionEvent event) {
         if (editMode) {
-            AddTicketController.setEditMode(true);
+            TicketController.setEditMode(true);
             if (Objects.isNull(ticket)) {
                 StaffScreenController.showAlertForUnselectedRowInTableView("ticket");
                 return;
             }
-            AddTicketController.setTicket(ticket);
+            TicketController.setTicket(ticket);
         } else {
-            AddTicketController.setEditMode(false);
+            TicketController.setEditMode(false);
         }
-        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket.fxml", "Add ticket");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Add ticket");
     }
 
     /**
@@ -63,13 +63,13 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onTicketTypeBtnPress(final ActionEvent event) {
         if (editMode) {
-            AddTicketTypeController.setEditMode(true);
+            TicketTypeController.setEditMode(true);
             // TODO: complete
             throw new UnsupportedOperationException();
         } else {
-            AddTicketTypeController.setEditMode(false);
+            TicketTypeController.setEditMode(false);
         }
-        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket-type.fxml", "Add ticket type");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Add ticket type");
     }
 
     /**
@@ -79,13 +79,13 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onPriceListBtnPress(final ActionEvent event) {
         if (editMode) {
-            AddTicketPriceController.setEditMode(true);
+            TicketPriceController.setEditMode(true);
             // TODO: complete
             throw new UnsupportedOperationException();
         } else {
-            AddTicketPriceController.setEditMode(false);
+            TicketPriceController.setEditMode(false);
         }
-        LoadFXML.fromEventAsPopup(event, "layouts/add-ticket-price.fxml", "Add ticket price");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-price-form.fxml", "Add ticket price");
     }
 
     /**

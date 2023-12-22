@@ -13,9 +13,9 @@ import lombok.Setter;
 import org.apdb4j.view.tableview.ExhibitionTableView;
 
 /**
- * The FXML controller for the add-exhibition screen.
+ * The FXML controller for the exhibition screen.
  */
-public class AddExhibitionController extends PopupInitializer {
+public class ExhibitionController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -45,7 +45,7 @@ public class AddExhibitionController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public AddExhibitionController() {
+    public ExhibitionController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

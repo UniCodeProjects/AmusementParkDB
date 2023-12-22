@@ -15,9 +15,9 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 /**
- * The FXML controller for the add-shop screen.
+ * The FXML controller for the shop screen.
  */
-public class AddShopController extends PopupInitializer {
+public class ShopController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -51,7 +51,7 @@ public class AddShopController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public AddShopController() {
+    public ShopController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

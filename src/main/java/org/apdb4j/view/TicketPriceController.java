@@ -8,9 +8,9 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 
 /**
- * The FXML controller for the add ticket price screen.
+ * The FXML controller for the ticket price screen.
  */
-public class AddTicketPriceController extends PopupInitializer {
+public class TicketPriceController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -24,7 +24,7 @@ public class AddTicketPriceController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public AddTicketPriceController() {
+    public TicketPriceController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
