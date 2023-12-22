@@ -25,6 +25,7 @@ import org.apdb4j.view.tableview.AttractionTableView;
 import org.apdb4j.view.tableview.EmployeeTableView;
 import org.apdb4j.view.tableview.ExhibitionTableView;
 import org.apdb4j.view.tableview.MaintenanceTableView;
+import org.apdb4j.view.tableview.ReviewTableView;
 import org.apdb4j.view.tableview.RideTableView;
 import org.apdb4j.view.tableview.ShopTableView;
 import org.apdb4j.view.tableview.TicketTableView;
@@ -65,6 +66,8 @@ public class StaffScreenController implements Initializable {
     private TableView<ShopTableView> shopsTableView;
     @FXML
     private TableView<MaintenanceTableView> maintenanceTableView;
+    @FXML
+    private TableView<ReviewTableView> reviewsTableView;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
