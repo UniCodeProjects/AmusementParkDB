@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the user UI.
  */
-public class UserScreenController implements Initializable {
+public class UserScreenController extends AbstractFXMLController implements Initializable {
 
     private static final double BACKGROUND_IMAGE_OPACITY = 0.4;
     private static final double ACCOUNT_IMAGE_HEIGHT = 50;
@@ -63,9 +63,9 @@ public class UserScreenController implements Initializable {
         accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
         accountPurchases.onMouseClickedProperty().setValue(event ->
-                LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, false));
+                LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true));
         accountPersonalData.onMouseClickedProperty().setValue(event ->
-                LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true));
+                LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true));
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
         }

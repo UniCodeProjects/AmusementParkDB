@@ -58,7 +58,7 @@ public class SignInController extends LoginCommonController implements Initializ
      */
     @FXML
     void signUp(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/signup-screen.fxml", true, false);
+        LoadFXML.fromEvent(event, "layouts/signup-screen.fxml", true, false, false);
     }
 
     /**

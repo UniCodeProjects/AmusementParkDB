@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NonNull;
+import org.apdb4j.view.FXMLController;
 
 import java.io.IOException;
 
@@ -21,6 +22,16 @@ public final class LoadFXML {
     private LoadFXML() {
     }
 
+    // TODO: change name and add parameters showLoading and removeFocus
+    /**
+     * Sets the provided scene from the provided event.
+     * @param event an event.
+     * @param scene the scene that has to be shown when {@code event} occurs.
+     */
+    public static void fromEvent(final Event event, final Scene scene) {
+        JavaFXUtils.getStage(event).setScene(scene);
+    }
+
     /**
      * Loads a scene from a FXML using an event.
      * Used inside event handlers.
@@ -28,17 +39,26 @@ public final class LoadFXML {
      * @param fxml the FXML path
      * @param removeFocus {@code true} to remove the focus from any visible component
      * @param showLoading if {@code true} shows a loading indicator while loading the FXML
+     * @param setPreviousScene {@code true} if the next scene must set its previous scene (e.g. if the scene has a
+     *                                     button to turn back to the previous scene), {@code false} otherwise.
      */
     @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public static void fromEvent(final Event event, final String fxml,
-                                 final boolean removeFocus, final boolean showLoading) {
+                                 final boolean removeFocus, final boolean showLoading,
+                                 final boolean setPreviousScene) {
         final var stage = JavaFXUtils.getStage(event);
         final var stageWidth = stage.getScene().getWidth();
         final var stageHeight = stage.getScene().getHeight();
         final Task<Parent> task = new Task<>() {
             @Override
             protected Parent call() throws IOException {
-                return FXMLLoader.load(ClassLoader.getSystemResource(fxml));
+                final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
+                final var root = (Parent) loader.load();
+                if (setPreviousScene) {
+                    final FXMLController controller = loader.getController();
+                    controller.setPreviousScene(((Node) event.getSource()).getScene());
+                }
+                return root;
             }
         };
 

@@ -180,7 +180,7 @@
       </VBox>
    </center>
    <top>
-      <Button fx:id="backButton" mnemonicParsing="false" BorderPane.alignment="TOP_LEFT">
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" BorderPane.alignment="TOP_LEFT">
          <BorderPane.margin>
             <Insets left="5.0" top="5.0" />
          </BorderPane.margin>
