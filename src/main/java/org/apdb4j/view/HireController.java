@@ -3,6 +3,7 @@ package org.apdb4j.view;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
@@ -46,6 +47,8 @@ public class HireController implements Initializable {
     private RadioButton employeeRadioBtn;
     @FXML
     private TextField emailField;
+    @FXML
+    private Button acceptAndCloseBtn;
 
     @Setter
     private static boolean editMode;
@@ -60,7 +63,12 @@ public class HireController implements Initializable {
         Platform.runLater(() -> {
             final var stage = safeCastToStage(gridPane.getScene().getWindow());
             stage.setResizable(false);
-            stage.setHeight(gridPane.getHeight());
+            // Content bias is null, so the argument needs to be -1 as mentioned by the method doc.
+            final double rootPrefHeight = gridPane.getScene().getRoot().prefHeight(-1);
+            final double rootPrefWidth = gridPane.getScene().getRoot().prefWidth(-1);
+            final double padding = 40;
+            stage.setHeight(rootPrefHeight + padding);
+            stage.setWidth(rootPrefWidth + padding);
             if (editMode) {
                 nationalIDField.setText(employee.getNationalID());
                 nameField.setText(employee.getName());

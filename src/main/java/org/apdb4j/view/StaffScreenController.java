@@ -175,7 +175,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onEmployeeHire(final ActionEvent event) {
         HireController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire employee", 0.4, 0.6);
+        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-screen.fxml", "Hire employee");
     }
 
     /**
