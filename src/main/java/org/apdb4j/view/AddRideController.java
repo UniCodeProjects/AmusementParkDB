@@ -62,6 +62,7 @@ public class AddRideController extends PopupInitializer {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
+            super.setHeightSizeFactor(1.4);
         });
     }
 
