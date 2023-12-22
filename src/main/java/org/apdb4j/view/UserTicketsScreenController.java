@@ -9,7 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.util.view.JavaFXUtils;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -48,6 +48,6 @@ public class UserTicketsScreenController extends AbstractFXMLController implemen
      */
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, getPreviousScene(), getPreviousSceneTitle());
+        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 }

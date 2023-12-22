@@ -22,19 +22,6 @@ public final class LoadFXML {
     private LoadFXML() {
     }
 
-    // TODO: change name and add parameters showLoading and removeFocus. Move this method in JavaFXUtils
-    /**
-     * Sets the provided scene from the provided event.
-     * @param event an event.
-     * @param scene the scene that has to be shown when {@code event} occurs.
-     * @param stageTitle the stage title that has to be set when {@code scene} is shown.
-     */
-    public static void fromEvent(final Event event, final Scene scene, final String stageTitle) {
-        final var stage = JavaFXUtils.getStage(event);
-        stage.setTitle(stageTitle);
-        stage.setScene(scene);
-    }
-
     /**
      * Loads a scene from a FXML using an event.
      * Used inside event handlers.
