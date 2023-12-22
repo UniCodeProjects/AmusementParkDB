@@ -2,7 +2,6 @@ package org.apdb4j.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -10,18 +9,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Setter;
 import org.apdb4j.view.tableview.EmployeeTableView;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * The FXML controller for the employee hiring screen.
  */
-public class HireController implements Initializable {
+public class HireController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -56,42 +50,33 @@ public class HireController implements Initializable {
     private static EmployeeTableView employee;
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public HireController() {
         Platform.runLater(() -> {
-            final var stage = safeCastToStage(gridPane.getScene().getWindow());
-            stage.setResizable(false);
-            // Content bias is null, so the argument needs to be -1 as mentioned by the method doc.
-            final double rootPrefHeight = gridPane.getScene().getRoot().prefHeight(-1);
-            final double rootPrefWidth = gridPane.getScene().getRoot().prefWidth(-1);
-            final double padding = 40;
-            stage.setHeight(rootPrefHeight + padding);
-            stage.setWidth(rootPrefWidth + padding);
-            if (editMode) {
-                nationalIDField.setText(employee.getNationalID());
-                nameField.setText(employee.getName());
-                surnameField.setText(employee.getSurname());
-                dobPicker.setValue(employee.getDob());
-                birthplaceField.setText(employee.getBirthplace());
-                genderChoiceBox.setValue(employee.getGender());
-                roleField.setText(employee.getRole());
-                adminRadioBtn.setSelected(employee.isAdmin());
-                employeeRadioBtn.setSelected(!employee.isAdmin());
-                emailField.setText(employee.getEmail());
-            }
+            super.setStage(gridPane.getScene().getWindow());
+            super.setRoot(gridPane.getScene().getRoot());
         });
     }
 
-    private Stage safeCastToStage(final Window window) {
-        Stage stage;
-        if (window instanceof Stage) {
-            stage = (Stage) window;
-        } else {
-            throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void editMode() {
+        if (!editMode) {
+            return;
         }
-        return stage;
+        nationalIDField.setText(employee.getNationalID());
+        nameField.setText(employee.getName());
+        surnameField.setText(employee.getSurname());
+        dobPicker.setValue(employee.getDob());
+        birthplaceField.setText(employee.getBirthplace());
+        genderChoiceBox.setValue(employee.getGender());
+        roleField.setText(employee.getRole());
+        adminRadioBtn.setSelected(employee.isAdmin());
+        employeeRadioBtn.setSelected(!employee.isAdmin());
+        emailField.setText(employee.getEmail());
     }
 
 }
