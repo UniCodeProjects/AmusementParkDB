@@ -2,6 +2,7 @@ package org.apdb4j.util.view;
 
 import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -10,6 +11,19 @@ import javafx.stage.Stage;
 public final class JavaFXUtils {
 
     private JavaFXUtils() {
+    }
+
+    // TODO: add parameters showLoading and removeFocus
+    /**
+     * Sets the provided scene starting from the provided event.
+     * @param event an event.
+     * @param scene the scene that has to be shown when {@code event} occurs.
+     * @param stageTitle the stage title that has to be set when {@code scene} is shown.
+     */
+    public static void setSceneFromEvent(final Event event, final Scene scene, final String stageTitle) {
+        final var stage = getStage(event);
+        stage.setTitle(stageTitle);
+        stage.setScene(scene);
     }
 
     /**

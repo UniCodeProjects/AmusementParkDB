@@ -60,7 +60,7 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      */
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, getPreviousScene(), getPreviousSceneTitle());
+        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 
     /**

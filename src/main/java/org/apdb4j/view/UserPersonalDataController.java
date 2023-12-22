@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -214,6 +215,6 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      */
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, getPreviousScene(), getPreviousSceneTitle());
+        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 }
