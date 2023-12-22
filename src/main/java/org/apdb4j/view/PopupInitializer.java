@@ -18,6 +18,8 @@ public abstract class PopupInitializer implements Initializable {
     private Stage stage;
     @Setter
     private Parent root;
+    private double heightSizeFactor = 1;
+    private double widthSizeFactor = 1;
 
     /**
      * Sets the stage from the given window.
@@ -25,6 +27,28 @@ public abstract class PopupInitializer implements Initializable {
      */
     public void setStage(final Window window) {
         this.stage = safeCastToStage(window);
+    }
+
+    /**
+     * Sets the height size factor.
+     * @param heightSizeFactor the factor
+     */
+    public void setHeightSizeFactor(final double heightSizeFactor) {
+        if (isNegativeOrEqualToZero(heightSizeFactor)) {
+            throw new NumberFormatException("Height size factor (" + heightSizeFactor + ") is <= 0");
+        }
+        this.heightSizeFactor = heightSizeFactor;
+    }
+
+    /**
+     * Sets the width size factor.
+     * @param widthSizeFactor the factor
+     */
+    public void setWidthSizeFactor(final double widthSizeFactor) {
+        if (isNegativeOrEqualToZero(widthSizeFactor)) {
+            throw new NumberFormatException("Width size factor (" + widthSizeFactor + ") is <= 0");
+        }
+        this.widthSizeFactor = widthSizeFactor;
     }
 
     /**
@@ -39,8 +63,8 @@ public abstract class PopupInitializer implements Initializable {
             }
             stage.setResizable(false);
             // Content bias is null, so the argument needs to be -1 as mentioned by the method doc.
-            final double rootPrefHeight = root.prefHeight(-1);
-            final double rootPrefWidth = root.prefWidth(-1);
+            final double rootPrefHeight = root.prefHeight(-1) * heightSizeFactor;
+            final double rootPrefWidth = root.prefWidth(-1) * widthSizeFactor;
             final double padding = 40;
             stage.setHeight(rootPrefHeight + padding);
             stage.setWidth(rootPrefWidth + padding);
@@ -61,6 +85,10 @@ public abstract class PopupInitializer implements Initializable {
             throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
         }
         return stage;
+    }
+
+    private boolean isNegativeOrEqualToZero(final double n) {
+        return Double.compare(n, 0.0) <= 0;
     }
 
 }
