@@ -2,7 +2,6 @@ package org.apdb4j.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -10,18 +9,13 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Setter;
 import org.apdb4j.view.tableview.ExhibitionTableView;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * The FXML controller for the add-exhibition screen.
  */
-public class AddExhibitionController implements Initializable {
+public class AddExhibitionController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -49,34 +43,31 @@ public class AddExhibitionController implements Initializable {
     private static ExhibitionTableView exhibition;
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public AddExhibitionController() {
         Platform.runLater(() -> {
-            final var stage = safeCastToStage(gridPane.getScene().getWindow());
-            stage.setResizable(false);
-            if (editMode) {
-                nameField.setText(exhibition.getName());
-                typeChoiceBox.setValue(exhibition.getType());
-                descriptionTextArea.setText(exhibition.getDescription());
-                datePicker.setValue(exhibition.getDate());
-                timeHourField.setText(String.valueOf(exhibition.getTime().getHour()));
-                timeMinuteField.setText(String.valueOf(exhibition.getTime().getMinute()));
-                maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
-                spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
-            }
+            super.setStage(gridPane.getScene().getWindow());
+            super.setRoot(gridPane.getScene().getRoot());
         });
     }
 
-    private Stage safeCastToStage(final Window window) {
-        Stage stage;
-        if (window instanceof Stage) {
-            stage = (Stage) window;
-        } else {
-            throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void editMode() {
+        if (!editMode) {
+            return;
         }
-        return stage;
+        nameField.setText(exhibition.getName());
+        typeChoiceBox.setValue(exhibition.getType());
+        descriptionTextArea.setText(exhibition.getDescription());
+        datePicker.setValue(exhibition.getDate());
+        timeHourField.setText(String.valueOf(exhibition.getTime().getHour()));
+        timeMinuteField.setText(String.valueOf(exhibition.getTime().getMinute()));
+        maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
+        spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
     }
 
 }

@@ -9,20 +9,16 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Setter;
 import org.apdb4j.view.tableview.ShopTableView;
 
-import java.net.URL;
 import java.time.format.TextStyle;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * The FXML controller for the add-shop screen.
  */
-public class AddShopController implements Initializable {
+public class AddShopController extends PopupInitializer implements Initializable {
 
     @FXML
     private GridPane gridPane;
@@ -54,36 +50,33 @@ public class AddShopController implements Initializable {
     private static ShopTableView shop;
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
+    public AddShopController() {
         Platform.runLater(() -> {
-            final var stage = safeCastToStage(gridPane.getScene().getWindow());
-            stage.setResizable(false);
-            if (editMode) {
-                nameField.setText(shop.getName());
-                openingHourField.setText(String.valueOf(shop.getOpeningTime().getHour()));
-                openingMinuteField.setText(String.valueOf(shop.getOpeningTime().getMinute()));
-                closingHourField.setText(String.valueOf(shop.getClosingTime().getHour()));
-                closingMinuteField.setText(String.valueOf(shop.getClosingTime().getMinute()));
-                typeChoiceBox.setValue(shop.getType());
-                descriptionTextArea.setText(shop.getDescription());
-                expensesSpinner.getValueFactory().setValue(shop.getExpenses());
-                revenueSpinner.getValueFactory().setValue(shop.getRevenue());
-                monthField.setText(shop.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
-            }
+            super.setStage(gridPane.getScene().getWindow());
+            super.setRoot(gridPane.getScene().getRoot());
         });
     }
 
-    private Stage safeCastToStage(final Window window) {
-        Stage stage;
-        if (window instanceof Stage) {
-            stage = (Stage) window;
-        } else {
-            throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void editMode() {
+        if (!editMode) {
+            return;
         }
-        return stage;
+        nameField.setText(shop.getName());
+        openingHourField.setText(String.valueOf(shop.getOpeningTime().getHour()));
+        openingMinuteField.setText(String.valueOf(shop.getOpeningTime().getMinute()));
+        closingHourField.setText(String.valueOf(shop.getClosingTime().getHour()));
+        closingMinuteField.setText(String.valueOf(shop.getClosingTime().getMinute()));
+        typeChoiceBox.setValue(shop.getType());
+        descriptionTextArea.setText(shop.getDescription());
+        expensesSpinner.getValueFactory().setValue(shop.getExpenses());
+        revenueSpinner.getValueFactory().setValue(shop.getRevenue());
+        monthField.setText(shop.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
     }
 
 }
