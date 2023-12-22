@@ -63,7 +63,6 @@
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
-            <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
              <Spinner fx:id="minHeightSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
                  <valueFactory>
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="0" />
@@ -85,6 +84,7 @@
                  </valueFactory>
              </Spinner>
             <ChoiceBox fx:id="statusChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

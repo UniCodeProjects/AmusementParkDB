@@ -51,13 +51,13 @@
                   <TextField fx:id="closingMinuteField" promptText="mm" />
                </children>
             </HBox>
-            <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
              <Spinner fx:id="expensesSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                  <valueFactory>
                      <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="0.1" max="1.7976931348623157E308" min="0" />
                  </valueFactory>
              </Spinner>
             <TextField fx:id="monthField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

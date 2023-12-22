@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -29,7 +30,7 @@ public class AddExhibitionController implements Initializable {
     @FXML
     private ChoiceBox<String> typeChoiceBox;
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionTextArea;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -58,7 +59,7 @@ public class AddExhibitionController implements Initializable {
             if (editMode) {
                 nameField.setText(exhibition.getName());
                 typeChoiceBox.setValue(exhibition.getType());
-                descriptionField.setText(exhibition.getDescription());
+                descriptionTextArea.setText(exhibition.getDescription());
                 datePicker.setValue(exhibition.getDate());
                 timeHourField.setText(String.valueOf(exhibition.getTime().getHour()));
                 timeMinuteField.setText(String.valueOf(exhibition.getTime().getMinute()));

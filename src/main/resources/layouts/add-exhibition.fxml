@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.AddExhibitionController">
    <center>
@@ -36,7 +32,6 @@
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
-            <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Date:" GridPane.rowIndex="3" />
             <Label text="Time:" GridPane.rowIndex="4" />
             <Label text="Spectators:" GridPane.rowIndex="6" />
@@ -50,9 +45,10 @@
             </HBox>
              <Spinner fx:id="spectatorsSpinner" GridPane.columnIndex="1" GridPane.rowIndex="6">
                  <valueFactory>
-                     <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="2147483647" />
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
+            <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

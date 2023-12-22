@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -38,7 +39,7 @@ public class AddShopController implements Initializable {
     @FXML
     private ChoiceBox<String> typeChoiceBox;
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionTextArea;
     @FXML
     private Spinner<Double> expensesSpinner;
     @FXML
@@ -67,7 +68,7 @@ public class AddShopController implements Initializable {
                 closingHourField.setText(String.valueOf(shop.getClosingTime().getHour()));
                 closingMinuteField.setText(String.valueOf(shop.getClosingTime().getMinute()));
                 typeChoiceBox.setValue(shop.getType());
-                descriptionField.setText(shop.getDescription());
+                descriptionTextArea.setText(shop.getDescription());
                 expensesSpinner.getValueFactory().setValue(shop.getExpenses());
                 revenueSpinner.getValueFactory().setValue(shop.getRevenue());
                 monthField.setText(shop.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
