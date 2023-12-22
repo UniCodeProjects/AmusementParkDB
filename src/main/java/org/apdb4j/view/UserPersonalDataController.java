@@ -214,6 +214,6 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      */
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, getPreviousScene());
+        LoadFXML.fromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 }

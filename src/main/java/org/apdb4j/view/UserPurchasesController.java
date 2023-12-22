@@ -40,8 +40,8 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      */
     @FXML
     void onTicketsButtonPressed(final MouseEvent event) {
-        JavaFXUtils.setStageTitle(event, "My tickets");
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
+        JavaFXUtils.setStageTitle(event, "My tickets");
     }
 
     /**
@@ -50,8 +50,8 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      */
     @FXML
     void onSeasonTicketsButtonPressed(final MouseEvent event) {
-        JavaFXUtils.setStageTitle(event, "My season tickets");
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
+        JavaFXUtils.setStageTitle(event, "My season tickets");
     }
 
     /**
@@ -60,7 +60,7 @@ public class UserPurchasesController extends AbstractFXMLController implements I
      */
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, getPreviousScene());
+        LoadFXML.fromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 
     /**
