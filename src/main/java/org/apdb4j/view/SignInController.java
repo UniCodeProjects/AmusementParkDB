@@ -77,6 +77,11 @@ public class SignInController extends LoginCommonController implements Initializ
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        // TODO: remove
+        username.setText("mario.rossi");
+        password.setText("A@BbCc11");
+        signInBtn.fire();
+
         final var screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
         final var width = screenDimensions.getWidth() * 0.2;
         username.setPrefWidth(width);
