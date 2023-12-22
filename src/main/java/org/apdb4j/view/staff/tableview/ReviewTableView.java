@@ -1,4 +1,4 @@
-package org.apdb4j.view.tableview;
+package org.apdb4j.view.staff.tableview;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -6,7 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import lombok.Setter;
 import org.apdb4j.util.view.LoadFXML;
-import org.apdb4j.view.tableview.TicketTableView;
+import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.TicketTableView;
 
 import java.util.Objects;
 
