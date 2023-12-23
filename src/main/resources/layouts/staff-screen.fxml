@@ -143,6 +143,11 @@
                      <center>
                         <TableView fx:id="employeeTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
+                               <TableColumn editable="false" prefWidth="75.0" text="Staff ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="staffID" />
+                                   </cellValueFactory>
+                               </TableColumn>
                                <TableColumn editable="false" prefWidth="75.0" text="National ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="nationalID" />

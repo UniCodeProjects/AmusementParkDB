@@ -21,6 +21,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public final class EmployeeTableItem implements TableItem {
 
+    private final StringProperty staffID;
     private final StringProperty nationalID;
     private final StringProperty name;
     private final StringProperty surname;
@@ -34,6 +35,7 @@ public final class EmployeeTableItem implements TableItem {
 
     /**
      * Default constructor.
+     * @param staffID the employee's staff ID
      * @param nationalID the employee's national ID
      * @param name the employee's name
      * @param surname the employee's surname
@@ -46,6 +48,7 @@ public final class EmployeeTableItem implements TableItem {
      * @param email the employee's email
      */
     public EmployeeTableItem(
+            final String staffID,
             final String nationalID,
             final String name,
             final String surname,
@@ -57,6 +60,7 @@ public final class EmployeeTableItem implements TableItem {
             final double salary,
             final String email
     ) {
+        this.staffID = new SimpleStringProperty(staffID);
         this.nationalID = new SimpleStringProperty(nationalID);
         this.name = new SimpleStringProperty(name);
         this.surname = new SimpleStringProperty(surname);
@@ -67,6 +71,14 @@ public final class EmployeeTableItem implements TableItem {
         this.admin = new SimpleBooleanProperty(isAdmin);
         this.salary = new SimpleDoubleProperty(salary);
         this.email = new SimpleStringProperty(email);
+    }
+
+    /**
+     * Returns the employee's staff ID.
+     * @return the employee's staff ID
+     */
+    public String getStaffID() {
+        return staffID.get();
     }
 
     /**
