@@ -47,6 +47,9 @@ dependencies {
     val commonsCollectionVersion = "4.4"
     implementation("org.apache.commons:commons-collections4:$commonsCollectionVersion")
 
+    val commonsCodecVersion = "1.16.0"
+    implementation("commons-codec:commons-codec:$commonsCodecVersion")
+
     val javaFxVersion = "15"
 
     for (platform in supportedPlatforms) {

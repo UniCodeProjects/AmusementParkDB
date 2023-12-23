@@ -1,16 +1,31 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.util.QueryBuilder;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.types.UByte;
+import org.jooq.types.UInteger;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.apdb4j.db.Tables.EXHIBITION_DETAILS;
+import static org.apdb4j.db.Tables.PARK_SERVICES;
+import static org.jooq.impl.DSL.avg;
 
 /**
  * Contains all the SQL queries that are related to the entity EXHIBITION.
  */
 public final class ExhibitionManager {
+
+    private static final QueryBuilder DB = new QueryBuilder();
 
     private ExhibitionManager() {
     }
@@ -22,12 +37,13 @@ public final class ExhibitionManager {
      * @param type the type of the new exhibition.
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void addNewExhibition(final @NonNull String exhibitionID,
-                                        final @NonNull String name,
-                                        final @NonNull String type,
-                                        final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewExhibition(final @NonNull String exhibitionID,
+                                           final @NonNull String name,
+                                           final @NonNull String type,
+                                           final @NonNull String account) {
+        return addNewExhibitionWithDescription(exhibitionID, name, type, null, account);
     }
 
     /**
@@ -40,13 +56,25 @@ public final class ExhibitionManager {
      *                    {@link ExhibitionManager#addNewExhibition(String, String, String, String)}.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void addNewExhibitionWithDescription(final @NonNull String exhibitionID,
-                                                       final @NonNull String name,
-                                                       final @NonNull String type,
-                                                       final @NonNull String description,
-                                                       final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addNewExhibitionWithDescription(final @NonNull String exhibitionID,
+                                                          final @NonNull String name,
+                                                          final @NonNull String type,
+                                                          final String description,
+                                                          final @NonNull String account) {
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(PARK_SERVICES,
+                                PARK_SERVICES.PARKSERVICEID,
+                                PARK_SERVICES.NAME,
+                                PARK_SERVICES.TYPE,
+                                PARK_SERVICES.DESCRIPTION,
+                                PARK_SERVICES.ISEXHIBITION)
+                        .values(exhibitionID, name, type, description, UByte.valueOf(1).byteValue())
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return insertedTuples == 1;
     }
 
     /**
@@ -59,12 +87,19 @@ public final class ExhibitionManager {
      * @param maxSeats the maximum number of seats of the exhibition venue.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void planNewExhibition(final @NonNull String exhibitionID,
-                                         final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                         final int maxSeats,
-                                         final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean planNewExhibition(final @NonNull String exhibitionID,
+                                            final @NonNull LocalDate date, final @NonNull LocalTime time,
+                                            final int maxSeats,
+                                            final @NonNull String account) {
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(EXHIBITION_DETAILS)
+                        .values(exhibitionID, date, time, maxSeats)
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return insertedTuples == 1;
     }
 
     /**
@@ -79,12 +114,24 @@ public final class ExhibitionManager {
      * @param newMaxSeats the new maximum number of seats.
      * @param account the account that is performing this operation. If the account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void changeMaxSeats(final @NonNull String exhibitionID,
-                                      final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                      final int newMaxSeats,
-                                      final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean changeMaxSeats(final @NonNull String exhibitionID,
+                                         final @NonNull LocalDate date, final @NonNull LocalTime time,
+                                         final int newMaxSeats,
+                                         final @NonNull String account) {
+        final int updatedTuples = DB.createConnection()
+                .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                        .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
+                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                        .and(EXHIBITION_DETAILS.DATE.eq(date))
+                        .and(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
+                        .and(EXHIBITION_DETAILS.TIME.eq(time))
+                        .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return updatedTuples == 1;
     }
 
     /**
@@ -98,12 +145,24 @@ public final class ExhibitionManager {
      * @param spectators the number of people that watched the exhibition.
      * @param account the account that is performing the operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void addSpectatorsNum(final @NonNull String exhibitionID,
-                                        final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                        final int spectators,
-                                        final @NonNull String account) {
-        throw new UnsupportedOperationException();
+    public static boolean addSpectatorsNum(final @NonNull String exhibitionID,
+                                           final @NonNull LocalDate date, final @NonNull LocalTime time,
+                                           final int spectators,
+                                           final @NonNull String account) {
+        final int updatedTuples = DB.createConnection()
+                .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                        .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
+                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                        .and(EXHIBITION_DETAILS.DATE.eq(date))
+                        .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
+                        .and(EXHIBITION_DETAILS.TIME.eq(time))
+                        .and(EXHIBITION_DETAILS.TIME.lessOrEqual(LocalTime.now()))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return updatedTuples == 1;
     }
 
     /**
@@ -114,7 +173,28 @@ public final class ExhibitionManager {
      * @return a collection in which each exhibition type is paired with its average number of spectators.
      */
     public static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType(final @NonNull String account) {
-        throw new UnsupportedOperationException();
+        final Result<Record> exhibitionTypes = DB.createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.TYPE)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.ISEXHIBITION.eq(UByte.valueOf(1).byteValue()))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        final Set<Pair<String, Integer>> result = new HashSet<>();
+        exhibitionTypes.forEach(type -> {
+            final MutablePair<String, Integer> typeAndAvgValues = new MutablePair<>();
+            typeAndAvgValues.setLeft(type.get(0, String.class));
+            final int average = DB.createConnection()
+                    .queryAction(db -> db.select(avg(EXHIBITION_DETAILS.SPECTATORS))
+                            .from(EXHIBITION_DETAILS)
+                            .where(EXHIBITION_DETAILS.SPECTATORS.isNotNull())
+                            .fetchOne(0, int.class))
+                    .closeConnection()
+                    .getResultAsInt();
+            typeAndAvgValues.setRight(average);
+            result.add(typeAndAvgValues);
+        });
+        return result;
     }
 
     /**
@@ -124,7 +204,19 @@ public final class ExhibitionManager {
      * @return the percentage of sold-out exhibitions.
      */
     public static double computePercentageOfSoldOutExhibitions(final @NonNull String account) {
-        throw new UnsupportedOperationException();
+        final int soldOutAmount = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(EXHIBITION_DETAILS)
+                        .where(EXHIBITION_DETAILS.SPECTATORS.eq(EXHIBITION_DETAILS.MAXSEATS.cast(UInteger.class)))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt();
+        return (double) (soldOutAmount * 100) / DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(EXHIBITION_DETAILS)
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt();
     }
 
     /**
@@ -134,7 +226,17 @@ public final class ExhibitionManager {
      * @return all the exhibitions that are planned for the future.
      */
      public static @NonNull Collection<Record> viewAllPlannedExhibitions(final @NonNull String account) {
-        throw new UnsupportedOperationException();
-    }
+         return DB.createConnection()
+                 .queryAction(db -> db.select()
+                         .from(EXHIBITION_DETAILS
+                                 .join(PARK_SERVICES)
+                                 .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
+                         .where(EXHIBITION_DETAILS.DATE.greaterOrEqual(LocalDate.now()))
+                         .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                         .fetch())
+                 .closeConnection()
+                 .getResultAsRecords().stream()
+                 .collect(Collectors.toUnmodifiableSet());
+     }
 
 }
