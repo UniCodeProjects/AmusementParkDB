@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,6 +41,7 @@ public class UserTicketsScreenController extends AbstractFXMLController implemen
         leftArrowImageView.setFitHeight(LEFT_ARROW_IMAGE_HEIGHT);
         leftArrowImageView.setFitWidth(LEFT_ARROW_IMAGE_WIDTH);
         backButton.setGraphic(leftArrowImageView);
+        addTicket();
     }
 
     /**
@@ -49,5 +51,12 @@ public class UserTicketsScreenController extends AbstractFXMLController implemen
     @FXML
     void onBackButtonPressed(final ActionEvent event) {
         JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
+    }
+
+    private void addTicket() {
+        final var ticket = new Hyperlink("3 tickets, valid on 25/04");
+        ticket.setOnAction(event ->
+                LoadFXML.fromEventAsPopup(event, "layouts/tickets-info.fxml", "tickets valid on 25/04", 0.5, 0.5));
+        listView.getItems().add(ticket);
     }
 }
