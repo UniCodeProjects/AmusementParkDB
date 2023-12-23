@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.HireController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
@@ -21,6 +22,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="National ID:" />
@@ -29,7 +31,7 @@
             <Label text="Date of birth:" GridPane.rowIndex="3" />
             <Label text="Birth place:" GridPane.rowIndex="4" />
             <Label text="Gender:" GridPane.rowIndex="5" />
-            <Label text="Email:" GridPane.rowIndex="8" />
+            <Label text="Email:" GridPane.rowIndex="9" />
             <Label text="Role:" GridPane.rowIndex="6" />
             <Label text="Type:" GridPane.rowIndex="7" />
             <DatePicker fx:id="dobPicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -38,7 +40,7 @@
             <TextField fx:id="surnameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="birthplaceField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="roleField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <RadioButton fx:id="adminRadioBtn" mnemonicParsing="false" text="Admin">
@@ -52,6 +54,12 @@
                </padding>
             </HBox>
             <ChoiceBox fx:id="genderChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Salary:" GridPane.rowIndex="8" />
+             <Spinner fx:id="salarySpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                 <valueFactory>
+                     <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="50" min="0" max="1.7976931348623157E308" />
+                 </valueFactory>
+             </Spinner>
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

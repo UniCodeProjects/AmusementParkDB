@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
@@ -40,6 +41,8 @@ public class HireController extends PopupInitializer {
     private RadioButton adminRadioBtn;
     @FXML
     private RadioButton employeeRadioBtn;
+    @FXML
+    private Spinner<Double> salarySpinner;
     @FXML
     private TextField emailField;
     @FXML
@@ -77,6 +80,7 @@ public class HireController extends PopupInitializer {
         roleField.setText(employee.getRole());
         adminRadioBtn.setSelected(employee.isAdmin());
         employeeRadioBtn.setSelected(!employee.isAdmin());
+        salarySpinner.getValueFactory().setValue(employee.getSalary());
         emailField.setText(employee.getEmail());
     }
 
