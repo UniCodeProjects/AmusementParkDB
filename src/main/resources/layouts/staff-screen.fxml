@@ -143,57 +143,57 @@
                      <center>
                         <TableView fx:id="employeeTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                               <TableColumn editable="false" prefWidth="75.0" text="Staff ID">
+                               <TableColumn editable="false" text="Staff ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="staffID" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="National ID">
+                               <TableColumn editable="false" text="National ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="nationalID" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Name">
+                               <TableColumn editable="false" text="Name">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="name" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Surname">
+                               <TableColumn editable="false" text="Surname">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="surname" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="DoB">
+                               <TableColumn editable="false" text="DoB">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="dob" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Birthplace">
+                               <TableColumn editable="false" text="Birthplace">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="birthplace" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Gender">
+                               <TableColumn editable="false" text="Gender">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="gender" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Role">
+                               <TableColumn editable="false" text="Role">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="role" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Admin">
+                               <TableColumn editable="false" text="Admin">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="admin" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Salary">
+                               <TableColumn editable="false" text="Salary">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="salary" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Email">
+                               <TableColumn editable="false" text="Email">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="email" />
                                    </cellValueFactory>
@@ -243,52 +243,52 @@
                      <center>
                         <TableView fx:id="ticketTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                               <TableColumn editable="false" prefWidth="75.0" text="Ticket ID">
+                               <TableColumn editable="false" text="Ticket ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="ticketID" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Purchased">
+                               <TableColumn editable="false" text="Purchased">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="purchaseDate" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Valid on">
+                               <TableColumn editable="false" text="Valid on">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="validOn" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Valid until">
+                               <TableColumn editable="false" text="Valid until">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="validUntil" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Entrances">
+                               <TableColumn editable="false" text="Entrances">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="remainingEntrances" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Owner ID">
+                               <TableColumn editable="false" text="Owner ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="ownerID" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Year">
+                               <TableColumn editable="false" text="Year">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="year" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Type">
+                               <TableColumn editable="false" text="Type">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="type" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Category">
+                               <TableColumn editable="false" text="Category">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="category" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" prefWidth="75.0" text="Validation">
+                               <TableColumn editable="false" text="Validation">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="validationDate" />
                                    </cellValueFactory>
@@ -354,15 +354,15 @@
                      <center>
                         <TableView fx:id="shopsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn editable="false" prefWidth="75.0" text="Shop ID" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Name" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Opening" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Closing" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Type" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Description" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Expense" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Revenue" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Month" />
+                              <TableColumn editable="false" text="Shop ID" />
+                              <TableColumn editable="false" text="Name" />
+                              <TableColumn editable="false" text="Opening" />
+                              <TableColumn editable="false" text="Closing" />
+                              <TableColumn editable="false" text="Type" />
+                              <TableColumn editable="false" text="Description" />
+                              <TableColumn editable="false" text="Expense" />
+                              <TableColumn editable="false" text="Revenue" />
+                              <TableColumn editable="false" text="Month" />
                            </columns>
                         </TableView>
                      </center>
@@ -396,11 +396,11 @@
                      <center>
                         <TableView fx:id="maintenanceTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn editable="false" prefWidth="75.0" text="Facility ID" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Price" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Description" />
-                              <TableColumn editable="false" prefWidth="75.0" text="Date" />
-                              <TableColumn editable="false" prefWidth="110.0" text="Employee IDs" />
+                              <TableColumn editable="false" text="Facility ID" />
+                              <TableColumn editable="false" text="Price" />
+                              <TableColumn editable="false" text="Description" />
+                              <TableColumn editable="false" text="Date" />
+                              <TableColumn editable="false" text="Employee IDs" />
                            </columns>
                         </TableView>
                      </center>
@@ -440,9 +440,9 @@
                      <center>
                         <TableView fx:id="reviewsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Service ID" />
-                              <TableColumn prefWidth="75.0" text="Rating" />
-                              <TableColumn prefWidth="75.0" text="Description" />
+                              <TableColumn text="Service ID" />
+                              <TableColumn text="Rating" />
+                              <TableColumn text="Description" />
                            </columns>
                         </TableView>
                      </center>
