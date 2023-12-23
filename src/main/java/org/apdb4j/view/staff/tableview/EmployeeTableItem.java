@@ -19,7 +19,7 @@ import java.time.LocalDate;
  */
 @ToString
 @EqualsAndHashCode
-public final class EmployeeTableItem {
+public final class EmployeeTableItem implements TableItem {
 
     private final StringProperty nationalID;
     private final StringProperty name;

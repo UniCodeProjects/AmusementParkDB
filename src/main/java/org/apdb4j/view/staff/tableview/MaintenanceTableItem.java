@@ -18,7 +18,7 @@ import java.time.LocalDate;
  */
 @ToString
 @EqualsAndHashCode
-public class MaintenanceTableItem {
+public class MaintenanceTableItem implements TableItem {
 
     private final StringProperty facilityID;
     private final DoubleProperty price;

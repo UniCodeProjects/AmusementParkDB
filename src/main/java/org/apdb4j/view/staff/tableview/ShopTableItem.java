@@ -15,7 +15,7 @@ import java.time.Month;
  * A shop representation used by the table view in the GUI.
  * @see javafx.scene.control.TableView
  */
-public class ShopTableItem {
+public class ShopTableItem implements TableItem {
 
     private final StringProperty id;
     private final StringProperty name;
