@@ -183,6 +183,11 @@
                                        <PropertyValueFactory property="admin" />
                                    </cellValueFactory>
                                </TableColumn>
+                               <TableColumn editable="false" prefWidth="75.0" text="Salary">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="salary" />
+                                   </cellValueFactory>
+                               </TableColumn>
                                <TableColumn editable="false" prefWidth="75.0" text="Email">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="email" />
