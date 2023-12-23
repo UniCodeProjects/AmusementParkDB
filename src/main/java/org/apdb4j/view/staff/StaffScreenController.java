@@ -20,6 +20,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apdb4j.controllers.EmployeeControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
@@ -399,6 +400,8 @@ public class StaffScreenController implements Initializable {
         addListenersToDatePicker(datePicker1, datePicker2, clearButton);
         // Loading the ride tableview by default.
         onRideBtnClick(null);
+        // Populating the table views.
+        employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
