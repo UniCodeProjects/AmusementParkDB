@@ -36,8 +36,7 @@ public final class GuestManager {
         DB.createConnection()
                 .queryAction(db -> {
                     db.transaction(configuration -> {
-                        boolean b = AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
-                        System.out.println(b);
+                        AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
                         configuration.dsl()
                                 .insertInto(GUESTS)
                                 .values(guestID, email, name, surname)
