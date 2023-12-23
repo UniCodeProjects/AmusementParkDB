@@ -126,13 +126,7 @@ public final class AccountManager {
         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
             throw new AccessDeniedException("Guest account has no permission over " + email);
         }
-        final int updatedTuples = DB.definePermissions(new Permission.Builder()
-                        .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
-                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.LOCAL))
-                        .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
-                        .setActualEmail(account)
-                        .build())
-                .createConnection()
+        final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
                         .set(ACCOUNTS.USERNAME, username)
                         .set(ACCOUNTS.PASSWORD, password)
@@ -162,15 +156,7 @@ public final class AccountManager {
          if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
              throw new AccessDeniedException("Guest account has no permission over " + email);
          }
-         final int updatedTuples = DB.definePermissions(new Permission.Builder()
-                         .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
-                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Read.LOCAL, AccessType.Write.LOCAL))
-                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD,
-                                 Pair.of(AccessType.Read.LOCAL, Set.of(GuestPermission.class)),
-                                 Pair.of(AccessType.Write.LOCAL, Set.of(GuestPermission.class))))
-                         .setActualEmail(account)
-                         .build())
-                 .createConnection()
+         final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)
                          .where(ACCOUNTS.EMAIL.eq(email))
