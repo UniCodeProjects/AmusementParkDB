@@ -21,14 +21,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.LoadFXML;
-import org.apdb4j.view.staff.tableview.AttractionTableView;
-import org.apdb4j.view.staff.tableview.EmployeeTableView;
-import org.apdb4j.view.staff.tableview.ExhibitionTableView;
-import org.apdb4j.view.staff.tableview.MaintenanceTableView;
-import org.apdb4j.view.staff.tableview.ReviewTableView;
-import org.apdb4j.view.staff.tableview.RideTableView;
-import org.apdb4j.view.staff.tableview.ShopTableView;
-import org.apdb4j.view.staff.tableview.TicketTableView;
+import org.apdb4j.view.staff.tableview.AttractionTableItem;
+import org.apdb4j.view.staff.tableview.EmployeeTableItem;
+import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
+import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
+import org.apdb4j.view.staff.tableview.ReviewTableItem;
+import org.apdb4j.view.staff.tableview.RideTableItem;
+import org.apdb4j.view.staff.tableview.ShopTableItem;
+import org.apdb4j.view.staff.tableview.TicketTableItem;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -57,17 +57,17 @@ public class StaffScreenController implements Initializable {
     @FXML
     private VBox vBox;
     @FXML
-    private TableView<EmployeeTableView> employeeTableView;
+    private TableView<EmployeeTableItem> employeeTableView;
     @FXML
-    private TableView<TicketTableView> ticketTableView;
+    private TableView<TicketTableItem> ticketTableView;
     @FXML
-    private TableView<AttractionTableView> attractionsTableView;
+    private TableView<AttractionTableItem> attractionsTableView;
     @FXML
-    private TableView<ShopTableView> shopsTableView;
+    private TableView<ShopTableItem> shopsTableView;
     @FXML
-    private TableView<MaintenanceTableView> maintenanceTableView;
+    private TableView<MaintenanceTableItem> maintenanceTableView;
     @FXML
-    private TableView<ReviewTableView> reviewsTableView;
+    private TableView<ReviewTableItem> reviewsTableView;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
@@ -184,7 +184,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEmployeeEdit(final ActionEvent event) {
-        final EmployeeTableView selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        final EmployeeTableItem selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
         if (Objects.isNull(selectedEmployee)) {
             showAlertForUnselectedRowInTableView("employee");
             return;
@@ -222,23 +222,23 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onRideBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
-        final TableColumn<AttractionTableView, String> id = new TableColumn<>("Ride ID");
-        final TableColumn<AttractionTableView, String> name = new TableColumn<>("Name");
-        final TableColumn<AttractionTableView, LocalTime> openingTime = new TableColumn<>("Opening");
-        final TableColumn<AttractionTableView, LocalTime> closingTime = new TableColumn<>("Closing");
-        final TableColumn<AttractionTableView, String> type = new TableColumn<>("Type");
-        final TableColumn<AttractionTableView, String> intensity = new TableColumn<>("Intensity");
-        final TableColumn<AttractionTableView, LocalTime> duration = new TableColumn<>("Duration");
-        final TableColumn<AttractionTableView, Integer> maxSeats = new TableColumn<>("Max seats");
-        final TableColumn<AttractionTableView, String> description = new TableColumn<>("Description");
-        final TableColumn<AttractionTableView, Integer> minHeight = new TableColumn<>("Min height");
-        final TableColumn<AttractionTableView, Integer> maxHeight = new TableColumn<>("Max height");
-        final TableColumn<AttractionTableView, Integer> minWeight = new TableColumn<>("Min weight");
-        final TableColumn<AttractionTableView, Integer> maxWeight = new TableColumn<>("Max weight");
-        final TableColumn<AttractionTableView, Character> status = new TableColumn<>("Status");
-        final TableColumn<AttractionTableView, Double> averageRating = new TableColumn<>("Average rating");
-        final TableColumn<AttractionTableView, Integer> numRating = new TableColumn<>("Ratings");
-        final List<TableColumn<AttractionTableView, ?>> columns = List.of(id,
+        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Ride ID");
+        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableItem, LocalTime> openingTime = new TableColumn<>("Opening");
+        final TableColumn<AttractionTableItem, LocalTime> closingTime = new TableColumn<>("Closing");
+        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableItem, String> intensity = new TableColumn<>("Intensity");
+        final TableColumn<AttractionTableItem, LocalTime> duration = new TableColumn<>("Duration");
+        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableItem, Integer> minHeight = new TableColumn<>("Min height");
+        final TableColumn<AttractionTableItem, Integer> maxHeight = new TableColumn<>("Max height");
+        final TableColumn<AttractionTableItem, Integer> minWeight = new TableColumn<>("Min weight");
+        final TableColumn<AttractionTableItem, Integer> maxWeight = new TableColumn<>("Max weight");
+        final TableColumn<AttractionTableItem, Character> status = new TableColumn<>("Status");
+        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
                 name,
                 openingTime,
                 closingTime,
@@ -264,17 +264,17 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onExhibitionBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
-        final TableColumn<AttractionTableView, String> id = new TableColumn<>("Exhibition ID");
-        final TableColumn<AttractionTableView, String> name = new TableColumn<>("Name");
-        final TableColumn<AttractionTableView, String> type = new TableColumn<>("Type");
-        final TableColumn<AttractionTableView, String> description = new TableColumn<>("Description");
-        final TableColumn<AttractionTableView, LocalDate> date = new TableColumn<>("Date");
-        final TableColumn<AttractionTableView, LocalTime> time = new TableColumn<>("Time");
-        final TableColumn<AttractionTableView, Integer> maxSeats = new TableColumn<>("Max seats");
-        final TableColumn<AttractionTableView, Integer> spectators = new TableColumn<>("Spectators");
-        final TableColumn<AttractionTableView, Double> averageRating = new TableColumn<>("Average rating");
-        final TableColumn<AttractionTableView, Integer> numRating = new TableColumn<>("Ratings");
-        final List<TableColumn<AttractionTableView, ?>> columns = List.of(id,
+        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Exhibition ID");
+        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableItem, LocalDate> date = new TableColumn<>("Date");
+        final TableColumn<AttractionTableItem, LocalTime> time = new TableColumn<>("Time");
+        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableItem, Integer> spectators = new TableColumn<>("Spectators");
+        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
                 name,
                 type,
                 description,
@@ -308,18 +308,18 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditAttraction(final ActionEvent event) {
-        final AttractionTableView selectedAttraction = attractionsTableView.getSelectionModel().getSelectedItem();
+        final AttractionTableItem selectedAttraction = attractionsTableView.getSelectionModel().getSelectedItem();
         if (Objects.isNull(selectedAttraction)) {
             showAlertForUnselectedRowInTableView("attraction");
             return;
         }
         if (ridesRadioBtn.isSelected()) {
             RideController.setEditMode(true);
-            RideController.setRide((RideTableView) selectedAttraction);
+            RideController.setRide((RideTableItem) selectedAttraction);
             LoadFXML.fromEventAsPopup(event, "layouts/ride-form.fxml", "Edit ride");
         } else {
             ExhibitionController.setEditMode(true);
-            ExhibitionController.setExhibition((ExhibitionTableView) selectedAttraction);
+            ExhibitionController.setExhibition((ExhibitionTableItem) selectedAttraction);
             LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Edit exhibition");
         }
     }

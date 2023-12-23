@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.RideTableView;
+import org.apdb4j.view.staff.tableview.RideTableItem;
 
 /**
  * The FXML controller for the ride screen.
@@ -54,7 +54,7 @@ public class RideController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static RideTableView ride;
+    private static RideTableItem ride;
 
     /**
      * Default constructor.

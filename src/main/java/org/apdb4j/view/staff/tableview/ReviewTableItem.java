@@ -14,7 +14,7 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode
-public class ReviewTableView {
+public class ReviewTableItem {
 
     private final StringProperty serviceID;
     private final DoubleProperty rating;
@@ -26,7 +26,7 @@ public class ReviewTableView {
      * @param rating the review rating
      * @param description the review description
      */
-    public ReviewTableView(final @NonNull String serviceID,
+    public ReviewTableItem(final @NonNull String serviceID,
                            final double rating,
                            final @NonNull String description) {
         this.serviceID = new SimpleStringProperty(serviceID);

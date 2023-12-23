@@ -19,7 +19,7 @@ import java.time.Year;
  */
 @ToString
 @EqualsAndHashCode
-public class TicketTableView {
+public class TicketTableItem {
 
     private final StringProperty ticketID;
     private final ObjectProperty<LocalDate> purchaseDate;
@@ -45,7 +45,7 @@ public class TicketTableView {
      * @param category the ticket category
      * @param validationDate the date the ticket was validated
      */
-    public TicketTableView(final @NonNull String ticketID,
+    public TicketTableItem(final @NonNull String ticketID,
                            final @NonNull LocalDate purchaseDate,
                            final @NonNull LocalDate validOn,
                            final @NonNull LocalDate validUntil,

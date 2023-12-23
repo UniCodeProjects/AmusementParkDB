@@ -14,10 +14,10 @@ import java.time.LocalTime;
 
 /**
  * A ride attraction representation used by the table view in the GUI.
- * @see AttractionTableView
+ * @see AttractionTableItem
  * @see javafx.scene.control.TableView
  */
-public class RideTableView implements AttractionTableView {
+public class RideTableItem implements AttractionTableItem {
 
     private final StringProperty id;
     private final StringProperty name;
@@ -55,7 +55,7 @@ public class RideTableView implements AttractionTableView {
      * @param averageRating the ride average rating
      * @param ratings the ride ratings number
      */
-    public RideTableView(final @NonNull String id,
+    public RideTableItem(final @NonNull String id,
                          final @NonNull String name,
                          final @NonNull LocalTime openingTime,
                          final @NonNull LocalTime closingTime,

@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.ExhibitionTableView;
+import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
 
 /**
  * The FXML controller for the exhibition screen.
@@ -41,7 +41,7 @@ public class ExhibitionController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static ExhibitionTableView exhibition;
+    private static ExhibitionTableItem exhibition;
 
     /**
      * Default constructor.
