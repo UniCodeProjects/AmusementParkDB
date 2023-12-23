@@ -1,8 +1,10 @@
 package org.apdb4j.view.staff.tableview;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,6 +29,7 @@ public final class EmployeeTableView {
     private final StringProperty gender;
     private final StringProperty role;
     private final BooleanProperty admin;
+    private final DoubleProperty salary;
     private final StringProperty email;
 
     /**
@@ -39,6 +42,7 @@ public final class EmployeeTableView {
      * @param gender the employee's gender
      * @param role the employee's role
      * @param isAdmin {@code true} if the employee is an admin, {@code false} otherwise
+     * @param salary the employee's salary
      * @param email the employee's email
      */
     public EmployeeTableView(
@@ -50,6 +54,7 @@ public final class EmployeeTableView {
             final String gender,
             final String role,
             final boolean isAdmin,
+            final double salary,
             final String email
     ) {
         this.nationalID = new SimpleStringProperty(nationalID);
@@ -60,6 +65,7 @@ public final class EmployeeTableView {
         this.gender = new SimpleStringProperty(gender);
         this.role = new SimpleStringProperty(role);
         this.admin = new SimpleBooleanProperty(isAdmin);
+        this.salary = new SimpleDoubleProperty(salary);
         this.email = new SimpleStringProperty(email);
     }
 
@@ -126,6 +132,14 @@ public final class EmployeeTableView {
      */
     public boolean isAdmin() {
         return admin.get();
+    }
+
+    /**
+     * Returns the employee's salary.
+     * @return the employee's salary
+     */
+    public double getSalary() {
+        return salary.get();
     }
 
     /**
