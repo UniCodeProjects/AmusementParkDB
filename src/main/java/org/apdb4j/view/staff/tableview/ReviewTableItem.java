@@ -14,7 +14,7 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode
-public class ReviewTableItem {
+public class ReviewTableItem implements TableItem {
 
     private final StringProperty serviceID;
     private final DoubleProperty rating;

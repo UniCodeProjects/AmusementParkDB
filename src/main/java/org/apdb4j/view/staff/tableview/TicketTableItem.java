@@ -19,7 +19,7 @@ import java.time.Year;
  */
 @ToString
 @EqualsAndHashCode
-public class TicketTableItem {
+public class TicketTableItem implements TableItem {
 
     private final StringProperty ticketID;
     private final ObjectProperty<LocalDate> purchaseDate;
