@@ -1,24 +1,13 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AdminPermission;
-import org.apdb4j.core.permissions.GuestPermission;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.Permission.Builder.Value;
-import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.Set;
-
-import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.GUESTS;
-import static org.apdb4j.db.Tables.PERMISSIONS;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Accounts} table.
