@@ -1,12 +1,23 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AccessType;
+import org.apdb4j.core.permissions.AdminPermission;
+import org.apdb4j.core.permissions.GuestPermission;
+import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Permission.Builder.Value;
+import org.apdb4j.core.permissions.StaffPermission;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
+import java.util.Set;
+
 import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.GUESTS;
 import static org.apdb4j.db.Tables.PERMISSIONS;
 
 /**
@@ -15,6 +26,7 @@ import static org.apdb4j.db.Tables.PERMISSIONS;
 public final class AccountManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
+    private static final String EMAIL_REGEX = "^([a-z0-9._%]+@[a-z0-9.]+\\.[a-z]{2,})$";
 
     private AccountManager() {
     }
@@ -27,10 +39,23 @@ public final class AccountManager {
      *                       in the database, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-     public static void addNewAccount(final @NonNull String email, final @NonNull String permissionType,
-                                      final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
+                                         final @NonNull String account) throws AccessDeniedException {
+         if (permissionTypeNotExists(permissionType)) {
+             throw new IllegalArgumentException(permissionType + " is not present in the DB.");
+         }
+         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
+             return false;
+         }
+         final int insertedTuple = DB.createConnection()
+                 .queryAction(db -> db.insertInto(ACCOUNTS, ACCOUNTS.EMAIL, ACCOUNTS.PERMISSIONTYPE)
+                         .values(email, permissionType)
+                         .execute())
+                 .closeConnection()
+                 .getResultAsInt();
+         return insertedTuple == 1;
      }
 
     /**
@@ -51,32 +76,19 @@ public final class AccountManager {
                                         final @NonNull String password,
                                         final @NonNull String permissionType,
                                         final String account) throws AccessDeniedException {
-        final Result<Record> count = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        if (count.size() != 1 || count.get(0).get(0, Integer.class) != 1) {
+        if (permissionTypeNotExists(permissionType)) {
             throw new IllegalStateException(permissionType + " is not present in the DB.");
         }
-        // todo: create permissions.
-//        if (Objects.nonNull(account)) {
-//            DB.definePermissions();
-//        }
-        final int tuplesAdded = DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS,
-                                ACCOUNTS.EMAIL,
-                                ACCOUNTS.USERNAME,
-                                ACCOUNTS.PASSWORD,
-                                ACCOUNTS.PERMISSIONTYPE)
+        if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
+            return false;
+        }
+        final int insertedTuples = DB.createConnection()
+                .queryAction(db -> db.insertInto(ACCOUNTS)
                         .values(email, username, password, permissionType)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
-        return tuplesAdded == 1;
+        return insertedTuples == 1;
     }
 
     /**
@@ -89,29 +101,111 @@ public final class AccountManager {
      * @param password the password provided for the account.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void addCredentialsForAccount(final @NonNull String email,
-                                                final @NonNull String username,
-                                                final @NonNull String password,
-                                                final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static boolean addCredentialsForAccount(final @NonNull String email,
+                                                   final @NonNull String username,
+                                                   final @NonNull String password,
+                                                   final @NonNull String account) throws AccessDeniedException {
+        final boolean areCredentialsPresent = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.EMAIL.eq(email))
+                        .and(ACCOUNTS.USERNAME.isNotNull())
+                        .and(ACCOUNTS.PASSWORD.isNotNull())
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (areCredentialsPresent) {
+            return false;
+        }
+        /*
+         The query executor is a guest;
+         however, they are not allowed to modify an account that is not one and not theirs.
+        */
+        if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
+            throw new AccessDeniedException("Guest account has no permission over " + email);
+        }
+        final int updatedTuples = DB.definePermissions(new Permission.Builder()
+                        .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Write.LOCAL))
+                        .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Write.LOCAL))
+                        .setActualEmail(account)
+                        .build())
+                .createConnection()
+                .queryAction(db -> db.update(ACCOUNTS)
+                        .set(ACCOUNTS.USERNAME, username)
+                        .set(ACCOUNTS.PASSWORD, password)
+                        .where(ACCOUNTS.EMAIL.eq(email))
+                        .execute())
+                .closeConnection()
+                .getResultAsInt();
+        return updatedTuples == 1;
     }
 
     /**
      * Performs the SQL query that changes the password of the provided account.
      * @param email the email associated with the account. If the value of this parameter is not the email of an
      *              account, the query will not be executed.
-     * @param actualPassword the actual password of the account. If the value of this parameter is not the
-     *                       password of the provided account, the query will not be executed.
+     * @param oldPassword the actual password of the account.
+     *                    If the value of this parameter is not the password of the provided account,
+     *                    the query will not be executed.
      * @param newPassword the new password for the account.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-     public static void updateAccountPassword(final @NonNull String email,
-                                              final @NonNull String actualPassword,
-                                              final @NonNull String newPassword,
-                                              final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+     public static boolean updateAccountPassword(final @NonNull String email,
+                                                 final @NonNull String oldPassword,
+                                                 final @NonNull String newPassword,
+                                                 final @NonNull String account) throws AccessDeniedException {
+         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
+             throw new AccessDeniedException("Guest account has no permission over " + email);
+         }
+         final int updatedTuples = DB.definePermissions(new Permission.Builder()
+                         .setRequiredPermission(new AdminPermission(), new StaffPermission(), new GuestPermission())
+                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Read.LOCAL, AccessType.Write.LOCAL))
+                         .setRequiredValues(new Value(ACCOUNTS.PASSWORD,
+                                 Pair.of(AccessType.Read.LOCAL, Set.of(GuestPermission.class)),
+                                 Pair.of(AccessType.Write.LOCAL, Set.of(GuestPermission.class))))
+                         .setActualEmail(account)
+                         .build())
+                 .createConnection()
+                 .queryAction(db -> db.update(ACCOUNTS)
+                         .set(ACCOUNTS.PASSWORD, newPassword)
+                         .where(ACCOUNTS.EMAIL.eq(email))
+                         .and(ACCOUNTS.PASSWORD.eq(oldPassword))
+                         .execute())
+                 .closeConnection()
+                 .getResultAsInt();
+         return updatedTuples == 1;
      }
+
+    /**
+     * Determines if the given account is a guest.
+     * @param email the account's email
+     * @return {@code true} if it is a guest
+     */
+    public static boolean isGuest(final String email) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(GUESTS)
+                        .where(GUESTS.EMAIL.eq(email))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
+
+    private static boolean permissionTypeNotExists(final String permissionType) {
+        final Result<Record> count = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(PERMISSIONS)
+                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        // Checking if got only one result, and it is unique (accounts are unique).
+        return count.size() != 1 || count.get(0).get(0, int.class) != 1;
+    }
 
 }

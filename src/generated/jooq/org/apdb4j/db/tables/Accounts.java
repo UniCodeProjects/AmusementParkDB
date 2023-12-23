@@ -64,7 +64,7 @@ public class Accounts extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.accounts.PermissionType</code>.
      */
-    public final TableField<Record, String> PERMISSIONTYPE = createField(DSL.name("PermissionType"), SQLDataType.VARCHAR(30), this, "");
+    public final TableField<Record, String> PERMISSIONTYPE = createField(DSL.name("PermissionType"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     private Accounts(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
@@ -135,7 +135,6 @@ public class Accounts extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
-            Internal.createCheck(this, DSL.name("EMAIL_FORMAT"), "regexp_like(`Email`,_utf8mb4\\'^([a-z0-9._%]+@[a-z0-9.]+.[a-z]{2,})$\\',_utf8mb4\\'c\\')", true),
             Internal.createCheck(this, DSL.name("PSW_LENGTH"), "(length(`Password`) >= 8)", true)
         );
     }

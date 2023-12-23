@@ -2,122 +2,118 @@ package org.apdb4j.util;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AbstractPermission;
-import org.apdb4j.core.permissions.Access;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.AppPermissionUID;
-import org.apdb4j.core.permissions.services.PictureAccess;
-import org.jooq.Record;
-import org.jooq.Result;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.apdb4j.core.permissions.AdminPermission;
+import org.apdb4j.core.permissions.GuestPermission;
+import org.apdb4j.core.permissions.Permission;
+import org.apdb4j.core.permissions.Permission.Builder.Value;
+import org.apdb4j.core.permissions.StaffPermission;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.PERMISSIONS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.PICTURES;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 class QueryBuilderTest {
 
     private static final QueryBuilder DB = new QueryBuilder();
 
-    @BeforeEach
-    void setUp() {
-        new AppPermissionUID(new FooPermission()).insertInDB();
-        new AppPermissionUID(new BarPermission()).insertInDB();
-        DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS,
-                                ACCOUNTS.EMAIL,
-                                ACCOUNTS.USERNAME,
-                                ACCOUNTS.PASSWORD,
-                                ACCOUNTS.PERMISSIONTYPE)
-                        .values("foo@mail.com", "foo", "f1234567", "Foo")
-                        .execute())
-                .closeConnection();
-        DB.createConnection()
-                .queryAction(db -> db.insertInto(ACCOUNTS,
-                                ACCOUNTS.EMAIL,
-                                ACCOUNTS.USERNAME,
-                                ACCOUNTS.PASSWORD,
-                                ACCOUNTS.PERMISSIONTYPE)
-                        .values("bar@mail.com", "bar", "b1234567", "Bar")
-                        .execute())
-                .closeConnection();
-    }
-
     @SuppressFBWarnings("UPM_UNCALLED_PRIVATE_METHOD")
     private static Stream<Arguments> accessDeniedTestCases() {
         return Stream.of(
-                Arguments.of(new FooPermission(), "bar@mail.com"),
-                Arguments.of(new BarPermission(), "foo@mail.com")
+                // Wrong permission case
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setActualEmail("mariorossi@gmail.com")
+                        .build()),
+                // Multiple wrong permission case
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission(), new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL))
+                        .setActualEmail("mariorossi@gmail.com")
+                        .build()),
+                // Wrong email case
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new AdminPermission())
+                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Write.GLOBAL))
+                        .setActualEmail("sofiaverdi@gmail.com")
+                        .build()),
+                // Wrong AccessSetting case
+                Arguments.of(new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Read.GLOBAL, Pair.of(AccessType.Write.GLOBAL,
+                                Set.of(GuestPermission.class))))
+                        .setRequiredValues(new Value(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
+                        .setActualEmail("alessandrogialli@gmail.com")
+                        .build())
         );
     }
 
     @ParameterizedTest
     @MethodSource("accessDeniedTestCases")
-    void accessDeniedTest(final Access permission, final String email) {
-        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(permission, email));
+    void accessDeniedTest(final @NonNull Permission permissionBuilder) {
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(permissionBuilder));
     }
 
-    @AfterEach
-    void tearDown() {
-        DB.createConnection()
-                .queryAction(db -> db.deleteFrom(ACCOUNTS)
-                        .where(ACCOUNTS.PERMISSIONTYPE.eq("Foo"))
-                        .or(ACCOUNTS.PERMISSIONTYPE.eq("Bar"))
-                        .execute())
-                .closeConnection();
-        DB.createConnection()
-                .queryAction(db -> db.deleteFrom(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq("Foo"))
-                        .or(PERMISSIONS.PERMISSIONTYPE.eq("Bar"))
-                        .execute())
-                .closeConnection();
-        final Result<Record> records1 = DB.createConnection()
-                .queryAction(db -> db.select()
-                        .from(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq("Foo"))
-                        .or(PERMISSIONS.PERMISSIONTYPE.eq("Bar"))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        final Result<Record> records2 = DB.createConnection()
-                .queryAction(db -> db.select()
-                        .from(ACCOUNTS)
-                        .where(ACCOUNTS.PERMISSIONTYPE.eq("Foo"))
-                        .or(ACCOUNTS.PERMISSIONTYPE.eq("Bar"))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        assertTrue(records1.isEmpty());
-        assertTrue(records2.isEmpty());
+    @Test
+    void adminPermissionTest() {
+        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new AdminPermission())
+                .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.NONE, AccessType.Write.NONE))
+                .setActualEmail("mariorossi@gmail.com")
+                .build()));
+        assertDoesNotThrow(() -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new GuestPermission())
+                .setRequiredValues(new Value(Set.of(FACILITIES.OPENINGTIME, FACILITIES.CLOSINGTIME),
+                        AccessType.Read.GLOBAL,
+                        AccessType.Write.NONE))
+                .setActualEmail("alessandrogialli@gmail.com")
+                .build()));
     }
 
-    /**
-     * A class that models a dummy permission.
-     */
-    protected static final class FooPermission extends AbstractPermission implements PictureAccess {
-        @Override
-        public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.WRITE;
-        }
+    @Test
+    void accessDeniedBySetTest() {
+        final var set = Set.of(
+                new Permission.Builder()
+                        .setRequiredPermission(new StaffPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.USERNAME, AccessType.Read.GLOBAL, AccessType.Write.GLOBAL))
+                        .setActualEmail("mariorossi@gmail.com")
+                        .build(),
+                new Permission.Builder()
+                        .setRequiredPermission(new AdminPermission())
+                        .setRequiredValues(new Value(PICTURES.PATH, AccessType.Read.GLOBAL))
+                        .setActualEmail("sofiaverdi@gmail.com")
+                        .build(),
+                new Permission.Builder()
+                        .setRequiredPermission(new GuestPermission())
+                        .setRequiredValues(new Value(ACCOUNTS.EMAIL, AccessType.Read.GLOBAL, Pair.of(AccessType.Write.GLOBAL,
+                                Set.of(GuestPermission.class))))
+                        .setActualEmail("alessandrogialli@gmail.com")
+                        .build()
+        );
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(set));
     }
 
-    /**
-     * A class that models a dummy permission.
-     */
-    protected static final class BarPermission extends AbstractPermission implements PictureAccess {
-        @Override
-        public @NonNull AccessType getAccessOfPicturePath() {
-            return AccessType.READ;
-        }
+    @Test
+    void accessTypePriorityTest() {
+        assertThrows(AccessDeniedException.class, () -> DB.definePermissions(new Permission.Builder()
+                .setRequiredPermission(new GuestPermission())
+                .setRequiredValues(new Value(ACCOUNTS.PASSWORD, AccessType.Read.GLOBAL))
+                .setActualEmail("alessandrogialli@gmail.com")
+                .build()));
     }
 
 }

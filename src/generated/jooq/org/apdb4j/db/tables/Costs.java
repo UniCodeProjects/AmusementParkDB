@@ -138,8 +138,7 @@ public class Costs extends TableImpl<Record> {
         return Arrays.asList(
             Internal.createCheck(this, DSL.name("COST_ID_CHECK"), "((`ShopID` like _utf8mb4\\'SH%\\') or (`ShopID` like _utf8mb4\\'RE%\\'))", true),
             Internal.createCheck(this, DSL.name("MONEY_DATA_NON_NEGATIVITY_CHECK"), "((`Revenue` >= 0) and (`Expenses` >= 0))", true),
-            Internal.createCheck(this, DSL.name("MONTH_DOMAIN"), "(`Month` between 1 and 12)", true),
-            Internal.createCheck(this, DSL.name("YEAR_DOMAIN"), "(`Year` >= 2000)", true)
+            Internal.createCheck(this, DSL.name("MONTH_DOMAIN"), "(`Month` between 1 and 12)", true)
         );
     }
 

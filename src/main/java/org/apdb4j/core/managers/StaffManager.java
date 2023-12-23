@@ -1,13 +1,25 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.permissions.AdminPermission;
+import org.apdb4j.core.permissions.StaffPermission;
+import org.apdb4j.util.QueryBuilder;
+import org.jooq.Record;
 
 import java.time.LocalDate;
+
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Staff} table.
  */
 public final class StaffManager {
+
+    private static final QueryBuilder DB = new QueryBuilder();
+    private static final String ADMIN_PERMISSION = AdminPermission.class.getSimpleName().replace("Permission", "");
+    private static final String STAFF_PERMISSION = StaffPermission.class.getSimpleName().replace("Permission", "");
 
     private StaffManager() {
     }
@@ -27,15 +39,41 @@ public final class StaffManager {
      * @param isEmployee determines whether the provided staff is an employee or not.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple insertion
      */
-    public static void hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
-                                          final @NonNull String email,
-                                          final @NonNull String name, final @NonNull String surname,
-                                          final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
-                                          final char gender,
-                                          final String role, final boolean isAdmin, final boolean isEmployee,
-                                          final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static boolean hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
+                                             final @NonNull String email,
+                                             final @NonNull String name, final @NonNull String surname,
+                                             final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
+                                             final char gender,
+                                             final String role, final boolean isAdmin, final boolean isEmployee,
+                                             final @NonNull String account) throws AccessDeniedException {
+        if (AccountManager.isGuest(email)) {
+            return false;
+        }
+        DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
+                        configuration.dsl()
+                                .insertInto(STAFF)
+                                .values(nationalID,
+                                        staffID,
+                                        email,
+                                        name,
+                                        surname,
+                                        dateOfBirth,
+                                        birthPlace,
+                                        gender,
+                                        role,
+                                        isAdmin,
+                                        isEmployee)
+                                .execute();
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        return true;
     }
 
     /**
@@ -44,19 +82,63 @@ public final class StaffManager {
      *                        is not the national identifier of a staff member, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    public static void fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static boolean fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
+        final int updatedTuples = DB.createConnection()
+                .queryAction(db -> db.update(CONTRACTS)
+                        .set(CONTRACTS.ENDDATE, LocalDate.now())
+                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID)))
+                .closeConnection()
+                .getResultAsInt();
+        return updatedTuples == 1;
     }
 
     /**
      * Performs the SQL query that updates the salary of the provided staff member.
      * @param staffNationalID the staff's national identifier. If the value of this parameter is not the national
      *                        identifier of a staff member, the query will not be executed and the controller will be informed.
+     * @param newContractID the new ID used for the updated contract.
      * @param newSalary the new salary for the provided staff member.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} on successful tuple update
      */
-    // void updateStaffSalary(@NonNull String staffNationalID, double newSalary, @NonNull String account);
+    @SuppressWarnings("PMD.PrematureDeclaration")   // Not a premature declaration, changes happen in DB.
+     public static boolean updateStaffSalary(final @NonNull String staffNationalID,
+                                             final @NonNull String newContractID,
+                                             final double newSalary,
+                                             final @NonNull String account) throws AccessDeniedException {
+         final Record oldContract = DB.createConnection()
+                 .queryAction(db -> db.select()
+                         .from(CONTRACTS)
+                         .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
+                         .fetch())
+                 .closeConnection()
+                 .getResultAsRecords()
+                 .get(0);
+         final boolean updatedOldContract = fireStaffMember(staffNationalID, account);
+         if (!updatedOldContract) {
+             return false;
+         }
+         final boolean updatedNewContract = ContractManager.signNewContract(newContractID,
+                 oldContract.get(CONTRACTS.EMPLOYEENID),
+                 oldContract.get(CONTRACTS.EMPLOYERNID),
+                 LocalDate.now(),
+                 LocalDate.now(),
+                 oldContract.get(CONTRACTS.ENDDATE),
+                 newSalary,
+                 account);
+         // Rollback changes to old contract.
+         if (!updatedNewContract) {
+             return DB.createConnection()
+                     .queryAction(db -> db.update(CONTRACTS)
+                             .set(CONTRACTS.ENDDATE, oldContract.get(CONTRACTS.ENDDATE))
+                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID))))
+                     .closeConnection()
+                     .getResultAsInt() == 1;
+         }
+         return true;
+     }
 
 }
