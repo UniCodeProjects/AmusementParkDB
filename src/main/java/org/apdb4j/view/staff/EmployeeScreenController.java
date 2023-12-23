@@ -12,7 +12,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.EmployeeTableView;
+import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
 /**
  * The FXML controller for the employee hiring screen.
@@ -51,7 +51,7 @@ public class EmployeeScreenController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static EmployeeTableView employee;
+    private static EmployeeTableItem employee;
 
     /**
      * Default constructor.

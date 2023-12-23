@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.TicketTableView;
+import org.apdb4j.view.staff.tableview.TicketTableItem;
 
 /**
  * The FXML controller for the ticket screen.
@@ -31,7 +31,7 @@ public class TicketController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static TicketTableView ticket;
+    private static TicketTableItem ticket;
 
     /**
      * Default constructor.

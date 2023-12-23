@@ -15,10 +15,10 @@ import java.time.LocalTime;
 
 /**
  * An exhibition attraction representation used by the table view in the GUI.
- * @see AttractionTableView
+ * @see AttractionTableItem
  * @see javafx.scene.control.TableView
  */
-public class ExhibitionTableView implements AttractionTableView {
+public class ExhibitionTableItem implements AttractionTableItem {
 
     private final StringProperty id;
     private final StringProperty name;
@@ -44,7 +44,7 @@ public class ExhibitionTableView implements AttractionTableView {
      * @param averageRating the exhibition average rating
      * @param ratings the exhibition number of ratings
      */
-    public ExhibitionTableView(final @NonNull String id,
+    public ExhibitionTableItem(final @NonNull String id,
                                final @NonNull String name,
                                final @NonNull String type,
                                final @NonNull String description,

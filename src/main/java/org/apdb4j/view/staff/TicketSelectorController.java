@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import lombok.Setter;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.TicketTableView;
+import org.apdb4j.view.staff.tableview.TicketTableItem;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ public class TicketSelectorController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static TicketTableView ticket;
+    private static TicketTableItem ticket;
 
     /**
      * Default constructor.

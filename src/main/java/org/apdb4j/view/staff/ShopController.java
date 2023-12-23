@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.ShopTableView;
+import org.apdb4j.view.staff.tableview.ShopTableItem;
 
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -47,7 +47,7 @@ public class ShopController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static ShopTableView shop;
+    private static ShopTableItem shop;
 
     /**
      * Default constructor.

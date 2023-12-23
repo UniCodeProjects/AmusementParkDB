@@ -18,7 +18,7 @@ import java.time.LocalDate;
  */
 @ToString
 @EqualsAndHashCode
-public class MaintenanceTableView {
+public class MaintenanceTableItem {
 
     private final StringProperty facilityID;
     private final DoubleProperty price;
@@ -34,7 +34,7 @@ public class MaintenanceTableView {
      * @param date the maintenance date
      * @param employeeIDs the IDs of the employees involved in the maintenance
      */
-    public MaintenanceTableView(final @NonNull String facilityID,
+    public MaintenanceTableItem(final @NonNull String facilityID,
                                 final double price,
                                 final @NonNull String description,
                                 final @NonNull LocalDate date,

@@ -19,7 +19,7 @@ import java.time.LocalDate;
  */
 @ToString
 @EqualsAndHashCode
-public final class EmployeeTableView {
+public final class EmployeeTableItem {
 
     private final StringProperty nationalID;
     private final StringProperty name;
@@ -45,7 +45,7 @@ public final class EmployeeTableView {
      * @param salary the employee's salary
      * @param email the employee's email
      */
-    public EmployeeTableView(
+    public EmployeeTableItem(
             final String nationalID,
             final String name,
             final String surname,

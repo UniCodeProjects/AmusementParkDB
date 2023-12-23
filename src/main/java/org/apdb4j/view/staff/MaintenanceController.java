@@ -9,7 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
-import org.apdb4j.view.staff.tableview.MaintenanceTableView;
+import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
 
 /**
  * The FXML controller for the maintenance screen.
@@ -31,7 +31,7 @@ public class MaintenanceController extends PopupInitializer {
     @Setter
     private static boolean editMode;
     @Setter
-    private static MaintenanceTableView maintenance;
+    private static MaintenanceTableItem maintenance;
 
     /**
      * Default constructor.
