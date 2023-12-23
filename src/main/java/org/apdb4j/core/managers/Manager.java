@@ -20,22 +20,23 @@ public final class Manager {
 
     /**
      * Performs the SQL query that retrieves all the tuples of the table with the provided name.
-     * @param tableName the table on which the query is performed. If in the database does not exist any table
-     *                  with the provided name, the query will not be executed.
+     * @param table the table on which the query is performed. If in the database does not exist any table
+     *              with the provided name, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
      * @return all the tuples of the table with the provided name.
      */
-    public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull String tableName, final @NonNull String account) {
+    public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull Table<Record> table,
+                                                               final @NonNull String account) {
         return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select().from(tableName).fetch())
+                .queryAction(db -> db.select().from(table).fetch())
                 .closeConnection()
                 .getResultAsRecords();
     }
 
     /**
      * Performs the SQL query that retrieves a projection on the provided attributes of the tuples of the given table.
-     * @param tableName the table on which the query is performed. If in the database does not exist any table
+     * @param table the table on which the query is performed. If in the database does not exist any table
      *                  with the provided name, the query will not be executed.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
@@ -43,10 +44,11 @@ public final class Manager {
      *                   names is not the name of an attribute of the provided table, the query will not be executed.
      * @return all the tuples of the table projected on the given attributes.
      */
-    public static @NonNull Result<Record> viewPartialInfoFromTable(final @NonNull String tableName, final @NonNull String account,
+    public static @NonNull Result<Record> viewPartialInfoFromTable(final @NonNull Table<Record> table,
+                                                                   final @NonNull String account,
                                                                    final @NonNull SelectFieldOrAsterisk... attributes) {
         return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(attributes).from(tableName).fetch())
+                .queryAction(db -> db.select(attributes).from(table).fetch())
                 .closeConnection()
                 .getResultAsRecords();
     }
