@@ -17,7 +17,7 @@ import org.apdb4j.view.staff.tableview.EmployeeTableView;
 /**
  * The FXML controller for the employee hiring screen.
  */
-public class HireController extends PopupInitializer {
+public class EmployeeScreenController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -56,7 +56,7 @@ public class HireController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public HireController() {
+    public EmployeeScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

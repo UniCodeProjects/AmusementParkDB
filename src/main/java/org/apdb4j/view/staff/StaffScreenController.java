@@ -174,7 +174,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEmployeeHire(final ActionEvent event) {
-        HireController.setEditMode(false);
+        EmployeeScreenController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-form.fxml", "Hire employee");
     }
 
@@ -189,8 +189,8 @@ public class StaffScreenController implements Initializable {
             showAlertForUnselectedRowInTableView("employee");
             return;
         }
-        HireController.setEditMode(true);
-        HireController.setEmployee(selectedEmployee);
+        EmployeeScreenController.setEditMode(true);
+        EmployeeScreenController.setEmployee(selectedEmployee);
         LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-form.fxml", "Edit employee");
     }
 
