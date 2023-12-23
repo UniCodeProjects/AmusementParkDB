@@ -21,15 +21,17 @@ public final class FacilityManager {
      * @param newOpeningTime the new opening time of the provided facility.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeOpeningTime(final @NonNull String facilityID, final @NonNull LocalTime newOpeningTime,
-                                         final @NonNull String account) {
-        new QueryBuilder().createConnection()
+    public static boolean changeOpeningTime(final @NonNull String facilityID, final @NonNull LocalTime newOpeningTime,
+                                            final @NonNull String account) {
+        return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(FACILITIES)
                         .set(FACILITIES.OPENINGTIME, newOpeningTime)
                         .where(FACILITIES.FACILITYID.eq(facilityID))
                         .execute())
-                .closeConnection();
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -39,15 +41,17 @@ public final class FacilityManager {
      * @param newClosingTime the new closing time of the given facility.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
+     * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static void changeClosingTime(final @NonNull String facilityID, final @NonNull LocalTime newClosingTime,
-                                         final @NonNull String account) {
-        new QueryBuilder().createConnection()
+    public static boolean changeClosingTime(final @NonNull String facilityID, final @NonNull LocalTime newClosingTime,
+                                            final @NonNull String account) {
+        return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(FACILITIES)
                         .set(FACILITIES.CLOSINGTIME, newClosingTime)
                         .where(FACILITIES.FACILITYID.eq(facilityID))
                         .execute())
-                .closeConnection();
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
 }
