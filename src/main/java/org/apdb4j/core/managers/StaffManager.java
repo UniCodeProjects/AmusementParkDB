@@ -57,8 +57,8 @@ public final class StaffManager {
                         AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
                         configuration.dsl()
                                 .insertInto(STAFF)
-                                .values(nationalID,
-                                        staffID,
+                                .values(staffID,
+                                        nationalID,
                                         email,
                                         name,
                                         surname,
@@ -88,7 +88,8 @@ public final class StaffManager {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(CONTRACTS)
                         .set(CONTRACTS.ENDDATE, LocalDate.now())
-                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID)))
+                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
+                        .execute())
                 .closeConnection()
                 .getResultAsInt();
         return updatedTuples == 1;
@@ -134,7 +135,8 @@ public final class StaffManager {
              return DB.createConnection()
                      .queryAction(db -> db.update(CONTRACTS)
                              .set(CONTRACTS.ENDDATE, oldContract.get(CONTRACTS.ENDDATE))
-                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID))))
+                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID)))
+                             .execute())
                      .closeConnection()
                      .getResultAsInt() == 1;
          }
