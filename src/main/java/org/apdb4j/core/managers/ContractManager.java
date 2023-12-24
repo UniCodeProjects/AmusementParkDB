@@ -8,7 +8,6 @@ import org.jooq.Result;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
 
 import static org.apdb4j.db.Tables.CONTRACTS;
 import static org.apdb4j.db.Tables.STAFF;
@@ -17,16 +16,6 @@ import static org.apdb4j.db.Tables.STAFF;
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Contracts} table.
  */
 public final class ContractManager {
-
-//    private static final Permission.Builder PERMS_BUILDER = new Permission.Builder()
-//            .setRequiredPermission(new AdminPermission(), new StaffPermission())
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.CONTRACTID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYEENID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.EMPLOYERNID, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.SUBSCRIPTIONDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.BEGINDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.ENDDATE, AccessType.Read.NONE, AccessType.Write.GLOBAL))
-//            .setRequiredValues(AccessSetting.of(CONTRACTS.SALARY, AccessType.Read.NONE, AccessType.Write.GLOBAL));
 
     private ContractManager() {
     }
@@ -58,19 +47,19 @@ public final class ContractManager {
                 .createConnection()
                 .queryAction(db -> db.select(CONTRACTS.BEGINDATE)
                         .from(CONTRACTS)
-                        .where(STAFF.NATIONALID.eq(employeeNID))
-                        .fetchOne())
+                        .where(STAFF.NATIONALID.as(CONTRACTS.EMPLOYEENID).eq(employeeNID))
+                        .fetch())
                 .closeConnection()
                 .getResultAsRecords();
         final Result<Record> existingEndDate = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.select(CONTRACTS.ENDDATE)
                         .from(CONTRACTS)
-                        .where(STAFF.NATIONALID.eq(employeeNID))
-                        .fetchOne())
+                        .where(STAFF.NATIONALID.as(CONTRACTS.EMPLOYEENID).eq(employeeNID))
+                        .fetch())
                 .closeConnection()
                 .getResultAsRecords();
-        if (Objects.nonNull(existingBeginDate) && Objects.nonNull(existingEndDate)
+        if (existingBeginDate.isNotEmpty() && existingEndDate.isNotEmpty()
                 && areOverlapping(existingBeginDate.getValue(0, CONTRACTS.BEGINDATE),
                 existingEndDate.getValue(0, CONTRACTS.ENDDATE),
                 beginDate,
@@ -78,16 +67,15 @@ public final class ContractManager {
             return false;
         }
         final int insertedTuples = new QueryBuilder()
-//                .definePermissions(PERMS_BUILDER.setActualEmail(account).build())
                 .createConnection()
                 .queryAction(db -> db.insertInto(CONTRACTS)
                         .values(contractID,
-                                employeeNID,
-                                employerNID,
                                 subscriptionDate,
                                 beginDate,
                                 endDate,
-                                BigDecimal.valueOf(salary))
+                                BigDecimal.valueOf(salary),
+                                employerNID,
+                                employeeNID)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
