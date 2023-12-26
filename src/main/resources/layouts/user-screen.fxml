@@ -2,8 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.UserScreenController">
    <top>
@@ -17,6 +20,53 @@
       </Label>
    </top>
    <center>
-      <Label fx:id="welcomeLabel" text="Welcome to amusement park!" BorderPane.alignment="CENTER" />
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="welcomeLabel" text="Welcome to amusement park!">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Hyperlink fx:id="tickets" focusTraversable="false" text="Tickets" underline="true" visited="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="rides" focusTraversable="false" text="Rides" underline="true" visited="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="exhibitions" focusTraversable="false" text="Exhibitions" underline="true" visited="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="restaurants" focusTraversable="false" text="Restaurants" underline="true" visited="true">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="souvenirShops" focusTraversable="false" text="Souvenir shops" underline="true" visited="true">
+               <font>
+                  <Font size="18.0" />
+               </font></Hyperlink>
+         </children>
+      </VBox>
    </center>
 </BorderPane>
