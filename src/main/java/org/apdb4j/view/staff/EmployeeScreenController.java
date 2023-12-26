@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -14,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import lombok.NonNull;
 import lombok.Setter;
 import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
@@ -50,8 +50,6 @@ public class EmployeeScreenController extends PopupInitializer {
     private RadioButton adminRadioBtn;
     @FXML
     private RadioButton employeeRadioBtn;
-    @FXML
-    private Spinner<Double> salarySpinner;
     @FXML
     private TextField emailField;
     @FXML
@@ -90,11 +88,15 @@ public class EmployeeScreenController extends PopupInitializer {
                 getGenderString(),
                 roleField.getText(),
                 adminRadioBtn.isSelected(),
-                salarySpinner.getValue(),
+                -1,
                 emailField.getText()
         );
-        Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(employee)));
         gridPane.getScene().getWindow().hide();
+        // Opening the add-contract form.
+        ContractScreenController.setEditMode(false);
+        ContractScreenController.setFromEmployeeMode(employee,
+                e -> Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(e))));
+        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
     }
 
     /**
@@ -114,7 +116,6 @@ public class EmployeeScreenController extends PopupInitializer {
         roleField.setText(employee.getRole());
         adminRadioBtn.setSelected(employee.isAdmin());
         employeeRadioBtn.setSelected(!employee.isAdmin());
-        salarySpinner.getValueFactory().setValue(employee.getSalary());
         emailField.setText(employee.getEmail());
     }
 

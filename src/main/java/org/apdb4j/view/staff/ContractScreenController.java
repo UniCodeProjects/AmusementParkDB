@@ -11,6 +11,10 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
+import org.apdb4j.view.staff.tableview.EmployeeTableItem;
+
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * The FXML controller for the maintenance screen.
@@ -37,6 +41,9 @@ public class ContractScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static ContractTableItem contract;
+    private static boolean fromEmployeeScreen;
+    private static Consumer<EmployeeTableItem> update;
+    private static EmployeeTableItem partialEmployee;
 
     /**
      * Default constructor.
@@ -49,12 +56,31 @@ public class ContractScreenController extends PopupInitializer {
     }
 
     /**
+     * Prepares the contract screen when it is called from the employee screen.
+     * @param employee the partial employee object. It holds an invalid salary value.
+     * @param action the action that adds the employee into the DB and updates the GUI.
+     */
+    public static void setFromEmployeeMode(final EmployeeTableItem employee, final Consumer<EmployeeTableItem> action) {
+        fromEmployeeScreen = true;
+        partialEmployee = new EmployeeTableItem(employee);
+        update = action;
+    }
+
+    /**
      * Adds the new contract to the DB and displays it in the table view.
      * @param event the event
      */
     @FXML
     void onAccept(final ActionEvent event) {
         // TODO
+
+        if (fromEmployeeScreen) {
+            if (Objects.isNull(partialEmployee)) {
+                throw new IllegalStateException("Employee table item is null.");
+            }
+            partialEmployee.setSalary(salarySpinner.getValue());
+            update.accept(partialEmployee);
+        }
         gridPane.getScene().getWindow().hide();
     }
 
