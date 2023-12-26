@@ -401,6 +401,7 @@ public class StaffScreenController implements Initializable {
         // Loading the ride tableview by default.
         onRideBtnClick(null);
         // Populating the table views.
+        EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
     }
 
