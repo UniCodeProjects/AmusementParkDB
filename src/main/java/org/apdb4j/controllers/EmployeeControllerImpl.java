@@ -1,12 +1,15 @@
 package org.apdb4j.controllers;
 
 import lombok.NonNull;
+import org.apdb4j.core.managers.ContractManager;
+import org.apdb4j.core.managers.StaffManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -57,6 +60,43 @@ public class EmployeeControllerImpl implements StaffController {
                     record.get(STAFF.EMAIL)));
         });
         return data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> T addData(final T item) {
+        final EmployeeTableItem employee = (EmployeeTableItem) item;
+        new QueryBuilder().createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        StaffManager.hireNewStaffMember(employee.getNationalID(),
+                                employee.getStaffID(),
+                                employee.getEmail(),
+                                employee.getName(),
+                                employee.getSurname(),
+                                employee.getDob(),
+                                employee.getBirthplace(),
+                                employee.getGender().charAt(0),
+                                employee.getRole(),
+                                employee.isAdmin(),
+                                !employee.isAdmin(),
+                                "");
+                        // TODO
+                        ContractManager.signNewContract("C-006",
+                                employee.getNationalID(),
+                                "MRARSS77E15A944I",
+                                LocalDate.parse("2023-10-05"),
+                                LocalDate.parse("2023-11-01"),
+                                null,
+                                employee.getSalary(),
+                                "a");
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        return item;
     }
 
 }
