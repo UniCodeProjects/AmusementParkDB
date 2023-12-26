@@ -23,12 +23,31 @@ public class UserScreenController extends AbstractFXMLController implements Init
     private static final double ACCOUNT_IMAGE_HEIGHT = 50;
     private static final double ACCOUNT_IMAGE_WIDTH = 50;
     private static final double ACCOUNT_SCROLLABLE_MENU_MAX_HEIGHT = 100;
+
     @FXML
     private Label accountLabel;
+
+    @FXML
+    private Hyperlink exhibitions;
+
     @FXML
     private BorderPane pane;
+
+    @FXML
+    private Hyperlink restaurants;
+
+    @FXML
+    private Hyperlink rides;
+
+    @FXML
+    private Hyperlink souvenirShops;
+
+    @FXML
+    private Hyperlink tickets;
+
     @FXML
     private Label welcomeLabel;
+
     private boolean isPersonalAreaOpen;
     private final ToolBar accountInfo = new ToolBar();
 
