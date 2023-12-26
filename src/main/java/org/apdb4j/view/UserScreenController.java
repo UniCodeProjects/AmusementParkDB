@@ -1,5 +1,6 @@
 package org.apdb4j.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
@@ -9,6 +10,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -121,5 +123,15 @@ public class UserScreenController extends AbstractFXMLController implements Init
         }
 
         return result;
+    }
+
+    /**
+     * Opens the tickets price list for the current year.
+     * @param event the click on the "tickets" hyperlink.
+     */
+    @FXML
+    void onTicketsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, "layouts/user-price-list.fxml", true, true, true);
+        JavaFXUtils.setStageTitle(event, "Tickets price list");
     }
 }
