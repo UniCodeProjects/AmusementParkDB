@@ -6,8 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,8 +23,6 @@ public class UserPersonalDataController extends AbstractFXMLController implement
     private static final String EDIT_BUTTON_IMAGE_PATH = "img/edit_button.png";
     private static final double EDIT_BUTTON_IMAGE_HEIGHT = 15;
     private static final double EDIT_BUTTON_IMAGE_WIDTH = 15;
-    private static final double LEFT_ARROW_IMAGE_HEIGHT = 25;
-    private static final double LEFT_ARROW_IMAGE_WIDTH = 25;
 
     @FXML
     private Button backButton;
@@ -117,26 +113,27 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        final ImageView editNameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editNameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editNameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editSurnameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editSurnameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editSurnameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editUsernameImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editUsernameImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editUsernameImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editEmailImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editEmailImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editEmailImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        final ImageView editPasswordImage = new ImageView(EDIT_BUTTON_IMAGE_PATH);
-        editPasswordImage.setFitWidth(EDIT_BUTTON_IMAGE_WIDTH);
-        editPasswordImage.setFitHeight(EDIT_BUTTON_IMAGE_HEIGHT);
-        editNameButton.setGraphic(editNameImage);
-        editSurnameButton.setGraphic(editSurnameImage);
-        editUsernameButton.setGraphic(editUsernameImage);
-        editEmailButton.setGraphic(editEmailImage);
-        editPasswordButton.setGraphic(editPasswordImage);
+        JavaFXUtils.setLabeledImage(editNameButton,
+                EDIT_BUTTON_IMAGE_PATH,
+                EDIT_BUTTON_IMAGE_WIDTH,
+                EDIT_BUTTON_IMAGE_HEIGHT);
+        JavaFXUtils.setLabeledImage(editSurnameButton,
+                EDIT_BUTTON_IMAGE_PATH,
+                EDIT_BUTTON_IMAGE_WIDTH,
+                EDIT_BUTTON_IMAGE_HEIGHT);
+        JavaFXUtils.setLabeledImage(editUsernameButton,
+                EDIT_BUTTON_IMAGE_PATH,
+                EDIT_BUTTON_IMAGE_WIDTH,
+                EDIT_BUTTON_IMAGE_HEIGHT);
+        JavaFXUtils.setLabeledImage(editEmailButton,
+                EDIT_BUTTON_IMAGE_PATH,
+                EDIT_BUTTON_IMAGE_WIDTH,
+                EDIT_BUTTON_IMAGE_HEIGHT);
+        JavaFXUtils.setLabeledImage(editPasswordButton,
+                EDIT_BUTTON_IMAGE_PATH,
+                EDIT_BUTTON_IMAGE_WIDTH,
+                EDIT_BUTTON_IMAGE_HEIGHT);
+        JavaFXUtils.setBackButtonImage(backButton);
         confirmNewNameButton.setOnAction(event -> {
             confirmNewNameButton.setVisible(false);
             nameTextField.setEditable(false);
@@ -153,10 +150,6 @@ public class UserPersonalDataController extends AbstractFXMLController implement
             confirmNewEmailButton.setVisible(false);
             emailTextField.setEditable(false);
         });
-        final var leftArrowImageView = new ImageView(new Image("img/left_arrow.png"));
-        leftArrowImageView.setFitWidth(LEFT_ARROW_IMAGE_WIDTH);
-        leftArrowImageView.setFitHeight(LEFT_ARROW_IMAGE_HEIGHT);
-        backButton.setGraphic(leftArrowImageView);
     }
 
     /**

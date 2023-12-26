@@ -24,6 +24,7 @@ public class UserScreenController extends AbstractFXMLController implements Init
     private static final double BACKGROUND_IMAGE_OPACITY = 0.4;
     private static final double ACCOUNT_IMAGE_HEIGHT = 50;
     private static final double ACCOUNT_IMAGE_WIDTH = 50;
+    private static final String ACCOUNT_IMAGE_PATH = "img/account.png";
     private static final double ACCOUNT_SCROLLABLE_MENU_MAX_HEIGHT = 100;
 
     @FXML
@@ -69,12 +70,9 @@ public class UserScreenController extends AbstractFXMLController implements Init
                         false,
                         true,
                         true)));
-        final ImageView accountImage = new ImageView(new Image("img/account.png"));
-        accountImage.setFitHeight(ACCOUNT_IMAGE_HEIGHT);
-        accountImage.setFitWidth(ACCOUNT_IMAGE_WIDTH);
-        accountLabel.setGraphic(accountImage);
+        JavaFXUtils.setLabeledImage(accountLabel, ACCOUNT_IMAGE_PATH, ACCOUNT_IMAGE_WIDTH, ACCOUNT_IMAGE_HEIGHT);
         pane.setBackground(background);
-        // ToolBar initalization
+        // ToolBar initialization
         final Hyperlink accountPurchases = new Hyperlink("My purchases");
         final Hyperlink accountPersonalData = new Hyperlink("My personal data");
         final Button logOutButton = new Button("Log out");

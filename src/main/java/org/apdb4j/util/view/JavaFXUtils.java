@@ -3,12 +3,20 @@ package org.apdb4j.util.view;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
  * Utility class for JavaFX.
  */
 public final class JavaFXUtils {
+
+    private static final double BACK_BUTTON_IMAGE_HEIGHT = 25;
+    private static final double BACK_BUTTON_IMAGE_WIDTH = 25;
+    private static final String BACK_BUTTON_IMAGE_PATH = "img/left_arrow.png";
 
     private JavaFXUtils() {
     }
@@ -55,4 +63,28 @@ public final class JavaFXUtils {
         return stage;
     }
 
+    /**
+     * Sets the image of the provided button with the image chosen for the "back" buttons.
+     * @param backButton a button whose role is to prompt the previous scene.
+     */
+    public static void setBackButtonImage(final Button backButton) {
+        setLabeledImage(backButton, BACK_BUTTON_IMAGE_PATH, BACK_BUTTON_IMAGE_WIDTH, BACK_BUTTON_IMAGE_HEIGHT);
+    }
+
+    /**
+     * Sets the provided image for the given labeled element with the given width and height.
+     * @param labeled a labeled element.
+     * @param imagePath the image path.
+     * @param width the image width in the labeled.
+     * @param height the image height in the labeled.
+     */
+    public static void setLabeledImage(final Labeled labeled,
+                                       final String imagePath,
+                                       final double width,
+                                       final double height) {
+        final var labeledImageView = new ImageView(new Image(imagePath));
+        labeledImageView.setFitHeight(height);
+        labeledImageView.setFitWidth(width);
+        labeled.setGraphic(labeledImageView);
+    }
 }
