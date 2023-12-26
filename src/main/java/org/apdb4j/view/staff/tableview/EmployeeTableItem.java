@@ -74,6 +74,24 @@ public final class EmployeeTableItem implements TableItem {
     }
 
     /**
+     * Creates a new object from another employee table item.
+     * @param employeeTableItem the other object
+     */
+    public EmployeeTableItem(final EmployeeTableItem employeeTableItem) {
+        this.staffID = new SimpleStringProperty(employeeTableItem.getStaffID());
+        this.nationalID = new SimpleStringProperty(employeeTableItem.getNationalID());
+        this.name = new SimpleStringProperty(employeeTableItem.getName());
+        this.surname = new SimpleStringProperty(employeeTableItem.getSurname());
+        this.dob = new SimpleObjectProperty<>(employeeTableItem.getDob());
+        this.birthplace = new SimpleStringProperty(employeeTableItem.getBirthplace());
+        this.gender = new SimpleStringProperty(employeeTableItem.getGender());
+        this.role = new SimpleStringProperty(employeeTableItem.getRole());
+        this.admin = new SimpleBooleanProperty(employeeTableItem.isAdmin());
+        this.salary = new SimpleDoubleProperty(employeeTableItem.getSalary());
+        this.email = new SimpleStringProperty(employeeTableItem.getEmail());
+    }
+
+    /**
      * Returns the employee's staff ID.
      * @return the employee's staff ID
      */
@@ -152,6 +170,14 @@ public final class EmployeeTableItem implements TableItem {
      */
     public double getSalary() {
         return salary.get();
+    }
+
+    /**
+     * Sets the employee's salary.
+     * @param salary the employee's salary.
+     */
+    public void setSalary(final double salary) {
+        this.salary.set(salary);
     }
 
     /**
