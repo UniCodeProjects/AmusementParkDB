@@ -30,7 +30,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Hyperlink fx:id="tickets" focusTraversable="false" text="Tickets" underline="true" visited="true">
+            <Hyperlink fx:id="tickets" focusTraversable="false" onAction="#onTicketsClick" text="Tickets" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
