@@ -199,6 +199,32 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Opens the add contract popup screen.
+     * @param event the event
+     */
+    @FXML
+    void onContractAdd(final ActionEvent event) {
+        ContractScreenController.setEditMode(false);
+        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
+    }
+
+    /**
+     * Opens the edit contract popup screen.
+     * @param event the event
+     */
+    @FXML
+    void onContractEdit(final ActionEvent event) {
+        final ContractTableItem selectedContract = contractsTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedContract)) {
+            showAlertForUnselectedRowInTableView("contract");
+            return;
+        }
+        ContractScreenController.setEditMode(true);
+        ContractScreenController.setContract(selectedContract);
+        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Edit contract");
+    }
+
+    /**
      * Opens the ticket selector popup.
      * @param event the event
      */
