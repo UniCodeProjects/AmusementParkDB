@@ -55,6 +55,7 @@ public class UserTicketsScreenController extends AbstractFXMLController implemen
 
     private void addTicket() {
         final var ticket = new Hyperlink("3 tickets, valid on 25/04");
+        ticket.setFocusTraversable(false);
         ticket.setOnAction(event ->
                 LoadFXML.fromEventAsPopup(event, "layouts/tickets-info.fxml", "tickets valid on 25/04", 0.5, 0.5));
         listView.getItems().add(ticket);
