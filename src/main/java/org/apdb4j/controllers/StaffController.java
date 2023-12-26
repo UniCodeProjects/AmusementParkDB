@@ -17,4 +17,12 @@ public interface StaffController extends Controller {
      */
     <T extends TableItem> Collection<T> getData();
 
+    /**
+     * Inserts in the database the given data.
+     * @param item the data to insert
+     * @param <T> the type of the {@code TableItem}
+     * @return the added data
+     */
+    <T extends TableItem> T addData(T item);
+
 }
