@@ -204,7 +204,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onAddTicketBtnPress(final ActionEvent event) {
-        TicketSelectorController.setEditMode(false);
+        TicketSelectorScreenController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
@@ -214,8 +214,8 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEditTicketBtnPress(final ActionEvent event) {
-        TicketSelectorController.setEditMode(true);
-        TicketSelectorController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
+        TicketSelectorScreenController.setEditMode(true);
+        TicketSelectorScreenController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
     }
 
@@ -298,10 +298,10 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onAddAttraction(final ActionEvent event) {
         if (ridesRadioBtn.isSelected()) {
-            RideController.setEditMode(false);
+            RideScreenController.setEditMode(false);
             LoadFXML.fromEventAsPopup(event, "layouts/ride-form.fxml", "Add ride");
         } else {
-            ExhibitionController.setEditMode(false);
+            ExhibitionScreenController.setEditMode(false);
             LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Add exhibition");
         }
     }
@@ -318,12 +318,12 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (ridesRadioBtn.isSelected()) {
-            RideController.setEditMode(true);
-            RideController.setRide((RideTableItem) selectedAttraction);
+            RideScreenController.setEditMode(true);
+            RideScreenController.setRide((RideTableItem) selectedAttraction);
             LoadFXML.fromEventAsPopup(event, "layouts/ride-form.fxml", "Edit ride");
         } else {
-            ExhibitionController.setEditMode(true);
-            ExhibitionController.setExhibition((ExhibitionTableItem) selectedAttraction);
+            ExhibitionScreenController.setEditMode(true);
+            ExhibitionScreenController.setExhibition((ExhibitionTableItem) selectedAttraction);
             LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Edit exhibition");
         }
     }
@@ -334,7 +334,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onAddShop(final ActionEvent event) {
-        ShopController.setEditMode(false);
+        ShopScreenController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/shop-form.fxml", "Add shop");
     }
 
@@ -349,8 +349,8 @@ public class StaffScreenController implements Initializable {
             showAlertForUnselectedRowInTableView("shop");
             return;
         }
-        ShopController.setEditMode(true);
-        ShopController.setShop(selectedShop);
+        ShopScreenController.setEditMode(true);
+        ShopScreenController.setShop(selectedShop);
         LoadFXML.fromEventAsPopup(event, "layouts/shop-form.fxml", "Edit shop");
     }
 
@@ -360,7 +360,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onAddMaintenance(final ActionEvent event) {
-        MaintenanceController.setEditMode(false);
+        MaintenanceScreenController.setEditMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/maintenance-form.fxml", "Add maintenance");
     }
 
@@ -375,8 +375,8 @@ public class StaffScreenController implements Initializable {
             showAlertForUnselectedRowInTableView("maintenance");
             return;
         }
-        MaintenanceController.setEditMode(true);
-        MaintenanceController.setMaintenance(selectedMaintenance);
+        MaintenanceScreenController.setEditMode(true);
+        MaintenanceScreenController.setMaintenance(selectedMaintenance);
         LoadFXML.fromEventAsPopup(event, "layouts/maintenance-form.fxml", "Edit maintenance");
     }
 

@@ -16,7 +16,7 @@ import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
 /**
  * The FXML controller for the exhibition screen.
  */
-public class ExhibitionController extends PopupInitializer {
+public class ExhibitionScreenController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -46,7 +46,7 @@ public class ExhibitionController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public ExhibitionController() {
+    public ExhibitionScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
