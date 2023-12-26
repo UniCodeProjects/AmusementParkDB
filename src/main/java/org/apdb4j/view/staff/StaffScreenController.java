@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.EmployeeControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
+import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
@@ -59,6 +60,8 @@ public class StaffScreenController implements Initializable {
     private VBox vBox;
     @FXML
     private TableView<EmployeeTableItem> employeeTableView;
+    @FXML
+    private TableView<ContractTableItem> contractsTableView;
     @FXML
     private TableView<TicketTableItem> ticketTableView;
     @FXML
