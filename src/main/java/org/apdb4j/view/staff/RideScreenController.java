@@ -15,7 +15,7 @@ import org.apdb4j.view.staff.tableview.RideTableItem;
 /**
  * The FXML controller for the ride screen.
  */
-public class RideController extends PopupInitializer {
+public class RideScreenController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -59,7 +59,7 @@ public class RideController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public RideController() {
+    public RideScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

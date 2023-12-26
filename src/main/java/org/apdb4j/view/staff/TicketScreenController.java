@@ -14,7 +14,7 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 /**
  * The FXML controller for the ticket screen.
  */
-public class TicketController extends PopupInitializer {
+public class TicketScreenController extends PopupInitializer {
 
     @FXML
     private ChoiceBox<String> categoryChoiceBox;
@@ -36,7 +36,7 @@ public class TicketController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public TicketController() {
+    public TicketScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

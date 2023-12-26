@@ -13,7 +13,7 @@ import org.apdb4j.view.PopupInitializer;
 /**
  * The FXML controller for the ticket type screen.
  */
-public class TicketTypeController extends PopupInitializer {
+public class TicketTypeScreenController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -35,7 +35,7 @@ public class TicketTypeController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public TicketTypeController() {
+    public TicketTypeScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());

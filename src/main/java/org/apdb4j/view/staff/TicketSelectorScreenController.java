@@ -15,7 +15,7 @@ import java.util.Objects;
  * The FXML controller for the selector in the Ticket tab that
  * appears after an event is triggered (e.g. a button press).
  */
-public class TicketSelectorController extends PopupInitializer {
+public class TicketSelectorScreenController extends PopupInitializer {
 
     @FXML
     private Button ticketBtn;
@@ -31,7 +31,7 @@ public class TicketSelectorController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public TicketSelectorController() {
+    public TicketSelectorScreenController() {
         Platform.runLater(() -> {
             super.setStage(ticketBtn.getScene().getWindow());
             super.setRoot(ticketBtn.getScene().getRoot());
@@ -45,14 +45,14 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onTicketBtnPress(final ActionEvent event) {
         if (editMode) {
-            TicketController.setEditMode(true);
+            TicketScreenController.setEditMode(true);
             if (Objects.isNull(ticket)) {
                 StaffScreenController.showAlertForUnselectedRowInTableView("ticket");
                 return;
             }
-            TicketController.setTicket(ticket);
+            TicketScreenController.setTicket(ticket);
         } else {
-            TicketController.setEditMode(false);
+            TicketScreenController.setEditMode(false);
         }
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Add ticket");
     }
@@ -64,11 +64,11 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onTicketTypeBtnPress(final ActionEvent event) {
         if (editMode) {
-            TicketTypeController.setEditMode(true);
+            TicketTypeScreenController.setEditMode(true);
             // TODO: complete
             throw new UnsupportedOperationException();
         } else {
-            TicketTypeController.setEditMode(false);
+            TicketTypeScreenController.setEditMode(false);
         }
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Add ticket type");
     }
@@ -80,11 +80,11 @@ public class TicketSelectorController extends PopupInitializer {
     @FXML
     void onPriceListBtnPress(final ActionEvent event) {
         if (editMode) {
-            TicketPriceController.setEditMode(true);
+            TicketPriceScreenController.setEditMode(true);
             // TODO: complete
             throw new UnsupportedOperationException();
         } else {
-            TicketPriceController.setEditMode(false);
+            TicketPriceScreenController.setEditMode(false);
         }
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-price-form.fxml", "Add ticket price");
     }

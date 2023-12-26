@@ -14,7 +14,7 @@ import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
 /**
  * The FXML controller for the maintenance screen.
  */
-public class MaintenanceController extends PopupInitializer {
+public class MaintenanceScreenController extends PopupInitializer {
 
     @FXML
     private GridPane gridPane;
@@ -36,7 +36,7 @@ public class MaintenanceController extends PopupInitializer {
     /**
      * Default constructor.
      */
-    public MaintenanceController() {
+    public MaintenanceScreenController() {
         Platform.runLater(() -> {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
