@@ -56,6 +56,8 @@ public class EmployeeScreenController extends PopupInitializer {
     private Button acceptAndCloseBtn;
 
     @Setter
+    private static boolean fromHire;
+    @Setter
     private static boolean editMode;
     @Setter
     private static EmployeeTableItem employee;
@@ -93,10 +95,12 @@ public class EmployeeScreenController extends PopupInitializer {
         );
         gridPane.getScene().getWindow().hide();
         // Opening the add-contract form.
-        ContractScreenController.setEditMode(false);
-        ContractScreenController.setFromEmployeeMode(employee,
-                e -> Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(e))));
-        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
+        if (fromHire) {
+            ContractScreenController.setEditMode(false);
+            ContractScreenController.setFromEmployeeMode(employee,
+                    e -> Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(e))));
+            LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
+        }
     }
 
     /**
