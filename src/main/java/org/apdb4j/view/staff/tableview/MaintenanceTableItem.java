@@ -39,11 +39,11 @@ public class MaintenanceTableItem implements TableItem {
                                 final @NonNull String description,
                                 final @NonNull LocalDate date,
                                 final @NonNull String employeeIDs) {
-        this.facilityID = new SimpleStringProperty(facilityID);
+        this.facilityID = new SimpleStringProperty(facilityID.trim());
         this.price = new SimpleDoubleProperty(price);
-        this.description = new SimpleStringProperty(description);
+        this.description = new SimpleStringProperty(description.trim());
         this.date = new SimpleObjectProperty<>(date);
-        this.employeeIDs = new SimpleStringProperty(employeeIDs);
+        this.employeeIDs = new SimpleStringProperty(employeeIDs.trim());
     }
 
     /**

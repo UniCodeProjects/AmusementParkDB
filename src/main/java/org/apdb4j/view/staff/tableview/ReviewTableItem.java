@@ -29,9 +29,9 @@ public class ReviewTableItem implements TableItem {
     public ReviewTableItem(final @NonNull String serviceID,
                            final double rating,
                            final @NonNull String description) {
-        this.serviceID = new SimpleStringProperty(serviceID);
+        this.serviceID = new SimpleStringProperty(serviceID.trim());
         this.rating = new SimpleDoubleProperty(rating);
-        this.description = new SimpleStringProperty(description);
+        this.description = new SimpleStringProperty(description.trim());
     }
 
     /**

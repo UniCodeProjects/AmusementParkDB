@@ -55,15 +55,15 @@ public class TicketTableItem implements TableItem {
                            final @NonNull String type,
                            final @NonNull String category,
                            final @NonNull LocalDate validationDate) {
-        this.ticketID = new SimpleStringProperty(ticketID);
+        this.ticketID = new SimpleStringProperty(ticketID.trim());
         this.purchaseDate = new SimpleObjectProperty<>(purchaseDate);
         this.validOn = new SimpleObjectProperty<>(validOn);
         this.validUntil = new SimpleObjectProperty<>(validUntil);
         this.remainingEntrances = new SimpleIntegerProperty(remainingEntrances);
-        this.ownerID = new SimpleStringProperty(ownerID);
+        this.ownerID = new SimpleStringProperty(ownerID.trim());
         this.year = new SimpleObjectProperty<>(year);
-        this.type = new SimpleStringProperty(type);
-        this.category = new SimpleStringProperty(category);
+        this.type = new SimpleStringProperty(type.trim());
+        this.category = new SimpleStringProperty(category.trim());
         this.validationDate = new SimpleObjectProperty<>(validationDate);
     }
 
