@@ -133,6 +133,13 @@ public class EmployeeScreenController extends PopupInitializer {
      */
     @Override
     protected void editMode() {
+        // TODO: move to its own custom init.
+        adminRadioBtn.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            roleField.setDisable(adminRadioBtn.isSelected());
+            if (roleField.isDisable()) {
+                roleField.clear();
+            }
+        });
         if (!editMode) {
             return;
         }
@@ -146,6 +153,7 @@ public class EmployeeScreenController extends PopupInitializer {
         adminRadioBtn.setSelected(employee.isAdmin());
         employeeRadioBtn.setSelected(!employee.isAdmin());
         emailField.setText(employee.getEmail());
+        emailField.setDisable(true);
     }
 
     private @NonNull String getGenderString() {

@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.CONTRACTS;
-import static org.apdb4j.db.Tables.STAFF;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * A staff controller specifically used for employees.
@@ -104,7 +103,32 @@ public class EmployeeControllerImpl implements AdministrationController {
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
-        // TODO
+        final EmployeeTableItem employee = (EmployeeTableItem) item;
+        new QueryBuilder().createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        configuration.dsl()
+                                .update(ACCOUNTS)
+                                .set(ACCOUNTS.PERMISSIONTYPE, employee.isAdmin() ? "Admin" : "Staff")
+                                .where(ACCOUNTS.EMAIL.eq(employee.getEmail()))
+                                .execute();
+                        configuration.dsl()
+                                .update(STAFF)
+                                .set(STAFF.NATIONALID, employee.getNationalID())
+                                .set(STAFF.NAME, employee.getName())
+                                .set(STAFF.SURNAME, employee.getSurname())
+                                .set(STAFF.DOB, employee.getDob())
+                                .set(STAFF.BIRTHPLACE, employee.getBirthplace())
+                                .set(STAFF.GENDER, employee.getGender())
+                                .set(STAFF.ROLE, employee.getRole().isEmpty() ? null : employee.getRole())
+                                .set(STAFF.ISADMIN, employee.isAdmin() ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0))
+                                .set(STAFF.ISEMPLOYEE, !employee.isAdmin() ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0))
+                                .where(STAFF.STAFFID.eq(employee.getStaffID()))
+                                .execute();
+                    });
+                    return 1;
+                })
+                .closeConnection();
         return item;
     }
 
