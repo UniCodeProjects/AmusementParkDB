@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.UserTicketsChooserController">
+   <right>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Cart">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <ListView fx:id="cart" prefHeight="200.0" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </ListView>
+            <Label fx:id="totalPrice" text="Total price:" />
+         </children>
+      </VBox>
+   </right>
+   <bottom>
+      <Button fx:id="buyButton" mnemonicParsing="false" text="Buy!" BorderPane.alignment="BOTTOM_RIGHT">
+         <BorderPane.margin>
+            <Insets bottom="5.0" right="5.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+   <top>
+      <BorderPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" top="5.0" />
+         </BorderPane.margin>
+         <center>
+            <Label text="Buy your tickets">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </center>
+         <left>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </top>
+   <center>
+      <ScrollPane fx:id="ticketsAndSeasonTicketsScrollableContainer" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="ticketsAndSeasonTicketsContainer" prefWidth="300.0">
+               <children>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Tickets">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Kids (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Adults (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Senior (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Disable (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="16.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label text="Season tickets">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="5.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Kids (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Adults (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Senior (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Disable (price)">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <TextField editable="false" prefWidth="30.0">
+                           <HBox.margin>
+                              <Insets left="16.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Label text="-">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="+">
+                           <HBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

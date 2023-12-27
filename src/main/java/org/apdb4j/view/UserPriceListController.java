@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -57,4 +58,15 @@ public class UserPriceListController extends AbstractFXMLController implements I
     void onBackButtonPressed(final ActionEvent event) {
         JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
+
+    /**
+     * Opens the screen that allows the user to buy new tickets.
+     * @param event the click on the "buy tickets" button.
+     */
+    @FXML
+    void onBuyTicketsButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEvent(event, "layouts/user-tickets-chooser.fxml", true, true, true);
+        JavaFXUtils.setStageTitle(event, "Buy tickets");
+    }
+
 }

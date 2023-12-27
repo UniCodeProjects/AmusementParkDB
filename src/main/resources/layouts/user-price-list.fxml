@@ -50,7 +50,7 @@
       </VBox>
    </top>
    <right>
-      <Button fx:id="buyTicketsButton" mnemonicParsing="false" text="Buy your tickets HERE!" BorderPane.alignment="CENTER">
+      <Button fx:id="buyTicketsButton" mnemonicParsing="false" onAction="#onBuyTicketsButtonPressed" text="Buy your tickets HERE!" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets right="15.0" />
          </BorderPane.margin>
