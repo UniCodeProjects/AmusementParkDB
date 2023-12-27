@@ -54,10 +54,10 @@ public class ExhibitionTableItem implements AttractionTableItem {
                                final int spectators,
                                final double averageRating,
                                final int ratings) {
-        this.id = new SimpleStringProperty(id);
-        this.name = new SimpleStringProperty(name);
-        this.type = new SimpleStringProperty(type);
-        this.description = new SimpleStringProperty(description);
+        this.id = new SimpleStringProperty(id.trim());
+        this.name = new SimpleStringProperty(name.trim());
+        this.type = new SimpleStringProperty(type.trim());
+        this.description = new SimpleStringProperty(description.trim());
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
         this.maxSeats = new SimpleIntegerProperty(maxSeats);

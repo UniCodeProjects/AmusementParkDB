@@ -60,17 +60,17 @@ public final class EmployeeTableItem implements TableItem {
             final double salary,
             final String email
     ) {
-        this.staffID = new SimpleStringProperty(staffID);
-        this.nationalID = new SimpleStringProperty(nationalID);
-        this.name = new SimpleStringProperty(name);
-        this.surname = new SimpleStringProperty(surname);
+        this.staffID = new SimpleStringProperty(staffID.trim());
+        this.nationalID = new SimpleStringProperty(nationalID.trim());
+        this.name = new SimpleStringProperty(name.trim());
+        this.surname = new SimpleStringProperty(surname.trim());
         this.dob = new SimpleObjectProperty<>(dob);
-        this.birthplace = new SimpleStringProperty(birthplace);
-        this.gender = new SimpleStringProperty(gender);
-        this.role = new SimpleStringProperty(role);
+        this.birthplace = new SimpleStringProperty(birthplace.trim());
+        this.gender = new SimpleStringProperty(gender.trim());
+        this.role = new SimpleStringProperty(role.trim());
         this.admin = new SimpleBooleanProperty(isAdmin);
         this.salary = new SimpleDoubleProperty(salary);
-        this.email = new SimpleStringProperty(email);
+        this.email = new SimpleStringProperty(email.trim());
     }
 
     /**

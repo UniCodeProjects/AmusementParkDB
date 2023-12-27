@@ -48,12 +48,12 @@ public class ShopTableItem implements TableItem {
                          final double expense,
                          final double revenue,
                          final @NonNull Month month) {
-        this.id = new SimpleStringProperty(id);
-        this.name = new SimpleStringProperty(name);
+        this.id = new SimpleStringProperty(id.trim());
+        this.name = new SimpleStringProperty(name.trim());
         this.openingTime = new SimpleObjectProperty<>(openingTime);
         this.closingTime = new SimpleObjectProperty<>(closingTime);
-        this.type = new SimpleStringProperty(type);
-        this.description = new SimpleStringProperty(description);
+        this.type = new SimpleStringProperty(type.trim());
+        this.description = new SimpleStringProperty(description.trim());
         this.expenses = new SimpleDoubleProperty(expense);
         this.revenue = new SimpleDoubleProperty(revenue);
         this.month = new SimpleObjectProperty<>(month);

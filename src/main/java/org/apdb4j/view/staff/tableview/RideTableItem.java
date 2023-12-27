@@ -71,20 +71,20 @@ public class RideTableItem implements AttractionTableItem {
                          final @NonNull String status,
                          final double averageRating,
                          final int ratings) {
-        this.id = new SimpleStringProperty(id);
-        this.name = new SimpleStringProperty(name);
+        this.id = new SimpleStringProperty(id.trim());
+        this.name = new SimpleStringProperty(name.trim());
         this.openingTime = new SimpleObjectProperty<>(openingTime);
         this.closingTime = new SimpleObjectProperty<>(closingTime);
-        this.type = new SimpleStringProperty(type);
-        this.intensity = new SimpleStringProperty(intensity);
+        this.type = new SimpleStringProperty(type.trim());
+        this.intensity = new SimpleStringProperty(intensity.trim());
         this.duration = new SimpleIntegerProperty(duration);
         this.maxSeats = new SimpleIntegerProperty(maxSeats);
-        this.description = new SimpleStringProperty(description);
+        this.description = new SimpleStringProperty(description.trim());
         this.minHeight = new SimpleIntegerProperty(minHeight);
         this.maxHeight = new SimpleIntegerProperty(maxHeight);
         this.minWeight = new SimpleDoubleProperty(minWeight);
         this.maxWeight = new SimpleDoubleProperty(maxWeight);
-        this.status = new SimpleStringProperty(status);
+        this.status = new SimpleStringProperty(status.trim());
         this.averageRating = new SimpleDoubleProperty(averageRating);
         this.ratings = new SimpleIntegerProperty(ratings);
     }

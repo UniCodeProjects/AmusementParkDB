@@ -41,9 +41,9 @@ public class ContractTableItem implements TableItem {
                              final @NonNull LocalDate beginDate,
                              final LocalDate endDate,
                              final double salary) {
-        this.id = new SimpleStringProperty(id);
-        this.employeeNID = new SimpleStringProperty(employeeNID);
-        this.employerNID = new SimpleStringProperty(employerNID);
+        this.id = new SimpleStringProperty(id.trim());
+        this.employeeNID = new SimpleStringProperty(employeeNID.trim());
+        this.employerNID = new SimpleStringProperty(employerNID.trim());
         this.signedDate = new SimpleObjectProperty<>(signedDate);
         this.beginDate = new SimpleObjectProperty<>(beginDate);
         this.endDate = new SimpleObjectProperty<>(endDate);
