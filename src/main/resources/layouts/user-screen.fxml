@@ -38,7 +38,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="rides" focusTraversable="false" text="Rides" underline="true" visited="true">
+            <Hyperlink fx:id="rides" focusTraversable="false" onAction="#onRidesClick" text="Rides" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
