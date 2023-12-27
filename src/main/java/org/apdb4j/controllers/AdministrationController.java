@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * Includes all the controllers for the staff screen.
  */
-public interface StaffController extends Controller {
+public interface AdministrationController extends Controller {
 
     /**
      * Retrieves the table item linked to this staff controller.
