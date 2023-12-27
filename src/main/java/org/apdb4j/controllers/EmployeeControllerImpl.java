@@ -21,7 +21,7 @@ import static org.apdb4j.db.Tables.STAFF;
 /**
  * A staff controller specifically used for employees.
  */
-public class EmployeeControllerImpl implements StaffController {
+public class EmployeeControllerImpl implements AdministrationController {
 
     /**
      * {@inheritDoc}
