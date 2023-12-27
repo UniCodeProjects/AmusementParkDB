@@ -25,4 +25,12 @@ public interface AdministrationController extends Controller {
      */
     <T extends TableItem> T addData(T item);
 
+    /**
+     * Edits the database with the given data.
+     * @param item the edited data
+     * @param <T> the type of the {@code TableItem}
+     * @return the edited data
+     */
+    <T extends TableItem> T editData(T item);
+
 }

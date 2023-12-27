@@ -99,4 +99,13 @@ public class EmployeeControllerImpl implements AdministrationController {
         return item;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> T editData(final T item) {
+        // TODO
+        return item;
+    }
+
 }
