@@ -132,4 +132,14 @@ public class UserScreenController extends AbstractFXMLController implements Init
         LoadFXML.fromEvent(event, "layouts/user-price-list.fxml", true, true, true);
         JavaFXUtils.setStageTitle(event, "Tickets price list");
     }
+
+    /**
+     * Opens the screen that displays all the rides' info.
+     * @param event the click on the "rides" hyperlink.
+     */
+    @FXML
+    void onRidesClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, "layouts/user-rides-screen.fxml", true, true, true);
+        JavaFXUtils.setStageTitle(event, "Our rides");
+    }
 }
