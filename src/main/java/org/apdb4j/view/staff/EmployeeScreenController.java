@@ -80,7 +80,32 @@ public class EmployeeScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        final var employee = new EmployeeTableItem(
+        if (editMode) {
+            final var editedEmployee = new EmployeeTableItem(
+                    employee.getStaffID(),
+                    nationalIDField.getText(),
+                    nameField.getText(),
+                    surnameField.getText(),
+                    dobPicker.getValue(),
+                    birthplaceField.getText(),
+                    getGenderString(),
+                    roleField.getText(),
+                    adminRadioBtn.isSelected(),
+                    employee.getSalary(),
+                    emailField.getText()
+            );
+            gridPane.getScene().getWindow().hide();
+            Platform.runLater(() -> {
+                final EmployeeTableItem currentEmployee = tableView.getItems().get(tableView.getItems().indexOf(employee));
+                final int index = tableView.getItems().indexOf(currentEmployee);
+                tableView.getItems().remove(currentEmployee);
+                tableView.getItems().add(index, new EmployeeControllerImpl().editData(editedEmployee));
+                tableView.getSelectionModel().select(editedEmployee);
+                tableView.requestFocus();
+            });
+            return;
+        }
+        final var newEmployee = new EmployeeTableItem(
                 "E-000",    // TODO: use the ID generator.
                 nationalIDField.getText(),
                 nameField.getText(),
@@ -97,7 +122,7 @@ public class EmployeeScreenController extends PopupInitializer {
         // Opening the add-contract form.
         if (fromHire) {
             ContractScreenController.setEditMode(false);
-            ContractScreenController.setFromEmployeeMode(employee,
+            ContractScreenController.setFromEmployeeMode(newEmployee,
                     e -> Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(e))));
             LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
         }
