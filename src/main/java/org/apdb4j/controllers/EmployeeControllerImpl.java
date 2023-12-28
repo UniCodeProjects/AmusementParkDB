@@ -20,7 +20,7 @@ import static org.apdb4j.db.Tables.*;
 /**
  * A staff controller specifically used for employees.
  */
-public class EmployeeControllerImpl implements AdministrationController {
+public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
@@ -36,6 +36,7 @@ public class EmployeeControllerImpl implements AdministrationController {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends TableItem> Collection<T> getData() {
+        // TODO do not show fired employees
         final List<T> data = new ArrayList<>();
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
@@ -130,6 +131,16 @@ public class EmployeeControllerImpl implements AdministrationController {
                 })
                 .closeConnection();
         return item;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> T fire(final T employeeItem) {
+        final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
+        StaffManager.fireStaffMember(employee.getNationalID(), "");
+        return employeeItem;
     }
 
 }
