@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  */
 // TODO: remove model references. Only for testing purposes.
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH") // TODO: remove. The code that causes the false positive should be in the controller.
-public class LiveEstimatedWaitTimesController extends AbstractFXMLController implements Initializable {
+public class LiveEstimatedWaitTimesController implements FXMLController, Initializable {
 
     @FXML
     private BorderPane pane;

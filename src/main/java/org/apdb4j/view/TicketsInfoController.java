@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the screen that allows the user to see more information on the tickets bought.
  */
-public class TicketsInfoController extends AbstractFXMLController implements Initializable {
+public class TicketsInfoController implements FXMLController, Initializable {
     private static final double TICKETS_INFO_FONT_SIZE = 20;
 
     @FXML

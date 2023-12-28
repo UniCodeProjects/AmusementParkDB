@@ -3,7 +3,6 @@ package org.apdb4j.view;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
@@ -19,7 +18,6 @@ import org.apdb4j.core.managers.Manager;
 import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Rides;
 import org.apdb4j.util.QueryBuilder;
-import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -31,10 +29,7 @@ import java.util.ResourceBundle;
  */
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH") // TODO: remove. The code that causes the false positive should be in the controller.
 // TODO: remove all the direct usages of the model. Only for testing GUI.
-public class UserRidesScreenController extends AbstractFXMLController implements Initializable {
-
-    @FXML
-    private Button backButton;
+public class UserRidesScreenController extends BackableAbstractFXMLController {
 
     @FXML
     private Button estimatedWaitTimesButton;
@@ -59,7 +54,7 @@ public class UserRidesScreenController extends AbstractFXMLController implements
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        JavaFXUtils.setBackButtonImage(backButton);
+        super.initialize(location, resources);
         sortMenu.getItems().add("Name (ascending)");
         sortMenu.getItems().add("Name (descending)");
         sortMenu.getItems().add("Average rating (ascending)");
@@ -80,15 +75,6 @@ public class UserRidesScreenController extends AbstractFXMLController implements
             ridesListView.getItems().add(rideInfoHyperlink);
             rideInfo.delete(0, rideInfo.length());
         }
-    }
-
-    /**
-     * Returns to the previous scene.
-     * @param event the click on the "back" button.
-     */
-    @FXML
-    void onBackButtonPressed(final ActionEvent event) {
-        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 
     /**
