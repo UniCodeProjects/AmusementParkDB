@@ -67,7 +67,7 @@ public final class EmployeeTableItem implements TableItem {
         this.dob = new SimpleObjectProperty<>(dob);
         this.birthplace = new SimpleStringProperty(birthplace.trim());
         this.gender = new SimpleStringProperty(gender.trim());
-        this.role = new SimpleStringProperty(role.trim());
+        this.role = new SimpleStringProperty(role == null ? "N/A" : role.trim());
         this.admin = new SimpleBooleanProperty(isAdmin);
         this.salary = new SimpleDoubleProperty(salary);
         this.email = new SimpleStringProperty(email.trim());
