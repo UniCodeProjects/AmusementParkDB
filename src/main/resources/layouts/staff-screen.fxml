@@ -131,7 +131,7 @@
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeHire" text="Hire" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeEdit" text="Edit" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Fire" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeFire" text="Fire" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
