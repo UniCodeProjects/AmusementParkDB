@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the user UI.
  */
-public class UserScreenController extends AbstractFXMLController implements Initializable {
+public class UserScreenController implements FXMLController, Initializable {
 
     private static final double BACKGROUND_IMAGE_OPACITY = 0.4;
     private static final double ACCOUNT_IMAGE_HEIGHT = 50;

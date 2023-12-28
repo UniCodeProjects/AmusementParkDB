@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NonNull;
-import org.apdb4j.view.FXMLController;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ public final class LoadFXML {
                 final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
                 final var root = (Parent) loader.load();
                 if (setPreviousScene) {
-                    final FXMLController controller = loader.getController();
+                    final BackableFXMLController controller = loader.getController();
                     controller.setPreviousScene(((Node) event.getSource()).getScene(), previousSceneStageTitle);
                 }
                 return root;

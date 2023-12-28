@@ -2,7 +2,6 @@ package org.apdb4j.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -19,13 +18,10 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the screen that allows the user to see and edit their personal data.
  */
-public class UserPersonalDataController extends AbstractFXMLController implements Initializable {
+public class UserPersonalDataController extends BackableAbstractFXMLController {
     private static final String EDIT_BUTTON_IMAGE_PATH = "img/edit_button.png";
     private static final double EDIT_BUTTON_IMAGE_HEIGHT = 15;
     private static final double EDIT_BUTTON_IMAGE_WIDTH = 15;
-
-    @FXML
-    private Button backButton;
 
     @FXML
     private Button confirmNewEmailButton;
@@ -113,6 +109,7 @@ public class UserPersonalDataController extends AbstractFXMLController implement
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        super.initialize(location, resources);
         JavaFXUtils.setLabeledImage(editNameButton,
                 EDIT_BUTTON_IMAGE_PATH,
                 EDIT_BUTTON_IMAGE_WIDTH,
@@ -133,7 +130,6 @@ public class UserPersonalDataController extends AbstractFXMLController implement
                 EDIT_BUTTON_IMAGE_PATH,
                 EDIT_BUTTON_IMAGE_WIDTH,
                 EDIT_BUTTON_IMAGE_HEIGHT);
-        JavaFXUtils.setBackButtonImage(backButton);
         confirmNewNameButton.setOnAction(event -> {
             confirmNewNameButton.setVisible(false);
             nameTextField.setEditable(false);
@@ -199,14 +195,5 @@ public class UserPersonalDataController extends AbstractFXMLController implement
     @FXML
     void onEditPasswordButtonClick(final ActionEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
-    }
-
-    /**
-     * Returns to the previous scene.
-     * @param event the click on the "back" button.
-     */
-    @FXML
-    void onBackButtonPressed(final ActionEvent event) {
-        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 }

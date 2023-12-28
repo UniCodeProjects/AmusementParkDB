@@ -1,13 +1,9 @@
 package org.apdb4j.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -16,10 +12,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the screen that allows the user to see both tickets and season tickets bought.
  */
-public class UserTicketsScreenController extends AbstractFXMLController implements Initializable {
-
-    @FXML
-    private Button backButton;
+public class UserTicketsScreenController extends BackableAbstractFXMLController {
 
     @FXML
     private ListView<Hyperlink> listView;
@@ -32,17 +25,8 @@ public class UserTicketsScreenController extends AbstractFXMLController implemen
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        JavaFXUtils.setBackButtonImage(backButton);
+        super.initialize(location, resources);
         addTicket();
-    }
-
-    /**
-     * Returns to the previous scene.
-     * @param event the click on the "back" button.
-     */
-    @FXML
-    void onBackButtonPressed(final ActionEvent event) {
-        JavaFXUtils.setSceneFromEvent(event, getPreviousScene(), getPreviousSceneTitle());
     }
 
     private void addTicket() {
