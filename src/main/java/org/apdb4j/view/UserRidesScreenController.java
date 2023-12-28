@@ -10,6 +10,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -19,6 +20,7 @@ import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Rides;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
 import java.util.Objects;
@@ -27,7 +29,7 @@ import java.util.ResourceBundle;
 /**
  * FXML controller for the screen that allows the user to see all the rides' info.
  */
-@SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
+@SuppressFBWarnings("NP_NULL_ON_SOME_PATH") // TODO: remove. The code that causes the false positive should be in the controller.
 // TODO: remove all the direct usages of the model. Only for testing GUI.
 public class UserRidesScreenController extends AbstractFXMLController implements Initializable {
 
@@ -192,5 +194,14 @@ public class UserRidesScreenController extends AbstractFXMLController implements
             pane.getChildren().remove(filterScrollableContainer);
             areFiltersOpen = false;
         }
+    }
+
+    /**
+     * Opens the popup screen that shows all the rides with their estimated wait times.
+     * @param event the click on the "estimated wait times" button.
+     */
+    @FXML
+    void onEstimatedWaitTimesButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event, "layouts/live-estimated-wait-times.fxml", "Live rides estimated wait times!", 0.5, 0.5);
     }
 }
