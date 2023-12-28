@@ -58,6 +58,11 @@ public class UserRidesScreenController extends AbstractFXMLController implements
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         JavaFXUtils.setBackButtonImage(backButton);
+        sortMenu.getItems().add("Name (ascending)");
+        sortMenu.getItems().add("Name (descending)");
+        sortMenu.getItems().add("Average rating (ascending)");
+        sortMenu.getItems().add("Average rating (descending)");
+        sortMenu.getItems().add("No sorting");
         final var rides = Manager.viewAllInfoFromTable("rides", "");
         for (final var ride : rides) {
             final StringBuilder rideInfo = new StringBuilder();

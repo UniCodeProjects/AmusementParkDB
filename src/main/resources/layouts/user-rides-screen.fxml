@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.UserRidesScreenController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
@@ -59,7 +58,7 @@
                   </Button>
                </center>
                <right>
-                  <ComboBox fx:id="sortMenu" prefWidth="100.0" promptText="Sort by" BorderPane.alignment="CENTER">
+                  <ComboBox fx:id="sortMenu" prefWidth="200.0" promptText="Sort by" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets right="5.0" />
                      </BorderPane.margin>
