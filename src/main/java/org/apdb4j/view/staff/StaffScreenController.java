@@ -1,5 +1,6 @@
 package org.apdb4j.view.staff;
 
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -198,6 +199,20 @@ public class StaffScreenController implements Initializable {
         EmployeeScreenController.setEditMode(true);
         EmployeeScreenController.setEmployee(selectedEmployee);
         LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-form.fxml", "Edit employee");
+    }
+
+    /**
+     * Removes from the employee table view the fired employee.
+     * @param event the event
+     */
+    @FXML
+    void onEmployeeFire(final ActionEvent event) {
+        final EmployeeTableItem selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedEmployee)) {
+            showAlertForUnselectedRowInTableView("employee");
+            return;
+        }
+        Platform.runLater(() -> employeeTableView.getItems().remove(new EmployeeControllerImpl().fire(selectedEmployee)));
     }
 
     /**
