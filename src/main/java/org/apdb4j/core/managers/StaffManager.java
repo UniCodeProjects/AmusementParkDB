@@ -8,7 +8,6 @@ import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 
