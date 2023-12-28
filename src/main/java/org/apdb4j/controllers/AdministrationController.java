@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface AdministrationController extends Controller {
 
     /**
-     * Retrieves the table item linked to this staff controller.
+     * Retrieves all the table items.
      * @param <T> the type of the {@code TableItem}
      * @return a collection of table items
      * @see TableItem
