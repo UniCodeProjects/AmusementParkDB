@@ -46,19 +46,17 @@ public class EmployeeControllerImpl implements EmployeeController {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
-        result.forEach(record -> {
-            data.add((T) new EmployeeTableItem(record.get(STAFF.STAFFID),
-                    record.get(STAFF.NATIONALID),
-                    record.get(STAFF.NAME),
-                    record.get(STAFF.SURNAME),
-                    record.get(STAFF.DOB),
-                    record.get(STAFF.BIRTHPLACE),
-                    record.get(STAFF.GENDER),
-                    record.get(STAFF.ROLE),
-                    record.get(STAFF.ISADMIN).equals((byte) 1),
-                    record.get(CONTRACTS.SALARY).doubleValue(),
-                    record.get(STAFF.EMAIL)));
-        });
+        result.forEach(record -> data.add((T) new EmployeeTableItem(record.get(STAFF.STAFFID),
+                record.get(STAFF.NATIONALID),
+                record.get(STAFF.NAME),
+                record.get(STAFF.SURNAME),
+                record.get(STAFF.DOB),
+                record.get(STAFF.BIRTHPLACE),
+                record.get(STAFF.GENDER),
+                record.get(STAFF.ROLE),
+                record.get(STAFF.ISADMIN).equals((byte) 1),
+                record.get(CONTRACTS.SALARY).doubleValue(),
+                record.get(STAFF.EMAIL))));
         return data;
     }
 
