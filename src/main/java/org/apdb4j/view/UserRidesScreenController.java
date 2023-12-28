@@ -74,6 +74,7 @@ public class UserRidesScreenController extends AbstractFXMLController implements
             }
             final var rideInfoHyperlink = new Hyperlink(rideInfo.toString());
             rideInfoHyperlink.setFont(Font.font(18));
+            rideInfoHyperlink.setFocusTraversable(false);
             ridesListView.getItems().add(rideInfoHyperlink);
             rideInfo.delete(0, rideInfo.length());
         }
