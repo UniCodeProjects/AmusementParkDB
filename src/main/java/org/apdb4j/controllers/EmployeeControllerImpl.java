@@ -36,13 +36,13 @@ public class EmployeeControllerImpl implements EmployeeController {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends TableItem> Collection<T> getData() {
-        // TODO do not show fired employees
         final List<T> data = new ArrayList<>();
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
                         .from(STAFF)
                         .join(CONTRACTS)
                         .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
+                        .where(CONTRACTS.ENDDATE.isNull())
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
