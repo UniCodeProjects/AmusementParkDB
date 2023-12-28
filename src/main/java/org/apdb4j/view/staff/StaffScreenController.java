@@ -216,6 +216,15 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Opens the fired employee history screen.
+     * @param event the event
+     */
+    @FXML
+    void onEmployeeHistory(final ActionEvent event) {
+
+    }
+
+    /**
      * Opens the add contract popup screen.
      * @param event the event
      */
