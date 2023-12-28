@@ -48,7 +48,7 @@
                   </Button>
                </left>
                <center>
-                  <Button fx:id="estimatedWaitTimesButton" mnemonicParsing="false" text="Estimated wait times LIVE!" BorderPane.alignment="CENTER">
+                  <Button fx:id="estimatedWaitTimesButton" mnemonicParsing="false" onAction="#onEstimatedWaitTimesButtonPressed" text="Estimated wait times LIVE!" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets />
                      </BorderPane.margin>
