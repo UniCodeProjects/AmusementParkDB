@@ -31,25 +31,7 @@ public class UserScreenController implements FXMLController, Initializable {
     private Label accountLabel;
 
     @FXML
-    private Hyperlink exhibitions;
-
-    @FXML
     private BorderPane pane;
-
-    @FXML
-    private Hyperlink restaurants;
-
-    @FXML
-    private Hyperlink rides;
-
-    @FXML
-    private Hyperlink souvenirShops;
-
-    @FXML
-    private Hyperlink tickets;
-
-    @FXML
-    private Label welcomeLabel;
 
     private boolean isPersonalAreaOpen;
     private final ToolBar accountInfo = new ToolBar();

@@ -32,9 +32,6 @@ import java.util.ResourceBundle;
 public class UserRidesScreenController extends BackableAbstractFXMLController {
 
     @FXML
-    private Button estimatedWaitTimesButton;
-
-    @FXML
     private BorderPane pane;
 
     @FXML

@@ -2,7 +2,6 @@ package org.apdb4j.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -20,12 +19,6 @@ public class UserPriceListController extends BackableAbstractFXMLController {
     private static final String PRICE_LIST_PERIOD_BASE_TEXT = " tickets price list";
 
     @FXML
-    private BorderPane backButtonContainer;
-
-    @FXML
-    private Button buyTicketsButton;
-
-    @FXML
     private BorderPane pane;
 
     @FXML
@@ -33,9 +26,6 @@ public class UserPriceListController extends BackableAbstractFXMLController {
 
     @FXML
     private ListView<Label> ticketsAndSeasonTickets;
-
-    @FXML
-    private VBox topContainer;
 
     /**
      * {@inheritDoc}
