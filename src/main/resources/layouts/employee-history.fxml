@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.EmployeeHistoryController">
+   <center>
+       <TableView fx:id="firedTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <columns>
+               <TableColumn editable="false" text="Staff ID">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="staffID" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="National ID">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="nationalID" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Name">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="name" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Surname">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="surname" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="DoB">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="dob" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Birthplace">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="birthplace" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Gender">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="gender" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Role">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="role" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Admin">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="admin" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Salary">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="salary" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn editable="false" text="Email">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="email" />
+                   </cellValueFactory>
+               </TableColumn>
+           </columns>
+       </TableView>
+   </center>
+</BorderPane>
