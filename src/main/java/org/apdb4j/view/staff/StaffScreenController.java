@@ -221,7 +221,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onEmployeeHistory(final ActionEvent event) {
-
+        LoadFXML.fromEventAsPopup(event, "layouts/employee-history.fxml", "Fired employees history");
     }
 
     /**
