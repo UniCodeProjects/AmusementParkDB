@@ -18,6 +18,8 @@ import org.apdb4j.db.tables.Rides;
 import org.apdb4j.util.QueryBuilder;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -43,6 +45,8 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
     private final ScrollPane filtersScrollableContainer = new ScrollPane();
 
     private final ToolBar filtersToolBar = new ToolBar();
+
+    private final List<CheckBox> filters = new ArrayList<>();
 
     private boolean areFiltersOpen;
 
@@ -75,6 +79,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
         intensities.forEach(intensity -> {
             final var intensityCheckbox = new CheckBox(Objects.requireNonNull(intensity.get(0)).toString());
             intensityCheckbox.setPrefWidth(100);
+            filters.add(intensityCheckbox);
             filtersToolBar.getItems().add(intensityCheckbox);
         });
 
@@ -83,6 +88,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
         filtersToolBar.getItems().add(applyFiltersButton);
         final var resetFiltersButton = new Button("Reset filters");
         resetFiltersButton.setCursor(Cursor.HAND);
+        resetFiltersButton.setOnAction(event -> filters.forEach(filter -> filter.setSelected(false)));
         filtersToolBar.getItems().add(resetFiltersButton);
 
         sortMenu.getItems().add("Name (ascending)");

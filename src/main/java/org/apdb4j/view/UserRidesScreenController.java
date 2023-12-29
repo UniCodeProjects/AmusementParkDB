@@ -21,6 +21,8 @@ import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -45,6 +47,7 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
 
     private boolean areFiltersOpen;
     private final ScrollPane filterScrollableContainer = new ScrollPane();
+    private final List<CheckBox> filters = new ArrayList<>();
 
     /**
      * {@inheritDoc}
@@ -72,6 +75,102 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
             ridesListView.getItems().add(rideInfoHyperlink);
             rideInfo.delete(0, rideInfo.length());
         }
+
+        // Filters initialization
+        filterScrollableContainer.setPrefWidth(250);
+        filterScrollableContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        final var filterToolBar = new ToolBar();
+        filterToolBar.setPrefWidth(250);
+        filterToolBar.setOrientation(Orientation.VERTICAL);
+        filterScrollableContainer.setContent(filterToolBar);
+
+        final var filtersTitle = new Label("Filters");
+        filtersTitle.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 14));
+        filtersTitle.setPadding(new Insets(0, 0, 5, 0));
+
+        final var intensityFilterTitle = new Label("Intensity");
+        intensityFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
+
+        filterToolBar.getItems().add(filtersTitle);
+        filterToolBar.getItems().add(intensityFilterTitle);
+
+        final var intensities = new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(Rides.RIDES.INTENSITY)
+                        .from(Rides.RIDES)
+                        .fetch())
+                .closeConnection().getResultAsRecords();
+        intensities.forEach(intensity -> {
+            final var intensityCheckbox = new CheckBox(Objects.requireNonNull(intensity.get(0)).toString());
+            intensityCheckbox.setPrefWidth(100);
+            filters.add(intensityCheckbox);
+            filterToolBar.getItems().add(intensityCheckbox);
+        });
+
+        final var averageRatingTitle = new Label("Average rating");
+        averageRatingTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
+        averageRatingTitle.setPadding(new Insets(5, 0, 0, 0));
+
+        filterToolBar.getItems().add(averageRatingTitle);
+
+        final var hBox1 = new HBox();
+        final var hBox2 = new HBox();
+
+        final var firstRatingInterval = new CheckBox("0-1.9 stars");
+        final var secondRatingInterval = new CheckBox("2-2.9 stars");
+        secondRatingInterval.setPadding(new Insets(0, 0, 0, 5));
+
+        final var thirdRatingInterval = new CheckBox("3-3.9 stars");
+        final var lastRatingInterval = new CheckBox("4-5 stars");
+        lastRatingInterval.setPadding(new Insets(0, 0, 0, 5));
+
+        hBox1.getChildren().add(firstRatingInterval);
+        hBox1.getChildren().add(secondRatingInterval);
+        hBox2.getChildren().add(thirdRatingInterval);
+        hBox2.getChildren().add(lastRatingInterval);
+        filters.add(firstRatingInterval);
+        filters.add(secondRatingInterval);
+        filters.add(thirdRatingInterval);
+        filters.add(lastRatingInterval);
+
+        hBox1.getChildren().forEach(node -> {
+            if (node instanceof Region) {
+                ((Region) node).setPrefWidth(100);
+            }
+        });
+        hBox2.getChildren().forEach(node -> {
+            if (node instanceof Region) {
+                ((Region) node).setPrefWidth(100);
+            }
+        });
+        hBox2.setPadding(new Insets(0, 0, 5, 0));
+
+        filterToolBar.getItems().add(hBox1);
+        filterToolBar.getItems().add(hBox2);
+
+        final var typeFilterTitle = new Label("Type");
+        typeFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
+        filterToolBar.getItems().add(typeFilterTitle);
+
+        final var rideTypes = new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(ParkServices.PARK_SERVICES.TYPE)
+                        .from(ParkServices.PARK_SERVICES)
+                        .where(ParkServices.PARK_SERVICES.PARKSERVICEID.like("RI%"))
+                        .fetch())
+                .closeConnection().getResultAsRecords();
+        rideTypes.forEach(type -> {
+            final var typeCheckbox = new CheckBox(Objects.requireNonNull(type.get(0)).toString());
+            typeCheckbox.setPrefWidth(100);
+            filters.add(typeCheckbox);
+            filterToolBar.getItems().add(typeCheckbox);
+        });
+
+        final var applyFiltersButton = new Button("Apply filters");
+        applyFiltersButton.setCursor(Cursor.HAND);
+        filterToolBar.getItems().add(applyFiltersButton);
+        final var resetFiltersButton = new Button("Reset filters");
+        resetFiltersButton.setOnAction(e -> filters.forEach(checkBox -> checkBox.setSelected(false)));
+        resetFiltersButton.setCursor(Cursor.HAND);
+        filterToolBar.getItems().add(resetFiltersButton);
     }
 
     /**
@@ -82,94 +181,6 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
     void onFilterButtonPressed(final ActionEvent event) {
         if (!areFiltersOpen) {
             showFiltersButton.setText("Hide filters");
-            filterScrollableContainer.setPrefWidth(250);
-            filterScrollableContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            final var filterToolBar = new ToolBar();
-            filterToolBar.setPrefWidth(250);
-            filterToolBar.setOrientation(Orientation.VERTICAL);
-            filterScrollableContainer.setContent(filterToolBar);
-
-            final var filtersTitle = new Label("Filters");
-            filtersTitle.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 14));
-            filtersTitle.setPadding(new Insets(0, 0, 5, 0));
-
-            final var intensityFilterTitle = new Label("Intensity");
-            intensityFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
-
-            filterToolBar.getItems().add(filtersTitle);
-            filterToolBar.getItems().add(intensityFilterTitle);
-
-            final var intensities = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.selectDistinct(Rides.RIDES.INTENSITY)
-                            .from(Rides.RIDES)
-                            .fetch())
-                    .closeConnection().getResultAsRecords();
-            intensities.forEach(intensity -> {
-                final var intensityCheckbox = new CheckBox(Objects.requireNonNull(intensity.get(0)).toString());
-                intensityCheckbox.setPrefWidth(100);
-                filterToolBar.getItems().add(intensityCheckbox);
-            });
-
-            final var averageRatingTitle = new Label("Average rating");
-            averageRatingTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
-            averageRatingTitle.setPadding(new Insets(5, 0, 0, 0));
-
-            filterToolBar.getItems().add(averageRatingTitle);
-
-            final var hBox1 = new HBox();
-            final var hBox2 = new HBox();
-
-            final var firstRatingInterval = new CheckBox("0-1.9 stars");
-            final var secondRatingInterval = new CheckBox("2-2.9 stars");
-            secondRatingInterval.setPadding(new Insets(0, 0, 0, 5));
-
-            final var thirdRatingInterval = new CheckBox("3-3.9 stars");
-            final var lastRatingInterval = new CheckBox("4-5 stars");
-            lastRatingInterval.setPadding(new Insets(0, 0, 0, 5));
-
-            hBox1.getChildren().add(firstRatingInterval);
-            hBox1.getChildren().add(secondRatingInterval);
-            hBox2.getChildren().add(thirdRatingInterval);
-            hBox2.getChildren().add(lastRatingInterval);
-
-            hBox1.getChildren().forEach(node -> {
-                if (node instanceof Region) {
-                    ((Region) node).setPrefWidth(100);
-                }
-            });
-            hBox2.getChildren().forEach(node -> {
-                if (node instanceof Region) {
-                    ((Region) node).setPrefWidth(100);
-                }
-            });
-            hBox2.setPadding(new Insets(0, 0, 5, 0));
-
-            filterToolBar.getItems().add(hBox1);
-            filterToolBar.getItems().add(hBox2);
-
-            final var typeFilterTitle = new Label("Type");
-            typeFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, 12));
-            filterToolBar.getItems().add(typeFilterTitle);
-
-            final var rideTypes = new QueryBuilder().createConnection()
-                    .queryAction(db -> db.selectDistinct(ParkServices.PARK_SERVICES.TYPE)
-                            .from(ParkServices.PARK_SERVICES)
-                            .where(ParkServices.PARK_SERVICES.PARKSERVICEID.like("RI%"))
-                            .fetch())
-                    .closeConnection().getResultAsRecords();
-            rideTypes.forEach(type -> {
-                final var typeCheckbox = new CheckBox(Objects.requireNonNull(type.get(0)).toString());
-                typeCheckbox.setPrefWidth(100);
-                filterToolBar.getItems().add(typeCheckbox);
-            });
-
-            final var applyFiltersButton = new Button("Apply filters");
-            applyFiltersButton.setCursor(Cursor.HAND);
-            filterToolBar.getItems().add(applyFiltersButton);
-            final var resetFiltersButton = new Button("Reset filters");
-            resetFiltersButton.setCursor(Cursor.HAND);
-            filterToolBar.getItems().add(resetFiltersButton);
-
             pane.setRight(filterScrollableContainer);
             areFiltersOpen = true;
         } else {
