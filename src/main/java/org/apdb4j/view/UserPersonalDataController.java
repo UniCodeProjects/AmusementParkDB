@@ -3,12 +3,8 @@ package org.apdb4j.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -51,19 +47,7 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
     private Button editUsernameButton;
 
     @FXML
-    private HBox emailContainer;
-
-    @FXML
-    private Label emailLabel;
-
-    @FXML
     private TextField emailTextField;
-
-    @FXML
-    private HBox nameContainer;
-
-    @FXML
-    private Label nameLabel;
 
     @FXML
     private TextField nameTextField;
@@ -72,34 +56,7 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
     private BorderPane pane;
 
     @FXML
-    private HBox passwordContainer;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label passwordLabel;
-
-    @FXML
-    private VBox personalDataContainer;
-
-    @FXML
-    private Label personalDataLabel;
-
-    @FXML
-    private HBox surnameContainer;
-
-    @FXML
-    private Label surnameLabel;
-
-    @FXML
     private TextField surnameTextField;
-
-    @FXML
-    private HBox usernameContainer;
-
-    @FXML
-    private Label usernameLabel;
 
     @FXML
     private TextField usernameTextField;
