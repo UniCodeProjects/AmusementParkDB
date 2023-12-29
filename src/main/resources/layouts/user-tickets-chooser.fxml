@@ -7,7 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -60,7 +60,7 @@
       </BorderPane>
    </top>
    <center>
-      <ScrollPane fx:id="ticketsAndSeasonTicketsScrollableContainer" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="ticketsAndSeasonTicketsScrollableContainer" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="ticketsAndSeasonTicketsContainer" prefWidth="300.0">
                <children>
@@ -83,21 +83,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -110,21 +100,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -137,21 +117,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -164,21 +134,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="16.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -199,21 +159,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -226,21 +176,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -253,21 +193,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="26.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
@@ -280,21 +210,11 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <TextField editable="false" prefWidth="30.0">
+                        <Spinner prefWidth="70.0">
                            <HBox.margin>
                               <Insets left="16.0" />
                            </HBox.margin>
-                        </TextField>
-                        <Label text="-">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="+">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </Label>
+                        </Spinner>
                      </children>
                   </HBox>
                </children>
