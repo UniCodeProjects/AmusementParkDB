@@ -81,10 +81,14 @@ public class UserScreenController implements FXMLController, Initializable {
         accountInfo.getItems().add(accountPersonalData);
         accountInfo.getItems().add(new Separator());
         accountInfo.getItems().add(logOutButton);
-        accountPurchases.setOnAction(event ->
-                LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true));
-        accountPersonalData.setOnAction(event ->
-                LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true));
+        accountPurchases.setOnAction(event -> {
+            LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true);
+            JavaFXUtils.setStageTitle(event, "My purchases");
+        });
+        accountPersonalData.setOnAction(event -> {
+            LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true);
+            JavaFXUtils.setStageTitle(event, "My personal data");
+        });
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
         }
