@@ -34,30 +34,8 @@ public class EmployeeControllerImpl implements EmployeeController {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends TableItem> Collection<T> getData() {
-        final List<T> data = new ArrayList<>();
-        final Result<Record> result = new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
-                        .from(STAFF)
-                        .join(CONTRACTS)
-                        .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
-                        .where(CONTRACTS.ENDDATE.isNull())
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        result.forEach(record -> data.add((T) new EmployeeTableItem(record.get(STAFF.STAFFID),
-                record.get(STAFF.NATIONALID),
-                record.get(STAFF.NAME),
-                record.get(STAFF.SURNAME),
-                record.get(STAFF.DOB),
-                record.get(STAFF.BIRTHPLACE),
-                record.get(STAFF.GENDER),
-                record.get(STAFF.ROLE),
-                record.get(STAFF.ISADMIN).equals((byte) 1),
-                record.get(CONTRACTS.SALARY).doubleValue(),
-                record.get(STAFF.EMAIL))));
-        return data;
+        return getEmployeeData(false);
     }
 
     /**
@@ -139,6 +117,40 @@ public class EmployeeControllerImpl implements EmployeeController {
         final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
         StaffManager.fireStaffMember(employee.getNationalID(), "");
         return employeeItem;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> Collection<T> getFiredData() {
+        return getEmployeeData(true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends TableItem> @NonNull List<T> getEmployeeData(final boolean fired) {
+        final List<T> data = new ArrayList<>();
+        final Result<Record> result = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
+                        .from(STAFF)
+                        .join(CONTRACTS)
+                        .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
+                        .where(fired ? CONTRACTS.ENDDATE.isNotNull() : CONTRACTS.ENDDATE.isNull())
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        result.forEach(record -> data.add((T) new EmployeeTableItem(record.get(STAFF.STAFFID),
+                record.get(STAFF.NATIONALID),
+                record.get(STAFF.NAME),
+                record.get(STAFF.SURNAME),
+                record.get(STAFF.DOB),
+                record.get(STAFF.BIRTHPLACE),
+                record.get(STAFF.GENDER),
+                record.get(STAFF.ROLE),
+                record.get(STAFF.ISADMIN).equals((byte) 1),
+                record.get(CONTRACTS.SALARY).doubleValue(),
+                record.get(STAFF.EMAIL))));
+        return data;
     }
 
 }
