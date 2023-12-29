@@ -68,14 +68,14 @@ public abstract class PopupInitializer implements Initializable {
             final double padding = 40;
             stage.setHeight(rootPrefHeight + padding);
             stage.setWidth(rootPrefWidth + padding);
-            editMode();
+            customInit();
         });
     }
 
     /**
-     * Defines the actions for the specific edit mode.
+     * Defines the actions for a custom initialization of this FXML controller.
      */
-    protected abstract void editMode();
+    protected abstract void customInit();
 
     private Stage safeCastToStage(final Window window) {
         Stage stage;

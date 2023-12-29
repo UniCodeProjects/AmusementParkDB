@@ -93,7 +93,7 @@ public class TicketSelectorScreenController extends PopupInitializer {
      * {@inheritDoc}
      */
     @Override
-    protected void editMode() {
+    protected void customInit() {
     }
 
 }

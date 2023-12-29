@@ -132,7 +132,7 @@ public class EmployeeScreenController extends PopupInitializer {
      * {@inheritDoc}
      */
     @Override
-    protected void editMode() {
+    protected void customInit() {
         // TODO: move to its own custom init.
         adminRadioBtn.selectedProperty().addListener((observable, oldValue, newValue) -> {
             roleField.setDisable(adminRadioBtn.isSelected());
