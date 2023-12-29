@@ -33,8 +33,7 @@ public class EmployeeHistoryController extends PopupInitializer {
      * {@inheritDoc}
      */
     @Override
-    protected void editMode() {
-        // TODO create another method for custom init or rename this method.
+    protected void customInit() {
         Platform.runLater(() -> firedTableView.getItems().addAll(new EmployeeControllerImpl().getFiredData()));
     }
 

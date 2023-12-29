@@ -46,7 +46,7 @@ public class TicketTypeScreenController extends PopupInitializer {
      * {@inheritDoc}
      */
     @Override
-    protected void editMode() {
+    protected void customInit() {
         if (!editMode) {
             return;
         }
