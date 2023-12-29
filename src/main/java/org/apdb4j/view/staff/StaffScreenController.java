@@ -21,6 +21,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apdb4j.controllers.ContractControllerImpl;
 import org.apdb4j.controllers.EmployeeControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
@@ -212,7 +213,12 @@ public class StaffScreenController implements Initializable {
             showAlertForUnselectedRowInTableView("employee");
             return;
         }
-        Platform.runLater(() -> employeeTableView.getItems().remove(new EmployeeControllerImpl().fire(selectedEmployee)));
+        Platform.runLater(() -> {
+            employeeTableView.getItems().remove(new EmployeeControllerImpl().fire(selectedEmployee));
+            // Refreshing contracts table view.
+            contractsTableView.getItems().clear();
+            contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
+        });
     }
 
     /**
@@ -458,6 +464,7 @@ public class StaffScreenController implements Initializable {
         // Populating the table views.
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
+        contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
