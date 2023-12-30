@@ -62,7 +62,6 @@
                        </toggleGroup>
                    </RadioButton>
                   <RadioButton fx:id="femaleRadioBtn" mnemonicParsing="false" text="Female" toggleGroup="$genderToggleGroup" />
-                  <RadioButton fx:id="otherRadioBtn" mnemonicParsing="false" text="Other" toggleGroup="$genderToggleGroup" />
                </children>
             </HBox>
          </children>
