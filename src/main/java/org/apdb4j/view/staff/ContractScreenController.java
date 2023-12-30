@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
@@ -13,6 +14,7 @@ import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -97,6 +99,8 @@ public class ContractScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
+        beginDatePicker.setDayCellFactory(param -> new FirstDayDateCell());
+        endDatePicker.setDayCellFactory(param -> new LastDayDateCell());
         if (!editMode) {
             return;
         }
@@ -106,6 +110,34 @@ public class ContractScreenController extends PopupInitializer {
         beginDatePicker.setValue(contract.getBeginDate());
         endDatePicker.setValue(contract.getEndDate());
         salarySpinner.getValueFactory().setValue(contract.getSalary());
+    }
+
+    /**
+     * A date cell that enables only the first day of the month.
+     */
+    static class FirstDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != 1);
+        }
+    }
+
+    /**
+     * A date cell that enables only the last day of the month.
+     */
+    static class LastDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != item.lengthOfMonth());
+        }
     }
 
 }
