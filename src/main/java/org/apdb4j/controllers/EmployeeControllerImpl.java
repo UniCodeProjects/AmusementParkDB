@@ -1,18 +1,22 @@
 package org.apdb4j.controllers;
 
+import javafx.application.Platform;
+import javafx.scene.control.TableView;
 import lombok.NonNull;
+import lombok.Setter;
 import org.apdb4j.core.managers.ContractManager;
 import org.apdb4j.core.managers.StaffManager;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.apdb4j.db.Tables.*;
@@ -21,6 +25,9 @@ import static org.apdb4j.db.Tables.*;
  * A staff controller specifically used for employees.
  */
 public class EmployeeControllerImpl implements EmployeeController {
+
+    @Setter
+    private static TableView<ContractTableItem> contractTableView;
 
     /**
      * {@inheritDoc}
@@ -43,7 +50,15 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
-        final EmployeeTableItem employee = (EmployeeTableItem) item;
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> T addData(final T employeeItem, final T contractItem) {
+        final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
         new QueryBuilder().createConnection()
                 .queryAction(db -> {
                     db.transaction(configuration -> {
@@ -59,20 +74,21 @@ public class EmployeeControllerImpl implements EmployeeController {
                                 employee.isAdmin(),
                                 !employee.isAdmin(),
                                 "");
-                        // TODO
-                        ContractManager.signNewContract("C-006",
-                                employee.getNationalID(),
-                                "MRARSS77E15A944I",
-                                LocalDate.parse("2023-10-05"),
-                                LocalDate.parse("2023-11-01"),
-                                null,
-                                employee.getSalary(),
-                                "a");
+                        final ContractTableItem contract = (ContractTableItem) contractItem;
+                        ContractManager.signNewContract(contract.getId(),
+                                contract.getEmployeeNID(),
+                                contract.getEmployerNID(),
+                                contract.getSignedDate(),
+                                contract.getBeginDate(),
+                                contract.getEndDate(),
+                                contract.getSalary(),
+                                "");
+                        Platform.runLater(() -> Objects.requireNonNull(contractTableView).getItems().add(contract));
                     });
                     return 1;
                 })
                 .closeConnection();
-        return item;
+        return employeeItem;
     }
 
     /**
