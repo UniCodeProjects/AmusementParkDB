@@ -122,8 +122,8 @@ public class EmployeeScreenController extends PopupInitializer {
         // Opening the add-contract form.
         if (fromHire) {
             ContractScreenController.setEditMode(false);
-            ContractScreenController.setFromEmployeeMode(newEmployee,
-                    e -> Platform.runLater(() -> tableView.getItems().add(new EmployeeControllerImpl().addData(e))));
+            ContractScreenController.setFromEmployeeMode(newEmployee, (e, c) -> Platform.runLater(() ->
+                    tableView.getItems().add((EmployeeTableItem) new EmployeeControllerImpl().addData(e, c))));
             LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
         }
     }
@@ -133,7 +133,6 @@ public class EmployeeScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
-        // TODO: move to its own custom init.
         adminRadioBtn.selectedProperty().addListener((observable, oldValue, newValue) -> {
             roleField.setDisable(adminRadioBtn.isSelected());
             if (roleField.isDisable()) {
