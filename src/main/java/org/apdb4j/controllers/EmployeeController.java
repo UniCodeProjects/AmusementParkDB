@@ -10,6 +10,15 @@ import java.util.Collection;
 public interface EmployeeController extends AdministrationController {
 
     /**
+     * Inserts in the database the given data.
+     * @param employeeItem the employee data to insert
+     * @param contractItem the contract data to insert
+     * @param <T> the type of the {@code TableItem}
+     * @return the added employee data
+     */
+    <T extends TableItem> T addData(T employeeItem, T contractItem);
+
+    /**
      * Removes from the DB the selected employee item.
      * @param employeeItem the employee to fire
      * @param <T> the {@code EmployeeTableItem} type
