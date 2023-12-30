@@ -41,8 +41,6 @@ public class EmployeeScreenController extends PopupInitializer {
     @FXML
     private RadioButton femaleRadioBtn;
     @FXML
-    private RadioButton otherRadioBtn;
-    @FXML
     private TextField roleField;
     @FXML
     private ToggleGroup accountTypeToggleGroup;
@@ -88,7 +86,7 @@ public class EmployeeScreenController extends PopupInitializer {
                     surnameField.getText(),
                     dobPicker.getValue(),
                     birthplaceField.getText(),
-                    getGenderString(),
+                    maleRadioBtn.isSelected() ? "M" : "F",
                     roleField.getText(),
                     adminRadioBtn.isSelected(),
                     employee.getSalary(),
@@ -112,7 +110,7 @@ public class EmployeeScreenController extends PopupInitializer {
                 surnameField.getText(),
                 dobPicker.getValue(),
                 birthplaceField.getText(),
-                getGenderString(),
+                maleRadioBtn.isSelected() ? "M" : "F",
                 roleField.getText(),
                 adminRadioBtn.isSelected(),
                 -1,
@@ -155,21 +153,10 @@ public class EmployeeScreenController extends PopupInitializer {
         emailField.setDisable(true);
     }
 
-    private @NonNull String getGenderString() {
-        if (maleRadioBtn.isSelected()) {
-            return "M";
-        } else if (femaleRadioBtn.isSelected()) {
-            return "F";
-        } else {
-            return "O";
-        }
-    }
-
     private void setGenderToggle(final @NonNull String gender) {
         switch (gender) {
             case "M" -> maleRadioBtn.setSelected(true);
             case "F" -> femaleRadioBtn.setSelected(true);
-            case "O" -> otherRadioBtn.setSelected(true);
             default -> throw new IllegalStateException(gender + " is invalid.");
         }
     }
