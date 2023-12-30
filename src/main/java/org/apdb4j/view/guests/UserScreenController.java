@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.guests;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.FXMLController;
 
 import java.net.URL;
 import java.util.ResourceBundle;

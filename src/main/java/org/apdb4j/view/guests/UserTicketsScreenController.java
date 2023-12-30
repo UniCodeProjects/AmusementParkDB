@@ -1,10 +1,11 @@
-package org.apdb4j.view;
+package org.apdb4j.view.guests;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.ResourceBundle;

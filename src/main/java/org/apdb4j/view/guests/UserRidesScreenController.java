@@ -1,4 +1,4 @@
-package org.apdb4j.view;
+package org.apdb4j.view.guests;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
@@ -18,6 +18,7 @@ import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Rides;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.*;
