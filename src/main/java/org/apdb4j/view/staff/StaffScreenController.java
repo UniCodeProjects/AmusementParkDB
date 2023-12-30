@@ -464,6 +464,7 @@ public class StaffScreenController implements Initializable {
         // Populating the table views.
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
+        EmployeeControllerImpl.setContractTableView(contractsTableView);
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
     }
 
