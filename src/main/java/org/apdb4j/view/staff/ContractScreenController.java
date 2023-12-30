@@ -14,7 +14,7 @@ import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * The FXML controller for the maintenance screen.
@@ -42,7 +42,7 @@ public class ContractScreenController extends PopupInitializer {
     @Setter
     private static ContractTableItem contract;
     private static boolean fromEmployeeScreen;
-    private static Consumer<EmployeeTableItem> update;
+    private static BiConsumer<EmployeeTableItem, ContractTableItem> update;
     private static EmployeeTableItem partialEmployee;
 
     /**
@@ -60,7 +60,8 @@ public class ContractScreenController extends PopupInitializer {
      * @param employee the partial employee object. It holds an invalid salary value.
      * @param action the action that adds the employee into the DB and updates the GUI.
      */
-    public static void setFromEmployeeMode(final EmployeeTableItem employee, final Consumer<EmployeeTableItem> action) {
+    public static void setFromEmployeeMode(final EmployeeTableItem employee,
+                                           final BiConsumer<EmployeeTableItem, ContractTableItem> action) {
         fromEmployeeScreen = true;
         partialEmployee = new EmployeeTableItem(employee);
         update = action;
@@ -79,7 +80,14 @@ public class ContractScreenController extends PopupInitializer {
                 throw new IllegalStateException("Employee table item is null.");
             }
             partialEmployee.setSalary(salarySpinner.getValue());
-            update.accept(partialEmployee);
+            final ContractTableItem contract = new ContractTableItem("C-000",
+                    employeeNIDField.getText(),
+                    employerNIDField.getText(),
+                    signedDatePicker.getValue(),
+                    beginDatePicker.getValue(),
+                    endDatePicker.getValue(),
+                    salarySpinner.getValue());
+            update.accept(partialEmployee, contract);
         }
         gridPane.getScene().getWindow().hide();
     }
