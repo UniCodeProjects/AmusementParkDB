@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.*;
+import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * A staff controller specifically used for employees.
