@@ -1,6 +1,8 @@
 package org.apdb4j.controllers;
 
 import lombok.NonNull;
+import org.apdb4j.core.managers.ContractManager;
+import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -18,6 +20,8 @@ import static org.apdb4j.db.Tables.CONTRACTS;
  * An administration controller specifically used for contracts.
  */
 public class ContractControllerImpl implements AdministrationController {
+
+    private String errorMessage;
 
     /**
      * {@inheritDoc}
@@ -47,7 +51,20 @@ public class ContractControllerImpl implements AdministrationController {
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
-        return null;
+        final ContractTableItem contract = (ContractTableItem) item;
+        try {
+            ContractManager.signNewContract(contract.getId(),
+                    contract.getEmployeeNID(),
+                    contract.getEmployerNID(),
+                    contract.getSignedDate(),
+                    contract.getBeginDate(),
+                    contract.getEndDate(),
+                    contract.getSalary(),
+                    "");
+        } catch (final AccessDeniedException e) {
+            errorMessage = e.getMessage();
+        }
+        return item;
     }
 
     /**
@@ -63,7 +80,7 @@ public class ContractControllerImpl implements AdministrationController {
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
-        return Optional.empty();
+        return Optional.ofNullable(errorMessage);
     }
 
 }
