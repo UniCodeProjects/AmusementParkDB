@@ -31,7 +31,7 @@
             <DatePicker fx:id="signedDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <DatePicker fx:id="beginDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-             <Spinner fx:id="salarySpinner" GridPane.columnIndex="1" GridPane.rowIndex="5">
+             <Spinner fx:id="salarySpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                  <valueFactory>
                      <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="50" max="1.7976931348623157E308" min="0" />
                  </valueFactory>
