@@ -217,7 +217,6 @@
                               <TextField promptText="Employee NID" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onContractAdd" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onContractEdit" text="Edit" />
                            </children>
                         </VBox>
