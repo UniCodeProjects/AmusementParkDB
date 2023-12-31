@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.control.TableView;
 import lombok.NonNull;
 import lombok.Setter;
-import org.apdb4j.core.managers.ContractManager;
 import org.apdb4j.core.managers.StaffManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -74,15 +73,7 @@ public class EmployeeControllerImpl implements EmployeeController {
                                 employee.isAdmin(),
                                 !employee.isAdmin(),
                                 "");
-                        final ContractTableItem contract = (ContractTableItem) contractItem;
-                        ContractManager.signNewContract(contract.getId(),
-                                contract.getEmployeeNID(),
-                                contract.getEmployerNID(),
-                                contract.getSignedDate(),
-                                contract.getBeginDate(),
-                                contract.getEndDate(),
-                                contract.getSalary(),
-                                "");
+                        final var contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
                         Platform.runLater(() -> Objects.requireNonNull(contractTableView).getItems().add(contract));
                     });
                     return 1;
