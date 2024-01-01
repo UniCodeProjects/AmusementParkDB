@@ -43,10 +43,18 @@
       </GridPane>
    </center>
    <bottom>
-      <Button fx:id="acceptAndCloseBtn" mnemonicParsing="false" onAction="#onAccept" text="Accept and close" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" />
          </BorderPane.margin>
-      </Button>
+         <children>
+            <CheckBox fx:id="advancedEditCheckBox" mnemonicParsing="false" onAction="#onAdvancedEdit" selected="true" text="Advanced edit">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </CheckBox>
+            <Button fx:id="acceptAndCloseBtn" mnemonicParsing="false" onAction="#onAccept" text="Accept and close" />
+         </children>
+      </VBox>
    </bottom>
 </BorderPane>
