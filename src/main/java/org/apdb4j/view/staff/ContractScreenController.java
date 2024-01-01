@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
@@ -15,6 +17,7 @@ import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -37,6 +40,8 @@ public class ContractScreenController extends PopupInitializer {
     private DatePicker endDatePicker;
     @FXML
     private Spinner<Double> salarySpinner;
+    @FXML
+    private CheckBox advancedEditCheckBox;
     @FXML
     private Button acceptAndCloseBtn;
     @Setter
@@ -67,6 +72,20 @@ public class ContractScreenController extends PopupInitializer {
         fromEmployeeScreen = true;
         partialEmployee = new EmployeeTableItem(employee);
         update = action;
+    }
+
+    /**
+     * Enables/disables the NID, signed and begin date fields.
+     * @param event the event
+     */
+    @FXML
+    void onAdvancedEdit(final ActionEvent event) {
+        final List<Control> formFields = List.of(employeeNIDField, employerNIDField, signedDatePicker, beginDatePicker);
+        if (advancedEditCheckBox.isSelected()) {
+            formFields.forEach(control -> control.setDisable(false));
+        } else {
+            formFields.forEach(control -> control.setDisable(true));
+        }
     }
 
     /**
@@ -110,6 +129,7 @@ public class ContractScreenController extends PopupInitializer {
         beginDatePicker.setValue(contract.getBeginDate());
         endDatePicker.setValue(contract.getEndDate());
         salarySpinner.getValueFactory().setValue(contract.getSalary());
+        advancedEditCheckBox.fire();
     }
 
     /**
