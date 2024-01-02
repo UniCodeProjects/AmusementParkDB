@@ -20,31 +20,22 @@ import static org.apdb4j.db.Tables.CONTRACTS;
 /**
  * An administration controller specifically used for contracts.
  */
-public class ContractControllerImpl implements AdministrationController {
+public class ContractControllerImpl implements AdministrationController, Filterable {
 
     private String errorMessage;
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends TableItem> Collection<T> getData() {
-        final List<T> data = new ArrayList<>();
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
                         .from(CONTRACTS)
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
-        result.forEach(record -> data.add((T) new ContractTableItem(record.get(CONTRACTS.CONTRACTID),
-                record.get(CONTRACTS.EMPLOYEENID),
-                record.get(CONTRACTS.EMPLOYERNID),
-                record.get(CONTRACTS.SUBSCRIPTIONDATE),
-                record.get(CONTRACTS.BEGINDATE),
-                record.get(CONTRACTS.ENDDATE),
-                record.get(CONTRACTS.SALARY).doubleValue())));
-        return data;
+        return extractContractData(result);
     }
 
     /**
@@ -92,8 +83,36 @@ public class ContractControllerImpl implements AdministrationController {
      * {@inheritDoc}
      */
     @Override
+    public <T extends TableItem> Collection<T> filter(final String employeeNID) {
+        final Result<Record> result = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select()
+                        .from(CONTRACTS)
+                        .where(CONTRACTS.EMPLOYEENID.containsIgnoreCase(employeeNID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return extractContractData(result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull Optional<String> getErrorMessage() {
         return Optional.ofNullable(errorMessage);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends TableItem> List<T> extractContractData(final Result<Record> result) {
+        final List<T> data = new ArrayList<>();
+        result.forEach(record -> data.add((T) new ContractTableItem(record.get(CONTRACTS.CONTRACTID),
+                record.get(CONTRACTS.EMPLOYEENID),
+                record.get(CONTRACTS.EMPLOYERNID),
+                record.get(CONTRACTS.SUBSCRIPTIONDATE),
+                record.get(CONTRACTS.BEGINDATE),
+                record.get(CONTRACTS.ENDDATE),
+                record.get(CONTRACTS.SALARY).doubleValue())));
+        return data;
     }
 
 }
