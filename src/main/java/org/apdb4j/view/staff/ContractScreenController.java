@@ -9,9 +9,12 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.ContractControllerImpl;
+import org.apdb4j.controllers.EmployeeControllerImpl;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
@@ -48,6 +51,10 @@ public class ContractScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static ContractTableItem contract;
+    @Setter
+    private static TableView<ContractTableItem> contractTableView;
+    @Setter
+    private static TableView<EmployeeTableItem> employeeTableView;
     private static boolean fromEmployeeScreen;
     private static BiConsumer<EmployeeTableItem, ContractTableItem> update;
     private static EmployeeTableItem partialEmployee;
@@ -94,7 +101,32 @@ public class ContractScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        // TODO
+        final ContractTableItem editedContract = new ContractTableItem(contract.getId(),
+                employeeNIDField.getText(),
+                employerNIDField.getText(),
+                signedDatePicker.getValue(),
+                beginDatePicker.getValue(),
+                endDatePicker.getValue(),
+                salarySpinner.getValue());
+        Platform.runLater(() -> {
+            final ContractTableItem currentContract = contractTableView.getItems()
+                    .get(contractTableView.getItems().indexOf(contract));
+            final int index = contractTableView.getItems().indexOf(currentContract);
+            contractTableView.getItems().remove(currentContract);
+            contractTableView.getItems().add(index, new ContractControllerImpl().editData(editedContract));
+            contractTableView.getSelectionModel().select(editedContract);
+            contractTableView.requestFocus();
+        });
+        // Updating employee table view.
+        final EmployeeTableItem linkedEmployee = employeeTableView.getItems().stream()
+                .filter(employee -> employee.getNationalID().equals(contract.getEmployeeNID()))
+                .findFirst()
+                .orElseThrow();
+        final int employeeIndex = employeeTableView.getItems().indexOf(linkedEmployee);
+        employeeTableView.getItems().remove(linkedEmployee);
+        linkedEmployee.setSalary(salarySpinner.getValue());
+        final EmployeeTableItem updatedEmployee = new EmployeeControllerImpl().editData(linkedEmployee);
+        Platform.runLater(() -> employeeTableView.getItems().add(employeeIndex, updatedEmployee));
 
         if (fromEmployeeScreen) {
             if (Objects.isNull(partialEmployee)) {
