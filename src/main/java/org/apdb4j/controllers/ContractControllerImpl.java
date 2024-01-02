@@ -9,6 +9,7 @@ import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -72,7 +73,19 @@ public class ContractControllerImpl implements AdministrationController {
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
-        return null;
+        final ContractTableItem contract = (ContractTableItem) item;
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(CONTRACTS)
+                        .set(CONTRACTS.EMPLOYEENID, contract.getEmployeeNID())
+                        .set(CONTRACTS.EMPLOYERNID, contract.getEmployerNID())
+                        .set(CONTRACTS.SUBSCRIPTIONDATE, contract.getSignedDate())
+                        .set(CONTRACTS.BEGINDATE, contract.getBeginDate())
+                        .set(CONTRACTS.ENDDATE, contract.getEndDate())
+                        .set(CONTRACTS.SALARY, BigDecimal.valueOf(contract.getSalary()))
+                        .where(CONTRACTS.CONTRACTID.eq(contract.getId()))
+                        .execute())
+                .closeConnection();
+        return item;
     }
 
     /**
