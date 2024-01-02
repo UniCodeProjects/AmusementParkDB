@@ -21,6 +21,9 @@ import java.util.Optional;
 import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.CONTRACTS;
 import static org.apdb4j.db.Tables.STAFF;
+import static org.jooq.impl.DSL.concat;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.inline;
 
 /**
  * A staff controller specifically used for employees.
@@ -136,9 +139,27 @@ public class EmployeeControllerImpl implements EmployeeController {
         return getEmployeeData(true);
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * {@inheritDoc}
+     * <br>In this instance it filters the employees based on their name and surname.
+     * @implNote This method only filters employees that have not been fired yet
+     */
+    @Override
+    public <T extends TableItem> Collection<T> filter(final String s) {
+        final Result<Record> result = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
+                        .from(STAFF)
+                        .join(CONTRACTS)
+                        .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
+                        .where(CONTRACTS.ENDDATE.isNull())
+                        .and(concat(field(STAFF.NAME), inline(" "), field(STAFF.SURNAME)).containsIgnoreCase(s))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return extractEmployeeData(result);
+    }
+
     private <T extends TableItem> @NonNull List<T> getEmployeeData(final boolean fired) {
-        final List<T> data = new ArrayList<>();
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
                         .from(STAFF)
@@ -148,6 +169,12 @@ public class EmployeeControllerImpl implements EmployeeController {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
+        return extractEmployeeData(result);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends TableItem> List<T> extractEmployeeData(final Result<Record> result) {
+        final List<T> data = new ArrayList<>();
         result.forEach(record -> data.add((T) new EmployeeTableItem(record.get(STAFF.STAFFID),
                 record.get(STAFF.NATIONALID),
                 record.get(STAFF.NAME),
