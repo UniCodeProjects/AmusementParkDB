@@ -465,7 +465,10 @@ public class StaffScreenController implements Initializable {
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
         EmployeeControllerImpl.setContractTableView(contractsTableView);
+
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
+        ContractScreenController.setContractTableView(contractsTableView);
+        ContractScreenController.setEmployeeTableView(employeeTableView);
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
