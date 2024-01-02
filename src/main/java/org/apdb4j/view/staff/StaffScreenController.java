@@ -68,6 +68,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TableView<EmployeeTableItem> employeeTableView;
     @FXML
+    private TextField contractSearchField;
+    @FXML
     private TableView<ContractTableItem> contractsTableView;
     @FXML
     private TableView<TicketTableItem> ticketTableView;
@@ -180,7 +182,7 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
-     * Filters the employee table based on the content of the search field at each key typed.
+     * Filters the employee table based on the content of the search field at each typed key.
      * @param keyEvent the event
      */
     @FXML
@@ -195,12 +197,13 @@ public class StaffScreenController implements Initializable {
                 employeeTableView.getItems().clear();
                 employeeTableView.getItems().addAll(allItems);
             });
+        } else {
+            final Collection<EmployeeTableItem> filtered = new EmployeeControllerImpl().filter(employeeSearchField.getText());
+            Platform.runLater(() -> {
+                employeeTableView.getItems().clear();
+                employeeTableView.getItems().addAll(filtered);
+            });
         }
-        final Collection<EmployeeTableItem> filtered = new EmployeeControllerImpl().filter(employeeSearchField.getText());
-        Platform.runLater(() -> {
-            employeeTableView.getItems().clear();
-            employeeTableView.getItems().addAll(filtered);
-        });
     }
 
     /**
@@ -257,6 +260,31 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onEmployeeHistory(final ActionEvent event) {
         LoadFXML.fromEventAsPopup(event, "layouts/employee-history.fxml", "Fired employees history");
+    }
+
+    /**
+     * Filters the contracts table based on the content of the search field at each typed key.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onContractSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (contractSearchField.getText().isBlank() || contractSearchField.getText() == null) {
+            // TODO: Put controller as field.
+            final Collection<ContractTableItem> allItems = new ContractControllerImpl().getData();
+            Platform.runLater(() -> {
+                contractsTableView.getItems().clear();
+                contractsTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<ContractTableItem> filtered = new ContractControllerImpl().filter(contractSearchField.getText());
+            Platform.runLater(() -> {
+                contractsTableView.getItems().clear();
+                contractsTableView.getItems().addAll(filtered);
+            });
+        }
     }
 
     /**
