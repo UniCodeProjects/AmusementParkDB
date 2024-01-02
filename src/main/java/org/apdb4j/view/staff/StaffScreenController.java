@@ -17,8 +17,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.ContractControllerImpl;
@@ -37,6 +39,7 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -60,6 +63,8 @@ public class StaffScreenController implements Initializable {
     private ToggleGroup radioBtnToggle;
     @FXML
     private VBox vBox;
+    @FXML
+    private TextField employeeSearchField;
     @FXML
     private TableView<EmployeeTableItem> employeeTableView;
     @FXML
@@ -172,6 +177,30 @@ public class StaffScreenController implements Initializable {
         vBox.getChildren().remove(1, vBox.getChildrenUnmodifiable().size());
         addRowCounter = 1;
         addRowBtn.setDisable(false);
+    }
+
+    /**
+     * Filters the employee table based on the content of the search field at each key typed.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onEmployeeSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (employeeSearchField.getText().isBlank() || employeeSearchField.getText() == null) {
+            // TODO: Put controller as field.
+            final Collection<EmployeeTableItem> allItems = new EmployeeControllerImpl().getData();
+            Platform.runLater(() -> {
+                employeeTableView.getItems().clear();
+                employeeTableView.getItems().addAll(allItems);
+            });
+        }
+        final Collection<EmployeeTableItem> filtered = new EmployeeControllerImpl().filter(employeeSearchField.getText());
+        Platform.runLater(() -> {
+            employeeTableView.getItems().clear();
+            employeeTableView.getItems().addAll(filtered);
+        });
     }
 
     /**
