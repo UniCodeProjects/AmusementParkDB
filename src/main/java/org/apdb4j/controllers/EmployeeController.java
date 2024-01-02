@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * Specialised controller for handling employees.
  */
-public interface EmployeeController extends AdministrationController {
+public interface EmployeeController extends AdministrationController, Filterable {
 
     /**
      * Inserts in the database the given data.
