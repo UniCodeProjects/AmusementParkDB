@@ -32,8 +32,8 @@
                      <children>
                         <Label text="Park name:" />
                         <Label text="Administrator:" GridPane.rowIndex="3" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="parkNameField" editable="false" focusTraversable="false" GridPane.columnIndex="1" />
+                        <TextField fx:id="adminField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                            <image>
                               <Image url="@../img/apdb4j-logo.png" />
@@ -41,16 +41,16 @@
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin></ImageView>
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="attractionsNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="Attractions:" GridPane.rowIndex="4" />
                         <Label text="Shops:" GridPane.rowIndex="5" />
                         <Label text="Employees:" GridPane.rowIndex="6" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="shopsNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="employeesNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="Opening time:" GridPane.rowIndex="1" />
                         <Label text="Closing time:" GridPane.rowIndex="2" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="openingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="closingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

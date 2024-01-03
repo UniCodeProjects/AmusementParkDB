@@ -25,6 +25,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.ContractControllerImpl;
 import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.controllers.OverviewController;
+import org.apdb4j.controllers.OverviewControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -39,6 +41,7 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +52,20 @@ import java.util.ResourceBundle;
  */
 public class StaffScreenController implements Initializable {
 
+    @FXML
+    private TextField parkNameField;
+    @FXML
+    private TextField adminField;
+    @FXML
+    private TextField attractionsNumField;
+    @FXML
+    private TextField shopsNumField;
+    @FXML
+    private TextField employeesNumField;
+    @FXML
+    private TextField openingTimeField;
+    @FXML
+    private TextField closingTimeField;
     @FXML
     private Button addRowBtn;
     @FXML
@@ -500,6 +517,16 @@ public class StaffScreenController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        // Overview tab init.
+        final OverviewController overviewController = new OverviewControllerImpl();
+        parkNameField.setText(overviewController.getParkName());
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        openingTimeField.setText(overviewController.getOpeningTime().format(formatter));
+        closingTimeField.setText(overviewController.getClosingTime().format(formatter));
+        adminField.setText(overviewController.getAdministrator());
+        attractionsNumField.setText(String.valueOf(overviewController.getAttractionsAmount()));
+        shopsNumField.setText(String.valueOf(overviewController.getShopsAmount()));
+        employeesNumField.setText(String.valueOf(overviewController.getEmployeesAmount()));
         /*
          * Disables or enables the delete all rows button
          * based on the presence of at least one new row.
