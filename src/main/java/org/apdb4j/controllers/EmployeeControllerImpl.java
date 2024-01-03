@@ -11,6 +11,7 @@ import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.tools.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,7 +110,7 @@ public class EmployeeControllerImpl implements EmployeeController {
                                 .set(STAFF.DOB, employee.getDob())
                                 .set(STAFF.BIRTHPLACE, employee.getBirthplace())
                                 .set(STAFF.GENDER, employee.getGender())
-                                .set(STAFF.ROLE, employee.getRole().isEmpty() ? null : employee.getRole())
+                                .set(STAFF.ROLE, StringUtils.defaultIfEmpty(employee.getRole(), null))
                                 .set(STAFF.ISADMIN, employee.isAdmin() ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0))
                                 .set(STAFF.ISEMPLOYEE, !employee.isAdmin() ? Byte.valueOf((byte) 1) : Byte.valueOf((byte) 0))
                                 .where(STAFF.STAFFID.eq(employee.getStaffID()))
