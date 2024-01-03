@@ -151,6 +151,7 @@ public class EmployeeScreenController extends PopupInitializer {
         employeeRadioBtn.setSelected(!employee.isAdmin());
         emailField.setText(employee.getEmail());
         emailField.setDisable(true);
+        accountTypeToggleGroup.getToggles().forEach(toggle -> ((RadioButton) toggle).setDisable(true));
     }
 
     private void setGenderToggle(final @NonNull String gender) {
