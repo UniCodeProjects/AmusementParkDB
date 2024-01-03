@@ -415,15 +415,51 @@
                      <center>
                         <TableView fx:id="shopsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn editable="false" text="Shop ID" />
-                              <TableColumn editable="false" text="Name" />
-                              <TableColumn editable="false" text="Opening" />
-                              <TableColumn editable="false" text="Closing" />
-                              <TableColumn editable="false" text="Type" />
-                              <TableColumn editable="false" text="Description" />
-                              <TableColumn editable="false" text="Expense" />
-                              <TableColumn editable="false" text="Revenue" />
-                              <TableColumn editable="false" text="Month" />
+                               <TableColumn editable="false" text="Shop ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="id" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Name">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="name" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Opening">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="openingTime" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Closing">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="closingTime" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Type">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="type" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Expense">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="expenses" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Revenue">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="revenue" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Month">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="month" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
