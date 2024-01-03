@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.TableView;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apdb4j.core.managers.StaffManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -164,9 +165,10 @@ public class EmployeeControllerImpl implements EmployeeController {
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
                         .from(STAFF)
-                        .join(CONTRACTS)
+                        .leftJoin(CONTRACTS)
                         .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
                         .where(fired ? CONTRACTS.ENDDATE.isNotNull() : CONTRACTS.ENDDATE.isNull())
+                        .or(STAFF.ISADMIN.isTrue())
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
@@ -185,7 +187,7 @@ public class EmployeeControllerImpl implements EmployeeController {
                 record.get(STAFF.GENDER),
                 record.get(STAFF.ROLE),
                 record.get(STAFF.ISADMIN).equals((byte) 1),
-                record.get(CONTRACTS.SALARY).doubleValue(),
+                ObjectUtils.getIfNull(record.get(CONTRACTS.SALARY), () -> Double.NaN).doubleValue(),
                 record.get(STAFF.EMAIL))));
         return data;
     }
