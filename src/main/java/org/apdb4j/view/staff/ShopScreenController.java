@@ -36,13 +36,13 @@ public class ShopScreenController extends PopupInitializer {
     @FXML
     private TextField nameField;
     @FXML
-    private TextField openingHourField;
+    private Spinner<Integer> openingHourSpinner;
     @FXML
-    private TextField openingMinuteField;
+    private Spinner<Integer> openingMinuteSpinner;
     @FXML
-    private TextField closingHourField;
+    private Spinner<Integer> closingHourSpinner;
     @FXML
-    private TextField closingMinuteField;
+    private Spinner<Integer> closingMinuteSpinner;
     @FXML
     private ComboBox<String> typeComboBox;
     @FXML
@@ -80,8 +80,8 @@ public class ShopScreenController extends PopupInitializer {
     void onAccept(final ActionEvent event) {
         final ShopTableItem shopItem = new ShopTableItem(editMode ? shop.getId() : "SH-00",    // TODO: use id generator.
                 nameField.getText(),
-                LocalTime.of(Integer.parseInt(openingHourField.getText()), Integer.parseInt(openingMinuteField.getText())),
-                LocalTime.of(Integer.parseInt(closingHourField.getText()), Integer.parseInt(closingMinuteField.getText())),
+                LocalTime.of(openingHourSpinner.getValue(), openingMinuteSpinner.getValue()),
+                LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
                 typeComboBox.getValue(),
                 descriptionTextArea.getText(),
                 expensesSpinner.getValue(),
@@ -111,10 +111,10 @@ public class ShopScreenController extends PopupInitializer {
             return;
         }
         nameField.setText(shop.getName());
-        openingHourField.setText(String.valueOf(shop.getOpeningTime().getHour()));
-        openingMinuteField.setText(String.valueOf(shop.getOpeningTime().getMinute()));
-        closingHourField.setText(String.valueOf(shop.getClosingTime().getHour()));
-        closingMinuteField.setText(String.valueOf(shop.getClosingTime().getMinute()));
+        openingHourSpinner.getValueFactory().setValue(shop.getOpeningTime().getHour());
+        openingMinuteSpinner.getValueFactory().setValue(shop.getOpeningTime().getMinute());
+        closingHourSpinner.getValueFactory().setValue(shop.getClosingTime().getHour());
+        closingMinuteSpinner.getValueFactory().setValue(shop.getClosingTime().getMinute());
         typeComboBox.setValue(shop.getType());
         descriptionTextArea.setText(shop.getDescription());
         expensesSpinner.getValueFactory().setValue(shop.getExpenses());
