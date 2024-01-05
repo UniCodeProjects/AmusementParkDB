@@ -9,6 +9,7 @@ import java.time.YearMonth;
 
 import static org.apdb4j.db.Tables.COSTS;
 import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.PARK_SERVICES;
 
 /**
  * Contains all the SQL queries that are related to the SHOP entity.
@@ -59,13 +60,22 @@ public final class ShopManager {
                                                     final @NonNull String type,
                                                     final String description,
                                                     final @NonNull String account) {
-        final int insertedTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(FACILITIES)
-                        .values(shopID, name, openingTime, closingTime, type, description, true)
-                        .execute())
+        return DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        configuration.dsl()
+                                .insertInto(PARK_SERVICES)
+                                .values(shopID, name, BigDecimal.ZERO, 0, type, description, false)
+                                .execute();
+                        configuration.dsl()
+                                .insertInto(FACILITIES)
+                                .values(shopID, openingTime, closingTime, true)
+                                .execute();
+                    });
+                    return 1;
+                })
                 .closeConnection()
-                .getResultAsInt();
-        return insertedTuples == 1;
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -84,7 +94,7 @@ public final class ShopManager {
                                             final @NonNull String account) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(COSTS)
-                        .values(shopID, month.getMonthValue(), month.getYear(), expense, revenue)
+                        .values(shopID, revenue, expense, month.getMonthValue(), month.getYear())
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
