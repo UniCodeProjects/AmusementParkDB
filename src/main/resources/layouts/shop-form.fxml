@@ -27,7 +27,6 @@
             <Label text="Revenue:" GridPane.rowIndex="6" />
             <Label text="Closing time:" GridPane.rowIndex="2" />
             <TextField fx:id="nameField" GridPane.columnIndex="1" />
-            <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
              <Spinner fx:id="revenueSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
                  <valueFactory>
                      <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="0.1" max="1.7976931348623157E308" min="0" />
@@ -58,6 +57,7 @@
              </Spinner>
             <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="monthChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <ComboBox fx:id="typeComboBox" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

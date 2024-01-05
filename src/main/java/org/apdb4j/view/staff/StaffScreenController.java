@@ -27,6 +27,7 @@ import org.apdb4j.controllers.ContractControllerImpl;
 import org.apdb4j.controllers.EmployeeControllerImpl;
 import org.apdb4j.controllers.OverviewController;
 import org.apdb4j.controllers.OverviewControllerImpl;
+import org.apdb4j.controllers.ShopControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -553,6 +554,9 @@ public class StaffScreenController implements Initializable {
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
         ContractScreenController.setContractTableView(contractsTableView);
         ContractScreenController.setEmployeeTableView(employeeTableView);
+
+        shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
+        ShopScreenController.setTableView(shopsTableView);
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
