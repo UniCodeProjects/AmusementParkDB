@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.ContractControllerImpl;
 import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.controllers.OverviewController;
 import org.apdb4j.controllers.OverviewControllerImpl;
 import org.apdb4j.controllers.ShopControllerImpl;
@@ -584,6 +585,8 @@ public class StaffScreenController implements Initializable {
 
         shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
         ShopScreenController.setTableView(shopsTableView);
+
+        maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
