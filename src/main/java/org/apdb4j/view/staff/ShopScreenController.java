@@ -12,25 +12,23 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.ShopController;
 import org.apdb4j.controllers.ShopControllerImpl;
-import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static org.apdb4j.db.Tables.PARK_SERVICES;
 
 /**
  * The FXML controller for the shop screen.
  */
 public class ShopScreenController extends PopupInitializer {
 
+    private static final ShopController CONTROLLER = new ShopControllerImpl();
     @FXML
     private GridPane gridPane;
     @FXML
@@ -89,12 +87,20 @@ public class ShopScreenController extends PopupInitializer {
                 monthChoiceBox.getValue());
         gridPane.getScene().getWindow().hide();
         if (!editMode) {
-            Platform.runLater(() -> tableView.getItems().add(new ShopControllerImpl().addData(shopItem)));
+            Platform.runLater(() -> tableView.getItems().add(CONTROLLER.addData(shopItem)));
         } else {
             Platform.runLater(() -> {
                 final int selectedIndex = tableView.getItems().indexOf(shop);
-                tableView.getItems().remove(shop);
-                tableView.getItems().add(selectedIndex, new ShopControllerImpl().editData(shopItem));
+                CONTROLLER.editData(shopItem);
+                final List<ShopTableItem> allShopEntries = tableView.getItems().stream()
+                        .filter(shopTableItem -> shopTableItem.getId().equals(shop.getId()))
+                        .toList();
+                tableView.getItems().removeAll(allShopEntries);
+                tableView.getItems().addAll(selectedIndex, CONTROLLER.getData(shop.getId()));
+                // Re-sorting the tableview by the shop id column.
+                tableView.getSortOrder().add(tableView.getColumns().get(0));
+                tableView.sort();
+                tableView.getSelectionModel().select(selectedIndex);
             });
         }
     }
@@ -105,7 +111,7 @@ public class ShopScreenController extends PopupInitializer {
     @Override
     protected void customInit() {
         IntStream.rangeClosed(1, 12).forEach(month -> monthChoiceBox.getItems().add(Month.of(month)));
-        typeComboBox.getItems().addAll(getExistingTypes());
+        typeComboBox.getItems().addAll(CONTROLLER.getExistingTypes());
         monthChoiceBox.setValue(YearMonth.now().getMonth());
         if (!editMode) {
             return;
@@ -120,18 +126,7 @@ public class ShopScreenController extends PopupInitializer {
         expensesSpinner.getValueFactory().setValue(shop.getExpenses());
         revenueSpinner.getValueFactory().setValue(shop.getRevenue());
         monthChoiceBox.setValue(shop.getMonth());
-    }
-
-    private List<String> getExistingTypes() {
-        return Arrays.stream(new QueryBuilder().createConnection()
-                .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
-                        .from(PARK_SERVICES)
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords()
-                .sortAsc(PARK_SERVICES.TYPE)
-                .intoArray(PARK_SERVICES.TYPE))
-                .toList();
+        monthChoiceBox.setDisable(true);
     }
 
 }
