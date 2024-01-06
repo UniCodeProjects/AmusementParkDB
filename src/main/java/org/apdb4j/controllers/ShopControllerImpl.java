@@ -12,8 +12,6 @@ import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
-import java.time.Month;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,7 +65,7 @@ public class ShopControllerImpl implements ShopController {
                     "");
         }
         ShopManager.addNewMonthlyCost(shop.getId(),
-                YearMonth.of(Year.now().getValue(), shop.getMonth()),
+                shop.getYearMonth(),
                 shop.getExpenses(),
                 shop.getRevenue(),
                 "");
@@ -96,12 +94,10 @@ public class ShopControllerImpl implements ShopController {
                                 .set(FACILITIES.CLOSINGTIME, shop.getClosingTime())
                                 .where(FACILITIES.FACILITYID.eq(shop.getId()))
                                 .execute();
-                        // fixme: remove month and disable field?
                         configuration.dsl()
                                 .update(COSTS)
                                 .set(COSTS.EXPENSES, BigDecimal.valueOf(shop.getExpenses()))
                                 .set(COSTS.REVENUE, BigDecimal.valueOf(shop.getRevenue()))
-//                                .set(COSTS.MONTH, shop.getMonth().getValue())
                                 .where(COSTS.SHOPID.eq(shop.getId()))
                                 .execute();
                     });
@@ -157,7 +153,8 @@ public class ShopControllerImpl implements ShopController {
                                 PARK_SERVICES.DESCRIPTION,
                                 COSTS.EXPENSES,
                                 COSTS.REVENUE,
-                                COSTS.MONTH)
+                                COSTS.MONTH,
+                                COSTS.YEAR)
                         .from(PARK_SERVICES)
                         .join(FACILITIES)
                         .on(FACILITIES.FACILITYID.eq(PARK_SERVICES.PARKSERVICEID))
@@ -181,7 +178,7 @@ public class ShopControllerImpl implements ShopController {
                 StringUtils.defaultIfBlank(record.get(PARK_SERVICES.DESCRIPTION), ""),
                 record.get(COSTS.EXPENSES).doubleValue(),
                 record.get(COSTS.REVENUE).doubleValue(),
-                Month.of(record.get(COSTS.MONTH)))));
+                YearMonth.of(record.get(COSTS.YEAR), record.get(COSTS.MONTH)))));
         return data;
     }
 
