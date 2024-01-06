@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * The FXML controller for the password changing popup scene.
  */
-public class PasswordPopupController implements Initializable {
+public class ChangePasswordPopupController implements Initializable {
 
     @FXML
     private PasswordField oldPasswordField;
