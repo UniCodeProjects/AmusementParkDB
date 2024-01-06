@@ -94,6 +94,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TableView<AttractionTableItem> attractionsTableView;
     @FXML
+    private TextField shopSearchField;
+    @FXML
     private TableView<ShopTableItem> shopsTableView;
     @FXML
     private TableView<MaintenanceTableItem> maintenanceTableView;
@@ -458,6 +460,31 @@ public class StaffScreenController implements Initializable {
             ExhibitionScreenController.setEditMode(true);
             ExhibitionScreenController.setExhibition((ExhibitionTableItem) selectedAttraction);
             LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Edit exhibition");
+        }
+    }
+
+    /**
+     * Filters the shop table based on the content of the search field at each typed key.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onShopSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (shopSearchField.getText().isBlank() || shopSearchField.getText() == null) {
+            // TODO: Put controller as field. Extract method.
+            final Collection<ShopTableItem> allItems = new ShopControllerImpl().getData();
+            Platform.runLater(() -> {
+                shopsTableView.getItems().clear();
+                shopsTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<ShopTableItem> filtered = new ShopControllerImpl().filter(shopSearchField.getText());
+            Platform.runLater(() -> {
+                shopsTableView.getItems().clear();
+                shopsTableView.getItems().addAll(filtered);
+            });
         }
     }
 
