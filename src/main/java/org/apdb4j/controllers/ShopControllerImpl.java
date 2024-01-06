@@ -16,6 +16,7 @@ import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +24,9 @@ import java.util.Optional;
 import static org.apdb4j.db.Tables.*;
 
 /**
- * An administration controller specifically used for shops.
+ * Implementation of a shop controller.
  */
-public class ShopControllerImpl implements AdministrationController, Filterable {
+public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
@@ -33,6 +34,14 @@ public class ShopControllerImpl implements AdministrationController, Filterable 
     @Override
     public <T extends TableItem> Collection<T> getData() {
         return extractShopData(searchQuery());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> Collection<T> getData(final String shopID) {
+        return extractShopData(searchQuery(FACILITIES.FACILITYID.eq(shopID)));
     }
 
     /**
@@ -108,6 +117,22 @@ public class ShopControllerImpl implements AdministrationController, Filterable 
     @Override
     public <T extends TableItem> Collection<T> filter(final String shopName) {
         return extractShopData(searchQuery(PARK_SERVICES.NAME.containsIgnoreCase(shopName)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getExistingTypes() {
+        return Arrays.stream(new QueryBuilder().createConnection()
+                        .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
+                                .from(PARK_SERVICES)
+                                .fetch())
+                        .closeConnection()
+                        .getResultAsRecords()
+                        .sortAsc(PARK_SERVICES.TYPE)
+                        .intoArray(PARK_SERVICES.TYPE))
+                .toList();
     }
 
     /**
