@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * The FXML controller for the employee hiring screen.
  */
-public class HireController implements Initializable {
+public class HireEmployeeScreenController implements Initializable {
 
     @FXML
     private GridPane gridPane;
