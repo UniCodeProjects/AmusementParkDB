@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.ShopScreenController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER_RIGHT" vgap="5.0" BorderPane.alignment="CENTER">
@@ -17,6 +14,7 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -44,13 +42,13 @@
                <children>
                    <Spinner fx:id="openingHourSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="0" wrapAround="true" />
                        </valueFactory>
                    </Spinner>
                   <Label text=":" />
                    <Spinner fx:id="openingMinuteSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="0" wrapAround="true" />
                        </valueFactory>
                    </Spinner>
                </children>
@@ -59,13 +57,13 @@
                <children>
                   <Spinner fx:id="closingHourSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="0" wrapAround="true" />
                        </valueFactory>
                    </Spinner>
                   <Label text=":" />
                   <Spinner fx:id="closingMinuteSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="0" wrapAround="true" />
                        </valueFactory>
                    </Spinner>
                </children>
@@ -78,6 +76,12 @@
             <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="monthChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <ComboBox fx:id="typeComboBox" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Year:" GridPane.rowIndex="8" />
+             <Spinner fx:id="yearSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                 <valueFactory>
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="9999" />
+                 </valueFactory>
+             </Spinner>
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />

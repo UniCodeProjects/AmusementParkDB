@@ -455,9 +455,9 @@
                                        <PropertyValueFactory property="revenue" />
                                    </cellValueFactory>
                                </TableColumn>
-                               <TableColumn editable="false" text="Month">
+                               <TableColumn editable="false" text="Date">
                                    <cellValueFactory>
-                                       <PropertyValueFactory property="month" />
+                                       <PropertyValueFactory property="yearMonth" />
                                    </cellValueFactory>
                                </TableColumn>
                            </columns>

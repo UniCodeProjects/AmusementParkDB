@@ -19,6 +19,7 @@ import org.apdb4j.view.staff.tableview.ShopTableItem;
 
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -52,6 +53,8 @@ public class ShopScreenController extends PopupInitializer {
     @FXML
     private ChoiceBox<Month> monthChoiceBox;
     @FXML
+    private Spinner<Integer> yearSpinner;
+    @FXML
     private Button acceptAndCloseBtn;
     @Setter
     private static boolean editMode;
@@ -84,7 +87,7 @@ public class ShopScreenController extends PopupInitializer {
                 descriptionTextArea.getText(),
                 expensesSpinner.getValue(),
                 revenueSpinner.getValue(),
-                monthChoiceBox.getValue());
+                YearMonth.of(yearSpinner.getValue(), monthChoiceBox.getValue()));
         gridPane.getScene().getWindow().hide();
         if (!editMode) {
             Platform.runLater(() -> tableView.getItems().add(CONTROLLER.addData(shopItem)));
@@ -112,8 +115,9 @@ public class ShopScreenController extends PopupInitializer {
     protected void customInit() {
         IntStream.rangeClosed(1, 12).forEach(month -> monthChoiceBox.getItems().add(Month.of(month)));
         typeComboBox.getItems().addAll(CONTROLLER.getExistingTypes());
-        monthChoiceBox.setValue(YearMonth.now().getMonth());
         if (!editMode) {
+            monthChoiceBox.setValue(YearMonth.now().getMonth());
+            yearSpinner.getValueFactory().setValue(Year.now().getValue());
             return;
         }
         nameField.setText(shop.getName());
@@ -125,8 +129,10 @@ public class ShopScreenController extends PopupInitializer {
         descriptionTextArea.setText(shop.getDescription());
         expensesSpinner.getValueFactory().setValue(shop.getExpenses());
         revenueSpinner.getValueFactory().setValue(shop.getRevenue());
-        monthChoiceBox.setValue(shop.getMonth());
+        monthChoiceBox.setValue(shop.getYearMonth().getMonth());
         monthChoiceBox.setDisable(true);
+        yearSpinner.getValueFactory().setValue(shop.getYearMonth().getYear());
+        yearSpinner.setDisable(true);
     }
 
 }

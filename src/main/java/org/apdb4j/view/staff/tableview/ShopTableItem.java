@@ -9,7 +9,7 @@ import javafx.beans.property.StringProperty;
 import lombok.NonNull;
 
 import java.time.LocalTime;
-import java.time.Month;
+import java.time.YearMonth;
 
 /**
  * A shop representation used by the table view in the GUI.
@@ -25,7 +25,7 @@ public class ShopTableItem implements TableItem {
     private final StringProperty description;
     private final DoubleProperty expenses;
     private final DoubleProperty revenue;
-    private final ObjectProperty<Month> month;
+    private final ObjectProperty<YearMonth> yearMonth;
 
     /**
      * Default constructor.
@@ -37,7 +37,7 @@ public class ShopTableItem implements TableItem {
      * @param description the shop description
      * @param expense the shop expenses
      * @param revenue the shop revenue
-     * @param month the month related to the shop expenses and revenues
+     * @param yearMonth the yearMonth related to the shop expenses and revenues
      */
     public ShopTableItem(final @NonNull String id,
                          final @NonNull String name,
@@ -47,7 +47,7 @@ public class ShopTableItem implements TableItem {
                          final @NonNull String description,
                          final double expense,
                          final double revenue,
-                         final @NonNull Month month) {
+                         final @NonNull YearMonth yearMonth) {
         this.id = new SimpleStringProperty(id.trim());
         this.name = new SimpleStringProperty(name.trim());
         this.openingTime = new SimpleObjectProperty<>(openingTime);
@@ -56,7 +56,7 @@ public class ShopTableItem implements TableItem {
         this.description = new SimpleStringProperty(description.trim());
         this.expenses = new SimpleDoubleProperty(expense);
         this.revenue = new SimpleDoubleProperty(revenue);
-        this.month = new SimpleObjectProperty<>(month);
+        this.yearMonth = new SimpleObjectProperty<>(yearMonth);
     }
 
     /**
@@ -127,8 +127,8 @@ public class ShopTableItem implements TableItem {
      * Returns the month related to the expenses/revenues.
      * @return the month related to the expenses/revenues
      */
-    public Month getMonth() {
-        return month.get();
+    public YearMonth getYearMonth() {
+        return yearMonth.get();
     }
 
 }
