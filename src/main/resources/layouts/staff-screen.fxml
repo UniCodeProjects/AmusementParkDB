@@ -493,11 +493,31 @@
                      <center>
                         <TableView fx:id="maintenanceTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn editable="false" text="Facility ID" />
-                              <TableColumn editable="false" text="Price" />
-                              <TableColumn editable="false" text="Description" />
-                              <TableColumn editable="false" text="Date" />
-                              <TableColumn editable="false" text="Employee IDs" />
+                               <TableColumn editable="false" text="Facility ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="facilityID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Price">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="price" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Date">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="date" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Employee IDs">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="employeeIDs" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
