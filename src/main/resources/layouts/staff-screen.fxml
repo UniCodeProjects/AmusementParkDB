@@ -398,7 +398,7 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Shop name" />
+                              <TextField fx:id="shopSearchField" onKeyTyped="#onShopSearch" promptText="Shop name" />
                               <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
