@@ -126,18 +126,7 @@ public final class LoadFXML {
         final Task<Parent> task = new Task<>() {
             @Override
             protected Parent call() throws IOException {
-                final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_FILES_DIRECTORY
-                        + getFXMLFromControllerClass(fxmlControllerClass)));
-                if (!Objects.isNull(controllerConstructorArgs)) {
-                    loader.setControllerFactory(c -> {
-                        try {
-                            return getConstructor(fxmlControllerClass, controllerConstructorArgs.length)
-                                    .newInstance(controllerConstructorArgs);
-                        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                }
+                final FXMLLoader loader = initializeFXMLLoader(fxmlControllerClass, controllerConstructorArgs);
                 final var root = (Parent) loader.load();
                 if (setPreviousScene) {
                     final BackableFXMLController controller = loader.getController();
@@ -238,7 +227,6 @@ public final class LoadFXML {
      * @param heightSizeFactor the size factor for the popup height.
      * @param controllerConstructorArgs the arguments that have to be passed to the FXML controller's constructor.
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public static void fromEventAsPopup(final @NonNull Event event,
                                         final @NonNull Class<?> fxmlControllerClass,
                                         final @NonNull String title,
@@ -246,18 +234,7 @@ public final class LoadFXML {
                                         final double heightSizeFactor,
                                         final Object... controllerConstructorArgs) {
         Parent root;
-        final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_FILES_DIRECTORY
-                + getFXMLFromControllerClass(fxmlControllerClass)));
-        if (!Objects.isNull(controllerConstructorArgs)) {
-            loader.setControllerFactory(c -> {
-                try {
-                    return getConstructor(fxmlControllerClass, controllerConstructorArgs.length)
-                            .newInstance(controllerConstructorArgs);
-                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
+        final FXMLLoader loader = initializeFXMLLoader(fxmlControllerClass, controllerConstructorArgs);
         try {
             root = loader.load();
         } catch (IOException e) {
@@ -315,24 +292,12 @@ public final class LoadFXML {
      * @param title the window title.
      * @param controllerConstructorArgs the arguments that have to be passed to the FXML controller's constructor.
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public static void fromNodeAsPopup(final @NonNull Node node,
                                        final @NonNull Class<?> fxmlControllerClass,
                                        final @NonNull String title,
                                        final Object... controllerConstructorArgs) {
         Parent root;
-        final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_FILES_DIRECTORY
-                + getFXMLFromControllerClass(fxmlControllerClass)));
-        if (!Objects.isNull(controllerConstructorArgs)) {
-            loader.setControllerFactory(c -> {
-                try {
-                    return getConstructor(fxmlControllerClass, controllerConstructorArgs.length)
-                            .newInstance(controllerConstructorArgs);
-                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        }
+        final FXMLLoader loader = initializeFXMLLoader(fxmlControllerClass, controllerConstructorArgs);
         try {
             root = loader.load();
         } catch (IOException e) {
@@ -431,5 +396,23 @@ public final class LoadFXML {
             throw new IllegalArgumentException("Could not load any fxml controller from the given fxml file.");
         }
         return fxmlControllerClass;
+    }
+
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    private static FXMLLoader initializeFXMLLoader(final @NonNull Class<?> fxmlControllerClass,
+                                                   final Object... controllerConstructorArgs) {
+        final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(FXML_FILES_DIRECTORY
+                + getFXMLFromControllerClass(fxmlControllerClass)));
+        if (!Objects.isNull(controllerConstructorArgs)) {
+            loader.setControllerFactory(c -> {
+                try {
+                    return getConstructor(fxmlControllerClass, controllerConstructorArgs.length)
+                            .newInstance(controllerConstructorArgs);
+                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+        return loader;
     }
 }
