@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -106,6 +107,10 @@ public class StaffScreenController implements Initializable {
     private TextField maintenanceSearchField;
     @FXML
     private DatePicker maintenanceSearchDatePicker;
+    @FXML
+    private CheckBox maintenanceRideFilter;
+    @FXML
+    private CheckBox maintenanceShopFilter;
     @FXML
     private TableView<ReviewTableItem> reviewsTableView;
     @FXML
@@ -569,6 +574,34 @@ public class StaffScreenController implements Initializable {
                 maintenanceTableView.getItems().addAll(filtered);
                 maintenanceSearchDatePicker.setTooltip(new Tooltip("Press backspace or delete keys to clear date"));
             });
+        }
+    }
+
+    /**
+     * Filters the maintenances to retrieve the rides related ones.
+     * @param event the event
+     */
+    @FXML
+    void onMaintenanceRideFilter(final ActionEvent event) {
+        maintenanceTableView.getItems().clear();
+        if (maintenanceRideFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().filterByRides()));
+        } else {
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData()));
+        }
+    }
+
+    /**
+     * Filters the maintenances to retrieve the shops related ones.
+     * @param event the event
+     */
+    @FXML
+    void onMaintenanceShopFilter(final ActionEvent event) {
+        maintenanceTableView.getItems().clear();
+        if (maintenanceShopFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().filterByShops()));
+        } else {
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData()));
         }
     }
 

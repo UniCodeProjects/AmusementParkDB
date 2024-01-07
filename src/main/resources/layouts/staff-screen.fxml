@@ -475,9 +475,8 @@
                               <TextField fx:id="maintenanceSearchField" onKeyTyped="#onMaintenanceSearch" promptText="Facility ID" />
                               <DatePicker fx:id="maintenanceSearchDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onMaintenanceDateSearch" promptText="Maintenance date" />
                               <Label text="Filter for:" />
-                              <CheckBox mnemonicParsing="false" text="Rides" />
-                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
-                              <CheckBox mnemonicParsing="false" text="Shops" />
+                              <CheckBox fx:id="maintenanceRideFilter" mnemonicParsing="false" onAction="#onMaintenanceRideFilter" text="Rides" />
+                              <CheckBox fx:id="maintenanceShopFilter" mnemonicParsing="false" onAction="#onMaintenanceShopFilter" text="Shops" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddMaintenance" text="Add" />
