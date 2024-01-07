@@ -58,12 +58,12 @@ public class MaintenanceScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        // TODO: use id generator.
-        final MaintenanceTableItem maintenanceItem = new MaintenanceTableItem(editMode ? maintenance.getFacilityID() : "F-000",
-                maintenance.getPrice(),
-                maintenance.getDescription(),
-                maintenance.getDate(),
-                maintenance.getEmployeeIDs());
+        final MaintenanceTableItem maintenanceItem = new MaintenanceTableItem(
+                editMode ? maintenance.getFacilityID() : facilityIDField.getText(),
+                priceSpinner.getValue(),
+                descriptionTextArea.getText(),
+                datePicker.getValue(),
+                employeeIDsTextArea.getText());
         final MaintenanceController controller = new MaintenanceControllerImpl();
         if (!editMode) {
             Platform.runLater(() -> controller.addData(maintenanceItem));
