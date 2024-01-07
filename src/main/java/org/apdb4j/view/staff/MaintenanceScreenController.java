@@ -66,7 +66,7 @@ public class MaintenanceScreenController extends PopupInitializer {
                 employeeIDsTextArea.getText());
         final MaintenanceController controller = new MaintenanceControllerImpl();
         if (!editMode) {
-            Platform.runLater(() -> controller.addData(maintenanceItem));
+            Platform.runLater(() -> tableView.getItems().add(controller.addData(maintenanceItem)));
         } else {
             final int selectedIndex = tableView.getItems().indexOf(maintenance);
             Platform.runLater(() -> {
