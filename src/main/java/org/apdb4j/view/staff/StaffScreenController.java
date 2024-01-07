@@ -20,6 +20,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -102,6 +104,8 @@ public class StaffScreenController implements Initializable {
     private TableView<MaintenanceTableItem> maintenanceTableView;
     @FXML
     private TextField maintenanceSearchField;
+    @FXML
+    private DatePicker maintenanceSearchDatePicker;
     @FXML
     private TableView<ReviewTableItem> reviewsTableView;
     @FXML
@@ -544,6 +548,31 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Filters the maintenances based on the provided date in the date picker.
+     * @param event the event
+     */
+    @FXML
+    void onMaintenanceDateSearch(final ActionEvent event) {
+        final String datePickerText = Objects.requireNonNull(maintenanceSearchDatePicker.getEditor().getText());
+        if (datePickerText.isBlank()) {
+            // TODO: Put controller as field. Extract method.
+            final Collection<MaintenanceTableItem> allItems = new MaintenanceControllerImpl().getData();
+            Platform.runLater(() -> {
+                maintenanceTableView.getItems().clear();
+                maintenanceTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<MaintenanceTableItem> filtered = new MaintenanceControllerImpl()
+                    .filterByDate(maintenanceSearchDatePicker.getValue());
+            Platform.runLater(() -> {
+                maintenanceTableView.getItems().clear();
+                maintenanceTableView.getItems().addAll(filtered);
+                maintenanceSearchDatePicker.setTooltip(new Tooltip("Press backspace or delete keys to clear date"));
+            });
+        }
+    }
+
+    /**
      * Opens the add maintenance screen.
      * @param event the event
      */
@@ -614,6 +643,15 @@ public class StaffScreenController implements Initializable {
         shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
         ShopScreenController.setTableView(shopsTableView);
 
+        // Clears the maintenance search date picker field.
+        maintenanceSearchDatePicker.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
+                maintenanceSearchDatePicker.getEditor().clear();
+                maintenanceSearchDatePicker.setTooltip(null);
+                maintenanceTableView.getItems().clear();
+                maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
+            }
+        });
         maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
     }
 

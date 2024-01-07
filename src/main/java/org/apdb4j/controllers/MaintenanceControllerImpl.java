@@ -9,6 +9,7 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,6 +59,14 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
+    public <T extends TableItem> Collection<T> filterByDate(final LocalDate date) {
+        return extractMaintenanceData(searchQuery(MAINTENANCES.DATE.eq(date)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull Optional<String> getErrorMessage() {
         return Optional.empty();
     }
@@ -85,5 +94,4 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                 record.get(RESPONSIBILITIES.EMPLOYEENID))));
         return data;
     }
-
 }
