@@ -1,14 +1,18 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.MaintenanceController;
+import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
 
@@ -35,6 +39,8 @@ public class MaintenanceScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static MaintenanceTableItem maintenance;
+    @Setter
+    private static TableView<MaintenanceTableItem> tableView;
 
     /**
      * Default constructor.
@@ -44,6 +50,32 @@ public class MaintenanceScreenController extends PopupInitializer {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
         });
+    }
+
+    /**
+     * Adds/edits the new maintenance into the DB and adds/edits the tableview row.
+     * @param event the event
+     */
+    @FXML
+    void onAccept(final ActionEvent event) {
+        // TODO: use id generator.
+        final MaintenanceTableItem maintenanceItem = new MaintenanceTableItem(editMode ? maintenance.getFacilityID() : "F-000",
+                maintenance.getPrice(),
+                maintenance.getDescription(),
+                maintenance.getDate(),
+                maintenance.getEmployeeIDs());
+        final MaintenanceController controller = new MaintenanceControllerImpl();
+        if (!editMode) {
+            Platform.runLater(() -> controller.addData(maintenanceItem));
+        } else {
+            final int selectedIndex = tableView.getItems().indexOf(maintenance);
+            Platform.runLater(() -> {
+                tableView.getItems().remove(maintenance);
+                tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
+                tableView.getSelectionModel().select(selectedIndex);
+            });
+        }
+        gridPane.getScene().getWindow().hide();
     }
 
     /**
