@@ -15,8 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.MAINTENANCES;
-import static org.apdb4j.db.Tables.RESPONSIBILITIES;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * An implementation of a maintenance controller.
@@ -67,6 +66,47 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
+    public <T extends TableItem> Collection<T> filterByRides() {
+        final Result<Record> result = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(MAINTENANCES.asterisk(),
+                                RESPONSIBILITIES.asterisk().except(RESPONSIBILITIES.FACILITYID, RESPONSIBILITIES.DATE))
+                        .from(MAINTENANCES)
+                        .join(RESPONSIBILITIES)
+                        .onKey()
+                        .join(RIDES)
+                        .on(RIDES.RIDEID.eq(MAINTENANCES.FACILITYID))
+                        .where(RIDES.RIDEID.eq(MAINTENANCES.FACILITYID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return extractMaintenanceData(result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends TableItem> Collection<T> filterByShops() {
+        final Result<Record> result = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(MAINTENANCES.asterisk(),
+                                RESPONSIBILITIES.asterisk().except(RESPONSIBILITIES.FACILITYID, RESPONSIBILITIES.DATE))
+                        .from(MAINTENANCES)
+                        .join(RESPONSIBILITIES)
+                        .onKey()
+                        .join(FACILITIES)
+                        .on(FACILITIES.FACILITYID.eq(MAINTENANCES.FACILITYID))
+                        .where(FACILITIES.FACILITYID.eq(MAINTENANCES.FACILITYID))
+                        .and(FACILITIES.ISSHOP.isTrue())
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return extractMaintenanceData(result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public @NonNull Optional<String> getErrorMessage() {
         return Optional.empty();
     }
@@ -78,7 +118,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                         .from(MAINTENANCES)
                         .join(RESPONSIBILITIES)
                         .onKey()
-                        .and(condition)
+                        .where(condition)
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
