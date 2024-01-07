@@ -473,7 +473,7 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField fx:id="maintenanceSearchField" onKeyTyped="#onMaintenanceSearch" promptText="Facility ID" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Maintenance date" />
+                              <DatePicker fx:id="maintenanceSearchDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onMaintenanceDateSearch" promptText="Maintenance date" />
                               <Label text="Filter for:" />
                               <CheckBox mnemonicParsing="false" text="Rides" />
                               <CheckBox mnemonicParsing="false" text="Exhibitions" />
