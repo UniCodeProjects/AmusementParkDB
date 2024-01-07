@@ -101,6 +101,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TableView<MaintenanceTableItem> maintenanceTableView;
     @FXML
+    private TextField maintenanceSearchField;
+    @FXML
     private TableView<ReviewTableItem> reviewsTableView;
     @FXML
     private ToggleGroup attractionsToggleGroup;
@@ -513,6 +515,32 @@ public class StaffScreenController implements Initializable {
         ShopScreenController.setEditMode(true);
         ShopScreenController.setShop(selectedShop);
         LoadFXML.fromEventAsPopup(event, "layouts/shop-form.fxml", "Edit shop");
+    }
+
+    /**
+     * Filters the maintenance table based on the content of the search field at each typed key.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onMaintenanceSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (maintenanceSearchField.getText().isBlank() || maintenanceSearchField.getText() == null) {
+            // TODO: Put controller as field. Extract method.
+            final Collection<MaintenanceTableItem> allItems = new MaintenanceControllerImpl().getData();
+            Platform.runLater(() -> {
+                maintenanceTableView.getItems().clear();
+                maintenanceTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<MaintenanceTableItem> filtered = new MaintenanceControllerImpl()
+                    .filter(maintenanceSearchField.getText());
+            Platform.runLater(() -> {
+                maintenanceTableView.getItems().clear();
+                maintenanceTableView.getItems().addAll(filtered);
+            });
+        }
     }
 
     /**
