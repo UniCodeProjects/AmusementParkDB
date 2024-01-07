@@ -13,9 +13,23 @@ public interface MaintenanceController extends AdministrationController, Filtera
     /**
      * Filters all the data in this table view based on the given local date.
      * @param date the date to filter by
-     * @param <T> the type of the {@code TableItem}
+     * @param <T> the {@code MaintenanceTableItem} type
      * @return the filtered data
      */
     <T extends TableItem> Collection<T> filterByDate(LocalDate date);
+
+    /**
+     * Filters all the data in this table view to retrieve the ride related maintenances.
+     * @param <T> the {@code MaintenanceTableItem} type
+     * @return the filtered data
+     */
+    <T extends TableItem> Collection<T> filterByRides();
+
+    /**
+     * Filters all the data in this table view to retrieve the shop related maintenances.
+     * @param <T> the {@code MaintenanceTableItem} type
+     * @return the filtered data
+     */
+    <T extends TableItem> Collection<T> filterByShops();
 
 }
