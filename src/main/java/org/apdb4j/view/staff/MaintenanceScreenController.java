@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
@@ -16,6 +17,8 @@ import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
  */
 public class MaintenanceScreenController extends PopupInitializer {
 
+    @FXML
+    private TextField facilityIDField;
     @FXML
     private GridPane gridPane;
     @FXML
@@ -51,6 +54,8 @@ public class MaintenanceScreenController extends PopupInitializer {
         if (!editMode) {
             return;
         }
+        facilityIDField.setText(maintenance.getFacilityID());
+        facilityIDField.setDisable(true);
         priceSpinner.getValueFactory().setValue(maintenance.getPrice());
         descriptionTextArea.setText(maintenance.getDescription());
         datePicker.setValue(maintenance.getDate());
