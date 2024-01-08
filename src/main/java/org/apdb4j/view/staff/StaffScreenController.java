@@ -726,8 +726,8 @@ public class StaffScreenController implements Initializable {
      * @param rowName the row name to display in the alert
      */
     protected static void showAlertForUnselectedRowInTableView(final String rowName) {
-        final var alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("An error has occurred.");
+        final var alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText("Whoops, something went wrong...");
         alert.setContentText("A row must be selected to edit the " + rowName + " entry!");
         alert.show();
     }
