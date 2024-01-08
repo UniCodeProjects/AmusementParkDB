@@ -687,6 +687,7 @@ public class StaffScreenController implements Initializable {
             if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
                 maintenanceSearchDatePicker.getEditor().clear();
                 maintenanceSearchDatePicker.setTooltip(null);
+                maintenanceSearchDatePicker.setValue(null);
                 maintenanceTableView.getItems().clear();
                 maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
             }
