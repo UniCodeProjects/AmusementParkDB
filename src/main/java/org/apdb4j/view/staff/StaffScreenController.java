@@ -686,6 +686,7 @@ public class StaffScreenController implements Initializable {
             }
         });
         maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
+        MaintenanceScreenController.setTableView(maintenanceTableView);
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
