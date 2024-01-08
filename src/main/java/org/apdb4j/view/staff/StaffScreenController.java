@@ -28,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.ContractControllerImpl;
 import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.controllers.MaintenanceController;
 import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.controllers.OverviewController;
 import org.apdb4j.controllers.OverviewControllerImpl;
@@ -57,6 +58,7 @@ import java.util.ResourceBundle;
  */
 public class StaffScreenController implements Initializable {
 
+    private static final MaintenanceController MAINTENANCE_CONTROLLER = new MaintenanceControllerImpl();
     @FXML
     private TextField parkNameField;
     @FXML
@@ -536,14 +538,14 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (maintenanceSearchField.getText().isBlank() || maintenanceSearchField.getText() == null) {
-            // TODO: Put controller as field. Extract method.
-            final Collection<MaintenanceTableItem> allItems = new MaintenanceControllerImpl().getData();
+            // TODO: Extract method.
+            final Collection<MaintenanceTableItem> allItems = MAINTENANCE_CONTROLLER.getData();
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
                 maintenanceTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<MaintenanceTableItem> filtered = new MaintenanceControllerImpl()
+            final Collection<MaintenanceTableItem> filtered = MAINTENANCE_CONTROLLER
                     .filter(maintenanceSearchField.getText());
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
@@ -560,14 +562,14 @@ public class StaffScreenController implements Initializable {
     void onMaintenanceDateSearch(final ActionEvent event) {
         final String datePickerText = Objects.requireNonNull(maintenanceSearchDatePicker.getEditor().getText());
         if (datePickerText.isBlank()) {
-            // TODO: Put controller as field. Extract method.
-            final Collection<MaintenanceTableItem> allItems = new MaintenanceControllerImpl().getData();
+            // TODO: Extract method.
+            final Collection<MaintenanceTableItem> allItems = MAINTENANCE_CONTROLLER.getData();
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
                 maintenanceTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<MaintenanceTableItem> filtered = new MaintenanceControllerImpl()
+            final Collection<MaintenanceTableItem> filtered = MAINTENANCE_CONTROLLER
                     .filterByDate(maintenanceSearchDatePicker.getValue());
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
@@ -583,11 +585,13 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onMaintenanceRideFilter(final ActionEvent event) {
-        maintenanceTableView.getItems().clear();
-        if (maintenanceRideFilter.isSelected()) {
-            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().filterByRides()));
+        if (maintenanceRideFilter.isSelected() && !maintenanceShopFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().removeAll(MAINTENANCE_CONTROLLER.filterByShops()));
+        } else if (!maintenanceRideFilter.isSelected() && maintenanceShopFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().removeAll(MAINTENANCE_CONTROLLER.filterByRides()));
         } else {
-            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData()));
+            maintenanceTableView.getItems().clear();
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData()));
         }
     }
 
@@ -597,11 +601,13 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onMaintenanceShopFilter(final ActionEvent event) {
-        maintenanceTableView.getItems().clear();
-        if (maintenanceShopFilter.isSelected()) {
-            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().filterByShops()));
+        if (maintenanceShopFilter.isSelected() && !maintenanceRideFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().removeAll(MAINTENANCE_CONTROLLER.filterByRides()));
+        } else if (!maintenanceShopFilter.isSelected() && maintenanceRideFilter.isSelected()) {
+            Platform.runLater(() -> maintenanceTableView.getItems().removeAll(MAINTENANCE_CONTROLLER.filterByShops()));
         } else {
-            Platform.runLater(() -> maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData()));
+            maintenanceTableView.getItems().clear();
+            Platform.runLater(() -> maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData()));
         }
     }
 
@@ -682,10 +688,10 @@ public class StaffScreenController implements Initializable {
                 maintenanceSearchDatePicker.getEditor().clear();
                 maintenanceSearchDatePicker.setTooltip(null);
                 maintenanceTableView.getItems().clear();
-                maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
+                maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
             }
         });
-        maintenanceTableView.getItems().addAll(new MaintenanceControllerImpl().getData());
+        maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
         MaintenanceScreenController.setTableView(maintenanceTableView);
     }
 
