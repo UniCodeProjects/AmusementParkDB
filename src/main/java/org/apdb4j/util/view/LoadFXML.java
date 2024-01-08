@@ -47,61 +47,10 @@ public final class LoadFXML {
      * @param setPreviousScene {@code true} if the next scene must set its previous scene (e.g. if the scene has a
      *                                     button to turn back to the previous scene), {@code false} otherwise.
      */
-//    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public static void fromEvent(final Event event, final String fxml,
                                  final boolean removeFocus, final boolean showLoading,
                                  final boolean setPreviousScene) {
         fromEvent(event, getControllerClass(fxml), removeFocus, showLoading, setPreviousScene, NULL_VARARG);
-//        final var stage = JavaFXUtils.getStage(event);
-//        final var previousSceneStageTitle = stage.getTitle();
-//        final var stageWidth = stage.getScene().getWidth();
-//        final var stageHeight = stage.getScene().getHeight();
-//        final Task<Parent> task = new Task<>() {
-//            @Override
-//            protected Parent call() throws IOException {
-//                final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
-//                final var root = (Parent) loader.load();
-//                if (setPreviousScene) {
-//                    final BackableFXMLController controller = loader.getController();
-//                    controller.setPreviousScene(((Node) event.getSource()).getScene(), previousSceneStageTitle);
-//                }
-//                return root;
-//            }
-//        };
-//
-//        task.setOnSucceeded(e -> {
-//            Platform.runLater(() -> {
-//                final Parent root = task.getValue();
-//                final Scene scene = new Scene(root, stageWidth, stageHeight);
-//                if (removeFocus) {
-//                    root.requestFocus();
-//                }
-//                stage.setScene(scene);
-//            });
-//        });
-//
-//        task.setOnFailed(e -> {
-//            throw new IllegalStateException(task.getException());
-//        });
-//
-//        task.setOnRunning(e -> {
-//            if (showLoading) {
-//                Platform.runLater(() -> {
-//                    final Parent root;
-//                    try {
-//                        root = FXMLLoader.load(ClassLoader.getSystemResource("layouts/loading-screen.fxml"));
-//                    } catch (IOException ex) {
-//                        throw new RuntimeException(ex);
-//                    }
-//                    final Scene scene = new Scene(root, stageWidth, stageHeight);
-//                    stage.setScene(scene);
-//                });
-//            }
-//        });
-//
-//        final Thread thread = new Thread(task);
-//        System.out.println(getFxmlControllerClassFromFxmlFilePath(fxml));
-//        thread.start();
     }
 
     /**
@@ -136,16 +85,14 @@ public final class LoadFXML {
             }
         };
 
-        task.setOnSucceeded(e -> {
-            Platform.runLater(() -> {
-                final Parent root = task.getValue();
-                final Scene scene = new Scene(root, stageWidth, stageHeight);
-                if (removeFocus) {
-                    root.requestFocus();
-                }
-                stage.setScene(scene);
-            });
-        });
+        task.setOnSucceeded(e -> Platform.runLater(() -> {
+            final Parent root = task.getValue();
+            final Scene scene = new Scene(root, stageWidth, stageHeight);
+            if (removeFocus) {
+                root.requestFocus();
+            }
+            stage.setScene(scene);
+        }));
 
         task.setOnFailed(e -> {
             throw new IllegalStateException(task.getException());
@@ -198,23 +145,6 @@ public final class LoadFXML {
                                         final double widthSizeFactor,
                                         final double heightSizeFactor) {
         fromEventAsPopup(event, getControllerClass(fxml), title, widthSizeFactor, heightSizeFactor, NULL_VARARG);
-//        Parent root;
-//        try {
-//            root = FXMLLoader.load(ClassLoader.getSystemResource(fxml));
-//        } catch (final IOException e) {
-//            throw new IllegalStateException(FXML_LOAD_EXCEPTION_ERROR_MSG, e);
-//        }
-//        // Creating a new Scene with the loaded FXML and with an adequate size.
-//        final var window = JavaFXUtils.getStage(event).getScene().getWindow();
-//        final Scene popupScene = new Scene(root, window.getWidth() * widthSizeFactor, window.getHeight() * heightSizeFactor);
-//        // Setting the popup stage.
-//        final Stage popupStage = new Stage();
-//        popupStage.setScene(popupScene);
-//        popupStage.setTitle(title);
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        // Showing the popup window
-//        root.requestFocus();
-//        popupStage.show();
     }
 
     /**
@@ -264,24 +194,6 @@ public final class LoadFXML {
                                        final @NonNull String fxml,
                                        final @NonNull String title) {
         fromNodeAsPopup(node, getControllerClass(fxml), title, NULL_VARARG);
-//        Parent root;
-//        try {
-//            root = FXMLLoader.load(ClassLoader.getSystemResource(fxml));
-//        } catch (final IOException e) {
-//            throw new IllegalStateException(FXML_LOAD_EXCEPTION_ERROR_MSG, e);
-//        }
-//        // Creating a new Scene with the loaded FXML and with an adequate size.
-//        final var window = node.getScene().getWindow();
-//        final var sizeFactor = 0.3;
-//        final Scene popupScene = new Scene(root, window.getWidth() * sizeFactor, window.getHeight() * sizeFactor);
-//        // Setting the popup stage.
-//        final Stage popupStage = new Stage();
-//        popupStage.setScene(popupScene);
-//        popupStage.setTitle(title);
-//        popupStage.initModality(Modality.APPLICATION_MODAL);
-//        // Showing the popup window
-//        root.requestFocus();
-//        popupStage.show();
     }
 
     /**
