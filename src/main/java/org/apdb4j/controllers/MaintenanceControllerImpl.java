@@ -12,6 +12,7 @@ import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +27,8 @@ import static org.apdb4j.db.Tables.*;
  */
 public class MaintenanceControllerImpl implements MaintenanceController {
 
+    private String errorMessage;
+
     /**
      * {@inheritDoc}
      */
@@ -38,14 +41,18 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) {
+    public <T extends TableItem> T addData(final T item) throws SQLException {
         final MaintenanceTableItem maintenance = (MaintenanceTableItem) item;
-        MaintenanceManager.addNewMaintenance(maintenance.getFacilityID(),
+        final boolean successfulQuery = MaintenanceManager.addNewMaintenance(maintenance.getFacilityID(),
                 maintenance.getPrice(),
                 maintenance.getDescription(),
                 maintenance.getDate(),
                 "",
                 maintenance.getEmployeeIDs());
+        if (!successfulQuery) {
+            errorMessage = "Something went wrong.";
+            throw new SQLException(errorMessage);
+        }
         return item;
     }
 
@@ -141,7 +148,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
-        return Optional.empty();
+        return Optional.ofNullable(errorMessage);
     }
 
     private Result<Record> searchQuery(final Condition condition) {

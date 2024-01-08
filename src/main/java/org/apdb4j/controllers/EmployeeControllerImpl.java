@@ -1,6 +1,7 @@
 package org.apdb4j.controllers;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import lombok.NonNull;
 import lombok.Setter;
@@ -14,18 +15,15 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.tools.StringUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.CONTRACTS;
-import static org.apdb4j.db.Tables.STAFF;
-import static org.jooq.impl.DSL.concat;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.inline;
+import static org.apdb4j.db.Tables.*;
+import static org.jooq.impl.DSL.*;
 
 /**
  * A staff controller specifically used for employees.
@@ -80,8 +78,18 @@ public class EmployeeControllerImpl implements EmployeeController {
                                 employee.isAdmin(),
                                 !employee.isAdmin(),
                                 "");
-                        final var contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
-                        Platform.runLater(() -> Objects.requireNonNull(contractTableView).getItems().add(contract));
+                        ContractTableItem contract = null;
+                        try {
+                            contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
+                        } catch (final SQLException e) {
+                            final var alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("An error has occurred.");
+                            alert.setContentText(new ContractControllerImpl().getErrorMessage().orElse(""));
+                            alert.show();
+                        }
+                        // Final var for lambda usage.
+                        final ContractTableItem finalContract = contract;
+                        Platform.runLater(() -> Objects.requireNonNull(contractTableView).getItems().add(finalContract));
                     });
                     return 1;
                 })

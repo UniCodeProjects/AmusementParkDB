@@ -3,6 +3,7 @@ package org.apdb4j.view.staff;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -17,6 +18,7 @@ import org.apdb4j.controllers.ShopControllerImpl;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
@@ -90,7 +92,16 @@ public class ShopScreenController extends PopupInitializer {
                 YearMonth.of(yearSpinner.getValue(), monthChoiceBox.getValue()));
         gridPane.getScene().getWindow().hide();
         if (!editMode) {
-            Platform.runLater(() -> tableView.getItems().add(CONTROLLER.addData(shopItem)));
+            Platform.runLater(() -> {
+                try {
+                    tableView.getItems().add(CONTROLLER.addData(shopItem));
+                } catch (final SQLException e) {
+                    final var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("An error has occurred.");
+                    alert.setContentText(CONTROLLER.getErrorMessage().orElse(""));
+                    alert.show();
+                }
+            });
         } else {
             Platform.runLater(() -> {
                 final int selectedIndex = tableView.getItems().indexOf(shop);

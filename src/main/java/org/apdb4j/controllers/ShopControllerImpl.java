@@ -12,6 +12,7 @@ import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,8 @@ import static org.apdb4j.db.Tables.*;
  * Implementation of a shop controller.
  */
 public class ShopControllerImpl implements ShopController {
+
+    private String errorMessage;
 
     /**
      * {@inheritDoc}
@@ -46,17 +49,18 @@ public class ShopControllerImpl implements ShopController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) {
+    public <T extends TableItem> T addData(final T item) throws SQLException {
         final ShopTableItem shop = (ShopTableItem) item;
+        boolean query1Successful;
         if (shop.getDescription().isBlank()) {
-            ShopManager.addNewShop(shop.getId(),
+            query1Successful = ShopManager.addNewShop(shop.getId(),
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
                     shop.getType(),
                     "");
         } else {
-            ShopManager.addNewShopWithDescription(shop.getId(),
+            query1Successful = ShopManager.addNewShopWithDescription(shop.getId(),
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
@@ -64,11 +68,15 @@ public class ShopControllerImpl implements ShopController {
                     shop.getDescription(),
                     "");
         }
-        ShopManager.addNewMonthlyCost(shop.getId(),
+        final boolean query2Successful = ShopManager.addNewMonthlyCost(shop.getId(),
                 shop.getYearMonth(),
                 shop.getExpenses(),
                 shop.getRevenue(),
                 "");
+        if (!query1Successful || !query2Successful) {
+            errorMessage = "Something went wrong";
+            throw new SQLException(errorMessage);
+        }
         return item;
     }
 
@@ -136,7 +144,7 @@ public class ShopControllerImpl implements ShopController {
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
-        return Optional.empty();
+        return Optional.ofNullable(errorMessage);
     }
 
     private Result<Record> searchQuery() {
