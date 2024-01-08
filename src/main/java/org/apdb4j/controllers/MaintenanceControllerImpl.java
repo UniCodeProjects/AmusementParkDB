@@ -91,7 +91,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> Collection<T> filterByDate(final LocalDate date) {
+    public <T extends MaintenanceTableItem> Collection<T> filterByDate(final LocalDate date) {
         return extractMaintenanceData(searchQuery(MAINTENANCES.DATE.eq(date)));
     }
 
@@ -99,7 +99,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> Collection<T> filterByRides() {
+    public <T extends MaintenanceTableItem> Collection<T> filterByRides() {
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(MAINTENANCES.asterisk(),
                                 RESPONSIBILITIES.asterisk().except(RESPONSIBILITIES.FACILITYID, RESPONSIBILITIES.DATE))
@@ -119,7 +119,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> Collection<T> filterByShops() {
+    public <T extends MaintenanceTableItem> Collection<T> filterByShops() {
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(MAINTENANCES.asterisk(),
                                 RESPONSIBILITIES.asterisk().except(RESPONSIBILITIES.FACILITYID, RESPONSIBILITIES.DATE))
