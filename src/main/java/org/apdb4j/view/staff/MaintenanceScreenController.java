@@ -91,6 +91,7 @@ public class MaintenanceScreenController extends PopupInitializer {
         priceSpinner.getValueFactory().setValue(maintenance.getPrice());
         descriptionTextArea.setText(maintenance.getDescription());
         datePicker.setValue(maintenance.getDate());
+        datePicker.setDisable(true);
         employeeIDsTextArea.setText(maintenance.getEmployeeIDs());
     }
 
