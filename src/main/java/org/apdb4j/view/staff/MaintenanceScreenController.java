@@ -3,6 +3,7 @@ package org.apdb4j.view.staff;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
@@ -15,6 +16,8 @@ import org.apdb4j.controllers.MaintenanceController;
 import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
+
+import java.sql.SQLException;
 
 /**
  * The FXML controller for the maintenance screen.
@@ -66,7 +69,16 @@ public class MaintenanceScreenController extends PopupInitializer {
                 employeeIDsTextArea.getText());
         final MaintenanceController controller = new MaintenanceControllerImpl();
         if (!editMode) {
-            Platform.runLater(() -> tableView.getItems().add(controller.addData(maintenanceItem)));
+            Platform.runLater(() -> {
+                try {
+                    tableView.getItems().add(controller.addData(maintenanceItem));
+                } catch (final SQLException e) {
+                    final var alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("An error has occurred.");
+                    alert.setContentText(controller.getErrorMessage().orElse(""));
+                    alert.show();
+                }
+            });
         } else {
             final int selectedIndex = tableView.getItems().indexOf(maintenance);
             Platform.runLater(() -> {

@@ -10,6 +10,7 @@ import org.jooq.Record;
 import org.jooq.Result;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) {
+    public <T extends TableItem> T addData(final T item) throws SQLException {
         final ContractTableItem contract = (ContractTableItem) item;
         try {
             ContractManager.signNewContract(contract.getId(),
@@ -55,6 +56,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
                     "");
         } catch (final AccessDeniedException e) {
             errorMessage = e.getMessage();
+            throw new SQLException(e);
         }
         return item;
     }
