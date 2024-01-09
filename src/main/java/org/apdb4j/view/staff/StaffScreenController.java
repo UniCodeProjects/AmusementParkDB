@@ -33,6 +33,7 @@ import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.controllers.OverviewController;
 import org.apdb4j.controllers.OverviewControllerImpl;
 import org.apdb4j.controllers.ShopControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -726,10 +727,10 @@ public class StaffScreenController implements Initializable {
      * @param rowName the row name to display in the alert
      */
     protected static void showAlertForUnselectedRowInTableView(final String rowName) {
-        final var alert = new Alert(Alert.AlertType.WARNING);
-        alert.setHeaderText("Whoops, something went wrong...");
-        alert.setContentText("A row must be selected to edit the " + rowName + " entry!");
-        alert.show();
+        new AlertBuilder().setAlertType(Alert.AlertType.WARNING)
+                .setHeaderText("Whoops, something went wrong...")
+                .setContentText("A row must be selected to edit the " + rowName + " entry!")
+                .show();
     }
 
 }

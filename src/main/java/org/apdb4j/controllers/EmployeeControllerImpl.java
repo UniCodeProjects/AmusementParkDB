@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apdb4j.core.managers.StaffManager;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -82,10 +83,9 @@ public class EmployeeControllerImpl implements EmployeeController {
                         try {
                             contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
                         } catch (final SQLException e) {
-                            final var alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setHeaderText("An error has occurred.");
-                            alert.setContentText(new ContractControllerImpl().getErrorMessage().orElse(""));
-                            alert.show();
+                            new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                                    .setContentText(new ContractControllerImpl().getErrorMessage().orElse(""))
+                                    .show();
                         }
                         // Final var for lambda usage.
                         final ContractTableItem finalContract = contract;

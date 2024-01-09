@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.MaintenanceController;
 import org.apdb4j.controllers.MaintenanceControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
 
@@ -73,10 +74,9 @@ public class MaintenanceScreenController extends PopupInitializer {
                 try {
                     tableView.getItems().add(controller.addData(maintenanceItem));
                 } catch (final SQLException e) {
-                    final var alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("An error has occurred.");
-                    alert.setContentText(controller.getErrorMessage().orElse(""));
-                    alert.show();
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(controller.getErrorMessage().orElse(""))
+                            .show();
                 }
             });
         } else {
