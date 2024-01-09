@@ -556,9 +556,21 @@
                      <center>
                         <TableView fx:id="reviewsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn text="Service ID" />
-                              <TableColumn text="Rating" />
-                              <TableColumn text="Description" />
+                               <TableColumn text="Service ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="serviceID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Rating">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="rating" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
