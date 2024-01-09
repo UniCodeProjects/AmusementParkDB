@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.ShopController;
 import org.apdb4j.controllers.ShopControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 
@@ -96,10 +97,9 @@ public class ShopScreenController extends PopupInitializer {
                 try {
                     tableView.getItems().add(CONTROLLER.addData(shopItem));
                 } catch (final SQLException e) {
-                    final var alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("An error has occurred.");
-                    alert.setContentText(CONTROLLER.getErrorMessage().orElse(""));
-                    alert.show();
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(CONTROLLER.getErrorMessage().orElse(""))
+                            .show();
                 }
             });
         } else {
