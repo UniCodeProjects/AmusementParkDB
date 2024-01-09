@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import org.apdb4j.core.managers.Manager;
 import org.apdb4j.db.tables.ParkServices;
 import org.apdb4j.db.tables.Rides;
 import org.apdb4j.util.QueryBuilder;
@@ -22,6 +21,8 @@ import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.*;
+
+import static org.apdb4j.db.Tables.*;
 
 /**
  * FXML controller for the screen that allows the user to see all the rides' info.
@@ -101,16 +102,29 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
     }
 
     private void initializeRidesListView() {
-        final var rides = Manager.viewAllInfoFromTable("rides", "");
+        final var queryBuilder = new QueryBuilder();
+        final var rides = queryBuilder.createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.NAME, RIDES.INTENSITY)
+                        .from(PARK_SERVICES, RIDES)
+                        .where(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
         for (final var ride : rides) {
             final StringBuilder rideInfo = new StringBuilder();
             for (int i = 0; i < ride.size(); i++) {
                 final String iteratingFieldName = Objects.requireNonNull(ride.field(i)).getName();
-                if ("intensity".equalsIgnoreCase(iteratingFieldName) || "rideid".equalsIgnoreCase(iteratingFieldName)) {
-                    rideInfo.append(iteratingFieldName).append(": ").append(ride.get(i)).append(' ');
-                }
+                rideInfo.append(iteratingFieldName).append(": ").append(ride.get(i)).append(' ');
             }
             final var rideInfoHyperlink = new Hyperlink(rideInfo.toString());
+            final var rideName = ride.get(PARK_SERVICES.NAME);
+            rideInfoHyperlink.setOnAction(event ->
+                    LoadFXML.fromEventAsPopup(event,
+                            ParkServicesInfoScreenController.class,
+                            rideName + " info",
+                            0.5,
+                            0.5,
+                            rideName));
             rideInfoHyperlink.setFont(Font.font(RIDE_INFO_FONT_SIZE));
             rideInfoHyperlink.setFocusTraversable(false);
             ridesListView.getItems().add(rideInfoHyperlink);
