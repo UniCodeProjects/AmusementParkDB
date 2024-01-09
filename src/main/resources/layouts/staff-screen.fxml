@@ -528,7 +528,7 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Facility name" />
+                              <TextField promptText="Park service ID" />
                               <DatePicker maxWidth="1.7976931348623157E308" promptText="Review date" />
                               <Label text="Filter by rating:" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
