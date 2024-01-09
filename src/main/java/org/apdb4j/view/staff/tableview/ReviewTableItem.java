@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A review representation used by the table view in the GUI.
@@ -28,10 +29,10 @@ public class ReviewTableItem implements TableItem {
      */
     public ReviewTableItem(final @NonNull String serviceID,
                            final double rating,
-                           final @NonNull String description) {
+                           final String description) {
         this.serviceID = new SimpleStringProperty(serviceID.trim());
         this.rating = new SimpleDoubleProperty(rating);
-        this.description = new SimpleStringProperty(description.trim());
+        this.description = new SimpleStringProperty(StringUtils.defaultString(description).trim());
     }
 
     /**
