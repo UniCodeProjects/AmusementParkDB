@@ -1,5 +1,6 @@
 package org.apdb4j.view.guests;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,6 +73,7 @@ public class UserScreenController implements FXMLController, Initializable {
             LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true);
             JavaFXUtils.setStageTitle(event, "My personal data");
         });
+        logOutButton.setOnAction(event -> Platform.exit());
         for (final var accountInfoItem : accountInfo.getItems()) {
             accountInfoItem.setFocusTraversable(false);
         }
