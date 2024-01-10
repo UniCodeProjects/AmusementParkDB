@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.net.URL;
@@ -130,6 +131,7 @@ public class ParkServicesInfoScreenController implements Initializable {
                 true,
                 true,
                 parkServiceName);
+        JavaFXUtils.setStageTitle(event, "reviews");
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
