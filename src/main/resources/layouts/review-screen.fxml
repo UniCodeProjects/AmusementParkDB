@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.ReviewScreenController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
@@ -18,7 +17,7 @@
          <top>
             <BorderPane BorderPane.alignment="CENTER">
                <center>
-                  <Label fx:id="title" text="&lt;parkservicename&gt; reviews" BorderPane.alignment="CENTER">
+                  <Label fx:id="title" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

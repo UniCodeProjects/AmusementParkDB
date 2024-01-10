@@ -26,8 +26,7 @@ import static org.apdb4j.db.Tables.*;
  */
 public class ReviewScreenController extends BackableAbstractFXMLController {
 
-    private static final String TITLE_BASE_TEXT = "Reviews";
-
+    private static final String TITLE_BASE_TEXT = "reviews";
     @FXML
     private Button addReviewButton;
     @FXML
