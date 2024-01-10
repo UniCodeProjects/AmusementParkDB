@@ -125,6 +125,12 @@ public class StaffScreenController implements Initializable {
     @FXML
     private Slider ratingFilterSlider;
     @FXML
+    private CheckBox reviewRideFilter;
+    @FXML
+    private CheckBox reviewExhibitionFilter;
+    @FXML
+    private CheckBox reviewShopFilter;
+    @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
     private RadioButton ridesRadioBtn;
@@ -730,6 +736,11 @@ public class StaffScreenController implements Initializable {
         MaintenanceScreenController.setTableView(maintenanceTableView);
 
         ratingFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Disabling other filters.
+            reviewSearchField.setText(null);
+            reviewRideFilter.setSelected(false);
+            reviewExhibitionFilter.setSelected(false);
+            reviewShopFilter.setSelected(false);
             // Makes the slider move in discrete steps.
             ratingFilterSlider.setValue(newValue.intValue());
             if (oldValue.intValue() != newValue.intValue()) {
