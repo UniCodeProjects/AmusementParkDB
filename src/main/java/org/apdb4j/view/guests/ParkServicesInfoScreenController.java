@@ -124,6 +124,12 @@ public class ParkServicesInfoScreenController implements Initializable {
      */
     @FXML
     void onReviewsButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEvent(event,
+                ReviewScreenController.class,
+                true,
+                true,
+                true,
+                parkServiceName);
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
