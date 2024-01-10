@@ -2,8 +2,6 @@ package org.apdb4j.view.guests;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
@@ -12,15 +10,6 @@ import org.apdb4j.view.BackableAbstractFXMLController;
  * FXML controller for the scene that allows the user to see their purchases in the park.
  */
 public class UserPurchasesController extends BackableAbstractFXMLController {
-
-    @FXML
-    private VBox pane;
-
-    @FXML
-    private Button seasonTicketsButton;
-
-    @FXML
-    private Button ticketsButton;
 
     /**
      * Opens the screen containing all the tickets bought by the user so far.

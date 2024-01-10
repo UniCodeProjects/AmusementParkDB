@@ -3,11 +3,9 @@ package org.apdb4j.view.guests;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.QueryBuilder;
@@ -29,13 +27,9 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
 
     private static final String TITLE_BASE_TEXT = "reviews";
     @FXML
-    private Button addReviewButton;
-    @FXML
     private Label averageRating;
     @FXML
     private Label numReviews;
-    @FXML
-    private BorderPane pane;
     @FXML
     private ListView<VBox> reviews;
     @FXML

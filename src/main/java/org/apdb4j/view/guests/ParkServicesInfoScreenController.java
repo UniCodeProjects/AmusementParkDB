@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -32,8 +31,6 @@ public class ParkServicesInfoScreenController implements Initializable {
     private TextArea description;
     @FXML
     private VBox descriptionAndInfoContainer;
-    @FXML
-    private BorderPane pane;
     @FXML
     private Label parkServiceDescriptionLabel;
     @FXML

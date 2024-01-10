@@ -3,7 +3,6 @@ package org.apdb4j.view.guests;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
@@ -17,9 +16,6 @@ public class UserTicketsScreenController extends BackableAbstractFXMLController 
 
     @FXML
     private ListView<Hyperlink> listView;
-
-    @FXML
-    private BorderPane pane;
 
     /**
      * {@inheritDoc}
