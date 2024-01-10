@@ -125,6 +125,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private Slider ratingFilterSlider;
     @FXML
+    private CheckBox rangedCheckBox;
+    @FXML
     private CheckBox reviewRideFilter;
     @FXML
     private CheckBox reviewExhibitionFilter;
@@ -678,6 +680,22 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Switches between ranged and exclusive mode for the review slider.
+     * @param event the event
+     */
+    @FXML
+    void onReviewRanged(final ActionEvent event) {
+        final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
+        final ReviewController controller = new ReviewControllerImpl();
+        tableItems.clear();
+        if (rangedCheckBox.isSelected()) {
+            tableItems.addAll(controller.filterByRatingRange(Math.toIntExact(Math.round(ratingFilterSlider.getValue()))));
+        } else {
+            tableItems.addAll(controller.filterByRating(Math.toIntExact(Math.round(ratingFilterSlider.getValue()))));
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -747,7 +765,11 @@ public class StaffScreenController implements Initializable {
                 final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
                 final ReviewController controller = new ReviewControllerImpl();
                 tableItems.clear();
-                tableItems.addAll(controller.filterByRatingRange(newValue.intValue()));
+                if (rangedCheckBox.isSelected()) {
+                    tableItems.addAll(controller.filterByRatingRange(newValue.intValue()));
+                } else {
+                    tableItems.addAll(controller.filterByRating(newValue.intValue()));
+                }
             }
         });
         reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
