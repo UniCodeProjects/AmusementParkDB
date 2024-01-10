@@ -3,6 +3,7 @@ package org.apdb4j.view.guests;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Pagination;
+import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 
 import javafx.scene.image.ImageView;
@@ -29,7 +30,7 @@ public class ParkServicesPhotosScreenController implements Initializable {
      * Creates a new instance of this class which refers to the park service with id {@code parkServiceID}.
      * @param parkServiceID the id of the park service referred by the scene.
      */
-    public ParkServicesPhotosScreenController(final String parkServiceID) {
+    public ParkServicesPhotosScreenController(final @NonNull String parkServiceID) {
         this.parkServiceID = parkServiceID;
     }
 

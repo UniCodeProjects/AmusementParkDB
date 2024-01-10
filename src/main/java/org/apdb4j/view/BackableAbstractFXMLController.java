@@ -1,5 +1,6 @@
 package org.apdb4j.view;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +36,7 @@ public abstract class BackableAbstractFXMLController implements BackableFXMLCont
      * {@inheritDoc}
      */
     @Override
-    public void setPreviousScene(final Scene previousScene, final String previousSceneTitle) {
+    public void setPreviousScene(final @NonNull Scene previousScene, final @NonNull String previousSceneTitle) {
         if (Objects.isNull(previousSceneWithStageTitle.getLeft())) {
             previousSceneWithStageTitle.setLeft(previousScene);
             previousSceneWithStageTitle.setRight(previousSceneTitle);

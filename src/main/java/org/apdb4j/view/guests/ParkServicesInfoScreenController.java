@@ -1,5 +1,6 @@
 package org.apdb4j.view.guests;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,7 +48,7 @@ public class ParkServicesInfoScreenController implements Initializable {
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}.
      * @param parkServiceName the name of the park service referred by the scene.
      */
-    public ParkServicesInfoScreenController(final String parkServiceName) {
+    public ParkServicesInfoScreenController(final @NonNull String parkServiceName) {
         this.parkServiceName = parkServiceName;
     }
 
