@@ -18,6 +18,14 @@ public interface ReviewController extends AdministrationController, Filterable {
     <T extends ReviewTableItem> Collection<T> filterByRating(int rating);
 
     /**
+     * Filters the reviews by a rating range.
+     * @param end the range end, inclusive
+     * @param <T> the {@code ReviewTableItem} type
+     * @return the filtered reviews
+     */
+    <T extends ReviewTableItem> Collection<T> filterByRatingRange(int end);
+
+    /**
      * Filters the reviews by the ride-type.
      * @param id the filter
      * @param <T> the {@code ReviewTableItem} type
