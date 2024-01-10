@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -77,6 +78,12 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
      */
     @FXML
     void onAddReviewButtonPressed(final ActionEvent event) {
+        LoadFXML.fromEventAsPopup(event,
+                AddReviewScreenController.class,
+                "Share your opinion on " + parkServiceName,
+                1,
+                1,
+                parkServiceName);
     }
 
     private Result<Record> getReviews() {
