@@ -47,7 +47,7 @@ public final class LoadFXML {
      * @param setPreviousScene {@code true} if the next scene must set its previous scene (e.g. if the scene has a
      *                                     button to turn back to the previous scene), {@code false} otherwise.
      */
-    public static void fromEvent(final Event event, final String fxml,
+    public static void fromEvent(final @NonNull Event event, final @NonNull String fxml,
                                  final boolean removeFocus, final boolean showLoading,
                                  final boolean setPreviousScene) {
         fromEvent(event, getControllerClass(fxml), removeFocus, showLoading, setPreviousScene, NULL_VARARG);

@@ -1,5 +1,6 @@
 package org.apdb4j.view.guests;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -40,7 +41,7 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}.
      * @param parkServiceName the name of the park service referred by the scene.
      */
-    public ReviewScreenController(final String parkServiceName) {
+    public ReviewScreenController(final @NonNull String parkServiceName) {
         this.parkServiceName = parkServiceName;
     }
 
