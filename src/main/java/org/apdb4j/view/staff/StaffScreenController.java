@@ -2,6 +2,7 @@ package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -32,6 +34,8 @@ import org.apdb4j.controllers.MaintenanceController;
 import org.apdb4j.controllers.MaintenanceControllerImpl;
 import org.apdb4j.controllers.OverviewController;
 import org.apdb4j.controllers.OverviewControllerImpl;
+import org.apdb4j.controllers.ReviewController;
+import org.apdb4j.controllers.ReviewControllerImpl;
 import org.apdb4j.controllers.ShopControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.LoadFXML;
@@ -116,6 +120,10 @@ public class StaffScreenController implements Initializable {
     private CheckBox maintenanceShopFilter;
     @FXML
     private TableView<ReviewTableItem> reviewsTableView;
+    @FXML
+    private TextField reviewSearchField;
+    @FXML
+    private Slider ratingFilterSlider;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
@@ -639,6 +647,31 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Filters the reviews by the park service id.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onReviewSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (reviewSearchField.getText().isBlank() || reviewSearchField.getText() == null) {
+            // TODO: make controller into field, extract method.
+            final Collection<ReviewTableItem> allItems = new ReviewControllerImpl().getData();
+            Platform.runLater(() -> {
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<ReviewTableItem> filtered = new ReviewControllerImpl().filter(reviewSearchField.getText());
+            Platform.runLater(() -> {
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(filtered);
+            });
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -695,6 +728,18 @@ public class StaffScreenController implements Initializable {
         });
         maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
         MaintenanceScreenController.setTableView(maintenanceTableView);
+
+        ratingFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Makes the slider move in discrete steps.
+            ratingFilterSlider.setValue(newValue.intValue());
+            if (oldValue.intValue() != newValue.intValue()) {
+                final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
+                final ReviewController controller = new ReviewControllerImpl();
+                tableItems.clear();
+                tableItems.addAll(controller.filterByRatingRange(newValue.intValue()));
+            }
+        });
+        reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
