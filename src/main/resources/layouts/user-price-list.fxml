@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.UserPriceListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.UserPriceListController">
    <center>
       <ListView fx:id="ticketsAndSeasonTickets" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -21,12 +21,12 @@
       </ListView>
    </center>
    <top>
-      <VBox fx:id="topContainer" alignment="CENTER" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
          <children>
-            <BorderPane fx:id="backButtonContainer" prefHeight="0.0" prefWidth="600.0">
+            <BorderPane prefHeight="0.0" prefWidth="600.0">
                <left>
                   <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
@@ -50,7 +50,7 @@
       </VBox>
    </top>
    <right>
-      <Button fx:id="buyTicketsButton" mnemonicParsing="false" onAction="#onBuyTicketsButtonPressed" text="Buy your tickets HERE!" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#onBuyTicketsButtonPressed" text="Buy your tickets HERE!" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets right="15.0" />
          </BorderPane.margin>

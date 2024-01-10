@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.*;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
@@ -20,11 +19,7 @@ public class UserPriceListController extends BackableAbstractFXMLController {
     private static final String PRICE_LIST_PERIOD_BASE_TEXT = " tickets price list";
 
     @FXML
-    private BorderPane pane;
-
-    @FXML
     private Label priceListPeriod;
-
     @FXML
     private ListView<Label> ticketsAndSeasonTickets;
 

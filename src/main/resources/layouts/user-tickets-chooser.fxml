@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.UserTicketsChooserController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.UserTicketsChooserController">
    <right>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,7 +37,7 @@
       </VBox>
    </right>
    <bottom>
-      <Button fx:id="buyButton" mnemonicParsing="false" text="Buy!" BorderPane.alignment="BOTTOM_RIGHT">
+      <Button mnemonicParsing="false" text="Buy!" BorderPane.alignment="BOTTOM_RIGHT">
          <BorderPane.margin>
             <Insets bottom="5.0" right="5.0" />
          </BorderPane.margin>
@@ -67,7 +67,7 @@
       </BorderPane>
    </top>
    <center>
-      <ScrollPane fx:id="ticketsAndSeasonTicketsScrollableContainer" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="ticketsAndSeasonTicketsContainer" prefWidth="300.0">
                <children>

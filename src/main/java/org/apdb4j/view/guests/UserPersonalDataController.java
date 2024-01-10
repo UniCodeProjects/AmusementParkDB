@@ -3,8 +3,8 @@ package org.apdb4j.view.guests;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
@@ -22,45 +22,32 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
 
     @FXML
     private Button confirmNewEmailButton;
-
     @FXML
     private Button confirmNewNameButton;
-
     @FXML
     private Button confirmNewSurnameButton;
-
     @FXML
     private Button confirmNewUsernameButton;
-
     @FXML
     private Button editEmailButton;
-
     @FXML
     private Button editNameButton;
-
     @FXML
     private Button editPasswordButton;
-
     @FXML
     private Button editSurnameButton;
-
     @FXML
     private Button editUsernameButton;
-
     @FXML
     private TextField emailTextField;
-
     @FXML
     private TextField nameTextField;
-
-    @FXML
-    private BorderPane pane;
-
     @FXML
     private TextField surnameTextField;
-
     @FXML
     private TextField usernameTextField;
+    @FXML
+    private PasswordField passwordField;
 
     /**
      * {@inheritDoc}

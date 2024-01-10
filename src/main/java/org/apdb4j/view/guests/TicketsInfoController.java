@@ -19,13 +19,8 @@ public class TicketsInfoController implements FXMLController, Initializable {
 
     @FXML
     private Label dateInfo;
-
     @FXML
     private ListView<BorderPane> listView;
-
-    @FXML
-    private BorderPane pane;
-
 
     /**
      * {@inheritDoc}
