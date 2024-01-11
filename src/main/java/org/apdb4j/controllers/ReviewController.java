@@ -2,12 +2,21 @@ package org.apdb4j.controllers;
 
 import org.apdb4j.view.staff.tableview.ReviewTableItem;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 /**
  * An administration controller specifically used for reviews.
  */
 public interface ReviewController extends AdministrationController, Filterable {
+
+    /**
+     * Filters the reviews by date.
+     * @param date the filter
+     * @param <T> the {@code ReviewTableItem} type
+     * @return the filtered reviews
+     */
+    <T extends ReviewTableItem> Collection<T> filterByDate(LocalDate date);
 
     /**
      * Filters the reviews by rating.
