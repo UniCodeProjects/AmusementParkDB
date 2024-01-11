@@ -88,15 +88,15 @@ public class ReviewControllerImpl implements ReviewController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends ReviewTableItem> Collection<T> filterByRide(final String id) {
-        return extractReviewData(searchQueryJoin(RIDES, RIDES.RIDEID.eq(REVIEWS.REVIEWID), DSL.condition(true)));
+    public <T extends ReviewTableItem> Collection<T> filterByRide() {
+        return extractReviewData(searchQueryJoin(RIDES, RIDES.RIDEID.eq(REVIEWS.PARKSERVICEID), DSL.condition(true)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends ReviewTableItem> Collection<T> filterByExhibition(final String id) {
+    public <T extends ReviewTableItem> Collection<T> filterByExhibition() {
         return extractReviewData(searchQueryJoin(PARK_SERVICES,
                 PARK_SERVICES.PARKSERVICEID.eq(REVIEWS.PARKSERVICEID),
                 PARK_SERVICES.ISEXHIBITION.isTrue()));
@@ -106,7 +106,7 @@ public class ReviewControllerImpl implements ReviewController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends ReviewTableItem> Collection<T> filterByShop(final String id) {
+    public <T extends ReviewTableItem> Collection<T> filterByShop() {
         return extractReviewData(searchQueryJoin(FACILITIES,
                 FACILITIES.FACILITYID.eq(REVIEWS.PARKSERVICEID),
                 FACILITIES.ISSHOP.isTrue()));
