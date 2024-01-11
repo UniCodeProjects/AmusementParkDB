@@ -1,7 +1,6 @@
 package org.apdb4j.controllers;
 
 import lombok.NonNull;
-import org.apdb4j.core.managers.ReviewManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ReviewTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -25,8 +24,6 @@ import static org.apdb4j.db.Tables.*;
  */
 public class ReviewControllerImpl implements ReviewController {
 
-    private String errorMessage;
-
     /**
      * {@inheritDoc}
      */
@@ -40,16 +37,7 @@ public class ReviewControllerImpl implements ReviewController {
      */
     @Override
     public <T extends TableItem> T addData(final T item) throws SQLException {
-        final ReviewTableItem review = (ReviewTableItem) item;
-        final boolean querySuccessful = ReviewManager.addReview(review.getServiceID(),
-                Math.toIntExact(Math.round(review.getRating())),
-                review.getDescription(),
-                "");
-        if (!querySuccessful) {
-            errorMessage = "Data could not be added";
-            throw new SQLException(errorMessage);
-        }
-        return item;
+        throw new UnsupportedOperationException("Staff cannot add reviews.");
     }
 
     /**
@@ -126,7 +114,7 @@ public class ReviewControllerImpl implements ReviewController {
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
-        return Optional.ofNullable(errorMessage);
+        return Optional.empty();
     }
 
     private Result<Record> searchQuery(final Condition condition) {
