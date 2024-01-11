@@ -55,8 +55,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * The FXML controller for the staff UI.
@@ -693,6 +696,33 @@ public class StaffScreenController implements Initializable {
         } else {
             tableItems.addAll(controller.filterByRating(Math.toIntExact(Math.round(ratingFilterSlider.getValue()))));
         }
+    }
+
+    /**
+     * Filters the reviews based on service type.
+     * @param event the event
+     */
+    @FXML
+    void onReviewServiceFilter(final ActionEvent event) {
+        final List<CheckBox> selected = Stream.of(reviewRideFilter, reviewExhibitionFilter, reviewShopFilter)
+                .filter(CheckBox::isSelected)
+                .toList();
+        final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
+        final ReviewController controller = new ReviewControllerImpl();
+        if (selected.isEmpty()) {
+            tableItems.clear();
+            tableItems.addAll(controller.getData());
+        }
+        final Consumer<String> handleFiltering = label -> {
+            tableItems.clear();
+            switch (label.toLowerCase(Locale.getDefault())) {
+                case "rides" -> tableItems.addAll(controller.filterByRide());
+                case "exhibitions" -> tableItems.addAll(controller.filterByExhibition());
+                case "shops" -> tableItems.addAll(controller.filterByShop());
+                default -> throw new IllegalStateException("Unknown label: " + label);
+            }
+        };
+        selected.forEach(checkBox -> handleFiltering.accept(checkBox.getText()));
     }
 
     /**

@@ -534,10 +534,9 @@
                               <Slider fx:id="ratingFilterSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" />
                               <CheckBox fx:id="rangedCheckBox" mnemonicParsing="false" onAction="#onReviewRanged" selected="true" text="Ranged" />
                               <Label text="Filter for:" />
-                              <CheckBox fx:id="reviewRideFilter" mnemonicParsing="false" text="Rides" />
-                              <CheckBox fx:id="reviewExhibitionFilter" mnemonicParsing="false" text="Exhibitions" />
-                              <CheckBox fx:id="reviewShopFilter" mnemonicParsing="false" text="Shops" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <CheckBox fx:id="reviewRideFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Rides" />
+                              <CheckBox fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions" />
+                              <CheckBox fx:id="reviewShopFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Shops" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
