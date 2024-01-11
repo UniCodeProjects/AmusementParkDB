@@ -59,7 +59,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * The FXML controller for the staff UI.
@@ -130,11 +129,13 @@ public class StaffScreenController implements Initializable {
     @FXML
     private CheckBox rangedCheckBox;
     @FXML
-    private CheckBox reviewRideFilter;
+    private ToggleGroup reviewFilterToggle;
     @FXML
-    private CheckBox reviewExhibitionFilter;
+    private RadioButton reviewRideFilter;
     @FXML
-    private CheckBox reviewShopFilter;
+    private RadioButton reviewExhibitionFilter;
+    @FXML
+    private RadioButton reviewShopFilter;
     @FXML
     private ToggleGroup attractionsToggleGroup;
     @FXML
@@ -704,15 +705,9 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onReviewServiceFilter(final ActionEvent event) {
-        final List<CheckBox> selected = Stream.of(reviewRideFilter, reviewExhibitionFilter, reviewShopFilter)
-                .filter(CheckBox::isSelected)
-                .toList();
+        final RadioButton selected = (RadioButton) reviewFilterToggle.getSelectedToggle();
         final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
         final ReviewController controller = new ReviewControllerImpl();
-        if (selected.isEmpty()) {
-            tableItems.clear();
-            tableItems.addAll(controller.getData());
-        }
         final Consumer<String> handleFiltering = label -> {
             tableItems.clear();
             switch (label.toLowerCase(Locale.getDefault())) {
@@ -722,7 +717,7 @@ public class StaffScreenController implements Initializable {
                 default -> throw new IllegalStateException("Unknown label: " + label);
             }
         };
-        selected.forEach(checkBox -> handleFiltering.accept(checkBox.getText()));
+        handleFiltering.accept(selected.getText());
     }
 
     /**
@@ -802,6 +797,13 @@ public class StaffScreenController implements Initializable {
                 }
             }
         });
+        reviewFilterToggle.getToggles().forEach(toggle -> ((RadioButton) toggle).setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.BACK_SPACE) || keyEvent.getCode().equals(KeyCode.DELETE)) {
+                toggle.setSelected(false);
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
+            }
+        }));
         reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
     }
 
