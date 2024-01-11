@@ -12,6 +12,7 @@ import org.jooq.TableLike;
 import org.jooq.impl.DSL;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -66,6 +67,14 @@ public class ReviewControllerImpl implements ReviewController {
     @Override
     public <T extends TableItem> Collection<T> filter(final String parkServiceId) {
         return extractReviewData(searchQuery(REVIEWS.PARKSERVICEID.containsIgnoreCase(parkServiceId)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T extends ReviewTableItem> Collection<T> filterByDate(final LocalDate date) {
+        return extractReviewData(searchQuery(REVIEWS.DATE.eq(date)));
     }
 
     /**
