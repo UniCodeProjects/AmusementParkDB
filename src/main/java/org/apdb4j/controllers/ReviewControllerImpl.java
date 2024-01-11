@@ -145,9 +145,13 @@ public class ReviewControllerImpl implements ReviewController {
     @SuppressWarnings("unchecked")
     private <T extends TableItem> Collection<T> extractReviewData(final Result<Record> result) {
         final List<T> data = new ArrayList<>();
-        result.forEach(record -> data.add((T) new ReviewTableItem(record.get(REVIEWS.PARKSERVICEID),
+        result.forEach(record -> data.add((T) new ReviewTableItem(record.get(REVIEWS.REVIEWID),
+                record.get(REVIEWS.PARKSERVICEID),
                 record.get(REVIEWS.RATING),
-                record.get(REVIEWS.DESCRIPTION))));
+                record.get(REVIEWS.DESCRIPTION),
+                record.get(REVIEWS.DATE),
+                record.get(REVIEWS.TIME),
+                record.get(REVIEWS.ACCOUNT))));
         return data;
     }
 
