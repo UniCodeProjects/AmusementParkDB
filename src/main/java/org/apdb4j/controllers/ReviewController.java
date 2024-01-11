@@ -27,26 +27,23 @@ public interface ReviewController extends AdministrationController, Filterable {
 
     /**
      * Filters the reviews by the ride-type.
-     * @param id the filter
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
      */
-    <T extends ReviewTableItem> Collection<T> filterByRide(String id);
+    <T extends ReviewTableItem> Collection<T> filterByRide();
 
     /**
      * Filters the reviews by the exhibition-type.
-     * @param id the filter
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
      */
-    <T extends ReviewTableItem> Collection<T> filterByExhibition(String id);
+    <T extends ReviewTableItem> Collection<T> filterByExhibition();
 
     /**
      * Filters the reviews by the shop-type.
-     * @param id the filter
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
      */
-    <T extends ReviewTableItem> Collection<T> filterByShop(String id);
+    <T extends ReviewTableItem> Collection<T> filterByShop();
 
 }
