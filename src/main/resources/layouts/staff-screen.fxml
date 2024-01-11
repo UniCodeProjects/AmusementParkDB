@@ -563,6 +563,11 @@
                      <center>
                         <TableView fx:id="reviewsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
+                               <TableColumn text="Review ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="reviewID" />
+                                   </cellValueFactory>
+                               </TableColumn>
                                <TableColumn text="Service ID">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="serviceID" />
@@ -576,6 +581,21 @@
                                <TableColumn text="Description">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Date">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="date" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Time">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="time" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Author">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="author" />
                                    </cellValueFactory>
                                </TableColumn>
                            </columns>
