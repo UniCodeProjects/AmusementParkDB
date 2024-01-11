@@ -125,6 +125,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TextField reviewSearchField;
     @FXML
+    private DatePicker reviewDateFilter;
+    @FXML
     private Slider ratingFilterSlider;
     @FXML
     private CheckBox rangedCheckBox;
@@ -595,7 +597,7 @@ public class StaffScreenController implements Initializable {
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
                 maintenanceTableView.getItems().addAll(filtered);
-                maintenanceSearchDatePicker.setTooltip(new Tooltip("Press backspace or delete keys to clear date"));
+                maintenanceSearchDatePicker.setTooltip(new Tooltip("Press BACKSPACE or DELETE to clear date"));
             });
         }
     }
@@ -679,6 +681,31 @@ public class StaffScreenController implements Initializable {
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
                 reviewsTableView.getItems().addAll(filtered);
+            });
+        }
+    }
+
+    /**
+     * Filters the review tableview by date.
+     * @param event the event
+     */
+    @FXML
+    void onReviewDateSearch(final ActionEvent event) {
+        final String datePickerText = Objects.requireNonNull(reviewDateFilter.getEditor().getText());
+        if (datePickerText.isBlank()) {
+            // TODO: Extract method.
+            final Collection<ReviewTableItem> allItems = new ReviewControllerImpl().getData();
+            Platform.runLater(() -> {
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<ReviewTableItem> filtered = new ReviewControllerImpl()
+                    .filterByDate(reviewDateFilter.getValue());
+            Platform.runLater(() -> {
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(filtered);
+                reviewDateFilter.setTooltip(new Tooltip("Press BACKSPACE or DELETE to clear date"));
             });
         }
     }
@@ -778,6 +805,16 @@ public class StaffScreenController implements Initializable {
         maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
         MaintenanceScreenController.setTableView(maintenanceTableView);
 
+        // Clears the review search date picker field.
+        reviewDateFilter.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
+                reviewDateFilter.getEditor().clear();
+                reviewDateFilter.setTooltip(null);
+                reviewDateFilter.setValue(null);
+                reviewsTableView.getItems().clear();
+                reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
+            }
+        });
         ratingFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Disabling other filters.
             reviewSearchField.setText(null);
