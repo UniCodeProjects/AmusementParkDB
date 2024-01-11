@@ -1,5 +1,6 @@
-package org.apdb4j.controllers;
+package org.apdb4j.controllers.staff;
 
+import org.apdb4j.controllers.Controller;
 import org.apdb4j.view.staff.tableview.TableItem;
 
 import java.sql.SQLException;

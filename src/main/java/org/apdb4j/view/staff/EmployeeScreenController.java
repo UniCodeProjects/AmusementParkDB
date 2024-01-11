@@ -12,7 +12,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.NonNull;
 import lombok.Setter;
-import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;

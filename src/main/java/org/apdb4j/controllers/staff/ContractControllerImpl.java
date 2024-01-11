@@ -1,6 +1,7 @@
-package org.apdb4j.controllers;
+package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
+import org.apdb4j.controllers.Filterable;
 import org.apdb4j.core.managers.ContractManager;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
