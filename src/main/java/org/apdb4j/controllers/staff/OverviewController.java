@@ -1,4 +1,6 @@
-package org.apdb4j.controllers;
+package org.apdb4j.controllers.staff;
+
+import org.apdb4j.controllers.Controller;
 
 import java.time.LocalTime;
 

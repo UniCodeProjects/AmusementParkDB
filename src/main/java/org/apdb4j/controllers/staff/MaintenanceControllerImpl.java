@@ -1,4 +1,4 @@
-package org.apdb4j.controllers;
+package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;

@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import org.apdb4j.controllers.EmployeeControllerImpl;
+import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
