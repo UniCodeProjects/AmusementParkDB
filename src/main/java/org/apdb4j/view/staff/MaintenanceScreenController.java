@@ -83,7 +83,13 @@ public class MaintenanceScreenController extends PopupInitializer {
             final int selectedIndex = tableView.getItems().indexOf(maintenance);
             Platform.runLater(() -> {
                 tableView.getItems().remove(maintenance);
-                tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
+                try {
+                    tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
+                } catch (final SQLException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(controller.getErrorMessage().orElse(""))
+                            .show();
+                }
                 tableView.getSelectionModel().select(selectedIndex);
             });
         }
