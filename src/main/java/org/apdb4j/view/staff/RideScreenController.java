@@ -4,9 +4,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
@@ -48,7 +50,13 @@ public class RideScreenController extends PopupInitializer {
     @FXML
     private Spinner<Double> maxWeightSpinner;
     @FXML
-    private ChoiceBox<String> statusChoiceBox;
+    private ToggleGroup statusToggleGroup;
+    @FXML
+    private RadioButton operatingBtn;
+    @FXML
+    private RadioButton maintenanceBtn;
+    @FXML
+    private RadioButton closedBtn;
     @FXML
     private Button acceptAndCloseBtn;
     @Setter
@@ -89,7 +97,16 @@ public class RideScreenController extends PopupInitializer {
         maxHeightSpinner.getValueFactory().setValue(ride.getMaxHeight());
         minWeightSpinner.getValueFactory().setValue(ride.getMinWeight());
         maxWeightSpinner.getValueFactory().setValue(ride.getMaxWeight());
-        statusChoiceBox.setValue(ride.getStatus());
+        selectStatusRadioButton(ride.getStatus());
+    }
+
+    private void selectStatusRadioButton(final String status) {
+        switch (status) {
+            case "O" -> operatingBtn.setSelected(true);
+            case "M" -> maintenanceBtn.setSelected(true);
+            case "C" -> closedBtn.setSelected(true);
+            default -> throw new IllegalArgumentException("Unknown status: " + status);
+        }
     }
 
 }
