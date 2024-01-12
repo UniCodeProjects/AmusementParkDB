@@ -42,12 +42,18 @@
                        <valueFactory>
                            <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
                        </valueFactory>
+                       <tooltip>
+                           <Tooltip text="Hours" />
+                       </tooltip>
                    </Spinner>
                    <Label text=":" />
                    <Spinner fx:id="timeMinuteSpinner" editable="true">
                        <valueFactory>
                            <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
                        </valueFactory>
+                       <tooltip>
+                           <Tooltip text="Minutes" />
+                       </tooltip>
                    </Spinner>
                </children>
             </HBox>
