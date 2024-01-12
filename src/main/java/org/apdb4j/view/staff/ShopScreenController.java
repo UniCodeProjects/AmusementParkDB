@@ -105,7 +105,12 @@ public class ShopScreenController extends PopupInitializer {
         } else {
             Platform.runLater(() -> {
                 final int selectedIndex = tableView.getItems().indexOf(shop);
-                CONTROLLER.editData(shopItem);
+                try {
+                    CONTROLLER.editData(shopItem);
+                } catch (final SQLException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(CONTROLLER.getErrorMessage().orElse(""));
+                }
                 final List<ShopTableItem> allShopEntries = tableView.getItems().stream()
                         .filter(shopTableItem -> shopTableItem.getId().equals(shop.getId()))
                         .toList();
