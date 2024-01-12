@@ -29,9 +29,9 @@ public class ExhibitionScreenController extends PopupInitializer {
     @FXML
     private DatePicker datePicker;
     @FXML
-    private TextField timeHourField;
+    private Spinner<Integer> timeHourSpinner;
     @FXML
-    private TextField timeMinuteField;
+    private Spinner<Integer> timeMinuteSpinner;
     @FXML
     private Spinner<Integer> maxSeatsSpinner;
     @FXML
@@ -65,8 +65,8 @@ public class ExhibitionScreenController extends PopupInitializer {
         typeChoiceBox.setValue(exhibition.getType());
         descriptionTextArea.setText(exhibition.getDescription());
         datePicker.setValue(exhibition.getDate());
-        timeHourField.setText(String.valueOf(exhibition.getTime().getHour()));
-        timeMinuteField.setText(String.valueOf(exhibition.getTime().getMinute()));
+        timeHourSpinner.getValueFactory().setValue(exhibition.getTime().getHour());
+        timeMinuteSpinner.getValueFactory().setValue(exhibition.getTime().getMinute());
         maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
         spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
     }
