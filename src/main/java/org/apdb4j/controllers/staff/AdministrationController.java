@@ -33,7 +33,8 @@ public interface AdministrationController extends Controller {
      * @param item the edited data
      * @param <T> the type of the {@code TableItem}
      * @return the edited data
+     * @throws SQLException if the update query failed
      */
-    <T extends TableItem> T editData(T item);
+    <T extends TableItem> T editData(T item) throws SQLException;
 
 }
