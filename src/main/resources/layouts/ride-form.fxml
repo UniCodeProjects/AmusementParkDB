@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.RideScreenController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER_RIGHT" vgap="5.0" BorderPane.alignment="CENTER">
@@ -46,7 +45,7 @@
                <children>
                    <Spinner fx:id="openingHourSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Hours" />
@@ -55,7 +54,7 @@
                   <Label text=":" />
                    <Spinner fx:id="openingMinuteSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Minutes" />
@@ -67,7 +66,7 @@
                <children>
                    <Spinner fx:id="closingHourSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Hours" />
@@ -76,7 +75,7 @@
                   <Label text=":" />
                    <Spinner fx:id="closingMinuteSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Minutes" />
@@ -88,7 +87,7 @@
             <ChoiceBox fx:id="intensityChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
              <Spinner fx:id="durationSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                  <valueFactory>
-                     <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="999" wrapAround="true" />
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="999" min="0" wrapAround="true" />
                  </valueFactory>
                  <tooltip>
                      <Tooltip text="Minutes" />
@@ -119,8 +118,18 @@
                      <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="0.1" max="1.7976931348623157E308" min="0" />
                  </valueFactory>
              </Spinner>
-            <ChoiceBox fx:id="statusChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
             <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
+               <children>
+                   <RadioButton fx:id="operatingBtn" mnemonicParsing="false" text="Operating">
+                       <toggleGroup>
+                           <ToggleGroup fx:id="statusToggleGroup" />
+                       </toggleGroup>
+                   </RadioButton>
+                  <RadioButton fx:id="maintenanceBtn" mnemonicParsing="false" text="On maintenance" toggleGroup="$statusToggleGroup" />
+                  <RadioButton fx:id="closedBtn" mnemonicParsing="false" text="Closed" toggleGroup="$statusToggleGroup" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />
