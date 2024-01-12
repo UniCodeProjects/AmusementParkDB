@@ -1,6 +1,7 @@
 package org.apdb4j.util.view;
 
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Region;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,6 +55,7 @@ public class AlertBuilder {
         final var alert = new Alert(ObjectUtils.defaultIfNull(type, Alert.AlertType.NONE));
         alert.setHeaderText(StringUtils.defaultIfBlank(header, getDefaultHeader()));
         alert.setContentText(StringUtils.defaultString(content));
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.show();
     }
 
