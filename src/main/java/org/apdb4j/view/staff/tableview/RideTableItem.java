@@ -8,7 +8,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalTime;
 
@@ -17,6 +20,8 @@ import java.time.LocalTime;
  * @see AttractionTableItem
  * @see javafx.scene.control.TableView
  */
+@ToString
+@EqualsAndHashCode
 public class RideTableItem implements AttractionTableItem {
 
     private final StringProperty id;
@@ -63,7 +68,7 @@ public class RideTableItem implements AttractionTableItem {
                          final @NonNull String intensity,
                          final int duration,
                          final int maxSeats,
-                         final @NonNull String description,
+                         final String description,
                          final int minHeight,
                          final int maxHeight,
                          final double minWeight,
@@ -79,7 +84,7 @@ public class RideTableItem implements AttractionTableItem {
         this.intensity = new SimpleStringProperty(intensity.trim());
         this.duration = new SimpleIntegerProperty(duration);
         this.maxSeats = new SimpleIntegerProperty(maxSeats);
-        this.description = new SimpleStringProperty(description.trim());
+        this.description = new SimpleStringProperty(StringUtils.defaultString(description).trim());
         this.minHeight = new SimpleIntegerProperty(minHeight);
         this.maxHeight = new SimpleIntegerProperty(maxHeight);
         this.minWeight = new SimpleDoubleProperty(minWeight);
