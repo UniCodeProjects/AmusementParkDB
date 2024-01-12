@@ -37,6 +37,7 @@ import org.apdb4j.controllers.staff.OverviewController;
 import org.apdb4j.controllers.staff.OverviewControllerImpl;
 import org.apdb4j.controllers.staff.ReviewController;
 import org.apdb4j.controllers.staff.ReviewControllerImpl;
+import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.LoadFXML;
@@ -107,6 +108,8 @@ public class StaffScreenController implements Initializable {
     private TableView<TicketTableItem> ticketTableView;
     @FXML
     private TableView<AttractionTableItem> attractionsTableView;
+    @FXML
+    private TextField attractionNameSearchField;
     @FXML
     private TextField shopSearchField;
     @FXML
@@ -390,6 +393,34 @@ public class StaffScreenController implements Initializable {
         TicketSelectorScreenController.setEditMode(true);
         TicketSelectorScreenController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    }
+
+    /**
+     * Filters the attractions by their name.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onAttractionSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (attractionNameSearchField.getText().isBlank() || attractionNameSearchField.getText() == null) {
+            final Collection<AttractionTableItem> allItems = ridesRadioBtn.isSelected()
+                    ? new RideControllerImpl().getData()
+                    : null;    // TODO: add exhibition controller.
+            Platform.runLater(() -> {
+                attractionsTableView.getItems().clear();
+                attractionsTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<AttractionTableItem> filtered = ridesRadioBtn.isSelected()
+                    ? new RideControllerImpl().filter(attractionNameSearchField.getText())
+                    : null;    // TODO: add exhibition controller.
+            Platform.runLater(() -> {
+                attractionsTableView.getItems().clear();
+                attractionsTableView.getItems().addAll(filtered);
+            });
+        }
     }
 
     /**
@@ -815,6 +846,8 @@ public class StaffScreenController implements Initializable {
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
         ContractScreenController.setContractTableView(contractsTableView);
         ContractScreenController.setEmployeeTableView(employeeTableView);
+
+        attractionsTableView.getItems().addAll(new RideControllerImpl().getData());
 
         shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
         ShopScreenController.setTableView(shopsTableView);

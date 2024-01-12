@@ -366,7 +366,7 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Attraction name" />
+                              <TextField fx:id="attractionNameSearchField" onKeyTyped="#onAttractionSearch" promptText="Attraction name" />
                               <Label text="Attraction type:" />
                                <RadioButton fx:id="ridesRadioBtn" mnemonicParsing="false" onAction="#onRideBtnClick" selected="true" text="Rides">
                                    <toggleGroup>
@@ -529,7 +529,7 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField fx:id="reviewSearchField" onKeyTyped="#onReviewSearch" promptText="Park service ID" />
-                              <DatePicker fx:id="reviewDateFilter" onAction="#onReviewDateSearch" editable="false" maxWidth="1.7976931348623157E308" promptText="Review date" />
+                              <DatePicker fx:id="reviewDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onReviewDateSearch" promptText="Review date" />
                               <Label text="Filter by rating:" />
                               <Slider fx:id="ratingFilterSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" />
                               <CheckBox fx:id="rangedCheckBox" mnemonicParsing="false" onAction="#onReviewRanged" selected="true" text="Ranged" />
