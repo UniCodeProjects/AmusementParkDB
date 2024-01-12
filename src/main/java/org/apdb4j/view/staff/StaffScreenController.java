@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -414,6 +415,22 @@ public class StaffScreenController implements Initializable {
         final TableColumn<AttractionTableItem, Character> status = new TableColumn<>("Status");
         final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
         final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        openingTime.setCellValueFactory(new PropertyValueFactory<>("openingTime"));
+        closingTime.setCellValueFactory(new PropertyValueFactory<>("closingTime"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        intensity.setCellValueFactory(new PropertyValueFactory<>("intensity"));
+        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        minHeight.setCellValueFactory(new PropertyValueFactory<>("minHeight"));
+        maxHeight.setCellValueFactory(new PropertyValueFactory<>("maxHeight"));
+        minWeight.setCellValueFactory(new PropertyValueFactory<>("minWeight"));
+        maxWeight.setCellValueFactory(new PropertyValueFactory<>("maxWeight"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
+        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
         final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
                 name,
                 openingTime,
@@ -450,6 +467,16 @@ public class StaffScreenController implements Initializable {
         final TableColumn<AttractionTableItem, Integer> spectators = new TableColumn<>("Spectators");
         final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
         final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
+        spectators.setCellValueFactory(new PropertyValueFactory<>("spectators"));
+        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
+        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
         final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
                 name,
                 type,
