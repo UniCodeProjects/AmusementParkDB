@@ -22,19 +22,19 @@ public class RideScreenController extends PopupInitializer {
     @FXML
     private TextField nameField;
     @FXML
-    private TextField openingHourField;
+    private Spinner<Integer> openingHourSpinner;
     @FXML
-    private TextField openingMinuteField;
+    private Spinner<Integer> openingMinuteSpinner;
     @FXML
-    private TextField closingHourField;
+    private Spinner<Integer> closingHourSpinner;
     @FXML
-    private TextField closingMinuteField;
+    private Spinner<Integer> closingMinuteSpinner;
     @FXML
     private ChoiceBox<String> typeChoiceBox;
     @FXML
     private ChoiceBox<String> intensityChoiceBox;
     @FXML
-    private TextField durationField;
+    private Spinner<Integer> durationSpinner;
     @FXML
     private Spinner<Integer> maxSeatsSpinner;
     @FXML
@@ -76,13 +76,13 @@ public class RideScreenController extends PopupInitializer {
             return;
         }
         nameField.setText(ride.getName());
-        openingHourField.setText(String.valueOf(ride.getOpeningTime().getHour()));
-        openingMinuteField.setText(String.valueOf(ride.getOpeningTime().getMinute()));
-        closingHourField.setText(String.valueOf(ride.getClosingTime().getHour()));
-        closingMinuteField.setText(String.valueOf(ride.getClosingTime().getMinute()));
+        openingHourSpinner.getValueFactory().setValue(ride.getOpeningTime().getHour());
+        openingMinuteSpinner.getValueFactory().setValue(ride.getOpeningTime().getMinute());
+        closingHourSpinner.getValueFactory().setValue(ride.getClosingTime().getHour());
+        closingMinuteSpinner.getValueFactory().setValue(ride.getClosingTime().getMinute());
         typeChoiceBox.setValue(ride.getType());
         intensityChoiceBox.setValue(ride.getIntensity());
-        durationField.setText(String.valueOf(ride.getDuration()));
+        durationSpinner.getValueFactory().setValue(ride.getDuration());
         maxSeatsSpinner.getValueFactory().setValue(ride.getMaxSeats());
         descriptionTextArea.setText(ride.getDescription());
         minHeightSpinner.getValueFactory().setValue(ride.getMinHeight());
