@@ -77,7 +77,7 @@ public class RideScreenController extends PopupInitializer {
     @Setter
     private static RideTableItem ride;
     @Setter
-    private static TableView<? super AttractionTableItem> tableView;
+    private static TableView<AttractionTableItem> tableView;
 
     /**
      * Default constructor.
@@ -112,7 +112,7 @@ public class RideScreenController extends PopupInitializer {
                 getStatus(((RadioButton) statusToggleGroup.getSelectedToggle()).getText()),
                 editMode ? ride.getAverageRating() : 0.0,
                 editMode ? ride.getRatings() : 0);
-        final ObservableList<? super AttractionTableItem> tableItems = tableView.getItems();
+        final ObservableList<AttractionTableItem> tableItems = tableView.getItems();
         if (!editMode) {
             Platform.runLater(() -> {
                 try {
