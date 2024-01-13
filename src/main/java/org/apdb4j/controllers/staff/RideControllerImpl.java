@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -113,6 +114,39 @@ public class RideControllerImpl implements RideController {
     @Override
     public <T extends TableItem> Collection<T> filter(final String attractionName) {
         return extractRideData(searchQuery(PARK_SERVICES.NAME.containsIgnoreCase(attractionName)));
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    @Override
+    public List<String> getExistentTypes() {
+        return Arrays.stream(new QueryBuilder().createConnection()
+                        .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
+                                .from(PARK_SERVICES)
+                                .fetch())
+                        .closeConnection()
+                        .getResultAsRecords()
+                        .sortAsc(PARK_SERVICES.TYPE)
+                        .intoArray(PARK_SERVICES.TYPE))
+                .toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    @Override
+    public List<String> getExistentIntensities() {
+        return Arrays.stream(new QueryBuilder().createConnection()
+                        .queryAction(db -> db.selectDistinct(RIDES.INTENSITY)
+                                .from(RIDES)
+                                .fetch())
+                        .closeConnection()
+                        .getResultAsRecords()
+                        .intoArray(RIDES.INTENSITY))
+                .toList();
     }
 
     /**
