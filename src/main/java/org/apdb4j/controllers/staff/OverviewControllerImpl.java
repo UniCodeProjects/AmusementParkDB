@@ -29,6 +29,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public String getParkName() {
@@ -42,6 +43,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public LocalTime getOpeningTime() {
@@ -56,6 +58,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public LocalTime getClosingTime() {
@@ -70,6 +73,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public String getAdministrator() {
@@ -85,6 +89,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public int getAttractionsAmount() {
@@ -101,6 +106,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public int getShopsAmount() {
@@ -117,6 +123,7 @@ public class OverviewControllerImpl implements OverviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public int getEmployeesAmount() {

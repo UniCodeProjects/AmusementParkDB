@@ -25,6 +25,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -33,6 +34,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -41,6 +43,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -50,6 +53,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String parkServiceId) {
@@ -58,6 +62,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByDate(final LocalDate date) {
@@ -66,6 +71,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByRating(final int rating) {
@@ -74,6 +80,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByRatingRange(final int end) {
@@ -82,6 +89,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByRide() {
@@ -90,6 +98,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByExhibition() {
@@ -100,6 +109,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends ReviewTableItem> Collection<T> filterByShop() {

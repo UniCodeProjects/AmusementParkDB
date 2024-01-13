@@ -44,6 +44,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -52,6 +53,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -60,6 +62,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T employeeItem, final T contractItem) {
@@ -99,6 +102,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -133,6 +137,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T fire(final T employeeItem) {
@@ -143,6 +148,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getFiredData() {
@@ -151,6 +157,7 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      * <br>In this instance it filters the employees based on their name and surname.
      * @implNote This method only filters employees that have not been fired yet
      */
