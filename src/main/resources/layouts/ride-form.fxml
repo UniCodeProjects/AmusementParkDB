@@ -83,8 +83,8 @@
                    </Spinner>
                </children>
             </HBox>
-            <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ChoiceBox fx:id="intensityChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ComboBox fx:id="typeComboBox" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="intensityComboBox" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
              <Spinner fx:id="durationSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                  <valueFactory>
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="999" min="0" wrapAround="true" />
@@ -137,7 +137,7 @@
       </GridPane>
    </center>
    <bottom>
-      <Button fx:id="acceptAndCloseBtn" mnemonicParsing="false" text="Accept and close" onAction="#onAccept" BorderPane.alignment="CENTER">
+      <Button fx:id="acceptAndCloseBtn" mnemonicParsing="false" onAction="#onAccept" text="Accept and close" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </BorderPane.margin>

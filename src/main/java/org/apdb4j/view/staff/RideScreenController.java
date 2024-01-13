@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableView;
@@ -45,9 +45,9 @@ public class RideScreenController extends PopupInitializer {
     @FXML
     private Spinner<Integer> closingMinuteSpinner;
     @FXML
-    private ChoiceBox<String> typeChoiceBox;
+    private ComboBox<String> typeComboBox;
     @FXML
-    private ChoiceBox<String> intensityChoiceBox;
+    private ComboBox<String> intensityComboBox;
     @FXML
     private Spinner<Integer> durationSpinner;
     @FXML
@@ -100,8 +100,8 @@ public class RideScreenController extends PopupInitializer {
                 nameField.getText(),
                 LocalTime.of(openingHourSpinner.getValue(), openingMinuteSpinner.getValue()),
                 LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
-                typeChoiceBox.getSelectionModel().getSelectedItem(),
-                intensityChoiceBox.getSelectionModel().getSelectedItem(),
+                typeComboBox.getSelectionModel().getSelectedItem(),
+                intensityComboBox.getSelectionModel().getSelectedItem(),
                 durationSpinner.getValue(),
                 maxSeatsSpinner.getValue(),
                 descriptionTextArea.getText(),
@@ -144,8 +144,8 @@ public class RideScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
-        typeChoiceBox.getItems().addAll(CONTROLLER.getExistentTypes());
-        intensityChoiceBox.getItems().addAll(CONTROLLER.getExistentIntensities());
+        typeComboBox.getItems().addAll(CONTROLLER.getExistentTypes());
+        intensityComboBox.getItems().addAll(CONTROLLER.getExistentIntensities());
         if (!editMode) {
             return;
         }
@@ -154,8 +154,8 @@ public class RideScreenController extends PopupInitializer {
         openingMinuteSpinner.getValueFactory().setValue(ride.getOpeningTime().getMinute());
         closingHourSpinner.getValueFactory().setValue(ride.getClosingTime().getHour());
         closingMinuteSpinner.getValueFactory().setValue(ride.getClosingTime().getMinute());
-        typeChoiceBox.setValue(ride.getType());
-        intensityChoiceBox.setValue(ride.getIntensity());
+        typeComboBox.setValue(ride.getType());
+        intensityComboBox.setValue(ride.getIntensity());
         durationSpinner.getValueFactory().setValue(ride.getDuration());
         maxSeatsSpinner.getValueFactory().setValue(ride.getMaxSeats());
         descriptionTextArea.setText(ride.getDescription());
