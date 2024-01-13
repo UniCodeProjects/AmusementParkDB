@@ -110,8 +110,8 @@ public class RideScreenController extends PopupInitializer {
                 minWeightSpinner.getValue(),
                 maxWeightSpinner.getValue(),
                 getStatus(((RadioButton) statusToggleGroup.getSelectedToggle()).getText()),
-                ride.getAverageRating(),
-                ride.getRatings());
+                editMode ? ride.getAverageRating() : 0.0,
+                editMode ? ride.getRatings() : 0);
         final ObservableList<? super AttractionTableItem> tableItems = tableView.getItems();
         if (!editMode) {
             Platform.runLater(() -> {
