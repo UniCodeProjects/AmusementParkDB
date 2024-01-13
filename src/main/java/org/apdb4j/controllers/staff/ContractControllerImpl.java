@@ -28,6 +28,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -42,6 +43,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -64,6 +66,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -84,6 +87,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String employeeNID) {

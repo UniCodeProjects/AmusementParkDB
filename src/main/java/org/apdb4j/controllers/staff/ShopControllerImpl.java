@@ -31,6 +31,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -39,6 +40,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData(final String shopID) {
@@ -47,6 +49,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -82,6 +85,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -117,6 +121,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String shopName) {
@@ -125,6 +130,7 @@ public class ShopControllerImpl implements ShopController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public List<String> getExistingTypes() {

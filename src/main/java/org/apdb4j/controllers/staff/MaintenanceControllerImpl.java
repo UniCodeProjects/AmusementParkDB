@@ -31,6 +31,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -39,6 +40,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -58,6 +60,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -88,6 +91,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String facilityID) {
@@ -96,6 +100,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends MaintenanceTableItem> Collection<T> filterByDate(final LocalDate date) {
@@ -104,6 +109,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends MaintenanceTableItem> Collection<T> filterByRides() {
@@ -124,6 +130,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
 
     /**
      * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends MaintenanceTableItem> Collection<T> filterByShops() {
