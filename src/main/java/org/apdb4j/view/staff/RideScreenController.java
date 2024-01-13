@@ -1,24 +1,37 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.staff.RideController;
+import org.apdb4j.controllers.staff.RideControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.RideTableItem;
+import org.jooq.exception.DataAccessException;
+
+import java.time.LocalTime;
+import java.util.Locale;
 
 /**
  * The FXML controller for the ride screen.
  */
 public class RideScreenController extends PopupInitializer {
 
+    private static final RideController CONTROLLER = new RideControllerImpl();
     @FXML
     private GridPane gridPane;
     @FXML
@@ -63,6 +76,8 @@ public class RideScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static RideTableItem ride;
+    @Setter
+    private static TableView<? super AttractionTableItem> tableView;
 
     /**
      * Default constructor.
@@ -73,6 +88,55 @@ public class RideScreenController extends PopupInitializer {
             super.setRoot(gridPane.getScene().getRoot());
             super.setHeightSizeFactor(1.4);
         });
+    }
+
+    /**
+     * Adds/edits the entry in the DB.
+     * @param event the event
+     */
+    @FXML
+    void onAccept(final ActionEvent event) {
+        final RideTableItem rideItem = new RideTableItem(editMode ? ride.getId() : "RI-000",    // TODO: use ID generator.
+                nameField.getText(),
+                LocalTime.of(openingHourSpinner.getValue(), openingMinuteSpinner.getValue()),
+                LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
+                typeChoiceBox.getSelectionModel().getSelectedItem(),
+                intensityChoiceBox.getSelectionModel().getSelectedItem(),
+                durationSpinner.getValue(),
+                maxSeatsSpinner.getValue(),
+                descriptionTextArea.getText(),
+                minHeightSpinner.getValue(),
+                maxHeightSpinner.getValue(),
+                minWeightSpinner.getValue(),
+                maxWeightSpinner.getValue(),
+                getStatus(((RadioButton) statusToggleGroup.getSelectedToggle()).getText()),
+                ride.getAverageRating(),
+                ride.getRatings());
+        final ObservableList<? super AttractionTableItem> tableItems = tableView.getItems();
+        if (!editMode) {
+            Platform.runLater(() -> {
+                try {
+                    tableItems.add(CONTROLLER.addData(rideItem));
+                } catch (final DataAccessException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(e.getCause().getMessage())
+                            .show();
+                }
+            });
+        } else {
+            final int selectedIndex = tableItems.indexOf(ride);
+            Platform.runLater(() -> {
+                try {
+                    tableItems.set(selectedIndex, CONTROLLER.editData(rideItem));
+                } catch (final DataAccessException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(e.getCause().getMessage())
+                            .show();
+                }
+                tableView.getSelectionModel().select(selectedIndex);
+            });
+        }
+        gridPane.getScene().getWindow().hide();
     }
 
     /**
@@ -98,6 +162,15 @@ public class RideScreenController extends PopupInitializer {
         minWeightSpinner.getValueFactory().setValue(ride.getMinWeight());
         maxWeightSpinner.getValueFactory().setValue(ride.getMaxWeight());
         selectStatusRadioButton(ride.getStatus());
+    }
+
+    private String getStatus(final String label) {
+        return switch (label.toLowerCase(Locale.ROOT)) {
+            case "operating" -> "O";
+            case "on maintenance" -> "M";
+            case "closed" -> "C";
+            default -> throw new IllegalArgumentException("Unknown radio button label; " + label);
+        };
     }
 
     private void selectStatusRadioButton(final String status) {
