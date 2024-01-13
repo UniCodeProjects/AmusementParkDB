@@ -14,9 +14,9 @@ import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 import org.jooq.tools.StringUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,9 +82,9 @@ public class EmployeeControllerImpl implements EmployeeController {
                         ContractTableItem contract = null;
                         try {
                             contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
-                        } catch (final SQLException e) {
+                        } catch (final DataAccessException e) {
                             new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
-                                    .setContentText(new ContractControllerImpl().getErrorMessage().orElse(""))
+                                    .setContentText(e.getCause().getMessage())
                                     .show();
                         }
                         // Final var for lambda usage.

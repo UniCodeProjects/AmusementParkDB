@@ -16,6 +16,7 @@ public interface MaintenanceController extends AdministrationController, Filtera
      * @param date the date to filter by
      * @param <T> the {@code MaintenanceTableItem} type
      * @return the filtered data
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends MaintenanceTableItem> Collection<T> filterByDate(LocalDate date);
 
@@ -23,6 +24,7 @@ public interface MaintenanceController extends AdministrationController, Filtera
      * Filters all the data in this table view to retrieve the ride related maintenances.
      * @param <T> the {@code MaintenanceTableItem} type
      * @return the filtered data
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends MaintenanceTableItem> Collection<T> filterByRides();
 
@@ -30,6 +32,7 @@ public interface MaintenanceController extends AdministrationController, Filtera
      * Filters all the data in this table view to retrieve the shop related maintenances.
      * @param <T> the {@code MaintenanceTableItem} type
      * @return the filtered data
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends MaintenanceTableItem> Collection<T> filterByShops();
 
