@@ -144,6 +144,8 @@ public class RideScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
+        typeChoiceBox.getItems().addAll(CONTROLLER.getExistentTypes());
+        intensityChoiceBox.getItems().addAll(CONTROLLER.getExistentIntensities());
         if (!editMode) {
             return;
         }
