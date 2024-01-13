@@ -479,6 +479,8 @@ public class StaffScreenController implements Initializable {
                 averageRating,
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
+        final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
+        vboxChildren.remove(vboxChildren.indexOf(exhibitionsRadioBtn) + 1);
     }
 
     /**
@@ -519,6 +521,9 @@ public class StaffScreenController implements Initializable {
                 averageRating,
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
+        final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
+        final CheckBox plannedExhibitionsCheckBox = new CheckBox("View planned");
+        vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
     }
 
     /**
