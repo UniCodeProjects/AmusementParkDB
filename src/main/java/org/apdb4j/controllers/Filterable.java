@@ -14,6 +14,7 @@ public interface Filterable {
      * @param s the string to filter on
      * @param <T> the type of the {@code TableItem}
      * @return the filtered data
+     * @throws org.jooq.exception.DataAccessException if filtering fails
      */
     <T extends TableItem> Collection<T> filter(String s);
 
