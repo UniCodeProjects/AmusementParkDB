@@ -18,8 +18,8 @@ import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
+import org.jooq.exception.DataAccessException;
 
-import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
@@ -96,9 +96,9 @@ public class ShopScreenController extends PopupInitializer {
             Platform.runLater(() -> {
                 try {
                     tableView.getItems().add(CONTROLLER.addData(shopItem));
-                } catch (final SQLException e) {
+                } catch (final DataAccessException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
-                            .setContentText(CONTROLLER.getErrorMessage().orElse(""))
+                            .setContentText(e.getCause().getMessage())
                             .show();
                 }
             });
@@ -107,7 +107,7 @@ public class ShopScreenController extends PopupInitializer {
                 final int selectedIndex = tableView.getItems().indexOf(shop);
                 try {
                     CONTROLLER.editData(shopItem);
-                } catch (final SQLException e) {
+                } catch (final DataAccessException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
                             .setContentText(CONTROLLER.getErrorMessage().orElse(""));
                 }

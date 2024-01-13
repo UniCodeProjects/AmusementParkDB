@@ -10,7 +10,6 @@ import org.jooq.Result;
 import org.jooq.TableLike;
 import org.jooq.impl.DSL;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,7 @@ public class ReviewControllerImpl implements ReviewController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) throws SQLException {
+    public <T extends TableItem> T addData(final T item) {
         throw new UnsupportedOperationException("Staff cannot add reviews.");
     }
 

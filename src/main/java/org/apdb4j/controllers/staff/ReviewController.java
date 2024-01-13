@@ -16,6 +16,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * @param date the filter
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByDate(LocalDate date);
 
@@ -24,6 +25,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * @param rating the filter
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByRating(int rating);
 
@@ -32,6 +34,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * @param end the range end, inclusive
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByRatingRange(int end);
 
@@ -39,6 +42,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * Filters the reviews by the ride-type.
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByRide();
 
@@ -46,6 +50,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * Filters the reviews by the exhibition-type.
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByExhibition();
 
@@ -53,6 +58,7 @@ public interface ReviewController extends AdministrationController, Filterable {
      * Filters the reviews by the shop-type.
      * @param <T> the {@code ReviewTableItem} type
      * @return the filtered reviews
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ReviewTableItem> Collection<T> filterByShop();
 

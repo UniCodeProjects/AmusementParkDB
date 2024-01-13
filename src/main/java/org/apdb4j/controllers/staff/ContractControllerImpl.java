@@ -9,9 +9,9 @@ import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +44,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) throws SQLException {
+    public <T extends TableItem> T addData(final T item) {
         final ContractTableItem contract = (ContractTableItem) item;
         try {
             ContractManager.signNewContract(contract.getId(),
@@ -57,7 +57,7 @@ public class ContractControllerImpl implements AdministrationController, Filtera
                     "");
         } catch (final AccessDeniedException e) {
             errorMessage = e.getMessage();
-            throw new SQLException(e);
+            throw new DataAccessException(e.getMessage(), e);
         }
         return item;
     }

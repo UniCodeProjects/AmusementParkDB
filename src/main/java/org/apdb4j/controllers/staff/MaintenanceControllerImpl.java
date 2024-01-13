@@ -9,10 +9,10 @@ import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) throws SQLException {
+    public <T extends TableItem> T addData(final T item) {
         final MaintenanceTableItem maintenance = (MaintenanceTableItem) item;
         final boolean successfulQuery = MaintenanceManager.addNewMaintenance(maintenance.getFacilityID(),
                 maintenance.getPrice(),
@@ -51,7 +51,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                 maintenance.getEmployeeIDs());
         if (!successfulQuery) {
             errorMessage = "Something went wrong.";
-            throw new SQLException(errorMessage);
+            throw new DataAccessException(errorMessage);
         }
         return item;
     }

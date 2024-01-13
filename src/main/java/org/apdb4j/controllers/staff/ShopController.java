@@ -16,6 +16,7 @@ public interface ShopController extends AdministrationController, Filterable {
      * @param shopID the shop id filter
      * @param <T> the type of the {@code TableItem}
      * @return a collection of table items
+     * @throws org.jooq.exception.DataAccessException if query fails
      * @see TableItem
      */
     <T extends TableItem> Collection<T> getData(String shopID);
@@ -23,6 +24,7 @@ public interface ShopController extends AdministrationController, Filterable {
     /**
      * Returns the existing types present in the {@code PARK_SERVICES} table.
      * @return the existing types present in the {@code PARK_SERVICES} table.
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     List<String> getExistingTypes();
 

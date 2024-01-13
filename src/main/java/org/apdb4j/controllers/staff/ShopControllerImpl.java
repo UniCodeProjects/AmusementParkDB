@@ -9,10 +9,10 @@ import org.apdb4j.view.staff.tableview.TableItem;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class ShopControllerImpl implements ShopController {
      * {@inheritDoc}
      */
     @Override
-    public <T extends TableItem> T addData(final T item) throws SQLException {
+    public <T extends TableItem> T addData(final T item) {
         final ShopTableItem shop = (ShopTableItem) item;
         boolean query1Successful;
         if (shop.getDescription().isBlank()) {
@@ -75,7 +75,7 @@ public class ShopControllerImpl implements ShopController {
                 "");
         if (!query1Successful || !query2Successful) {
             errorMessage = "Something went wrong";
-            throw new SQLException(errorMessage);
+            throw new DataAccessException(errorMessage);
         }
         return item;
     }

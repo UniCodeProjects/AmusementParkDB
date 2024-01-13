@@ -17,8 +17,7 @@ import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
-
-import java.sql.SQLException;
+import org.jooq.exception.DataAccessException;
 
 /**
  * The FXML controller for the maintenance screen.
@@ -73,9 +72,9 @@ public class MaintenanceScreenController extends PopupInitializer {
             Platform.runLater(() -> {
                 try {
                     tableView.getItems().add(controller.addData(maintenanceItem));
-                } catch (final SQLException e) {
+                } catch (final DataAccessException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
-                            .setContentText(controller.getErrorMessage().orElse(""))
+                            .setContentText(e.getCause().getMessage())
                             .show();
                 }
             });
@@ -85,7 +84,7 @@ public class MaintenanceScreenController extends PopupInitializer {
                 tableView.getItems().remove(maintenance);
                 try {
                     tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
-                } catch (final SQLException e) {
+                } catch (final DataAccessException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
                             .setContentText(controller.getErrorMessage().orElse(""))
                             .show();
