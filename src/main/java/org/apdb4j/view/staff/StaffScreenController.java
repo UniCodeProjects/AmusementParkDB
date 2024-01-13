@@ -848,6 +848,7 @@ public class StaffScreenController implements Initializable {
         ContractScreenController.setEmployeeTableView(employeeTableView);
 
         attractionsTableView.getItems().addAll(new RideControllerImpl().getData());
+        RideScreenController.setTableView(attractionsTableView);
 
         shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
         ShopScreenController.setTableView(shopsTableView);
