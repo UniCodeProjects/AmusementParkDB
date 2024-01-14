@@ -19,7 +19,7 @@ public interface ExhibitionController extends AdministrationController, Filterab
      * @return the edited table item
      * @throws org.jooq.exception.DataAccessException if query fails
      */
-    <T extends ExhibitionTableItem> T editSpectatorsNumber(T exhibition);
+    <T extends ExhibitionTableItem> T updateSpectatorsNumber(T exhibition);
 
     /**
      * Edits the exhibition's maximum seats.
@@ -28,7 +28,7 @@ public interface ExhibitionController extends AdministrationController, Filterab
      * @return the edited table item
      * @throws org.jooq.exception.DataAccessException if query fails
      */
-    <T extends ExhibitionTableItem> T editMaxSeats(T exhibition);
+    <T extends ExhibitionTableItem> T updateMaxSeats(T exhibition);
 
     /**
      * Plans an exhibition by defining values for the {@code EXHIBITION_DETAILS} table.
