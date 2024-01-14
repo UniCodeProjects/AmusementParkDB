@@ -5,6 +5,7 @@ import org.apdb4j.controllers.Filterable;
 import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An administration controller specifically used for exhibitions.
@@ -41,5 +42,12 @@ public interface ExhibitionController extends AdministrationController, Filterab
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     <T extends ExhibitionTableItem> Collection<T> viewPlannedExhibitions();
+
+    /**
+     * Returns the {@code PARK_SERVICES} types that are present in the DB.
+     * @return the {@code PARK_SERVICES} types that are present in the DB
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    List<String> getExistingTypes();
 
 }

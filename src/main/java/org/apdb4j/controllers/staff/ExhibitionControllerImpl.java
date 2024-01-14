@@ -14,6 +14,7 @@ import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -139,6 +140,23 @@ public class ExhibitionControllerImpl implements ExhibitionController {
     @Override
     public <T extends ExhibitionTableItem> Collection<T> viewPlannedExhibitions() {
         return extractExhibitionData(ExhibitionManager.viewAllPlannedExhibitions(""));
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    @Override
+    public List<String> getExistingTypes() {
+        return Arrays.stream(new QueryBuilder().createConnection()
+                        .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
+                                .from(PARK_SERVICES)
+                                .fetch())
+                        .closeConnection()
+                        .getResultAsRecords()
+                        .sortAsc(PARK_SERVICES.TYPE)
+                        .intoArray(PARK_SERVICES.TYPE))
+                .toList();
     }
 
     /**
