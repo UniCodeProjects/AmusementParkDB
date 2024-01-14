@@ -86,7 +86,7 @@ public class EmployeeControllerImpl implements EmployeeController {
                         try {
                             contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
                         } catch (final DataAccessException e) {
-                            new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            new AlertBuilder(Alert.AlertType.ERROR)
                                     .setContentText(e.getCause().getMessage())
                                     .show();
                         }
