@@ -3,12 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -71,159 +69,7 @@
          <content>
             <VBox fx:id="ticketsAndSeasonTicketsContainer" prefWidth="300.0">
                <children>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Tickets">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Kids (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Adults (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Senior (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Disable (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="16.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Label text="Season tickets">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="5.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Kids (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Adults (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="140.0" text="Senior (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="26.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="200.0">
-                     <children>
-                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Disable (price)">
-                           <HBox.margin>
-                              <Insets left="5.0" top="3.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Spinner prefWidth="70.0">
-                           <HBox.margin>
-                              <Insets left="16.0" />
-                           </HBox.margin>
-                        </Spinner>
-                     </children>
-                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="200.0" />
                </children>
             </VBox>
          </content>
