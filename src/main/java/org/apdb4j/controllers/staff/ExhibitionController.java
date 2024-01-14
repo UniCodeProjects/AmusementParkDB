@@ -13,6 +13,24 @@ import java.util.List;
 public interface ExhibitionController extends AdministrationController, Filterable {
 
     /**
+     * Edits the exhibition's spectators number.
+     * @param exhibition the item to edit
+     * @param <T> the {@code ExhibitionTableItem} type
+     * @return the edited table item
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    <T extends ExhibitionTableItem> T editSpectatorsNumber(T exhibition);
+
+    /**
+     * Edits the exhibition's maximum seats.
+     * @param exhibition the item to edit
+     * @param <T> the {@code ExhibitionTableItem} type
+     * @return the edited table item
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    <T extends ExhibitionTableItem> T editMaxSeats(T exhibition);
+
+    /**
      * Plans an exhibition by defining values for the {@code EXHIBITION_DETAILS} table.
      * @param exhibition the exhibition table item
      * @param <T> the {@code ExhibitionTableItem} type

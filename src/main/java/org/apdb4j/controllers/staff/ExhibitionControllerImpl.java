@@ -29,7 +29,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -38,7 +38,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -56,42 +56,41 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
         final ExhibitionTableItem exhibition = (ExhibitionTableItem) item;
-        new QueryBuilder().createConnection()
-                .queryAction(db -> db.update(PARK_SERVICES
-                                .join(EXHIBITION_DETAILS)
-                                .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID))
-                                .where(PARK_SERVICES.ISEXHIBITION.isTrue()))
-                        .set(PARK_SERVICES.NAME, exhibition.getName())
-                        .set(PARK_SERVICES.TYPE, exhibition.getType())
-                        .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
-                        .set(EXHIBITION_DETAILS.DATE, exhibition.getDate())
-                        .set(EXHIBITION_DETAILS.TIME, exhibition.getTime()))
-                .closeConnection();
-        final boolean query1Result = ExhibitionManager.addSpectatorsNum(exhibition.getId(),
-                exhibition.getDate(),
-                exhibition.getTime(),
-                exhibition.getSpectators(),
-                "");
-        final boolean query2Result = ExhibitionManager.changeMaxSeats(exhibition.getId(),
-                exhibition.getDate(),
-                exhibition.getTime(),
-                exhibition.getMaxSeats(),
-                "");
-        if (!query1Result || !query2Result) {
-            throw new DataAccessException("Something went wrong while updating an exhibition: [q1=" + query1Result + ", "
-                    + "q2=" + query2Result + "]");
+        // FIXME: duplicate key (NAME).
+        if (exhibition.getDate() == null || exhibition.getTime() == null) {
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(PARK_SERVICES
+                                    .join(EXHIBITION_DETAILS)
+                                    .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
+                            .set(PARK_SERVICES.NAME, exhibition.getName())
+                            .set(PARK_SERVICES.TYPE, exhibition.getType())
+                            .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
+                            .execute())
+                    .closeConnection();
+        } else {
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(PARK_SERVICES
+                                    .join(EXHIBITION_DETAILS)
+                                    .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
+                            .set(PARK_SERVICES.NAME, exhibition.getName())
+                            .set(PARK_SERVICES.TYPE, exhibition.getType())
+                            .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
+                            .set(EXHIBITION_DETAILS.DATE, exhibition.getDate())
+                            .set(EXHIBITION_DETAILS.TIME, exhibition.getTime())
+                            .execute())
+                    .closeConnection();
         }
         return item;
     }
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String exhibitionName) {
@@ -100,7 +99,43 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
+     */
+    @Override
+    public <T extends ExhibitionTableItem> T editSpectatorsNumber(final T exhibition) {
+        final boolean queryResult = ExhibitionManager.addSpectatorsNum(exhibition.getId(),
+                exhibition.getDate(),
+                exhibition.getTime(),
+                exhibition.getSpectators(),
+                "");
+        if (!queryResult) {
+            // TODO: add message.
+            throw new DataAccessException("");
+        }
+        return exhibition;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws DataAccessException if query fails
+     */
+    @Override
+    public <T extends ExhibitionTableItem> T editMaxSeats(final T exhibition) {
+        final boolean queryResult = ExhibitionManager.changeMaxSeats(exhibition.getId(),
+                exhibition.getDate(),
+                exhibition.getTime(),
+                exhibition.getMaxSeats(),
+                "");
+        if (!queryResult) {
+            // TODO: add message.
+            throw new DataAccessException("");
+        }
+        return exhibition;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends ExhibitionTableItem> T planExhibition(final T exhibition) {
@@ -117,7 +152,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public Collection<Pair<String, Integer>> getAverageSpectatorsByType() {
@@ -126,7 +161,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public double getSoldOutExhibitionPercentage() {
@@ -135,7 +170,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends ExhibitionTableItem> Collection<T> viewPlannedExhibitions() {
@@ -144,7 +179,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public List<String> getExistingTypes() {
