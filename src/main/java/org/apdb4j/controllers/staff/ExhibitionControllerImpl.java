@@ -171,7 +171,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
                         .from(PARK_SERVICES)
-                        .join(EXHIBITION_DETAILS)
+                        .leftJoin(EXHIBITION_DETAILS)
                         .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID))
                         .where(PARK_SERVICES.ISEXHIBITION.isTrue())
                         .and(condition)
@@ -189,7 +189,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
                 record.get(PARK_SERVICES.DESCRIPTION),
                 record.get(EXHIBITION_DETAILS.DATE),
                 record.get(EXHIBITION_DETAILS.TIME),
-                record.get(EXHIBITION_DETAILS.MAXSEATS),
+                ObjectUtils.defaultIfNull(record.get(EXHIBITION_DETAILS.MAXSEATS), 0),
                 ObjectUtils.defaultIfNull(record.get(EXHIBITION_DETAILS.SPECTATORS), 0).intValue(),
                 ObjectUtils.defaultIfNull(record.get(PARK_SERVICES.AVGRATING), 0.0).doubleValue(),
                 ObjectUtils.defaultIfNull(record.get(PARK_SERVICES.NUMREVIEWS), 0).intValue())));
