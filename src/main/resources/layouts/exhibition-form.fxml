@@ -23,33 +23,33 @@
          <children>
             <Label text="Name:" />
             <Label text="Type:" GridPane.rowIndex="1" />
-            <Label text="Max seats:" GridPane.rowIndex="5" />
+            <Label fx:id="maxSeatsLabel" text="Max seats:" GridPane.rowIndex="5" />
             <Label text="Description:" GridPane.rowIndex="2" />
             <TextField fx:id="nameField" GridPane.columnIndex="1" />
-            <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="typeComboBox" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <Spinner fx:id="maxSeatsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                  <valueFactory>
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
-            <Label text="Date:" GridPane.rowIndex="3" />
-            <Label text="Time:" GridPane.rowIndex="4" />
-            <Label text="Spectators:" GridPane.rowIndex="6" />
+            <Label fx:id="dateLabel" text="Date:" GridPane.rowIndex="3" />
+            <Label fx:id="timeLabel" text="Time:" GridPane.rowIndex="4" />
+            <Label fx:id="spectatorsLabel" text="Spectators:" GridPane.rowIndex="6" />
             <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
                    <Spinner fx:id="timeHourSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="23" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Hours" />
                        </tooltip>
                    </Spinner>
-                   <Label text=":" />
+                   <Label fx:id="timeLabel2" text=":" />
                    <Spinner fx:id="timeMinuteSpinner" editable="true">
                        <valueFactory>
-                           <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" wrapAround="true" />
+                           <SpinnerValueFactory.IntegerSpinnerValueFactory max="59" min="0" wrapAround="true" />
                        </valueFactory>
                        <tooltip>
                            <Tooltip text="Minutes" />
