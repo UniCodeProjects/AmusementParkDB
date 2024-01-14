@@ -121,7 +121,7 @@ public class RideControllerImpl implements RideController {
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
-    public List<String> getExistentTypes() {
+    public List<String> getExistingTypes() {
         return Arrays.stream(new QueryBuilder().createConnection()
                         .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
                                 .from(PARK_SERVICES)
@@ -138,7 +138,7 @@ public class RideControllerImpl implements RideController {
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
-    public List<String> getExistentIntensities() {
+    public List<String> getExistingIntensities() {
         return Arrays.stream(new QueryBuilder().createConnection()
                         .queryAction(db -> db.selectDistinct(RIDES.INTENSITY)
                                 .from(RIDES)

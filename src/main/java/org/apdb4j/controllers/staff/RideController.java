@@ -14,13 +14,13 @@ public interface RideController extends AdministrationController, Filterable {
      * @return the {@code PARK_SERVICES} types that are present in the DB
      * @throws org.jooq.exception.DataAccessException if query fails
      */
-    List<String> getExistentTypes();
+    List<String> getExistingTypes();
 
     /**
      * Returns the ride intensities that are present in the DB.
      * @return the ride intensities that are present in the DB
       @throws org.jooq.exception.DataAccessException if query fails
      */
-    List<String> getExistentIntensities();
+    List<String> getExistingIntensities();
 
 }
