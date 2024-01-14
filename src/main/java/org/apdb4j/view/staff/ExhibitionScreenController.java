@@ -1,27 +1,38 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
+import org.jooq.exception.DataAccessException;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The FXML controller for the exhibition screen.
  */
 public class ExhibitionScreenController extends PopupInitializer {
 
+    private static final ExhibitionController CONTROLLER = new ExhibitionControllerImpl();
     @FXML
     private GridPane gridPane;
     @FXML
@@ -56,6 +67,8 @@ public class ExhibitionScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static ExhibitionTableItem exhibition;
+    @Setter
+    private static TableView<AttractionTableItem> tableView;
 
     /**
      * Default constructor.
@@ -68,11 +81,55 @@ public class ExhibitionScreenController extends PopupInitializer {
     }
 
     /**
+     * Adds/edits an entry in the DB.
+     * @param event the event
+     */
+    @FXML
+    void onAccept(final ActionEvent event) {
+        // TODO: use id generator.
+        final ExhibitionTableItem exhibitionItem = new ExhibitionTableItem(editMode ? exhibition.getId() : "EX-000",
+                nameField.getText(),
+                typeComboBox.getValue(),
+                descriptionTextArea.getText(),
+                datePicker.getValue(),
+                LocalTime.of(timeHourSpinner.getValue(), timeMinuteSpinner.getValue()),
+                maxSeatsSpinner.getValue(),
+                spectatorsSpinner.getValue(),
+                editMode ? exhibition.getAverageRating() : 0.0,
+                editMode ? exhibition.getRatings() : 0);
+        final ObservableList<AttractionTableItem> tableItems = tableView.getItems();
+        if (!editMode) {
+            Platform.runLater(() -> {
+                try {
+                    tableItems.add(CONTROLLER.addData(exhibitionItem));
+                } catch (final DataAccessException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(e.getCause().getMessage())
+                            .show();
+                }
+            });
+        } else {
+            final int selectedIndex = tableItems.indexOf(exhibition);
+            Platform.runLater(() -> {
+                try {
+                    tableItems.set(selectedIndex, CONTROLLER.editData(exhibitionItem));
+                } catch (final DataAccessException e) {
+                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                            .setContentText(e.getCause().getMessage())
+                            .show();
+                }
+                tableView.getSelectionModel().select(selectedIndex);
+            });
+        }
+        gridPane.getScene().getWindow().hide();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     protected void customInit() {
-        typeComboBox.getItems().addAll(new ExhibitionControllerImpl().getExistingTypes());
+        typeComboBox.getItems().addAll(CONTROLLER.getExistingTypes());
         if (!editMode) {
             List.of(dateLabel,
                     datePicker,
@@ -90,8 +147,10 @@ public class ExhibitionScreenController extends PopupInitializer {
         typeComboBox.setValue(exhibition.getType());
         descriptionTextArea.setText(exhibition.getDescription());
         datePicker.setValue(exhibition.getDate());
-        timeHourSpinner.getValueFactory().setValue(exhibition.getTime().getHour());
-        timeMinuteSpinner.getValueFactory().setValue(exhibition.getTime().getMinute());
+        if (Objects.nonNull(exhibition.getTime())) {
+            timeHourSpinner.getValueFactory().setValue(exhibition.getTime().getHour());
+            timeMinuteSpinner.getValueFactory().setValue(exhibition.getTime().getMinute());
+        }
         maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
         spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
     }
