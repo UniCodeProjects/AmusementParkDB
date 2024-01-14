@@ -113,9 +113,9 @@ public class ExhibitionScreenController extends PopupInitializer {
             Platform.runLater(() -> {
                 try {
                     tableItems.set(selectedIndex, CONTROLLER.editData(exhibitionItem));
-                } catch (final DataAccessException e) {
+                } catch (final DataAccessException | NullPointerException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
-                            .setContentText(e.getCause().getMessage())
+                            .setContentText(e.getMessage())
                             .show();
                 }
                 tableView.getSelectionModel().select(selectedIndex);
