@@ -73,7 +73,7 @@ public class MaintenanceScreenController extends PopupInitializer {
                 try {
                     tableView.getItems().add(controller.addData(maintenanceItem));
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(e.getCause().getMessage())
                             .show();
                 }
@@ -85,7 +85,7 @@ public class MaintenanceScreenController extends PopupInitializer {
                 try {
                     tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(controller.getErrorMessage().orElse(""))
                             .show();
                 }

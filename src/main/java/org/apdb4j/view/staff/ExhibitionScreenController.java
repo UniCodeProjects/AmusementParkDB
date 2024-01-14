@@ -103,7 +103,7 @@ public class ExhibitionScreenController extends PopupInitializer {
                 try {
                     tableItems.add(CONTROLLER.addData(exhibitionItem));
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(e.getCause().getMessage())
                             .show();
                 }
@@ -114,7 +114,7 @@ public class ExhibitionScreenController extends PopupInitializer {
                 try {
                     tableItems.set(selectedIndex, CONTROLLER.editData(exhibitionItem));
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(e.getCause().getMessage())
                             .show();
                 }

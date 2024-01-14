@@ -97,7 +97,7 @@ public class ShopScreenController extends PopupInitializer {
                 try {
                     tableView.getItems().add(CONTROLLER.addData(shopItem));
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(e.getCause().getMessage())
                             .show();
                 }
@@ -108,7 +108,7 @@ public class ShopScreenController extends PopupInitializer {
                 try {
                     CONTROLLER.editData(shopItem);
                 } catch (final DataAccessException e) {
-                    new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
+                    new AlertBuilder(Alert.AlertType.ERROR)
                             .setContentText(CONTROLLER.getErrorMessage().orElse(""));
                 }
                 final List<ShopTableItem> allShopEntries = tableView.getItems().stream()
