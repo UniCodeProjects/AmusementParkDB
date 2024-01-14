@@ -10,6 +10,7 @@ import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -38,7 +39,9 @@ public class UserPriceListController extends BackableAbstractFXMLController {
      */
     @FXML
     void onBuyTicketsButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/user-tickets-chooser.fxml", true, true, true);
+        LoadFXML.fromEvent(event, UserTicketsChooserController.class, true, true, true,
+                List.of("Tickets", "Season tickets"),
+                List.of("Kids", "Adults", "Senior", "Disable"));
         JavaFXUtils.setStageTitle(event, "Buy tickets");
     }
 
