@@ -113,9 +113,9 @@ public class ExhibitionScreenController extends PopupInitializer {
             Platform.runLater(() -> {
                 try {
                     tableItems.set(selectedIndex, CONTROLLER.editData(exhibitionItem));
-                } catch (final DataAccessException | NullPointerException e) {
+                } catch (final DataAccessException e) {
                     new AlertBuilder().setAlertType(Alert.AlertType.ERROR)
-                            .setContentText(e.getMessage())
+                            .setContentText(e.getCause().getMessage())
                             .show();
                 }
                 tableView.getSelectionModel().select(selectedIndex);
@@ -152,7 +152,9 @@ public class ExhibitionScreenController extends PopupInitializer {
             timeMinuteSpinner.getValueFactory().setValue(exhibition.getTime().getMinute());
         }
         maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());
+        maxSeatsSpinner.setDisable(true);
         spectatorsSpinner.getValueFactory().setValue(exhibition.getSpectators());
+        spectatorsSpinner.setDisable(true);
     }
 
 }
