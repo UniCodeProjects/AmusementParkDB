@@ -9,6 +9,7 @@ import org.jooq.Result;
 import org.jooq.types.UByte;
 import org.jooq.types.UInteger;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -69,8 +70,16 @@ public final class ExhibitionManager {
                                 PARK_SERVICES.NAME,
                                 PARK_SERVICES.TYPE,
                                 PARK_SERVICES.DESCRIPTION,
+                                PARK_SERVICES.AVGRATING,
+                                PARK_SERVICES.NUMREVIEWS,
                                 PARK_SERVICES.ISEXHIBITION)
-                        .values(exhibitionID, name, type, description, UByte.valueOf(1).byteValue())
+                        .values(exhibitionID,
+                                name,
+                                type,
+                                description,
+                                BigDecimal.ZERO,
+                                UInteger.valueOf(0),
+                                (byte) 1)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
