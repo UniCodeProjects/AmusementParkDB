@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,7 +48,7 @@ public class ExhibitionTableItem implements AttractionTableItem {
     public ExhibitionTableItem(final @NonNull String id,
                                final @NonNull String name,
                                final @NonNull String type,
-                               final @NonNull String description,
+                               final String description,
                                final @NonNull LocalDate date,
                                final @NonNull LocalTime time,
                                final int maxSeats,
@@ -57,7 +58,7 @@ public class ExhibitionTableItem implements AttractionTableItem {
         this.id = new SimpleStringProperty(id.trim());
         this.name = new SimpleStringProperty(name.trim());
         this.type = new SimpleStringProperty(type.trim());
-        this.description = new SimpleStringProperty(description.trim());
+        this.description = new SimpleStringProperty(StringUtils.defaultString(description).trim());
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
         this.maxSeats = new SimpleIntegerProperty(maxSeats);
