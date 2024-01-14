@@ -31,6 +31,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
 import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.controllers.staff.OverviewController;
@@ -407,7 +408,7 @@ public class StaffScreenController implements Initializable {
         if (attractionNameSearchField.getText().isBlank() || attractionNameSearchField.getText() == null) {
             final Collection<AttractionTableItem> allItems = ridesRadioBtn.isSelected()
                     ? new RideControllerImpl().getData()
-                    : null;    // TODO: add exhibition controller.
+                    : new ExhibitionControllerImpl().getData();
             Platform.runLater(() -> {
                 attractionsTableView.getItems().clear();
                 attractionsTableView.getItems().addAll(allItems);
@@ -415,7 +416,7 @@ public class StaffScreenController implements Initializable {
         } else {
             final Collection<AttractionTableItem> filtered = ridesRadioBtn.isSelected()
                     ? new RideControllerImpl().filter(attractionNameSearchField.getText())
-                    : null;    // TODO: add exhibition controller.
+                    : new ExhibitionControllerImpl().filter(attractionNameSearchField.getText());
             Platform.runLater(() -> {
                 attractionsTableView.getItems().clear();
                 attractionsTableView.getItems().addAll(filtered);
@@ -479,6 +480,8 @@ public class StaffScreenController implements Initializable {
                 averageRating,
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
+        attractionsTableView.getItems().clear();
+        Platform.runLater(() -> attractionsTableView.getItems().addAll(new RideControllerImpl().getData()));
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.remove(vboxChildren.indexOf(exhibitionsRadioBtn) + 1);
     }
@@ -521,8 +524,20 @@ public class StaffScreenController implements Initializable {
                 averageRating,
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
-        final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
+        attractionsTableView.getItems().clear();
+        final ExhibitionControllerImpl exhibitionController = new ExhibitionControllerImpl();
+        Platform.runLater(() -> attractionsTableView.getItems().addAll(exhibitionController.getData()));
+        // Creating checkbox and adding an event handler.
         final CheckBox plannedExhibitionsCheckBox = new CheckBox("View planned");
+        plannedExhibitionsCheckBox.setOnAction(action -> {
+            attractionsTableView.getItems().clear();
+            if (plannedExhibitionsCheckBox.isSelected()) {
+                Platform.runLater(() -> attractionsTableView.getItems().addAll(exhibitionController.viewPlannedExhibitions()));
+            } else {
+                Platform.runLater(() -> attractionsTableView.getItems().addAll(exhibitionController.getData()));
+            }
+        });
+        final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
     }
 
