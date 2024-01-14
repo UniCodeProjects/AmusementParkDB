@@ -102,15 +102,14 @@ public class ExhibitionControllerImpl implements ExhibitionController {
      * @throws DataAccessException if query fails
      */
     @Override
-    public <T extends ExhibitionTableItem> T editSpectatorsNumber(final T exhibition) {
+    public <T extends ExhibitionTableItem> T updateSpectatorsNumber(final T exhibition) {
         final boolean queryResult = ExhibitionManager.addSpectatorsNum(exhibition.getId(),
                 exhibition.getDate(),
                 exhibition.getTime(),
                 exhibition.getSpectators(),
                 "");
         if (!queryResult) {
-            // TODO: add message.
-            throw new DataAccessException("");
+            throw new DataAccessException("Something went wrong while updating the spectators number");
         }
         return exhibition;
     }
@@ -120,15 +119,14 @@ public class ExhibitionControllerImpl implements ExhibitionController {
      * @throws DataAccessException if query fails
      */
     @Override
-    public <T extends ExhibitionTableItem> T editMaxSeats(final T exhibition) {
+    public <T extends ExhibitionTableItem> T updateMaxSeats(final T exhibition) {
         final boolean queryResult = ExhibitionManager.changeMaxSeats(exhibition.getId(),
                 exhibition.getDate(),
                 exhibition.getTime(),
                 exhibition.getMaxSeats(),
                 "");
         if (!queryResult) {
-            // TODO: add message.
-            throw new DataAccessException("");
+            throw new DataAccessException("Something went wrong while updating the maximum seats number");
         }
         return exhibition;
     }
