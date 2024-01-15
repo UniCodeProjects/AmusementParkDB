@@ -500,7 +500,6 @@ public class StaffScreenController implements Initializable {
      * Adds the specific exhibition columns to the attractions table view.
      * @param event the event
      */
-    @SuppressWarnings("unchecked")
     @FXML
     void onExhibitionBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
@@ -553,6 +552,35 @@ public class StaffScreenController implements Initializable {
         advancedAttractionBtn.getItems().clear();
         final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
         final MenuItem spectatorsItem = new MenuItem("Update spectators number");
+        spectatorsItem.setOnAction(a -> {
+            final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
+                    .getSelectedItem();
+            if (selectedExhibition == null) {
+                showAlertForUnselectedRowInTableView("exhibition");
+                return;
+            }
+            final Spinner<Integer> spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
+                    999,
+                    selectedExhibition.getSpectators()));
+            spinner.setEditable(true);
+            new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                    .setHeaderText("Update spectators amount")
+                    .setContent(spinner)
+                    .setOnClose(node -> {
+                        selectedExhibition.setSpectators(spinner.getValue());
+                        try {
+                            exhibitionController.updateSpectatorsNumber(selectedExhibition);
+                        } catch (final DataAccessException e) {
+                            new AlertBuilder(Alert.AlertType.ERROR)
+                                    .setContentText(e.getMessage())
+                                    .show();
+                            return;
+                        }
+                        attractionsTableView.getItems().set(attractionsTableView.getItems().indexOf(selectedExhibition),
+                                selectedExhibition);
+                    })
+                    .show();
+        });
         final MenuItem maxSeatsItem = new MenuItem("Update max seats number");
         maxSeatsItem.setOnAction(a -> {
             final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
@@ -561,8 +589,7 @@ public class StaffScreenController implements Initializable {
                 showAlertForUnselectedRowInTableView("exhibition");
                 return;
             }
-            final Spinner<Integer> spinner = new Spinner<>();
-            spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
+            final Spinner<Integer> spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
                     999,
                     selectedExhibition.getMaxSeats()));
             spinner.setEditable(true);
@@ -570,7 +597,7 @@ public class StaffScreenController implements Initializable {
                     .setHeaderText("Update maximum seats")
                     .setContent(spinner)
                     .setOnClose(node -> {
-                        selectedExhibition.setMaxSeats(((Spinner<Integer>) node).getValue());
+                        selectedExhibition.setMaxSeats(spinner.getValue());
                         try {
                             exhibitionController.updateMaxSeats(selectedExhibition);
                         } catch (final DataAccessException e) {
