@@ -16,6 +16,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
@@ -111,6 +113,8 @@ public class StaffScreenController implements Initializable {
     private TableView<AttractionTableItem> attractionsTableView;
     @FXML
     private TextField attractionNameSearchField;
+    @FXML
+    private MenuButton advancedAttractionBtn;
     @FXML
     private TextField shopSearchField;
     @FXML
@@ -539,6 +543,17 @@ public class StaffScreenController implements Initializable {
         });
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
+        advancedAttractionBtn.getItems().clear();
+        final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
+        final MenuItem spectatorsItem = new MenuItem("Update spectators number");
+        final MenuItem maxSeatsItem = new MenuItem("Update max seats number");
+        final MenuItem averageSpectatorsItem = new MenuItem("Get average spectators by type");
+        final MenuItem soldOutPercentage = new MenuItem("Get sold-out exhibition percentage");
+        advancedAttractionBtn.getItems().addAll(planExhibitionItem,
+                spectatorsItem,
+                maxSeatsItem,
+                averageSpectatorsItem,
+                soldOutPercentage);
     }
 
     /**
@@ -956,7 +971,7 @@ public class StaffScreenController implements Initializable {
      * @param rowName the row name to display in the alert
      */
     protected static void showAlertForUnselectedRowInTableView(final String rowName) {
-        new AlertBuilder().setAlertType(Alert.AlertType.WARNING)
+        new AlertBuilder(Alert.AlertType.WARNING)
                 .setHeaderText("Whoops, something went wrong...")
                 .setContentText("A row must be selected to edit the " + rowName + " entry!")
                 .show();
