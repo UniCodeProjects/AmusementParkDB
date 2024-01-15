@@ -37,6 +37,7 @@ import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
 import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
@@ -535,7 +536,7 @@ public class StaffScreenController implements Initializable {
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
         attractionsTableView.getItems().clear();
-        final ExhibitionControllerImpl exhibitionController = new ExhibitionControllerImpl();
+        final ExhibitionController exhibitionController = new ExhibitionControllerImpl();
         Platform.runLater(() -> attractionsTableView.getItems().addAll(exhibitionController.getData()));
         // Creating checkbox and adding an event handler.
         final CheckBox plannedExhibitionsCheckBox = new CheckBox("View planned");
@@ -551,6 +552,63 @@ public class StaffScreenController implements Initializable {
         vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
         advancedAttractionBtn.getItems().clear();
         final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
+        planExhibitionItem.setOnAction(a -> {
+            final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
+                    .getSelectedItem();
+            if (selectedExhibition == null) {
+                showAlertForUnselectedRowInTableView("exhibition");
+                return;
+            }
+            if (selectedExhibition.getDate() != null
+                    || selectedExhibition.getTime() != null
+                    || selectedExhibition.getMaxSeats() != 0) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText("This exhibition cannot be planned.")
+                        .show();
+                return;
+            }
+            final GridPane gridPane = new GridPane();
+
+            final DatePicker datePicker = new DatePicker();
+            gridPane.setVgap(4);
+            gridPane.setHgap(8);
+            gridPane.addRow(0, new Label("Date:"), datePicker);
+            final Spinner<Integer> timeHours = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23));
+            timeHours.getValueFactory().setWrapAround(true);
+            final Spinner<Integer> timeMinutes = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59));
+            timeMinutes.getValueFactory().setWrapAround(true);
+            final HBox hBox = new HBox(5, timeHours, new Label(":"), timeMinutes);
+            hBox.setAlignment(Pos.CENTER_LEFT);
+            gridPane.addRow(1, new Label("Time:"), hBox);
+            final Spinner<Integer> seatsSpinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
+                    Integer.MAX_VALUE));
+            gridPane.addRow(2, new Label("Max seats:"), seatsSpinner);
+            new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                    .setHeaderText("Plan an exhibition")
+                    .setContent(gridPane)
+                    .setOnClose(node -> {
+                        final LocalDate oldDate = selectedExhibition.getDate();
+                        final LocalTime oldTime = selectedExhibition.getTime();
+                        final int oldSeats = selectedExhibition.getMaxSeats();
+                        selectedExhibition.setDate(datePicker.getValue());
+                        selectedExhibition.setTime(LocalTime.of(timeHours.getValue(), timeMinutes.getValue()));
+                        selectedExhibition.setMaxSeats(seatsSpinner.getValue());
+                        try {
+                            exhibitionController.planExhibition(selectedExhibition);
+                        } catch (final DataAccessException e) {
+                            selectedExhibition.setDate(oldDate);
+                            selectedExhibition.setTime(oldTime);
+                            selectedExhibition.setMaxSeats(oldSeats);
+                            new AlertBuilder(Alert.AlertType.ERROR)
+                                    .setContentText(e.getMessage())
+                                    .show();
+                            return;
+                        }
+                        attractionsTableView.getItems().set(attractionsTableView.getItems().indexOf(selectedExhibition),
+                                selectedExhibition);
+                    })
+                    .show();
+        });
         final MenuItem spectatorsItem = new MenuItem("Update spectators number");
         spectatorsItem.setOnAction(a -> {
             final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
@@ -567,10 +625,12 @@ public class StaffScreenController implements Initializable {
                     .setHeaderText("Update spectators amount")
                     .setContent(spinner)
                     .setOnClose(node -> {
+                        final int oldValue = selectedExhibition.getSpectators();
                         selectedExhibition.setSpectators(spinner.getValue());
                         try {
                             exhibitionController.updateSpectatorsNumber(selectedExhibition);
                         } catch (final DataAccessException e) {
+                            selectedExhibition.setSpectators(oldValue);
                             new AlertBuilder(Alert.AlertType.ERROR)
                                     .setContentText(e.getMessage())
                                     .show();
@@ -597,10 +657,12 @@ public class StaffScreenController implements Initializable {
                     .setHeaderText("Update maximum seats")
                     .setContent(spinner)
                     .setOnClose(node -> {
+                        final int oldValue = selectedExhibition.getMaxSeats();
                         selectedExhibition.setMaxSeats(spinner.getValue());
                         try {
                             exhibitionController.updateMaxSeats(selectedExhibition);
                         } catch (final DataAccessException e) {
+                            selectedExhibition.setMaxSeats(oldValue);
                             new AlertBuilder(Alert.AlertType.ERROR)
                                     .setContentText(e.getMessage())
                                     .show();
