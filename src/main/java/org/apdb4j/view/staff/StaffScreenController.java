@@ -20,6 +20,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,8 +31,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
@@ -53,12 +57,14 @@ import org.apdb4j.view.staff.tableview.ReviewTableItem;
 import org.apdb4j.view.staff.tableview.RideTableItem;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
+import org.jooq.exception.DataAccessException;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -494,6 +500,7 @@ public class StaffScreenController implements Initializable {
      * Adds the specific exhibition columns to the attractions table view.
      * @param event the event
      */
+    @SuppressWarnings("unchecked")
     @FXML
     void onExhibitionBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
@@ -547,8 +554,46 @@ public class StaffScreenController implements Initializable {
         final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
         final MenuItem spectatorsItem = new MenuItem("Update spectators number");
         final MenuItem maxSeatsItem = new MenuItem("Update max seats number");
+        maxSeatsItem.setOnAction(a -> {
+            final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
+                    .getSelectedItem();
+            if (selectedExhibition == null) {
+                showAlertForUnselectedRowInTableView("exhibition");
+                return;
+            }
+            final Spinner<Integer> spinner = new Spinner<>();
+            spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
+                    999,
+                    selectedExhibition.getMaxSeats()));
+            spinner.setEditable(true);
+            new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                    .setHeaderText("Update maximum seats")
+                    .setContent(spinner)
+                    .setOnClose(node -> {
+                        selectedExhibition.setMaxSeats(((Spinner<Integer>) node).getValue());
+                        try {
+                            exhibitionController.updateMaxSeats(selectedExhibition);
+                        } catch (final DataAccessException e) {
+                            new AlertBuilder(Alert.AlertType.ERROR)
+                                    .setContentText(e.getMessage())
+                                    .show();
+                            return;
+                        }
+                        attractionsTableView.getItems().set(attractionsTableView.getItems().indexOf(selectedExhibition),
+                                selectedExhibition);
+                    })
+                    .show();
+        });
         final MenuItem averageSpectatorsItem = new MenuItem("Get average spectators by type");
+        averageSpectatorsItem.setOnAction(a -> new AlertBuilder(Alert.AlertType.INFORMATION)
+                .setHeaderText("Average spectators by exhibition type")
+                .setContent(createAverageSpectatorsByTypeGridPane(exhibitionController.getAverageSpectatorsByType()))
+                .show());
         final MenuItem soldOutPercentage = new MenuItem("Get sold-out exhibition percentage");
+        soldOutPercentage.setOnAction(a -> new AlertBuilder(Alert.AlertType.INFORMATION)
+                .setHeaderText("Sold-out exhibition percentage")
+                .setContentText(exhibitionController.getSoldOutExhibitionPercentage() + "%")
+                .show());
         advancedAttractionBtn.getItems().addAll(planExhibitionItem,
                 spectatorsItem,
                 maxSeatsItem,
@@ -964,6 +1009,21 @@ public class StaffScreenController implements Initializable {
         datePicker1.getEditor().setText("");
         datePicker2.getEditor().setText("");
         clearButton.setDisable(true);
+    }
+
+    private GridPane createAverageSpectatorsByTypeGridPane(final Collection<Pair<String, Integer>> typeSpectatorsPairs) {
+        final GridPane gridPane = new GridPane();
+        final List<Pair<String, Integer>> pairs = typeSpectatorsPairs.stream()
+                .sorted(Comparator.comparing(Pair::getLeft))
+                .toList();
+        for (int i = 0; i < pairs.size(); i++) {
+            final Label typeLabel = new Label(pairs.get(i).getLeft() + ":");
+            typeLabel.setStyle("-fx-font-weight: bold");
+            gridPane.addRow(i, typeLabel, new Label(pairs.get(i).getRight().toString()));
+        }
+        gridPane.setVgap(2);
+        gridPane.setHgap(8);
+        return gridPane;
     }
 
     /**
