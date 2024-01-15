@@ -147,4 +147,84 @@ public class ExhibitionTableItem implements AttractionTableItem {
         return ratings.get();
     }
 
+    /**
+     * Sets the exhibition id.
+     * @param id the id
+     */
+    public void setId(final String id) {
+        this.id.set(id);
+    }
+
+    /**
+     * Sets the exhibition name.
+     * @param name the name
+     */
+    public void setName(final String name) {
+        this.name.set(name);
+    }
+
+    /**
+     * Sets the exhibition type.
+     * @param type the type
+     */
+    public void setType(final String type) {
+        this.type.set(type);
+    }
+
+    /**
+     * Sets the exhibition description.
+     * @param description the description
+     */
+    public void setDescription(final String description) {
+        this.description.set(description);
+    }
+
+    /**
+     * Sets the exhibition date.
+     * @param date the date
+     */
+    public void setDate(final LocalDate date) {
+        this.date.set(date);
+    }
+
+    /**
+     * Sets the exhibition time.
+     * @param time the time
+     */
+    public void setTime(final LocalTime time) {
+        this.time.set(time);
+    }
+
+    /**
+     * Sets the exhibition maximum seats.
+     * @param maxSeats the maximum seats value
+     */
+    public void setMaxSeats(final int maxSeats) {
+        this.maxSeats.set(maxSeats);
+    }
+
+    /**
+     * Sets the exhibition spectators value.
+     * @param spectators the spectators value
+     */
+    public void setSpectators(final int spectators) {
+        this.spectators.set(spectators);
+    }
+
+    /**
+     * Sets the exhibition average rating.
+     * @param averageRating the average rating value
+     */
+    public void setAverageRating(final double averageRating) {
+        this.averageRating.set(averageRating);
+    }
+
+    /**
+     * Sets the exhibition rating amount.
+     * @param ratings the amount of ratings
+     */
+    public void setRatings(final int ratings) {
+        this.ratings.set(ratings);
+    }
+
 }
