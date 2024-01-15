@@ -9,12 +9,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.converter.IntegerStringConverter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * FXML controller for the screen that allows the user to buy either tickets or season tickets, or both.
@@ -23,29 +22,28 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
 
     private static final Insets TICKET_TYPE_LABEL_MARGIN = new Insets(5, 0, 10, 5);
     private static final Insets CATEGORY_CONTAINER_MARGIN = new Insets(0, 0, 5, 0);
-    private static final int CHECKBOX_PREF_WIDTH = 140;
-    private static final Insets CHECKBOX_MARGIN = new Insets(3, 0, 0, 5);
+    private static final int CHECKBOXES_PREF_WIDTH = 140;
+    private static final Insets CHECKBOXES_MARGIN = new Insets(3, 0, 0, 5);
     private static final int SPINNERS_PREF_WIDTH = 70;
     private static final Insets SPINNERS_MARGIN = new Insets(0, 0, 0, 26);
-    private static final int SPINNER_MAX_VALUE = 9999;
+    private static final int SPINNERS_MAX_VALUE = 9999;
+    private static final String EURO_SYMBOL = "\u20AC";
     @FXML
     private ListView<Label> cart;
     @FXML
     private VBox ticketsAndSeasonTicketsContainer;
     @FXML
     private Label totalPrice;
-    private final List<String> ticketTypes;
-    private final List<String> customersCategories;
+    private final Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice;
 
     /**
      * Creates a new instance of this class with the provided ticket types and customers categories.
-     * @param ticketTypes all the ticket types available in the current year's price list.
-     * @param customersCategories all the categories of customers in the current year's price list.
+     * @param ticketTypesAndCategoriesWithPrice a map that contains, for each ticket type, all the categories of the
+     *                                          customers, each one paired with the price of that ticket type.
      */
-    public UserTicketsChooserController(final @NonNull List<String> ticketTypes,
-                                        final @NonNull List<String> customersCategories) {
-        this.customersCategories = new ArrayList<>(customersCategories);
-        this.ticketTypes = new ArrayList<>(ticketTypes);
+    public UserTicketsChooserController(
+            final @NonNull Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice) {
+        this.ticketTypesAndCategoriesWithPrice = Map.copyOf(ticketTypesAndCategoriesWithPrice);
     }
 
     /**
@@ -54,21 +52,29 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
-        for (final String ticketType : ticketTypes) {
+        for (final String ticketType : ticketTypesAndCategoriesWithPrice.keySet()) {
             final Label ticketTypeLabel = new Label(ticketType);
             ticketTypeLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 16));
             ticketsAndSeasonTicketsContainer.getChildren().add(ticketTypeLabel);
             VBox.setMargin(ticketTypeLabel, TICKET_TYPE_LABEL_MARGIN);
-            for (final String category : customersCategories) {
+            final Set<Pair<String, Double>> categoriesWithPrice = ticketTypesAndCategoriesWithPrice.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getKey().equals(ticketType))
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .get(); // no check with isPresent() because the value is always present
+            for (final Pair<String, Double> categoryWithPrice : categoriesWithPrice) {
                 final HBox categoryContainer = new HBox();
                 ticketsAndSeasonTicketsContainer.getChildren().add(categoryContainer);
                 VBox.setMargin(categoryContainer, CATEGORY_CONTAINER_MARGIN);
-                final CheckBox categoryCheckbox = new CheckBox(category + " (price)");
+                final CheckBox categoryCheckbox =
+                        new CheckBox(categoryWithPrice.getKey()
+                                + " (" + EURO_SYMBOL + formatAsPrice(categoryWithPrice.getValue()) + ")");
                 categoryContainer.getChildren().add(categoryCheckbox);
                 categoryCheckbox.setAllowIndeterminate(false);
-                categoryCheckbox.setPrefWidth(CHECKBOX_PREF_WIDTH);
-                HBox.setMargin(categoryCheckbox, CHECKBOX_MARGIN);
-                final Spinner<Integer> quantitySpinner = new Spinner<>(0, SPINNER_MAX_VALUE, 0);
+                categoryCheckbox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
+                HBox.setMargin(categoryCheckbox, CHECKBOXES_MARGIN);
+                final Spinner<Integer> quantitySpinner = new Spinner<>(0, SPINNERS_MAX_VALUE, 0);
                 quantitySpinner.getValueFactory().setConverter(new ExceptionHandledIntegerStringConverter());
                 categoryContainer.getChildren().add(quantitySpinner);
                 quantitySpinner.setEditable(true);
@@ -110,5 +116,14 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 return 0;
             }
         }
+    }
+
+    private String formatAsPrice(final @NonNull Double price) {
+        String doubleString = price.toString();
+        final String decimalDigits = doubleString.substring(doubleString.indexOf('.') + 1);
+        if (decimalDigits.length() == 1) {
+            doubleString += "0";
+        }
+        return doubleString;
     }
 }
