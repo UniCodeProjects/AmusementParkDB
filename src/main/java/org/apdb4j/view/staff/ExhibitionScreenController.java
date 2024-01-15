@@ -92,7 +92,7 @@ public class ExhibitionScreenController extends PopupInitializer {
                 typeComboBox.getValue(),
                 descriptionTextArea.getText(),
                 datePicker.getValue(),
-                LocalTime.of(timeHourSpinner.getValue(), timeMinuteSpinner.getValue()),
+                editMode ? LocalTime.of(timeHourSpinner.getValue(), timeMinuteSpinner.getValue()) : null,
                 maxSeatsSpinner.getValue(),
                 spectatorsSpinner.getValue(),
                 editMode ? exhibition.getAverageRating() : 0.0,
