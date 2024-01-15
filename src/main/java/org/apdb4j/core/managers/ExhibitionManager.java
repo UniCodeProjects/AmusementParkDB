@@ -104,7 +104,7 @@ public final class ExhibitionManager {
                                             final @NonNull String account) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(EXHIBITION_DETAILS)
-                        .values(exhibitionID, date, time, maxSeats)
+                        .values(exhibitionID, date, time, maxSeats, null)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
@@ -129,17 +129,30 @@ public final class ExhibitionManager {
                                          final @NonNull LocalDate date, final @NonNull LocalTime time,
                                          final int newMaxSeats,
                                          final @NonNull String account) {
-        final int updatedTuples = DB.createConnection()
-                .queryAction(db -> db.update(EXHIBITION_DETAILS)
-                        .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
-                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
-                        .and(EXHIBITION_DETAILS.DATE.eq(date))
-                        .and(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
-                        .and(EXHIBITION_DETAILS.TIME.eq(time))
-                        .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
+        final int updatedTuples;
+        if (date.equals(LocalDate.now())) {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        } else {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        }
         return updatedTuples == 1;
     }
 
@@ -160,17 +173,31 @@ public final class ExhibitionManager {
                                            final @NonNull LocalDate date, final @NonNull LocalTime time,
                                            final int spectators,
                                            final @NonNull String account) {
-        final int updatedTuples = DB.createConnection()
-                .queryAction(db -> db.update(EXHIBITION_DETAILS)
-                        .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
-                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
-                        .and(EXHIBITION_DETAILS.DATE.eq(date))
-                        .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
-                        .and(EXHIBITION_DETAILS.TIME.eq(time))
-                        .and(EXHIBITION_DETAILS.TIME.lessOrEqual(LocalTime.now()))
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
+        final int updatedTuples;
+        if (date.equals(LocalDate.now())) {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .and(EXHIBITION_DETAILS.TIME.lessOrEqual(LocalTime.now()))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        } else {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        }
         return updatedTuples == 1;
     }
 
@@ -196,7 +223,10 @@ public final class ExhibitionManager {
             final int average = DB.createConnection()
                     .queryAction(db -> db.select(avg(EXHIBITION_DETAILS.SPECTATORS))
                             .from(EXHIBITION_DETAILS)
+                            .join(PARK_SERVICES)
+                            .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID))
                             .where(EXHIBITION_DETAILS.SPECTATORS.isNotNull())
+                            .and(PARK_SERVICES.TYPE.eq(type.get(0, String.class)))
                             .fetchOne(0, int.class))
                     .closeConnection()
                     .getResultAsInt();
@@ -240,8 +270,9 @@ public final class ExhibitionManager {
                          .from(EXHIBITION_DETAILS
                                  .join(PARK_SERVICES)
                                  .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
-                         .where(EXHIBITION_DETAILS.DATE.greaterOrEqual(LocalDate.now()))
-                         .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                         .where(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
+                         .or(EXHIBITION_DETAILS.DATE.equal(LocalDate.now())
+                                 .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now())))
                          .fetch())
                  .closeConnection()
                  .getResultAsRecords().stream()
