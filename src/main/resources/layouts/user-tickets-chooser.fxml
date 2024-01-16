@@ -30,7 +30,20 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </ListView>
-            <Label fx:id="totalPrice" text="Total price:" />
+            <HBox>
+               <children>
+                  <Label fx:id="totalPriceTitle" text="Total price:">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="totalPrice">
+                     <HBox.margin>
+                        <Insets left="3.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </right>

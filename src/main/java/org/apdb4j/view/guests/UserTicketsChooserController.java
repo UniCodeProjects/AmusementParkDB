@@ -33,6 +33,8 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     @FXML
     private VBox ticketsAndSeasonTicketsContainer;
     @FXML
+    private Label totalPriceTitle;
+    @FXML
     private Label totalPrice;
     private final Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice;
 
@@ -87,7 +89,35 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                     }
                 });
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) ->
-                        quantitySpinner.setDisable(!isSelected));
+                        quantitySpinner.setDisable(wasSelected));
+                categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
+                    if (wasSelected && Double.compare(Double.parseDouble(totalPrice.getText()), 0) > 0) {
+                        final Double newValue = Double.parseDouble(totalPrice.getText())
+                                - (categoryWithPrice.getValue() * quantitySpinner.getValue());
+                        totalPrice.setText(formatAsPrice(newValue));
+                    } else if (isSelected && !totalPrice.getText().isEmpty()) {
+                        final Double newValue = Double.parseDouble(totalPrice.getText())
+                                + (categoryWithPrice.getValue() * quantitySpinner.getValue());
+                        totalPrice.setText(formatAsPrice(newValue));
+                    }
+                });
+                quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
+                    final int diff = newAmount - previousAmount;
+                    if (diff > 0) {
+                        if (totalPrice.getText().isEmpty()) {
+                            final Double newTotalPrice = categoryWithPrice.getValue() * diff;
+                            totalPrice.setText(formatAsPrice(newTotalPrice));
+                        } else {
+                            final Double newTotalPrice = Double.parseDouble(totalPrice.getText())
+                                    + (categoryWithPrice.getValue() * diff);
+                            totalPrice.setText(formatAsPrice(newTotalPrice));
+                        }
+                    } else if (diff < 0) {
+                        final Double newTotalPrice = Double.parseDouble(totalPrice.getText())
+                                + (categoryWithPrice.getValue() * diff);
+                        totalPrice.setText(formatAsPrice(newTotalPrice));
+                    }
+                });
                 quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
                 HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
             }
