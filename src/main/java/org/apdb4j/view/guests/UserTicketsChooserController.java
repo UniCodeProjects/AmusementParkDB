@@ -1,6 +1,8 @@
 package org.apdb4j.view.guests;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -9,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
@@ -28,14 +31,14 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     private static final Insets SPINNERS_MARGIN = new Insets(0, 0, 0, 26);
     private static final int SPINNERS_MAX_VALUE = 9999;
     private static final String EURO_SYMBOL = "\u20AC";
+    private static final String PRICE_FORMAT_SPECIFIER = "%.2f";
     @FXML
     private ListView<Label> cart;
     @FXML
     private VBox ticketsAndSeasonTicketsContainer;
     @FXML
-    private Label totalPriceTitle;
-    @FXML
     private Label totalPrice;
+    private final DoubleProperty totalPriceProperty = new SimpleDoubleProperty();
     private final Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice;
 
     /**
@@ -54,6 +57,7 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
+        totalPrice.textProperty().bindBidirectional(totalPriceProperty, new PriceStringConverter());
         for (final String ticketType : ticketTypesAndCategoriesWithPrice.keySet()) {
             final Label ticketTypeLabel = new Label(ticketType);
             ticketTypeLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 16));
@@ -71,7 +75,7 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 VBox.setMargin(categoryContainer, CATEGORY_CONTAINER_MARGIN);
                 final CheckBox categoryCheckbox =
                         new CheckBox(categoryWithPrice.getKey()
-                                + " (" + EURO_SYMBOL + formatAsPrice(categoryWithPrice.getValue()) + ")");
+                                + " (" + EURO_SYMBOL + String.format(PRICE_FORMAT_SPECIFIER, categoryWithPrice.getValue()) + ")");
                 categoryContainer.getChildren().add(categoryCheckbox);
                 categoryCheckbox.setAllowIndeterminate(false);
                 categoryCheckbox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
@@ -91,32 +95,17 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) ->
                         quantitySpinner.setDisable(wasSelected));
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
-                    if (wasSelected && Double.compare(Double.parseDouble(totalPrice.getText()), 0) > 0) {
-                        final Double newValue = Double.parseDouble(totalPrice.getText())
-                                - (categoryWithPrice.getValue() * quantitySpinner.getValue());
-                        totalPrice.setText(formatAsPrice(newValue));
-                    } else if (isSelected && !totalPrice.getText().isEmpty()) {
-                        final Double newValue = Double.parseDouble(totalPrice.getText())
-                                + (categoryWithPrice.getValue() * quantitySpinner.getValue());
-                        totalPrice.setText(formatAsPrice(newValue));
+                    if (wasSelected && Double.compare(totalPriceProperty.get(), 0) > 0) {
+                        totalPriceProperty.set(totalPriceProperty.get()
+                                - (categoryWithPrice.getValue() * quantitySpinner.getValue()));
+                    } else {
+                        totalPriceProperty.set(totalPriceProperty.get()
+                                + (categoryWithPrice.getValue() * quantitySpinner.getValue()));
                     }
                 });
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
-                    final int diff = newAmount - previousAmount;
-                    if (diff > 0) {
-                        if (totalPrice.getText().isEmpty()) {
-                            final Double newTotalPrice = categoryWithPrice.getValue() * diff;
-                            totalPrice.setText(formatAsPrice(newTotalPrice));
-                        } else {
-                            final Double newTotalPrice = Double.parseDouble(totalPrice.getText())
-                                    + (categoryWithPrice.getValue() * diff);
-                            totalPrice.setText(formatAsPrice(newTotalPrice));
-                        }
-                    } else if (diff < 0) {
-                        final Double newTotalPrice = Double.parseDouble(totalPrice.getText())
-                                + (categoryWithPrice.getValue() * diff);
-                        totalPrice.setText(formatAsPrice(newTotalPrice));
-                    }
+                    totalPriceProperty.set(totalPriceProperty.get()
+                            + (categoryWithPrice.getValue() * (newAmount - previousAmount)));
                 });
                 quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
                 HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
@@ -148,12 +137,10 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
         }
     }
 
-    private String formatAsPrice(final @NonNull Double price) {
-        String doubleString = price.toString();
-        final String decimalDigits = doubleString.substring(doubleString.indexOf('.') + 1);
-        if (decimalDigits.length() == 1) {
-            doubleString += "0";
+    private static final class PriceStringConverter extends NumberStringConverter {
+        @Override
+        public String toString(final Number number) {
+            return String.format(PRICE_FORMAT_SPECIFIER, number.doubleValue());
         }
-        return doubleString;
     }
 }
