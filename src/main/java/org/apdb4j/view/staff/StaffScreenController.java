@@ -1,6 +1,7 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +10,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -34,6 +37,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
@@ -63,7 +67,10 @@ import org.jooq.exception.DataAccessException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -71,6 +78,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 /**
  * The FXML controller for the staff UI.
@@ -97,7 +105,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     private Button deleteAllRowsBtn;
     @FXML
-    private LineChart<?, ?> chart;
+    private LineChart<String, Number> chart;
     @FXML
     private Button clearBtn;
     @FXML
@@ -105,7 +113,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     private ToggleGroup radioBtnToggle;
     @FXML
-    private VBox vBox;
+    private VBox expensesVBox;
     @FXML
     private TextField employeeSearchField;
     @FXML
@@ -185,6 +193,44 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Shows the park expenses on a line chart.
+     * @param event the event
+     */
+    @FXML
+    void showExpensesChart(final ActionEvent event) {
+        chart.setAnimated(false);
+        chart.getData().clear();
+        chart.setAnimated(true);
+        final List<DatePicker> datePickers = expensesVBox.getChildren().stream()
+                .filter(node -> node instanceof HBox)
+                .map(node -> ((HBox) node).getChildren())
+                .flatMap(Collection::stream)
+                .filter(node -> node instanceof DatePicker)
+                .map(node -> (DatePicker) node)
+                .toList();
+        if (datePickers.stream().map(DatePicker::getValue).anyMatch(Objects::isNull)) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText("Missing data in date picker.")
+                    .show();
+            return;
+        }
+        final List<Pair<LocalDate, LocalDate>> datePairs = new ArrayList<>();
+        for (int i = 0; i < datePickers.size(); i += 2) {
+            datePairs.add(new ImmutablePair<>(datePickers.get(i).getValue(), datePickers.get(i + 1).getValue()));
+        }
+        datePairs.forEach(dates -> {
+            final String seriesName = "Expenses " + (chart.getData().size() + 1);
+            final XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName(seriesName);
+            series.getData().add(new XYChart.Data<>(dates.getLeft().getMonth().getDisplayName(TextStyle.SHORT,
+                    Locale.ROOT), 1));
+            series.getData().add(new XYChart.Data<>(dates.getRight().getMonth().getDisplayName(TextStyle.SHORT,
+                    Locale.ROOT), 2));
+            chart.getData().add(series);
+        });
+    }
+
+    /**
      * Adds a new row of date pickers and relative buttons.
      * @param event the event
      */
@@ -216,14 +262,14 @@ public class StaffScreenController implements Initializable {
 
         // Adds the delete feature for the button.
         deleteBtn.setOnAction(e -> {
-            vBox.getChildren().remove(container);
+            expensesVBox.getChildren().remove(container);
             addRowCounter--;
             if (addRowCounter < MAX_ROWS) {
                 addRowBtn.setDisable(false);
             }
         });
 
-        vBox.getChildren().add(container);
+        expensesVBox.getChildren().add(container);
         addRowCounter++;
         if (addRowCounter >= MAX_ROWS) {
             addRowBtn.setDisable(true);
@@ -236,7 +282,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void clearRowBtn(final ActionEvent event) {
-        final HBox firstRow = (HBox) vBox.getChildren().get(0);
+        final HBox firstRow = (HBox) expensesVBox.getChildren().get(0);
         final DatePicker datePicker1 = (DatePicker) firstRow.getChildren().get(1);
         final DatePicker datePicker2 = (DatePicker) firstRow.getChildren().get(2);
         final Button clearButton = (Button) firstRow.getChildren().get(3);
@@ -249,7 +295,7 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void deleteAllRows(final ActionEvent event) {
-        vBox.getChildren().remove(1, vBox.getChildrenUnmodifiable().size());
+        expensesVBox.getChildren().remove(1, expensesVBox.getChildrenUnmodifiable().size());
         addRowCounter = 1;
         addRowBtn.setDisable(false);
     }
@@ -989,17 +1035,22 @@ public class StaffScreenController implements Initializable {
         attractionsNumField.setText(String.valueOf(overviewController.getAttractionsAmount()));
         shopsNumField.setText(String.valueOf(overviewController.getShopsAmount()));
         employeesNumField.setText(String.valueOf(overviewController.getEmployeesAmount()));
+        // Populating X axis with months.
+        ((CategoryAxis) chart.getXAxis()).setCategories(FXCollections.observableList(IntStream.rangeClosed(1, 12)
+                .mapToObj(Month::of)
+                .map(month -> month.getDisplayName(TextStyle.SHORT, Locale.ROOT))
+                .toList()));
         /*
          * Disables or enables the delete all rows button
          * based on the presence of at least one new row.
          */
-        vBox.getChildren().addListener((ListChangeListener<Node>) change -> {
+        expensesVBox.getChildren().addListener((ListChangeListener<Node>) change -> {
             while (change.next()) {
                 deleteAllRowsBtn.setDisable(!change.wasAdded());
             }
         });
         // Sets the default first row.
-        final HBox firstRow = (HBox) vBox.getChildren().get(0);
+        final HBox firstRow = (HBox) expensesVBox.getChildren().get(0);
         final DatePicker datePicker1 = (DatePicker) firstRow.getChildren().get(1);
         final DatePicker datePicker2 = (DatePicker) firstRow.getChildren().get(2);
         final Button clearButton = (Button) firstRow.getChildren().get(3);
