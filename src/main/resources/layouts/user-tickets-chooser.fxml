@@ -32,14 +32,14 @@
             </ListView>
             <HBox>
                <children>
-                  <Label fx:id="totalPriceTitle" text="Total price:">
+                  <Label text="Total price: €">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Label>
                   <Label fx:id="totalPrice">
                      <HBox.margin>
-                        <Insets left="3.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
                </children>
