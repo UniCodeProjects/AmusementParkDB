@@ -103,9 +103,69 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                                 + (categoryWithPrice.getValue() * quantitySpinner.getValue()));
                     }
                 });
+                categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
+                    if (wasSelected && cart.getItems()
+                            .stream()
+                            .anyMatch(label -> label.getText()
+                                    .contains(categoryWithPrice.getKey() + " "
+                                            + ticketType.substring(0, ticketType.length() - 1)))) {
+                        cart.getItems().remove(cart.getItems()
+                                .stream()
+                                .filter(label -> label.getText()
+                                        .contains(categoryWithPrice.getKey() + " "
+                                                + ticketType.substring(0, ticketType.length() - 1)))
+                                .findFirst().get());
+                    } else if (isSelected
+                            && cart.getItems()
+                            .stream()
+                            .noneMatch(label -> label.getText()
+                                    .contains(categoryWithPrice.getKey() + " "
+                                            + ticketType.substring(0, ticketType.length() - 1)))
+                            && quantitySpinner.getValue() != 0) {
+                        cart.getItems().add(new Label(quantitySpinner.getValue() + " " + categoryWithPrice.getKey()
+                                + " " + ticketType.substring(0, ticketType.length() - 1)));
+                    }
+                });
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
                     totalPriceProperty.set(totalPriceProperty.get()
                             + (categoryWithPrice.getValue() * (newAmount - previousAmount)));
+                });
+                quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
+                    /*TODO: add a field that stores the related label for each ticket type + category? In this
+                    *  way the ticket (or season ticket) name could be written in the cart without problems */
+                    if (newAmount == 0 && cart.getItems()
+                            .stream()
+                            .anyMatch(label -> label.getText()
+                                    .contains(categoryWithPrice.getKey() + " "
+                                            + ticketType.substring(0, ticketType.length() - 1)))) {
+                        cart.getItems().remove(cart.getItems()
+                                .stream()
+                                .filter(label -> label.getText()
+                                        .contains(categoryWithPrice.getKey() + " "
+                                                + ticketType.substring(0, ticketType.length() - 1)))
+                                .findFirst().get());
+                    } else if (newAmount > 0 && cart.getItems()
+                            .stream().noneMatch(label -> label.getText()
+                                    .contains(categoryWithPrice.getKey() + " "
+                                            + ticketType.substring(0, ticketType.length() - 1)))) {
+                        cart.getItems().add(new Label(quantitySpinner.getValue() + " "
+                                + categoryWithPrice.getKey() + " " + ticketType.substring(0, ticketType.length() - 1)));
+                    } else if (newAmount > 0 && cart.getItems()
+                            .stream()
+                            .anyMatch(label -> label.getText()
+                                    .contains(categoryWithPrice.getKey() + " "
+                                            + ticketType.substring(0, ticketType.length() - 1)))) {
+                        cart.getItems().stream().filter(label -> label.getText()
+                                .contains(categoryWithPrice.getKey() + " "
+                                        + ticketType.substring(0, ticketType.length() - 1)))
+                                .findFirst()
+                                .get().setText(cart.getItems()
+                                        .stream()
+                                        .filter(label -> label.getText()
+                                                .contains(categoryWithPrice.getKey() + " "
+                                                        + ticketType.substring(0, ticketType.length() - 1)))
+                                        .findFirst().get().getText().replace(previousAmount.toString(), newAmount.toString()));
+                    }
                 });
                 quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
                 HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
