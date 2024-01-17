@@ -1057,6 +1057,16 @@ public class StaffScreenController implements Initializable {
         attractionsNumField.setText(String.valueOf(overviewController.getAttractionsAmount()));
         shopsNumField.setText(String.valueOf(overviewController.getShopsAmount()));
         employeesNumField.setText(String.valueOf(overviewController.getEmployeesAmount()));
+        // Adding monthly report.
+        if (LocalDate.now().getDayOfMonth() == 1) {
+            try {
+                new ExpensesControllerImpl().addRecapForPreviousMonth();
+            } catch (final IllegalStateException e) {
+                new AlertBuilder(Alert.AlertType.INFORMATION)
+                        .setContentText(e.getMessage())
+                        .show();
+            }
+        }
         // Populating X axis with months.
         ((CategoryAxis) chart.getXAxis()).setCategories(FXCollections.observableList(IntStream.rangeClosed(1, 12)
                 .mapToObj(Month::of)
