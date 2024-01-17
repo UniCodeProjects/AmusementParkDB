@@ -104,73 +104,66 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                     }
                 });
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
-                    if (wasSelected && cart.getItems()
-                            .stream()
-                            .anyMatch(label -> label.getText()
-                                    .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))) {
-                        cart.getItems().remove(cart.getItems()
-                                .stream()
-                                .filter(label -> label.getText()
-                                        .contains(categoryWithPrice.getKey() + " "
-                                                + ticketType.substring(0, ticketType.length() - 1)))
-                                .findFirst().get());
-                    } else if (isSelected
-                            && cart.getItems()
-                            .stream()
-                            .noneMatch(label -> label.getText()
-                                    .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))
-                            && quantitySpinner.getValue() != 0) {
-                        final String ticketTypeName = quantitySpinner.getValue() > 1 ? ticketType
-                                : ticketType.substring(0, ticketType.length() - 1);
-                        cart.getItems().add(new Label(quantitySpinner.getValue() + " " + categoryWithPrice.getKey()
-                                + " " + ticketTypeName));
+                    final Optional<Label> ticketTypeAndCategoryLabel = getLabelFromCart(ticketType, categoryWithPrice.getKey());
+                    if (wasSelected && ticketTypeAndCategoryLabel.isPresent()) {
+                        cart.getItems().remove(ticketTypeAndCategoryLabel.get());
+                    } else if (isSelected && ticketTypeAndCategoryLabel.isEmpty()) {
+                        addLabelToCart(ticketType, categoryWithPrice.getKey(), quantitySpinner.getValue());
                     }
                 });
+                quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) ->
+                        totalPriceProperty.set(totalPriceProperty.get()
+                                + (categoryWithPrice.getValue() * (newAmount - previousAmount))));
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
-                    totalPriceProperty.set(totalPriceProperty.get()
-                            + (categoryWithPrice.getValue() * (newAmount - previousAmount)));
-                });
-                quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
-                    /*TODO: add a field that stores the related label for each ticket type + category? In this
-                    *  way the ticket (or season ticket) name could be written in the cart without problems */
-                    if (newAmount == 0 && cart.getItems()
-                            .stream()
-                            .anyMatch(label -> label.getText()
-                                    .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))) {
-                        cart.getItems().remove(cart.getItems()
-                                .stream()
-                                .filter(label -> label.getText()
-                                        .contains(categoryWithPrice.getKey() + " "
-                                                + ticketType.substring(0, ticketType.length() - 1)))
-                                .findFirst().get());
-                    } else {
-                        final String ticketTypeName = newAmount > 1 ? ticketType
-                                : ticketType.substring(0, ticketType.length() - 1);
-                        if (newAmount > 0 && cart.getItems()
-                                .stream().noneMatch(label -> label.getText()
-                                        .contains(categoryWithPrice.getKey() + " "
-                                                + ticketType.substring(0, ticketType.length() - 1)))) {
-                            cart.getItems().add(new Label(quantitySpinner.getValue() + " " + categoryWithPrice.getKey()
-                                    + " " + ticketTypeName));
-                        } else if (newAmount > 0 && cart.getItems()
-                                .stream()
-                                .anyMatch(label -> label.getText()
-                                        .contains(categoryWithPrice.getKey() + " "
-                                                + ticketType.substring(0, ticketType.length() - 1)))) {
-                            cart.getItems().stream().filter(label -> label.getText()
-                                    .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))
-                                    .findFirst()
-                                    .get().setText(newAmount + " " + categoryWithPrice.getKey() + " " + ticketTypeName);
+                    final Optional<Label> ticketTypeAndCategoryLabel = getLabelFromCart(ticketType, categoryWithPrice.getKey());
+                    if (newAmount == 0 && ticketTypeAndCategoryLabel.isPresent()) {
+                        cart.getItems().remove(ticketTypeAndCategoryLabel.get());
+                    } else if (newAmount > 0) {
+                        if (ticketTypeAndCategoryLabel.isEmpty()) {
+                            addLabelToCart(ticketType, categoryWithPrice.getKey(), newAmount);
+                        } else {
+                            changeTicketQuantityInCart(ticketType, categoryWithPrice.getKey(), newAmount, previousAmount);
                         }
                     }
                 });
                 quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
                 HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
             }
+        }
+    }
+
+    private Optional<Label> getLabelFromCart(final String ticketType, final String customerCategory) {
+        /*
+        * Note: ticket type is turned in singular form because if in the label the ticket type is in its singular form
+        * and in this method the ticket type is in its plural form, there would be no match.
+        */
+        return cart.getItems()
+                .stream()
+                .filter(label -> label.getText().contains(customerCategory + " " + turnTicketTypeInSingularForm(ticketType)))
+                .findFirst();
+    }
+
+    private void addLabelToCart(final String ticketType, final String customerCategory, final int ticketQuantity) {
+        if (ticketQuantity > 0) {
+            cart.getItems().add(new Label(ticketQuantity + " " + customerCategory + " " + (ticketQuantity > 1 ? ticketType
+                    : turnTicketTypeInSingularForm(ticketType))));
+        }
+    }
+
+    private String turnTicketTypeInSingularForm(final String ticketType) {
+        return ticketType.substring(0, ticketType.length() - 1);
+    }
+
+    private void changeTicketQuantityInCart(final String ticketType,
+                                            final String customerCategory,
+                                            final int newTicketQuantity,
+                                            final int oldTicketQuantity) {
+        final Label label = getLabelFromCart(ticketType, customerCategory).get();
+        label.setText(label.getText().replaceFirst("\\b\\d+", String.valueOf(newTicketQuantity)));
+        if (newTicketQuantity > 1 && oldTicketQuantity == 1) {
+            label.setText(label.getText() + "s");
+        } else if (newTicketQuantity == 1 && oldTicketQuantity > 1) {
+            label.setText(label.getText().substring(0, label.getText().length() - 1));
         }
     }
 
