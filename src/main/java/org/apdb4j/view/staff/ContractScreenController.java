@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableView;
@@ -15,11 +14,11 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -150,8 +149,8 @@ public class ContractScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
-        beginDatePicker.setDayCellFactory(param -> new FirstDayDateCell());
-        endDatePicker.setDayCellFactory(param -> new LastDayDateCell());
+        beginDatePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell());
+        endDatePicker.setDayCellFactory(param -> new JavaFXUtils.LastDayDateCell());
         if (!editMode) {
             return;
         }
@@ -162,34 +161,6 @@ public class ContractScreenController extends PopupInitializer {
         endDatePicker.setValue(contract.getEndDate());
         salarySpinner.getValueFactory().setValue(contract.getSalary());
         advancedEditCheckBox.fire();
-    }
-
-    /**
-     * A date cell that enables only the first day of the month.
-     */
-    static class FirstDayDateCell extends DateCell {
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void updateItem(final LocalDate item, final boolean empty) {
-            super.updateItem(item, empty);
-            setDisable(item != null && item.getDayOfMonth() != 1);
-        }
-    }
-
-    /**
-     * A date cell that enables only the last day of the month.
-     */
-    static class LastDayDateCell extends DateCell {
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void updateItem(final LocalDate item, final boolean empty) {
-            super.updateItem(item, empty);
-            setDisable(item != null && item.getDayOfMonth() != item.lengthOfMonth());
-        }
     }
 
 }
