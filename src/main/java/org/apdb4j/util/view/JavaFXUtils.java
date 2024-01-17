@@ -2,7 +2,10 @@ package org.apdb4j.util.view;
 
 import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.control.DateCell;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 
 /**
  * Utility class for JavaFX.
@@ -39,6 +42,34 @@ public final class JavaFXUtils {
             throw new IllegalStateException("Failed cast: the given window is not a Stage instance");
         }
         return stage;
+    }
+
+    /**
+     * A date cell that enables only the first day of the month.
+     */
+    public static class FirstDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != 1);
+        }
+    }
+
+    /**
+     * A date cell that enables only the last day of the month.
+     */
+    public static class LastDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != item.lengthOfMonth());
+        }
     }
 
 }
