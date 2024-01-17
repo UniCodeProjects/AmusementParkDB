@@ -30,4 +30,16 @@ public class ExpensesControllerImpl implements ExpensesController {
         return new ImmutablePair<>(incomes.get(0).getRight(), incomes.get(1).getRight());
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalStateException on fail
+     */
+    @Override
+    public void addRecapForPreviousMonth() {
+        final boolean success = MoneyManager.addRecapForPreviousMonth("");
+        if (!success) {
+            throw new IllegalStateException("Monthly recap could not get added.");
+        }
+    }
+
 }

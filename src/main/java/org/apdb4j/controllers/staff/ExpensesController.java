@@ -20,4 +20,10 @@ public interface ExpensesController {
      */
     Pair<Double, Double> getIncome(YearMonth m1, YearMonth m2);
 
+    /**
+     * Adds a monthly recap for the previous month.
+     * @throws IllegalStateException on fail
+     */
+    void addRecapForPreviousMonth();
+
 }
