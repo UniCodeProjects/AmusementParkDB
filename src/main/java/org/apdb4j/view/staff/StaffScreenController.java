@@ -131,6 +131,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TableView<ContractTableItem> contractsTableView;
     @FXML
+    private TextField ticketSearchField;
+    @FXML
     private TableView<TicketTableItem> ticketTableView;
     @FXML
     private TableView<AttractionTableItem> attractionsTableView;
@@ -453,6 +455,31 @@ public class StaffScreenController implements Initializable {
         ContractScreenController.setEditMode(true);
         ContractScreenController.setContract(selectedContract);
         LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Edit contract");
+    }
+
+    /**
+     * Filters the table items by the search field content.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onTicketSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (ticketSearchField.getText().isBlank() || ticketSearchField.getText() == null) {
+            // TODO: Put controller as field.
+            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<TicketTableItem> filtered = new TicketControllerImpl().filter(ticketSearchField.getText());
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(filtered);
+            });
+        }
     }
 
     /**

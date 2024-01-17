@@ -272,7 +272,7 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="TicketID" />
+                              <TextField fx:id="ticketSearchField" onKeyTyped="#onTicketSearch" promptText="TicketID" />
                               <DatePicker maxWidth="1.7976931348623157E308" promptText="Purchase date" />
                               <DatePicker maxWidth="1.7976931348623157E308" promptText="Punch date" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
