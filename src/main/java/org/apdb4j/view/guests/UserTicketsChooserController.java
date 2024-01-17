@@ -122,8 +122,10 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                                     .contains(categoryWithPrice.getKey() + " "
                                             + ticketType.substring(0, ticketType.length() - 1)))
                             && quantitySpinner.getValue() != 0) {
+                        final String ticketTypeName = quantitySpinner.getValue() > 1 ? ticketType
+                                : ticketType.substring(0, ticketType.length() - 1);
                         cart.getItems().add(new Label(quantitySpinner.getValue() + " " + categoryWithPrice.getKey()
-                                + " " + ticketType.substring(0, ticketType.length() - 1)));
+                                + " " + ticketTypeName));
                     }
                 });
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
@@ -144,27 +146,26 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                                         .contains(categoryWithPrice.getKey() + " "
                                                 + ticketType.substring(0, ticketType.length() - 1)))
                                 .findFirst().get());
-                    } else if (newAmount > 0 && cart.getItems()
-                            .stream().noneMatch(label -> label.getText()
+                    } else {
+                        final String ticketTypeName = newAmount > 1 ? ticketType
+                                : ticketType.substring(0, ticketType.length() - 1);
+                        if (newAmount > 0 && cart.getItems()
+                                .stream().noneMatch(label -> label.getText()
+                                        .contains(categoryWithPrice.getKey() + " "
+                                                + ticketType.substring(0, ticketType.length() - 1)))) {
+                            cart.getItems().add(new Label(quantitySpinner.getValue() + " " + categoryWithPrice.getKey()
+                                    + " " + ticketTypeName));
+                        } else if (newAmount > 0 && cart.getItems()
+                                .stream()
+                                .anyMatch(label -> label.getText()
+                                        .contains(categoryWithPrice.getKey() + " "
+                                                + ticketType.substring(0, ticketType.length() - 1)))) {
+                            cart.getItems().stream().filter(label -> label.getText()
                                     .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))) {
-                        cart.getItems().add(new Label(quantitySpinner.getValue() + " "
-                                + categoryWithPrice.getKey() + " " + ticketType.substring(0, ticketType.length() - 1)));
-                    } else if (newAmount > 0 && cart.getItems()
-                            .stream()
-                            .anyMatch(label -> label.getText()
-                                    .contains(categoryWithPrice.getKey() + " "
-                                            + ticketType.substring(0, ticketType.length() - 1)))) {
-                        cart.getItems().stream().filter(label -> label.getText()
-                                .contains(categoryWithPrice.getKey() + " "
-                                        + ticketType.substring(0, ticketType.length() - 1)))
-                                .findFirst()
-                                .get().setText(cart.getItems()
-                                        .stream()
-                                        .filter(label -> label.getText()
-                                                .contains(categoryWithPrice.getKey() + " "
-                                                        + ticketType.substring(0, ticketType.length() - 1)))
-                                        .findFirst().get().getText().replace(previousAmount.toString(), newAmount.toString()));
+                                            + ticketType.substring(0, ticketType.length() - 1)))
+                                    .findFirst()
+                                    .get().setText(newAmount + " " + categoryWithPrice.getKey() + " " + ticketTypeName);
+                        }
                     }
                 });
                 quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
