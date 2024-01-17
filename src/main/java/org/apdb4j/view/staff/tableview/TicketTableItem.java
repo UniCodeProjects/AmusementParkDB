@@ -47,8 +47,8 @@ public class TicketTableItem implements TableItem {
      */
     public TicketTableItem(final @NonNull String ticketID,
                            final @NonNull LocalDate purchaseDate,
-                           final @NonNull LocalDate validOn,
-                           final @NonNull LocalDate validUntil,
+                           final LocalDate validOn,
+                           final LocalDate validUntil,
                            final int remainingEntrances,
                            final @NonNull String ownerID,
                            final @NonNull Year year,
