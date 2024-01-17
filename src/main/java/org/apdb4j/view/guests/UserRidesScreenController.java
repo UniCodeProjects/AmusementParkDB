@@ -94,10 +94,7 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
     }
 
     private void initializeSortMenu() {
-        sortMenuFields.forEach(field -> {
-            sortMenu.getItems().add(field + " (ascending)");
-            sortMenu.getItems().add(field + " (descending)");
-        });
+        sortMenuFields.forEach(field -> sortMenu.getItems().addAll(field + " (ascending)", field + " (descending)"));
         sortMenu.getItems().add("No sorting");
     }
 
@@ -168,20 +165,14 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
         final var hBox2 = new HBox();
         final var firstRatingInterval = new CheckBox("0-1.9 stars");
         final var secondRatingInterval = new CheckBox("2-2.9 stars");
-        secondRatingInterval.setPadding(new Insets(0, 0, 0, 5));
+        hBox1.getChildren().addAll(firstRatingInterval, secondRatingInterval);
+        HBox.setMargin(secondRatingInterval, new Insets(0, 0, 0, 5));
         final var thirdRatingInterval = new CheckBox("3-3.9 stars");
         final var lastRatingInterval = new CheckBox("4-5 stars");
-        lastRatingInterval.setPadding(new Insets(0, 0, 0, 5));
-        hBox1.getChildren().add(firstRatingInterval);
-        hBox1.getChildren().add(secondRatingInterval);
-        hBox2.getChildren().add(thirdRatingInterval);
-        hBox2.getChildren().add(lastRatingInterval);
-        filters.add(firstRatingInterval);
-        filters.add(secondRatingInterval);
-        filters.add(thirdRatingInterval);
-        filters.add(lastRatingInterval);
-        filtersToolBar.getItems().add(hBox1);
-        filtersToolBar.getItems().add(hBox2);
+        hBox2.getChildren().addAll(thirdRatingInterval, lastRatingInterval);
+        HBox.setMargin(lastRatingInterval, new Insets(0, 0, 0, 5));
+        filters.addAll(List.of(firstRatingInterval, secondRatingInterval, thirdRatingInterval, lastRatingInterval));
+        filtersToolBar.getItems().addAll(hBox1, hBox2);
 
         addNewAttributeToFilters("Type");
         final var rideTypes = new QueryBuilder().createConnection()
@@ -200,11 +191,10 @@ public class UserRidesScreenController extends BackableAbstractFXMLController {
         filters.forEach(checkBox -> checkBox.setPrefWidth(CHECKBOXES_PREF_WIDTH));
 
         final var applyFiltersButton = new Button("Apply filters");
-        applyFiltersButton.setCursor(Cursor.HAND);
-        filtersToolBar.getItems().add(applyFiltersButton);
         final var resetFiltersButton = new Button("Reset filters");
+        applyFiltersButton.setCursor(Cursor.HAND);
         resetFiltersButton.setOnAction(e -> filters.forEach(checkBox -> checkBox.setSelected(false)));
         resetFiltersButton.setCursor(Cursor.HAND);
-        filtersToolBar.getItems().add(resetFiltersButton);
+        filtersToolBar.getItems().addAll(applyFiltersButton, resetFiltersButton);
     }
 }

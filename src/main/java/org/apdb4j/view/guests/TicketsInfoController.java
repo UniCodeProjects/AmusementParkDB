@@ -60,11 +60,7 @@ public class TicketsInfoController implements FXMLController, Initializable {
         addTicketInfo(borderPane3, label7, label8, label9);
         final var borderPane4 = new BorderPane();
         addTicketInfo(borderPane4, label10, label11, label12);
-
-        listView.getItems().add(borderPane1);
-        listView.getItems().add(borderPane2);
-        listView.getItems().add(borderPane3);
-        listView.getItems().add(borderPane4);
+        listView.getItems().addAll(borderPane1, borderPane2, borderPane3, borderPane4);
     }
 
     private void addTicketInfo(final BorderPane pane, final Label ticketID, final Label purchaseDate, final Label ticketType) {

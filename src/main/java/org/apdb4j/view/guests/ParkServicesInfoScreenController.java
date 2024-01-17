@@ -92,14 +92,14 @@ public class ParkServicesInfoScreenController implements Initializable {
                 .get(0);
         for (final var field : parkService.fields()) {
             final var hBox = new HBox();
-            hBox.setPadding(new Insets(0, 0, 5, 0));
+            descriptionAndInfoContainer.getChildren().add(hBox);
+            VBox.setMargin(hBox, new Insets(0, 0, 5, 0));
             final var fieldNameLabel = new Label(field.getName() + ":");
-            fieldNameLabel.setPadding(new Insets(0, 0, 0, 5));
             fieldNameLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
             final var fieldValueLabel = new Label(Objects.requireNonNull(field.getValue(parkService)).toString());
-            fieldValueLabel.setPadding(new Insets(0, 0, 0, 3));
             hBox.getChildren().addAll(fieldNameLabel, fieldValueLabel);
-            descriptionAndInfoContainer.getChildren().add(hBox);
+            HBox.setMargin(fieldNameLabel, new Insets(0, 0, 0, 5));
+            HBox.setMargin(fieldValueLabel, new Insets(0, 0, 0, 3));
         }
     }
 

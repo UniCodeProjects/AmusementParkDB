@@ -16,6 +16,7 @@ import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.FXMLController;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -61,10 +62,7 @@ public class UserScreenController implements FXMLController, Initializable {
         final Hyperlink accountPersonalData = new Hyperlink("My personal data");
         final Button logOutButton = new Button("Log out");
         logOutButton.setCursor(Cursor.HAND);
-        accountInfo.getItems().add(accountPurchases);
-        accountInfo.getItems().add(accountPersonalData);
-        accountInfo.getItems().add(new Separator());
-        accountInfo.getItems().add(logOutButton);
+        accountInfo.getItems().addAll(List.of(accountPurchases, accountPersonalData, new Separator(), logOutButton));
         accountPurchases.setOnAction(event -> {
             LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true);
             JavaFXUtils.setStageTitle(event, "My purchases");
