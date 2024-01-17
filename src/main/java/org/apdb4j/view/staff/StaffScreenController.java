@@ -43,6 +43,7 @@ import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
+import org.apdb4j.controllers.staff.ExpensesControllerImpl;
 import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.controllers.staff.OverviewController;
@@ -52,6 +53,7 @@ import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
@@ -68,6 +70,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -100,6 +103,10 @@ public class StaffScreenController implements Initializable {
     private TextField openingTimeField;
     @FXML
     private TextField closingTimeField;
+    @FXML
+    private DatePicker expensesDatePicker1;
+    @FXML
+    private DatePicker expensesDatePicker2;
     @FXML
     private Button addRowBtn;
     @FXML
@@ -222,10 +229,23 @@ public class StaffScreenController implements Initializable {
             final String seriesName = "Expenses " + (chart.getData().size() + 1);
             final XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.setName(seriesName);
-            series.getData().add(new XYChart.Data<>(dates.getLeft().getMonth().getDisplayName(TextStyle.SHORT,
-                    Locale.ROOT), 1));
-            series.getData().add(new XYChart.Data<>(dates.getRight().getMonth().getDisplayName(TextStyle.SHORT,
-                    Locale.ROOT), 2));
+            final LocalDate fromDate = dates.getLeft();
+            final LocalDate toDate = dates.getRight();
+            Pair<Double, Double> income;
+            try {
+                income = new ExpensesControllerImpl().getIncome(
+                        YearMonth.of(fromDate.getYear(), fromDate.getMonth()),
+                        YearMonth.of(toDate.getYear(), toDate.getMonth()));
+            } catch (final IllegalArgumentException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+                return;
+            }
+            series.getData().add(new XYChart.Data<>(fromDate.getMonth().getDisplayName(TextStyle.SHORT,
+                    Locale.ROOT), income.getLeft()));
+            series.getData().add(new XYChart.Data<>(toDate.getMonth().getDisplayName(TextStyle.SHORT,
+                    Locale.ROOT), income.getRight()));
             chart.getData().add(series);
         });
     }
@@ -241,8 +261,10 @@ public class StaffScreenController implements Initializable {
         final var datePicker2 = new DatePicker();
         datePicker1.setPromptText("Start date");
         datePicker1.setMaxWidth(Double.MAX_VALUE);
+        datePicker1.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell());
         datePicker2.setPromptText("End date");
         datePicker2.setMaxWidth(Double.MAX_VALUE);
+        datePicker2.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell());
 
         final var clearBtn = new Button("Clear");
         clearBtn.setMaxWidth(Double.MAX_VALUE);
@@ -1040,6 +1062,8 @@ public class StaffScreenController implements Initializable {
                 .mapToObj(Month::of)
                 .map(month -> month.getDisplayName(TextStyle.SHORT, Locale.ROOT))
                 .toList()));
+        List.of(expensesDatePicker1, expensesDatePicker2)
+                .forEach(datePicker -> datePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell()));
         /*
          * Disables or enables the delete all rows button
          * based on the presence of at least one new row.

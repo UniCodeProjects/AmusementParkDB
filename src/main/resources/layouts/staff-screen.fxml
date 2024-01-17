@@ -74,8 +74,8 @@
                                           <HBox alignment="CENTER" spacing="20.0">
                                              <children>
                                                 <Label text="Net profit" />
-                                                <DatePicker maxWidth="1.7976931348623157E308" promptText="Start date" />
-                                                <DatePicker maxWidth="1.7976931348623157E308" promptText="End date" />
+                                                <DatePicker fx:id="expensesDatePicker1" maxWidth="1.7976931348623157E308" promptText="Start date" />
+                                                <DatePicker fx:id="expensesDatePicker2" maxWidth="1.7976931348623157E308" promptText="End date" />
                                                  <Button fx:id="clearBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearRowBtn" text="Clear">
                                                      <cursor>
                                                          <Cursor fx:constant="HAND" />
