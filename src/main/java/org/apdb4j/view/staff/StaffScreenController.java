@@ -52,6 +52,7 @@ import org.apdb4j.controllers.staff.ReviewController;
 import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
+import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -1096,6 +1097,8 @@ public class StaffScreenController implements Initializable {
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
         EmployeeControllerImpl.setContractTableView(contractsTableView);
+
+        ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
 
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
         ContractScreenController.setContractTableView(contractsTableView);
