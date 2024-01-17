@@ -111,12 +111,12 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
         reviews.getItems().add(reviewContainer);
         reviewContainer.getChildren().add(new Label("Author: " + review.get(REVIEWS.ACCOUNT)));
         final HBox ratingAndDate = new HBox();
-        ratingAndDate.setPadding(new Insets(0, 0, 5, 0));
-        final Label ratingLabel = new Label("Rating: " + review.get(REVIEWS.RATING).toString() + "/5");
-        ratingLabel.setPadding(new Insets(0, 10, 0, 0));
-        ratingAndDate.getChildren().add(ratingLabel);
-        ratingAndDate.getChildren().add(new Label("Date: " + review.get(REVIEWS.DATE).toString()));
         reviewContainer.getChildren().add(ratingAndDate);
+        VBox.setMargin(ratingAndDate, new Insets(0, 0, 5, 0));
+        final Label ratingLabel = new Label("Rating: " + review.get(REVIEWS.RATING).toString() + "/5");
+        ratingAndDate.getChildren().add(ratingLabel);
+        HBox.setMargin(ratingLabel, new Insets(0, 10, 0, 0));
+        ratingAndDate.getChildren().add(new Label("Date: " + review.get(REVIEWS.DATE).toString()));
         if (!Objects.isNull(review.get(REVIEWS.DESCRIPTION))) {
             final TextArea reviewDescription = new TextArea();
             reviewDescription.setText(review.get(REVIEWS.DESCRIPTION));

@@ -148,10 +148,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
     }
 
     private void initializeSortMenu() {
-        sortMenuFields.forEach(field -> {
-            sortMenu.getItems().add(field + " (ascending)");
-            sortMenu.getItems().add(field + " (descending)");
-        });
+        sortMenuFields.forEach(field -> sortMenu.getItems().addAll(field + " (ascending)", field + " (descending)"));
         sortMenu.getItems().add("No sorting");
     }
 }
