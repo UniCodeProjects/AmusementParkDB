@@ -173,4 +173,100 @@ public class TicketTableItem implements TableItem {
         return validationDate.get();
     }
 
+    /**
+     * Sets the ticket id.
+     * @param ticketID the id
+     */
+    public void setTicketID(final String ticketID) {
+        this.ticketID.set(ticketID);
+    }
+
+    /**
+     * Sets the ticket purchase date.
+     * @param purchaseDate the purchase date
+     */
+    public void setPurchaseDate(final LocalDate purchaseDate) {
+        this.purchaseDate.set(purchaseDate);
+    }
+
+    /**
+     * Sets the ticket valid on date.
+     * @param validOn the date
+     */
+    public void setValidOn(final LocalDate validOn) {
+        this.validOn.set(validOn);
+    }
+
+    /**
+     * Sets the ticket valid until date.
+     * @param validUntil the date
+     */
+    public void setValidUntil(final LocalDate validUntil) {
+        this.validUntil.set(validUntil);
+    }
+
+    /**
+     * Sets the ticket remaining entrances.
+     * @param remainingEntrances the remaining entrances
+     */
+    public void setRemainingEntrances(final int remainingEntrances) {
+        this.remainingEntrances.set(remainingEntrances);
+    }
+
+    /**
+     * Sets the ticket owner ID.
+     * @param ownerID the id
+     */
+    public void setOwnerID(final String ownerID) {
+        this.ownerID.set(ownerID);
+    }
+
+    /**
+     * Sets the ticket year.
+     * @param year the year
+     */
+    public void setYear(final Year year) {
+        this.year.set(year);
+    }
+
+    /**
+     * Sets the ticket type.
+     * @param type the type
+     */
+    public void setType(final String type) {
+        this.type.set(type);
+    }
+
+    /**
+     * Sets the ticket type price.
+     * @param typePrice the price
+     */
+    public void setTypePrice(final double typePrice) {
+        this.typePrice.set(typePrice);
+    }
+
+    /**
+     * Sets the ticket category.
+     * @param category the category
+     */
+    public void setCategory(final String category) {
+        this.category.set(category);
+    }
+
+    /**
+     * Sets the ticket duration.
+     * @param duration the duration
+     */
+    public void setDuration(final int duration) {
+        this.duration.set(duration);
+    }
+
+    /**
+     * Sets the ticket validation date.
+     * @param validationDate the date
+     */
+    public void setValidationDate(final LocalDate validationDate) {
+        this.validationDate.set(validationDate);
+    }
+
 }
