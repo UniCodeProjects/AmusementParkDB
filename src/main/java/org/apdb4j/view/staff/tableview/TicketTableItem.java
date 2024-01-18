@@ -33,6 +33,7 @@ public class TicketTableItem implements TableItem {
     private final StringProperty type;
     private final DoubleProperty typePrice;
     private final StringProperty category;
+    private final IntegerProperty duration;
     private final ObjectProperty<LocalDate> validationDate;
 
     /**
@@ -47,6 +48,7 @@ public class TicketTableItem implements TableItem {
      * @param type the ticket type
      * @param typePrice the ticket type price
      * @param category the ticket category
+     * @param duration the ticket duration
      * @param validationDate the date the ticket was validated
      */
     public TicketTableItem(final @NonNull String ticketID,
@@ -59,6 +61,7 @@ public class TicketTableItem implements TableItem {
                            final @NonNull String type,
                            final double typePrice,
                            final @NonNull String category,
+                           final int duration,
                            final @NonNull LocalDate validationDate) {
         this.ticketID = new SimpleStringProperty(ticketID.trim());
         this.purchaseDate = new SimpleObjectProperty<>(purchaseDate);
@@ -70,6 +73,7 @@ public class TicketTableItem implements TableItem {
         this.type = new SimpleStringProperty(type.trim());
         this.typePrice = new SimpleDoubleProperty(typePrice);
         this.category = new SimpleStringProperty(category.trim());
+        this.duration = new SimpleIntegerProperty(duration);
         this.validationDate = new SimpleObjectProperty<>(validationDate);
     }
 
@@ -151,6 +155,14 @@ public class TicketTableItem implements TableItem {
      */
     public String getCategory() {
         return category.get();
+    }
+
+    /**
+     * Returns the ticket duration.
+     * @return the ticket duration
+     */
+    public int getDuration() {
+        return duration.get();
     }
 
     /**
