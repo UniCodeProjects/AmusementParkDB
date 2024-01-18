@@ -533,6 +533,40 @@
                      </center>
                   </BorderPane>
                </content></Tab>
+            <Tab closable="false" text="Pictures">
+                <content>
+                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                        <left>
+                            <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                <children>
+                                    <TextField fx:id="picturesSearchField" onKeyTyped="#onReviewSearch" promptText="Park Service ID" />
+                                    <Separator prefWidth="200.0" />
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
+                                </children>
+                                <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </BorderPane.margin>
+                            </VBox>
+                        </left>
+                        <center>
+                            <TableView fx:id="picturesTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                    <TableColumn text="Park service ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="serviceID" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Path">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="path" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
             <Tab closable="false" text="Reviews">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -553,10 +587,13 @@
                                       <Tooltip text="Press BACKSPACE or DELETE to clear." />
                                   </tooltip>
                               </RadioButton>
-                              <RadioButton fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions" toggleGroup="$reviewFilterToggle">
+                              <RadioButton fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions">
                                   <tooltip>
                                       <Tooltip text="Press BACKSPACE or DELETE to clear." />
                                   </tooltip>
+                                 <toggleGroup>
+                                            <ToggleGroup fx:id="reviewFilterToggle" />
+                                 </toggleGroup>
                               </RadioButton>
                               <RadioButton fx:id="reviewShopFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Shops" toggleGroup="$reviewFilterToggle">
                                   <tooltip>
