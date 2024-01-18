@@ -8,6 +8,8 @@ import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 
 import static org.apdb4j.db.Tables.CONTRACTS;
 import static org.apdb4j.db.Tables.STAFF;
@@ -57,8 +59,8 @@ public final class StaffManager {
                         AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
                         configuration.dsl()
                                 .insertInto(STAFF)
-                                .values(nationalID,
-                                        staffID,
+                                .values(staffID,
+                                        nationalID,
                                         email,
                                         name,
                                         surname,
@@ -85,10 +87,13 @@ public final class StaffManager {
      * @return {@code true} on successful tuple update
      */
     public static boolean fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
+        final LocalDate currentDate = LocalDate.now();
+        final int lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth()).getDayOfMonth();
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(CONTRACTS)
-                        .set(CONTRACTS.ENDDATE, LocalDate.now())
-                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID)))
+                        .set(CONTRACTS.ENDDATE, LocalDate.of(Year.now().getValue(), YearMonth.now().getMonth(), lastDayOfMonth))
+                        .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
+                        .execute())
                 .closeConnection()
                 .getResultAsInt();
         return updatedTuples == 1;
@@ -134,7 +139,8 @@ public final class StaffManager {
              return DB.createConnection()
                      .queryAction(db -> db.update(CONTRACTS)
                              .set(CONTRACTS.ENDDATE, oldContract.get(CONTRACTS.ENDDATE))
-                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID))))
+                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID)))
+                             .execute())
                      .closeConnection()
                      .getResultAsInt() == 1;
          }
