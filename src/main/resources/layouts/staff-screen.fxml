@@ -345,6 +345,11 @@
                                        <PropertyValueFactory property="type" />
                                    </cellValueFactory>
                                </TableColumn>
+                               <TableColumn prefWidth="75.0" text="Type Price">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="typePrice" />
+                                   </cellValueFactory>
+                               </TableColumn>
                                <TableColumn editable="false" text="Category">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="category" />
