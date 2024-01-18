@@ -7,8 +7,7 @@ import org.apdb4j.util.RegexUtils;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import static org.apdb4j.db.Tables.ACCOUNTS;
-import static org.apdb4j.db.Tables.PERMISSIONS;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Accounts} table.
@@ -32,7 +31,7 @@ public final class AccountManager {
      * @return {@code true} on successful tuple insertion
      */
      public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
-                                         final @NonNull String account) {
+                                         final @NonNull String account) throws AccessDeniedException {
          if (permissionTypeNotExists(permissionType)) {
              throw new IllegalArgumentException(permissionType + " is not present in the DB.");
          }
@@ -72,10 +71,6 @@ public final class AccountManager {
         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
             return false;
         }
-        // todo: create permissions.
-//        if (Objects.nonNull(account)) {
-//            DB.definePermissions();
-//        }
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(ACCOUNTS)
                         .values(email, username, password, permissionType)
@@ -100,7 +95,26 @@ public final class AccountManager {
     public static boolean addCredentialsForAccount(final @NonNull String email,
                                                    final @NonNull String username,
                                                    final @NonNull String password,
-                                                   final @NonNull String account) {
+                                                   final @NonNull String account) throws AccessDeniedException {
+        final boolean areCredentialsPresent = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.EMAIL.eq(email))
+                        .and(ACCOUNTS.USERNAME.isNotNull())
+                        .and(ACCOUNTS.PASSWORD.isNotNull())
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (areCredentialsPresent) {
+            return false;
+        }
+        /*
+         The query executor is a guest;
+         however, they are not allowed to modify an account that is not one and not theirs.
+        */
+        if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
+            throw new AccessDeniedException("Guest account has no permission over " + email);
+        }
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
                         .set(ACCOUNTS.USERNAME, username)
@@ -127,7 +141,10 @@ public final class AccountManager {
      public static boolean updateAccountPassword(final @NonNull String email,
                                                  final @NonNull String oldPassword,
                                                  final @NonNull String newPassword,
-                                                 final @NonNull String account) {
+                                                 final @NonNull String account) throws AccessDeniedException {
+         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
+             throw new AccessDeniedException("Guest account has no permission over " + email);
+         }
          final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)
@@ -138,6 +155,21 @@ public final class AccountManager {
                  .getResultAsInt();
          return updatedTuples == 1;
      }
+
+    /**
+     * Determines if the given account is a guest.
+     * @param email the account's email
+     * @return {@code true} if it is a guest
+     */
+    public static boolean isGuest(final String email) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(GUESTS)
+                        .where(GUESTS.EMAIL.eq(email))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
 
     private static boolean permissionTypeNotExists(final String permissionType) {
         final Result<Record> count = DB.createConnection()
