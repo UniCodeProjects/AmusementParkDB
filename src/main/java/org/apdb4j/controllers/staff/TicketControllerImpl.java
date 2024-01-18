@@ -8,9 +8,11 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.TableOnConditionStep;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
@@ -24,6 +26,15 @@ import static org.apdb4j.db.Tables.*;
  * An implementation of a ticket controller.
  */
 public class TicketControllerImpl implements TicketController {
+
+    private final TableOnConditionStep<Record> joinedTable = TICKETS.join(ATTRIBUTIONS)
+            .on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
+            .join(VALIDATIONS)
+            .on(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID))
+            .join(TICKET_TYPES)
+            .on(ATTRIBUTIONS.YEAR.eq(TICKET_TYPES.YEAR)
+                    .and(ATTRIBUTIONS.TYPE.eq(TICKET_TYPES.TYPE))
+                    .and(ATTRIBUTIONS.CATEGORY.eq(TICKET_TYPES.CATEGORY)));
 
     /**
      * {@inheritDoc}
@@ -58,7 +69,15 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
-        // TODO
+        final TicketTableItem ticket = (TicketTableItem) item;
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(joinedTable)
+                        .set(TICKETS.VALIDON, ticket.getValidOn())
+                        .set(TICKETS.VALIDUNTIL, ticket.getValidUntil())
+                        .set(TICKETS.OWNERID, ticket.getOwnerID())
+                        .set(ATTRIBUTIONS.CATEGORY, ticket.getCategory())
+                        .execute())
+                .closeConnection();
         return item;
     }
 
@@ -86,7 +105,14 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public <T extends TicketTableItem> T editTicketType(final T ticket) {
-        // TODO
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(joinedTable)
+                        .set(TICKET_TYPES.TYPE, ticket.getType())
+                        .set(TICKET_TYPES.PRICE, BigDecimal.valueOf(ticket.getTypePrice()))
+                        .set(TICKET_TYPES.YEAR, ticket.getYear().getValue())
+                        .set(TICKET_TYPES.CATEGORY, ticket.getCategory())
+                        .set(TICKET_TYPES.DURATION, ticket.getDuration()))
+                .closeConnection();
         return ticket;
     }
 
@@ -109,7 +135,10 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public <T extends TicketTableItem> T editPriceList(final T ticket) {
-        // TODO
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(joinedTable)
+                        .set(PRICE_LISTS.YEAR, ticket.getYear().getValue()))
+                .closeConnection();
         return ticket;
     }
 
@@ -169,15 +198,7 @@ public class TicketControllerImpl implements TicketController {
     private Result<Record> searchQuery(final Condition condition) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
-                        .from(TICKETS
-                                .join(ATTRIBUTIONS)
-                                .on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                                .join(VALIDATIONS)
-                                .on(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID))
-                                .join(TICKET_TYPES)
-                                .on(ATTRIBUTIONS.YEAR.eq(TICKET_TYPES.YEAR)
-                                        .and(ATTRIBUTIONS.TYPE.eq(TICKET_TYPES.TYPE))
-                                        .and(ATTRIBUTIONS.CATEGORY.eq(TICKET_TYPES.CATEGORY))))
+                        .from(joinedTable)
                         .where(condition)
                         .fetch())
                 .closeConnection()
