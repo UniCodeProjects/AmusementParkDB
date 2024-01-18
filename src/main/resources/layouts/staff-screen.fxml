@@ -355,6 +355,11 @@
                                        <PropertyValueFactory property="category" />
                                    </cellValueFactory>
                                </TableColumn>
+                               <TableColumn editable="false" text="Duration">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="duration" />
+                                   </cellValueFactory>
+                               </TableColumn>
                                <TableColumn editable="false" text="Validation">
                                    <cellValueFactory>
                                        <PropertyValueFactory property="validationDate" />
