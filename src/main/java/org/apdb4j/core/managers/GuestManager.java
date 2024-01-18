@@ -29,24 +29,23 @@ public final class GuestManager {
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewGuest(final @NonNull String guestID, final @NonNull String name, final @NonNull String surname,
-                                      final @NonNull String email, final @NonNull String account) {
+                                      final @NonNull String email, final @NonNull String account) throws AccessDeniedException {
         if (isStaff(email)) {
             return false;
         }
-        final boolean insertedAccount = AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
-        if (!insertedAccount) {
-            return false;
-        }
-        final int insertedTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(GUESTS)
-                        .values(guestID, name, surname, email)
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
-        if (insertedTuples == 0) {
-            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
-        }
-        return insertedTuples == 1;
+        DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
+                        configuration.dsl()
+                                .insertInto(GUESTS)
+                                .values(guestID, email, name, surname)
+                                .execute();
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        return true;
     }
 
     /**
@@ -71,24 +70,23 @@ public final class GuestManager {
         if (isStaff(email)) {
             return false;
         }
-        final boolean insertedAccount = AccountManager.addNewAccount(email,
-                username,
-                password,
-                PERMISSION_TYPE,
-                account);
-        if (!insertedAccount) {
-            return false;
-        }
-        final int insertedTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(GUESTS)
-                        .values(guestID, name, surname, email)
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
-        if (insertedTuples == 0) {
-            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
-        }
-        return insertedTuples == 1;
+        DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        AccountManager.addNewAccount(email,
+                                username,
+                                password,
+                                PERMISSION_TYPE,
+                                account);
+                        configuration.dsl()
+                                .insertInto(GUESTS)
+                                .values(guestID, email, name, surname)
+                                .execute();
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        return true;
     }
 
     private static boolean isStaff(final String email) {

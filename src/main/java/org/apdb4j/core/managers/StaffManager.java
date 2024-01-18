@@ -9,9 +9,7 @@ import org.jooq.Record;
 
 import java.time.LocalDate;
 
-import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.CONTRACTS;
-import static org.apdb4j.db.Tables.GUESTS;
 import static org.apdb4j.db.Tables.STAFF;
 
 /**
@@ -49,34 +47,33 @@ public final class StaffManager {
                                              final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
                                              final char gender,
                                              final String role, final boolean isAdmin, final boolean isEmployee,
-                                             final @NonNull String account) {
-        if (isGuest(email)) {
+                                             final @NonNull String account) throws AccessDeniedException {
+        if (AccountManager.isGuest(email)) {
             return false;
         }
-        final var insertedAccount = AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
-        if (!insertedAccount) {
-            return false;
-        }
-        final int insertedStaffTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(STAFF)
-                        .values(nationalID,
-                                staffID,
-                                email,
-                                name,
-                                surname,
-                                dateOfBirth,
-                                birthPlace,
-                                gender,
-                                role,
-                                isAdmin,
-                                isEmployee)
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
-        if (insertedStaffTuples == 0) {
-            return Manager.removeTupleFromDB(ACCOUNTS, account, email);
-        }
-        return insertedStaffTuples == 1;
+        DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
+                        configuration.dsl()
+                                .insertInto(STAFF)
+                                .values(nationalID,
+                                        staffID,
+                                        email,
+                                        name,
+                                        surname,
+                                        dateOfBirth,
+                                        birthPlace,
+                                        gender,
+                                        role,
+                                        isAdmin,
+                                        isEmployee)
+                                .execute();
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        return true;
     }
 
     /**
@@ -143,15 +140,5 @@ public final class StaffManager {
          }
          return true;
      }
-
-    private static boolean isGuest(final String email) {
-        return DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(GUESTS)
-                        .where(GUESTS.EMAIL.eq(email))
-                        .fetchOne(0, int.class))
-                .closeConnection()
-                .getResultAsInt() == 1;
-    }
 
 }

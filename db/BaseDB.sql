@@ -16,23 +16,23 @@ values ("mariorossi@gmail.com", "mario.rossi", "A@BbCc11", "Admin"),
        ("riccardoferrari@gmail.com", "riccardo.ferrari", "A@BbCc99", "Guest");
        
 insert into guests
-values ("G-001", "andreaverdi@gmail.com", "Andrea", "Verdi"),
+values ("G-001", "alessandrogialli@gmail.com", "Alessandro", "Gialli"),
        ("G-002", "tommasorusso@gmail.com", "Tommaso", "Russo"),
        ("G-003", "francescoesposito@gmail.com", "Francesco", "Esposito"),
-       ("G-004", "mariagialli@gmail.com", "Maria", "Gialli");
+       ("G-004", "riccardoferrari@gmail.com", "Riccardo", "Ferrari");
        
 insert into staff
 values ("A-001", "MRARSS77E15A944I", "mariorossi@gmail.com", "Mario", "Rossi", '1977-05-15', "Bologna", 'M', null, true, false),
+       ("E-003", "VRDNDR66T22F839F", "andreaverdi@gmail.com", "Andrea", "Verdi", '1966-12-22', "Napoli", "M", "engineer", false, true),
+       ("E-004", "GLLMRA79H49H501I", "mariagialli@gmail.com", "Maria", "Gialli", '1979-06-09', "Roma", "F", "chef", false, true),
        ("E-001", "RSSLRD89L17C573J", "leonardorossi@gmail.com", "Leonardo", "Rossi", '1989-07-17', "Cesena", "M", "waiter", false, true),
-       ("E-002", "VRDSFO93R45D704B", "sofiaverdi@gmail.com", "Sofia", "Verdi", '1993-10-05', "Forlì", "F", "engineer", false, true),
-       ("E-003", "GLLLSN66T22F839A", "alessandrogialli@gmail.com", "Alessandro", "Gialli", '1966-12-22', "Napoli", "M", "engineer", false, true),
-       ("E-004", "FRRRCR79H09H501F", "riccardoferrari@gmail.com", "Riccardo", "Ferrari", '1979-06-09', "Roma", "M", "chef", false, true);
+       ("E-002", "VRDSFO93R45D704B", "sofiaverdi@gmail.com", "Sofia", "Verdi", '1993-10-05', "Forlì", "F", "engineer", false, true);
 
 insert into contracts 
 values ("C-001", '2021-12-10', '2022-01-01', null, 1100.00, "MRARSS77E15A944I", "RSSLRD89L17C573J"),
        ("C-002", '2023-05-04', '2023-06-01', '2024-01-31', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
-       ("C-003", '2023-02-22', '2023-04-01', '2024-04-30', 1500.00, "MRARSS77E15A944I", "GLLLSN66T22F839A"),
-       ("C-004", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "FRRRCR79H09H501F");
+       ("C-003", '2023-02-22', '2023-04-01', '2024-04-30', 1500.00, "MRARSS77E15A944I", "GLLMRA79H49H501I"),
+       ("C-004", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "VRDNDR66T22F839F");
 
 insert into price_lists
 values (2023);
@@ -110,11 +110,11 @@ values ("RI-001", 500.00, "maintenance1", '2023-06-10'),
        
 insert into responsibilities
 values ("RI-001", '2023-06-10', "VRDSFO93R45D704B"),
-       ("RI-001", '2023-06-10', "GLLLSN66T22F839A"),
-       ("RI-001", '2023-05-15', "GLLLSN66T22F839A"),
+       ("RI-001", '2023-06-10', "GLLMRA79H49H501I"),
+       ("RI-001", '2023-05-15', "GLLMRA79H49H501I"),
        ("RI-002", '2023-07-17', "VRDSFO93R45D704B"),
-       ("RI-002", '2023-07-17', "GLLLSN66T22F839A"),
-       ("RI-002", '2023-09-15', "GLLLSN66T22F839A"),
+       ("RI-002", '2023-07-17', "GLLMRA79H49H501I"),
+       ("RI-002", '2023-09-15', "GLLMRA79H49H501I"),
        ("RI-003", '2023-08-05', "VRDSFO93R45D704B"),
        ("RI-003", '2023-09-25', "VRDSFO93R45D704B");
        
