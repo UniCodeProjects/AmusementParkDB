@@ -1,14 +1,14 @@
 package org.apdb4j.core.managers;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.util.QueryBuilder;
+import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
-import org.jooq.Record;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -38,7 +38,7 @@ public final class MoneyManager {
     public static @NonNull Collection<Pair<YearMonth, Double>> getIncomes(final @NonNull String account,
                                                                           final @NonNull YearMonth... months) {
         if (months.length == 0) {
-            throw new IllegalArgumentException("months cannot be empty");
+            throw new IllegalArgumentException("Months cannot be empty");
         }
         final Collection<Pair<YearMonth, Double>> result = new ArrayList<>();
         for (final YearMonth month : months) {
@@ -55,8 +55,13 @@ public final class MoneyManager {
      * @return {@code true} if the tuple is inserted, {@code false} otherwise.
      */
     public static boolean addRecapForPreviousMonth(final @NonNull String account) {
-        final BigDecimal revenue = previousMonthTicketsIncome().add(previousMonthShopIncome());
-        final BigDecimal expenses = previousMonthSalaries().add(previousMonthMaintenancesCosts());
+        final BigDecimal previousMonthShopIncome = previousMonthShopIncome();
+        final BigDecimal previousMonthMaintenancesCosts = previousMonthMaintenancesCosts();
+        if (previousMonthShopIncome == null || previousMonthMaintenancesCosts == null) {
+            return false;
+        }
+        final BigDecimal revenue = previousMonthTicketsIncome().add(previousMonthShopIncome);
+        final BigDecimal expenses = previousMonthSalaries().add(previousMonthMaintenancesCosts);
         final BigDecimal result = revenue.subtract(expenses);
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.insertInto(MONTHLY_RECAPS)
@@ -79,7 +84,7 @@ public final class MoneyManager {
             final Record record = result.get(0);
             return new ImmutablePair<>(month, record.get(MONTHLY_RECAPS.REVENUE).doubleValue());
         } else {
-            throw new IllegalArgumentException("Money info for " + month + " do not exist in the database");
+            throw new IllegalArgumentException("Money info for " + month + " does not exist in the database");
         }
     }
 
@@ -146,9 +151,7 @@ public final class MoneyManager {
                 .get(0);
     }
 
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH",
-            justification = "False positive. Check done with Objects.requireNonNull()")
-    private static BigDecimal previousMonthShopIncome() {
+    private static @Nullable BigDecimal previousMonthShopIncome() {
         final var previousMonthCosts = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(DSL.sum(COSTS.REVENUE).as("revenues"), DSL.sum(COSTS.EXPENSES).as("expenses"))
                         .from(COSTS)
@@ -158,7 +161,8 @@ public final class MoneyManager {
                 .closeConnection()
                 .getResultAsRecords()
                 .get(0);
-        return ((BigDecimal) Objects.requireNonNull(previousMonthCosts.get("revenues")))
-                .subtract((BigDecimal) Objects.requireNonNull(previousMonthCosts.get("expenses")));
+        final BigDecimal revenue = (BigDecimal) previousMonthCosts.get("revenues");
+        final BigDecimal expenses = (BigDecimal) previousMonthCosts.get("expenses");
+        return Objects.isNull(revenue) || Objects.isNull(expenses) ? null : revenue.subtract(expenses);
     }
 }
