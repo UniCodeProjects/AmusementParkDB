@@ -61,6 +61,7 @@ import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
+import org.apdb4j.view.staff.tableview.PictureTableItem;
 import org.apdb4j.view.staff.tableview.ReviewTableItem;
 import org.apdb4j.view.staff.tableview.RideTableItem;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
@@ -154,6 +155,10 @@ public class StaffScreenController implements Initializable {
     private CheckBox maintenanceRideFilter;
     @FXML
     private CheckBox maintenanceShopFilter;
+    @FXML
+    private TextField picturesSearchField;
+    @FXML
+    private TableView<PictureTableItem> picturesTableView;
     @FXML
     private TableView<ReviewTableItem> reviewsTableView;
     @FXML
