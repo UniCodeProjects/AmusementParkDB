@@ -1,7 +1,9 @@
 package org.apdb4j.view.staff.tableview;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,6 +31,7 @@ public class TicketTableItem implements TableItem {
     private final StringProperty ownerID;
     private final ObjectProperty<Year> year;
     private final StringProperty type;
+    private final DoubleProperty typePrice;
     private final StringProperty category;
     private final ObjectProperty<LocalDate> validationDate;
 
@@ -42,6 +45,7 @@ public class TicketTableItem implements TableItem {
      * @param ownerID the owner id of the ticket
      * @param year the ticket's year
      * @param type the ticket type
+     * @param typePrice the ticket type price
      * @param category the ticket category
      * @param validationDate the date the ticket was validated
      */
@@ -53,6 +57,7 @@ public class TicketTableItem implements TableItem {
                            final @NonNull String ownerID,
                            final @NonNull Year year,
                            final @NonNull String type,
+                           final double typePrice,
                            final @NonNull String category,
                            final @NonNull LocalDate validationDate) {
         this.ticketID = new SimpleStringProperty(ticketID.trim());
@@ -63,6 +68,7 @@ public class TicketTableItem implements TableItem {
         this.ownerID = new SimpleStringProperty(ownerID.trim());
         this.year = new SimpleObjectProperty<>(year);
         this.type = new SimpleStringProperty(type.trim());
+        this.typePrice = new SimpleDoubleProperty(typePrice);
         this.category = new SimpleStringProperty(category.trim());
         this.validationDate = new SimpleObjectProperty<>(validationDate);
     }
@@ -129,6 +135,14 @@ public class TicketTableItem implements TableItem {
      */
     public String getType() {
         return type.get();
+    }
+
+    /**
+     * Returns the ticket type price.
+     * @return the ticket type price
+     */
+    public double getTypePrice() {
+        return typePrice.get();
     }
 
     /**
