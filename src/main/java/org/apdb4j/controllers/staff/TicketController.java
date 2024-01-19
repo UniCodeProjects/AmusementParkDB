@@ -73,4 +73,10 @@ public interface TicketController extends AdministrationController, Filterable {
      */
     <T extends TicketTableItem> Collection<T> filterBySeasonTicket();
 
+    /**
+     * Returns all the ticket type categories present in the DB.
+     * @return a collection of ticket type categories.
+     */
+    Collection<String> getAllTicketTypeCategories();
+
 }
