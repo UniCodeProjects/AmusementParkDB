@@ -92,6 +92,7 @@ import java.util.stream.IntStream;
 public class StaffScreenController implements Initializable {
 
     private static final MaintenanceController MAINTENANCE_CONTROLLER = new MaintenanceControllerImpl();
+    private static final String TOOLTIP_STRING = "Press BACKSPACE or DELETE to clear date";
     @FXML
     private TextField parkNameField;
     @FXML
@@ -134,6 +135,10 @@ public class StaffScreenController implements Initializable {
     private TableView<ContractTableItem> contractsTableView;
     @FXML
     private TextField ticketSearchField;
+    @FXML
+    private DatePicker ticketPurchaseDateFilter;
+    @FXML
+    private DatePicker ticketPunchDateFilter;
     @FXML
     private TableView<TicketTableItem> ticketTableView;
     @FXML
@@ -194,18 +199,6 @@ public class StaffScreenController implements Initializable {
     @FXML
     void changePasswordAction(final ActionEvent event) {
         LoadFXML.fromNodeAsPopup(menuBar, "layouts/change-password-popup.fxml", "Change password");
-    }
-
-    /**
-     * Clears the selected toggle button.
-     * @param event the event
-     */
-    @FXML
-    void onClearBtn(final ActionEvent event) {
-        final Toggle selectedToggle = radioBtnToggle.getSelectedToggle();
-        if (Objects.nonNull(selectedToggle)) {
-            selectedToggle.setSelected(false);
-        }
     }
 
     /**
@@ -486,6 +479,90 @@ public class StaffScreenController implements Initializable {
                 ticketTableView.getItems().addAll(filtered);
             });
         }
+    }
+
+    /**
+     * Filters the tickets by their purchase date.
+     * @param event the event
+     */
+    @FXML
+    void onTicketPurchaseDateFilter(final ActionEvent event) {
+        final String datePickerText = Objects.requireNonNull(ticketPurchaseDateFilter.getEditor().getText());
+        if (datePickerText.isBlank()) {
+            // TODO: Extract method.
+            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<TicketTableItem> filtered = new TicketControllerImpl()
+                    .filterByPurchaseDate(ticketPurchaseDateFilter.getValue());
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(filtered);
+                ticketPurchaseDateFilter.setTooltip(new Tooltip(TOOLTIP_STRING));
+            });
+        }
+    }
+
+    /**
+     * Filters the tickets by their validation/punch date.
+     * @param event the event
+     */
+    @FXML
+    void onTicketPunchDateFilter(final ActionEvent event) {
+        final String datePickerText = Objects.requireNonNull(ticketPunchDateFilter.getEditor().getText());
+        if (datePickerText.isBlank()) {
+            // TODO: Extract method.
+            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<TicketTableItem> filtered = new TicketControllerImpl()
+                    .filterByPunchDate(ticketPunchDateFilter.getValue());
+            Platform.runLater(() -> {
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(filtered);
+                ticketPunchDateFilter.setTooltip(new Tooltip(TOOLTIP_STRING));
+            });
+        }
+    }
+
+    /**
+     * Clears the selected ticket filter toggle button.
+     * @param event the event
+     */
+    @FXML
+    void onTicketFilterClear(final ActionEvent event) {
+        final Toggle selectedToggle = radioBtnToggle.getSelectedToggle();
+        if (Objects.nonNull(selectedToggle)) {
+            selectedToggle.setSelected(false);
+            ticketTableView.getItems().clear();
+            Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().getData()));
+        }
+    }
+
+    /**
+     * Filters the tickets by the 'single day' type.
+     * @param event the event
+     */
+    @FXML
+    void onTicketSingleDayFilter(final ActionEvent event) {
+        ticketTableView.getItems().clear();
+        Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().filterBySingleDayTicket()));
+    }
+
+    /**
+     * Filters the tickets by the 'season' type.
+     * @param event the event
+     */
+    @FXML
+    void onTicketSeasonFilter(final ActionEvent event) {
+        ticketTableView.getItems().clear();
+        Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().filterBySeasonTicket()));
     }
 
     /**
@@ -926,7 +1003,7 @@ public class StaffScreenController implements Initializable {
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
                 maintenanceTableView.getItems().addAll(filtered);
-                maintenanceSearchDatePicker.setTooltip(new Tooltip("Press BACKSPACE or DELETE to clear date"));
+                maintenanceSearchDatePicker.setTooltip(new Tooltip(TOOLTIP_STRING));
             });
         }
     }
@@ -1109,7 +1186,7 @@ public class StaffScreenController implements Initializable {
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
                 reviewsTableView.getItems().addAll(filtered);
-                reviewDateFilter.setTooltip(new Tooltip("Press BACKSPACE or DELETE to clear date"));
+                reviewDateFilter.setTooltip(new Tooltip(TOOLTIP_STRING));
             });
         }
     }
@@ -1207,6 +1284,24 @@ public class StaffScreenController implements Initializable {
         EmployeeControllerImpl.setContractTableView(contractsTableView);
 
         ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+        ticketPurchaseDateFilter.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
+                ticketPurchaseDateFilter.getEditor().clear();
+                ticketPurchaseDateFilter.setTooltip(null);
+                ticketPurchaseDateFilter.setValue(null);
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+            }
+        });
+        ticketPunchDateFilter.setOnKeyReleased(event -> {
+            if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
+                ticketPunchDateFilter.getEditor().clear();
+                ticketPunchDateFilter.setTooltip(null);
+                ticketPunchDateFilter.setValue(null);
+                ticketTableView.getItems().clear();
+                ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+            }
+        });
 
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
         ContractScreenController.setContractTableView(contractsTableView);
