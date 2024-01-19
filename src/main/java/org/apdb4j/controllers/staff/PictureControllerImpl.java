@@ -74,6 +74,7 @@ public class PictureControllerImpl implements PictureController {
      */
     @Override
     public <T extends PictureTableItem> T removePicture(final T picture) {
+        // fixme
         final boolean queryResult = PictureManager.removePicture(picture.getPath(), "");
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while removing the picture.");

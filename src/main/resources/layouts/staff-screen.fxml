@@ -539,10 +539,10 @@
                         <left>
                             <VBox spacing="6.0" BorderPane.alignment="CENTER">
                                 <children>
-                                    <TextField fx:id="picturesSearchField" onKeyTyped="#onReviewSearch" promptText="Park Service ID" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove" />
+                                    <TextField fx:id="picturesSearchField" onKeyTyped="#onPictureSearch" promptText="Park Service ID" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureAdd" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureEdit" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureRemove" text="Remove" />
                                     <Separator prefWidth="200.0" />
                                     <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                                 </children>
