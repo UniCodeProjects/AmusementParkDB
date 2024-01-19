@@ -104,23 +104,23 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                     }
                 });
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
-                    final Optional<Label> ticketTypeAndCategoryLabel = getLabelFromCart(ticketType, categoryWithPrice.getKey());
+                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, categoryWithPrice.getKey());
                     if (wasSelected && ticketTypeAndCategoryLabel.isPresent()) {
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (isSelected && ticketTypeAndCategoryLabel.isEmpty()) {
-                        addLabelToCart(ticketType, categoryWithPrice.getKey(), quantitySpinner.getValue());
+                        addTicketToCart(ticketType, categoryWithPrice.getKey(), quantitySpinner.getValue());
                     }
                 });
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) ->
                         totalPriceProperty.set(totalPriceProperty.get()
                                 + (categoryWithPrice.getValue() * (newAmount - previousAmount))));
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
-                    final Optional<Label> ticketTypeAndCategoryLabel = getLabelFromCart(ticketType, categoryWithPrice.getKey());
+                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, categoryWithPrice.getKey());
                     if (newAmount == 0 && ticketTypeAndCategoryLabel.isPresent()) {
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (newAmount > 0) {
                         if (ticketTypeAndCategoryLabel.isEmpty()) {
-                            addLabelToCart(ticketType, categoryWithPrice.getKey(), newAmount);
+                            addTicketToCart(ticketType, categoryWithPrice.getKey(), newAmount);
                         } else {
                             changeTicketQuantityInCart(ticketType, categoryWithPrice.getKey(), newAmount, previousAmount);
                         }
@@ -132,33 +132,33 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
         }
     }
 
-    private Optional<Label> getLabelFromCart(final String ticketType, final String customerCategory) {
+    private Optional<Label> getTicketFromCart(final String ticketType, final String customerCategory) {
         /*
-        * Note: ticket type is turned in singular form because if in the label the ticket type is in its singular form
-        * and in this method the ticket type is in its plural form, there would be no match.
+        * Note: ticket type name is turned in singular form because if in the label the ticket type's name
+        * is in its singular form and in this method the ticket type is in its plural form, there would be no match.
         */
         return cart.getItems()
                 .stream()
-                .filter(label -> label.getText().contains(customerCategory + " " + turnTicketTypeInSingularForm(ticketType)))
+                .filter(label -> label.getText().contains(customerCategory + " " + turnTicketTypeNameToSingularForm(ticketType)))
                 .findFirst();
     }
 
-    private void addLabelToCart(final String ticketType, final String customerCategory, final int ticketQuantity) {
+    private void addTicketToCart(final String ticketType, final String customerCategory, final int ticketQuantity) {
         if (ticketQuantity > 0) {
             cart.getItems().add(new Label(ticketQuantity + " " + customerCategory + " " + (ticketQuantity > 1 ? ticketType
-                    : turnTicketTypeInSingularForm(ticketType))));
+                    : turnTicketTypeNameToSingularForm(ticketType))));
         }
     }
 
-    private String turnTicketTypeInSingularForm(final String ticketType) {
-        return ticketType.substring(0, ticketType.length() - 1);
+    private String turnTicketTypeNameToSingularForm(final String ticketTypeName) {
+        return ticketTypeName.substring(0, ticketTypeName.length() - 1);
     }
 
     private void changeTicketQuantityInCart(final String ticketType,
                                             final String customerCategory,
                                             final int newTicketQuantity,
                                             final int oldTicketQuantity) {
-        final Label label = getLabelFromCart(ticketType, customerCategory).get();
+        final Label label = getTicketFromCart(ticketType, customerCategory).get();
         label.setText(label.getText().replaceFirst("\\b\\d+", String.valueOf(newTicketQuantity)));
         if (newTicketQuantity > 1 && oldTicketQuantity == 1) {
             label.setText(label.getText() + "s");
