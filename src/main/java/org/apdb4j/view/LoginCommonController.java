@@ -14,7 +14,7 @@ import org.apdb4j.util.view.LoadFXML;
  * The login fxml controller. Groups all common functionalities
  * between the sign-in and sign-up controllers.
  * @see SignInController
- * @see SignUpController
+ * @see SignUpScreenController
  */
 public class LoginCommonController {
 
