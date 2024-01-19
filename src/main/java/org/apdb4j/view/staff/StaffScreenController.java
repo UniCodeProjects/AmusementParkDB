@@ -48,6 +48,7 @@ import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.controllers.staff.OverviewController;
 import org.apdb4j.controllers.staff.OverviewControllerImpl;
+import org.apdb4j.controllers.staff.PictureControllerImpl;
 import org.apdb4j.controllers.staff.ReviewController;
 import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
@@ -1155,6 +1156,8 @@ public class StaffScreenController implements Initializable {
         });
         maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
         MaintenanceScreenController.setTableView(maintenanceTableView);
+
+        picturesTableView.getItems().addAll(new PictureControllerImpl().getData());
 
         // Clears the review search date picker field.
         reviewDateFilter.setOnKeyReleased(event -> {
