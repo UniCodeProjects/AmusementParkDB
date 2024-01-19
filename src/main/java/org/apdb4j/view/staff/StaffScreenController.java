@@ -990,6 +990,81 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Filters the picture table view by park service ID.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onPictureSearch(final KeyEvent keyEvent) {
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (picturesSearchField.getText().isBlank() || picturesSearchField.getText() == null) {
+            // TODO: make controller into field, extract method.
+            final Collection<PictureTableItem> allItems = new PictureControllerImpl().getData();
+            Platform.runLater(() -> {
+                picturesTableView.getItems().clear();
+                picturesTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<PictureTableItem> filtered = new PictureControllerImpl().filter(picturesSearchField.getText());
+            Platform.runLater(() -> {
+                picturesTableView.getItems().clear();
+                picturesTableView.getItems().addAll(filtered);
+            });
+        }
+    }
+
+    /**
+     * Opens the form to add a picture.
+     * @param event the event
+     */
+    @FXML
+    void onPictureAdd(final ActionEvent event) {
+        PictureScreenController.setEditMode(false);
+        LoadFXML.fromEventAsPopup(event, "layouts/picture-form.fxml", "Add a picture");
+    }
+
+    /**
+     * Opens the form to edit a picture.
+     * @param event the event
+     */
+    @FXML
+    void onPictureEdit(final ActionEvent event) {
+        final PictureTableItem selectedPicture = picturesTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedPicture)) {
+            showAlertForUnselectedRowInTableView("picture");
+            return;
+        }
+        PictureScreenController.setEditMode(true);
+        PictureScreenController.setPicture(selectedPicture);
+        LoadFXML.fromEventAsPopup(event, "layouts/picture-form.fxml", "Edit picture");
+    }
+
+    /**
+     * Removes a picture from the DB and GUI.
+     * @param event the event
+     */
+    @FXML
+    void onPictureRemove(final ActionEvent event) {
+        final PictureTableItem selectedPicture = picturesTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedPicture)) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText("You need to select a row to remove.")
+                    .show();
+            return;
+        }
+        Platform.runLater(() -> {
+            try {
+                picturesTableView.getItems().remove(new PictureControllerImpl().removePicture(selectedPicture));
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+            }
+        });
+    }
+
+    /**
      * Filters the reviews by the park service id.
      * @param keyEvent the event
      */
@@ -1158,6 +1233,7 @@ public class StaffScreenController implements Initializable {
         MaintenanceScreenController.setTableView(maintenanceTableView);
 
         picturesTableView.getItems().addAll(new PictureControllerImpl().getData());
+        PictureScreenController.setTableView(picturesTableView);
 
         // Clears the review search date picker field.
         reviewDateFilter.setOnKeyReleased(event -> {
