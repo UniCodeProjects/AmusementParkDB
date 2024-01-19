@@ -273,20 +273,19 @@
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField fx:id="ticketSearchField" onKeyTyped="#onTicketSearch" promptText="TicketID" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Purchase date" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Punch date" />
+                              <DatePicker fx:id="ticketPurchaseDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onTicketPurchaseDateFilter" promptText="Purchase date" />
+                              <DatePicker fx:id="ticketPunchDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onTicketPunchDateFilter" promptText="Punch (validation) date" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0">
                                  <children>
                                     <Label text="Ticket type:" />
-                                    <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#onClearBtn" text="Clear" />
+                                    <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#onTicketFilterClear" text="Clear" />
                                  </children>
                               </HBox>
-                              <RadioButton mnemonicParsing="false" text="Single day">
+                              <RadioButton mnemonicParsing="false" onAction="#onTicketSingleDayFilter" text="Single day">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioBtnToggle" />
                                  </toggleGroup></RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Season" toggleGroup="$radioBtnToggle" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <RadioButton mnemonicParsing="false" onAction="#onTicketSeasonFilter" text="Season" toggleGroup="$radioBtnToggle" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddTicketBtnPress" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditTicketBtnPress" text="Edit" />
