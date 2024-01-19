@@ -183,6 +183,22 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
+    public Collection<String> getAllTicketTypeCategories() {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(TICKET_TYPES.CATEGORY)
+                        .from(TICKET_TYPES)
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().stream()
+                .map(record -> record.get(TICKET_TYPES.CATEGORY))
+                .toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if the query fails
+     */
+    @Override
     public <T extends TableItem> Collection<T> filter(final String ticketId) {
         return extractTicketData(searchQuery(TICKETS.TICKETID.containsIgnoreCase(ticketId)));
     }
