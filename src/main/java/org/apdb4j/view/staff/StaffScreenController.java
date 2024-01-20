@@ -1284,7 +1284,6 @@ public class StaffScreenController implements Initializable {
         EmployeeControllerImpl.setContractTableView(contractsTableView);
 
         ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
-        TicketScreenController.setTableView(ticketTableView);
         ticketPurchaseDateFilter.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
                 ticketPurchaseDateFilter.getEditor().clear();
