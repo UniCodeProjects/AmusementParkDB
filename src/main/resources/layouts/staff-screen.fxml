@@ -405,27 +405,27 @@
                                         <columns>
                                             <TableColumn editable="false" text="Type">
                                                 <cellValueFactory>
-                                                    <PropertyValueFactory property=""/>
+                                                    <PropertyValueFactory property="type"/>
                                                 </cellValueFactory>
                                             </TableColumn>
                                             <TableColumn editable="false" text="Category">
                                                 <cellValueFactory>
-                                                    <PropertyValueFactory property=""/>
+                                                    <PropertyValueFactory property="category"/>
                                                 </cellValueFactory>
                                             </TableColumn>
                                             <TableColumn editable="false" text="Year">
                                                 <cellValueFactory>
-                                                    <PropertyValueFactory property=""/>
+                                                    <PropertyValueFactory property="year"/>
                                                 </cellValueFactory>
                                             </TableColumn>
                                             <TableColumn editable="false" text="Price">
                                                 <cellValueFactory>
-                                                    <PropertyValueFactory property=""/>
+                                                    <PropertyValueFactory property="price"/>
                                                 </cellValueFactory>
                                             </TableColumn>
                                             <TableColumn editable="false" text="Duration">
                                                 <cellValueFactory>
-                                                    <PropertyValueFactory property=""/>
+                                                    <PropertyValueFactory property="duration"/>
                                                 </cellValueFactory>
                                             </TableColumn>
                                         </columns>
