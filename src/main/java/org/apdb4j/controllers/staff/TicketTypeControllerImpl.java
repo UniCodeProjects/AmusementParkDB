@@ -3,8 +3,16 @@ package org.apdb4j.controllers.staff;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.TableItem;
+import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
+import org.jooq.Condition;
+import org.jooq.Record;
+import org.jooq.Result;
+import org.jooq.impl.DSL;
 
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.apdb4j.db.Tables.TICKET_TYPES;
@@ -20,8 +28,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
-        // TODO
-        throw new UnsupportedOperationException();
+        return extractData(searchQuery(DSL.condition(true)));
     }
 
     /**
@@ -49,9 +56,17 @@ public class TicketTypeControllerImpl implements TicketTypeController {
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
-    public <T extends TableItem> Collection<T> filter(final String s) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public <T extends TableItem> Collection<T> filter(final String type) {
+        return extractData(searchQuery(TICKET_TYPES.TYPE.containsIgnoreCase(type)));
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    @Override
+    public <T extends TicketTypeTableItem> Collection<T> filterByYear(final Year year) {
+        return extractData(searchQuery(TICKET_TYPES.YEAR.eq(year.getValue())));
     }
 
     /**
@@ -76,6 +91,27 @@ public class TicketTypeControllerImpl implements TicketTypeController {
     @Override
     public @NonNull Optional<String> getErrorMessage() {
         return Optional.empty();
+    }
+
+    private Result<Record> searchQuery(final Condition condition) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select()
+                        .from(TICKET_TYPES)
+                        .where(condition)
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends TableItem> Collection<T> extractData(final Result<Record> result) {
+        final List<T> data = new ArrayList<>();
+        result.forEach(record -> data.add((T) new TicketTypeTableItem(record.get(TICKET_TYPES.TYPE),
+                record.get(TICKET_TYPES.CATEGORY),
+                Year.of(record.get(TICKET_TYPES.YEAR)),
+                record.get(TICKET_TYPES.PRICE).doubleValue(),
+                record.get(TICKET_TYPES.DURATION))));
+        return data;
     }
 
 }
