@@ -1,12 +1,14 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
+import org.apdb4j.core.managers.TicketManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.TableItem;
 import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.time.Year;
@@ -37,8 +39,17 @@ public class TicketTypeControllerImpl implements TicketTypeController {
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
-        // TODO
-        throw new UnsupportedOperationException();
+        final TicketTypeTableItem ticketType = (TicketTypeTableItem) item;
+        final boolean queryResult = TicketManager.addNewTicketType(ticketType.getType(),
+                ticketType.getPrice(),
+                ticketType.getYear().getValue(),
+                ticketType.getCategory(),
+                ticketType.getDuration(),
+                "");
+        if (!queryResult) {
+            throw new DataAccessException("Something went wrong while adding a new ticket type.");
+        }
+        return item;
     }
 
     /**
