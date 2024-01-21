@@ -1,9 +1,7 @@
 package org.apdb4j.view.staff.tableview;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -31,9 +29,7 @@ public class TicketTableItem implements TableItem {
     private final StringProperty ownerID;
     private final ObjectProperty<Year> year;
     private final StringProperty type;
-    private final DoubleProperty typePrice;
     private final StringProperty category;
-    private final IntegerProperty duration;
     private final ObjectProperty<LocalDate> validationDate;
 
     /**
@@ -46,9 +42,7 @@ public class TicketTableItem implements TableItem {
      * @param ownerID the owner id of the ticket
      * @param year the ticket's year
      * @param type the ticket type
-     * @param typePrice the ticket type price
      * @param category the ticket category
-     * @param duration the ticket duration
      * @param validationDate the date the ticket was validated
      */
     public TicketTableItem(final @NonNull String ticketID,
@@ -59,9 +53,7 @@ public class TicketTableItem implements TableItem {
                            final @NonNull String ownerID,
                            final @NonNull Year year,
                            final @NonNull String type,
-                           final double typePrice,
                            final @NonNull String category,
-                           final int duration,
                            final @NonNull LocalDate validationDate) {
         this.ticketID = new SimpleStringProperty(ticketID.trim());
         this.purchaseDate = new SimpleObjectProperty<>(purchaseDate);
@@ -71,9 +63,7 @@ public class TicketTableItem implements TableItem {
         this.ownerID = new SimpleStringProperty(ownerID.trim());
         this.year = new SimpleObjectProperty<>(year);
         this.type = new SimpleStringProperty(type.trim());
-        this.typePrice = new SimpleDoubleProperty(typePrice);
         this.category = new SimpleStringProperty(category.trim());
-        this.duration = new SimpleIntegerProperty(duration);
         this.validationDate = new SimpleObjectProperty<>(validationDate);
     }
 
@@ -142,27 +132,11 @@ public class TicketTableItem implements TableItem {
     }
 
     /**
-     * Returns the ticket type price.
-     * @return the ticket type price
-     */
-    public double getTypePrice() {
-        return typePrice.get();
-    }
-
-    /**
      * Returns the ticket category.
      * @return the ticket category
      */
     public String getCategory() {
         return category.get();
-    }
-
-    /**
-     * Returns the ticket duration.
-     * @return the ticket duration
-     */
-    public int getDuration() {
-        return duration.get();
     }
 
     /**
@@ -238,27 +212,11 @@ public class TicketTableItem implements TableItem {
     }
 
     /**
-     * Sets the ticket type price.
-     * @param typePrice the price
-     */
-    public void setTypePrice(final double typePrice) {
-        this.typePrice.set(typePrice);
-    }
-
-    /**
      * Sets the ticket category.
      * @param category the category
      */
     public void setCategory(final String category) {
         this.category.set(category);
-    }
-
-    /**
-     * Sets the ticket duration.
-     * @param duration the duration
-     */
-    public void setDuration(final int duration) {
-        this.duration.set(duration);
     }
 
     /**
