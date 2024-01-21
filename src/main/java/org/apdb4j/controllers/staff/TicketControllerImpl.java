@@ -12,7 +12,6 @@ import org.jooq.TableOnConditionStep;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
@@ -86,67 +85,6 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
-    public <T extends TicketTableItem> T addTicketType(final T ticket) {
-        final boolean queryResult = TicketManager.addNewTicketType(ticket.getType(),
-                ticket.getTypePrice(),
-                ticket.getYear().getValue(),
-                ticket.getCategory(),
-                ticket.getDuration(),
-                "");
-        if (!queryResult) {
-            throw new DataAccessException("Something went wrong while adding a new ticket type.");
-        }
-        return ticket;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
-     */
-    @Override
-    public <T extends TicketTableItem> T editTicketType(final T ticket) {
-        new QueryBuilder().createConnection()
-                .queryAction(db -> db.update(joinedTable)
-                        .set(TICKET_TYPES.TYPE, ticket.getType())
-                        .set(TICKET_TYPES.PRICE, BigDecimal.valueOf(ticket.getTypePrice()))
-                        .set(TICKET_TYPES.YEAR, ticket.getYear().getValue())
-                        .set(TICKET_TYPES.CATEGORY, ticket.getCategory())
-                        .set(TICKET_TYPES.DURATION, ticket.getDuration()))
-                .closeConnection();
-        return ticket;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
-     */
-    @Override
-    public <T extends TicketTableItem> T addPriceList(final T ticket) {
-        final boolean queryResult = TicketManager.addNewPriceList(ticket.getYear().getValue(), "");
-        if (!queryResult) {
-            throw new DataAccessException("Something went wrong while adding a new ticket price list.");
-        }
-        return ticket;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
-     */
-    @Override
-    public <T extends TicketTableItem> T editPriceList(final T ticket) {
-        new QueryBuilder().createConnection()
-                .queryAction(db -> db.update(joinedTable)
-                        .set(PRICE_LISTS.YEAR, ticket.getYear().getValue()))
-                .closeConnection();
-        return ticket;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
-     */
-    @Override
     public <T extends TicketTableItem> Collection<T> filterByPurchaseDate(final LocalDate date) {
         return extractTicketData(searchQuery(TICKETS.PURCHASEDATE.eq(date)));
     }
@@ -176,22 +114,6 @@ public class TicketControllerImpl implements TicketController {
     @Override
     public <T extends TicketTableItem> Collection<T> filterBySeasonTicket() {
         return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("season")));
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
-     */
-    @Override
-    public Collection<String> getAllTicketTypeCategories() {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.selectDistinct(TICKET_TYPES.CATEGORY)
-                        .from(TICKET_TYPES)
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords().stream()
-                .map(record -> record.get(TICKET_TYPES.CATEGORY))
-                .toList();
     }
 
     /**
@@ -232,9 +154,7 @@ public class TicketControllerImpl implements TicketController {
                 record.get(TICKETS.OWNERID),
                 Year.of(record.get(ATTRIBUTIONS.YEAR)),
                 record.get(ATTRIBUTIONS.TYPE),
-                record.get(TICKET_TYPES.PRICE).doubleValue(),
                 record.get(ATTRIBUTIONS.CATEGORY),
-                record.get(TICKET_TYPES.DURATION),
                 record.get(VALIDATIONS.DATE))));
         return data;
     }
