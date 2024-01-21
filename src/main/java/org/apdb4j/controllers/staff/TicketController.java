@@ -12,38 +12,6 @@ import java.util.Collection;
 public interface TicketController extends AdministrationController, Filterable {
 
     /**
-     * Adds a new ticket type to the DB.
-     * @param ticket the ticket
-     * @param <T> the {@code TicketTableItem} type
-     * @return the new ticket table item
-     */
-    <T extends TicketTableItem> T addTicketType(T ticket);
-
-    /**
-     * Edits a ticket type.
-     * @param ticket the ticket
-     * @param <T> the {@code TicketTableItem} type
-     * @return the edited ticket table item
-     */
-    <T extends TicketTableItem> T editTicketType(T ticket);
-
-    /**
-     * Adds a ticket price list to the DB.
-     * @param ticket the ticket
-     * @param <T> the {@code TicketTableItem} type
-     * @return the new ticket table item
-     */
-    <T extends TicketTableItem> T addPriceList(T ticket);
-
-    /**
-     * Edits a ticket price list.
-     * @param ticket the ticket
-     * @param <T> the {@code TicketTableItem} type
-     * @return the edited ticket table item
-     */
-    <T extends TicketTableItem> T editPriceList(T ticket);
-
-    /**
      * Filters tickets by purchase date.
      * @param date the date
      * @param <T> the {@code TicketTableItem} type
@@ -72,11 +40,5 @@ public interface TicketController extends AdministrationController, Filterable {
      * @return a collection of filtered ticket table items
      */
     <T extends TicketTableItem> Collection<T> filterBySeasonTicket();
-
-    /**
-     * Returns all the ticket type categories present in the DB.
-     * @return a collection of ticket type categories.
-     */
-    Collection<String> getAllTicketTypeCategories();
 
 }
