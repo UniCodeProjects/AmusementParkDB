@@ -267,126 +267,184 @@
                </content>
             </Tab>
             <Tab closable="false" text="Tickets">
-               <content>
-                  <Accordion expandedPane="$ticketPane">
-                     <panes>
+                <Accordion expandedPane="$ticketPane">
+                    <panes>
                         <TitledPane fx:id="ticketPane" text="Ticket">
-                          <content>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0">
-                                  <left>
-                                      <VBox spacing="6.0" BorderPane.alignment="CENTER">
-                                          <children>
-                                              <TextField fx:id="ticketSearchField" onKeyTyped="#onTicketSearch" promptText="TicketID" />
-                                              <DatePicker fx:id="ticketPurchaseDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onTicketPurchaseDateFilter" promptText="Purchase date" />
-                                              <DatePicker fx:id="ticketPunchDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onTicketPunchDateFilter" promptText="Punch (validation) date" />
-                                              <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                                  <children>
-                                                      <Label text="Ticket type:" />
-                                                      <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#onTicketFilterClear" text="Clear" />
-                                                  </children>
-                                              </HBox>
-                                              <RadioButton mnemonicParsing="false" onAction="#onTicketSingleDayFilter" text="Single day">
-                                                  <toggleGroup>
-                                                      <ToggleGroup fx:id="radioBtnToggle" />
-                                                  </toggleGroup></RadioButton>
-                                              <RadioButton mnemonicParsing="false" onAction="#onTicketSeasonFilter" text="Season" toggleGroup="$radioBtnToggle" />
-                                              <Separator prefWidth="200.0" />
-                                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddTicketBtnPress" text="Add" />
-                                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditTicketBtnPress" text="Edit" />
-                                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Punch">
-                                                  <tooltip>
-                                                      <Tooltip text="Punches the selected ticket" />
-                                                  </tooltip></Button>
-                                              <Separator prefWidth="200.0" />
-                                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
-                                          </children>
-                                          <BorderPane.margin>
-                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                          </BorderPane.margin>
-                                      </VBox>
-                                  </left>
-                                  <center>
-                                      <TableView fx:id="ticketTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                          <columns>
-                                              <TableColumn editable="false" text="Ticket ID">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="ticketID" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Purchased">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="purchaseDate" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Valid on">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="validOn" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Valid until">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="validUntil" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Entrances">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="remainingEntrances" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Owner ID">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="ownerID" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Year">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="year" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Type">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="type" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn prefWidth="75.0" text="Type Price">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="typePrice" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Category">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="category" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Duration">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="duration" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                              <TableColumn editable="false" text="Validation">
-                                                  <cellValueFactory>
-                                                      <PropertyValueFactory property="validationDate" />
-                                                  </cellValueFactory>
-                                              </TableColumn>
-                                          </columns>
-                                      </TableView>
-                                  </center>
-                              </BorderPane>
-                          </content>
+                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                <left>
+                                    <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <TextField fx:id="ticketSearchField" onKeyTyped="#onTicketSearch"
+                                                       promptText="TicketID"/>
+                                            <DatePicker fx:id="ticketPurchaseDateFilter" editable="false"
+                                                        maxWidth="1.7976931348623157E308" onAction="#onTicketPurchaseDateFilter"
+                                                        promptText="Purchase date"/>
+                                            <DatePicker fx:id="ticketPunchDateFilter" editable="false"
+                                                        maxWidth="1.7976931348623157E308" onAction="#onTicketPunchDateFilter"
+                                                        promptText="Punch (validation) date"/>
+                                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <children>
+                                                    <Label text="Ticket type:"/>
+                                                    <Button fx:id="clearBtn" mnemonicParsing="false"
+                                                            onAction="#onTicketFilterClear" text="Clear"/>
+                                                </children>
+                                            </HBox>
+                                            <RadioButton mnemonicParsing="false" onAction="#onTicketSingleDayFilter"
+                                                         text="Single day">
+                                                <toggleGroup>
+                                                    <ToggleGroup fx:id="radioBtnToggle"/>
+                                                </toggleGroup>
+                                            </RadioButton>
+                                            <RadioButton mnemonicParsing="false" onAction="#onTicketSeasonFilter" text="Season"
+                                                         toggleGroup="$radioBtnToggle"/>
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onAddTicketBtnPress" text="Add"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onEditTicketBtnPress" text="Edit"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Punch">
+                                                <tooltip>
+                                                    <Tooltip text="Punches the selected ticket"/>
+                                                </tooltip>
+                                            </Button>
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced"/>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                        </BorderPane.margin>
+                                    </VBox>
+                                </left>
+                                <center>
+                                    <TableView fx:id="ticketTableView" prefHeight="200.0" prefWidth="200.0"
+                                               BorderPane.alignment="CENTER">
+                                        <columns>
+                                            <TableColumn editable="false" text="Ticket ID">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="ticketID"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Purchased">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="purchaseDate"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Valid on">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validOn"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Valid until">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validUntil"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Entrances">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="remainingEntrances"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Owner ID">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="ownerID"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Year">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="year"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Type">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="type"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn prefWidth="75.0" text="Type Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="typePrice"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Category">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="category"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Duration">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="duration"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Validation">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validationDate"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                </center>
+                            </BorderPane>
                         </TitledPane>
-                         <TitledPane text="Ticket type">
-                             <content>
-
-                             </content>
-                         </TitledPane>
-                         <TitledPane text="Price list">
-                             <content>
-
-                             </content>
-                         </TitledPane>
-                     </panes>
-                  </Accordion>
-               </content>
+                        <TitledPane text="Ticket type">
+                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                <left>
+                                    <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <TextField fx:id="ticketTypeSearchField" onKeyTyped="#onTicketTypeSearch"
+                                                       promptText="Type"/>
+                                            <DatePicker fx:id="ticketTypeYearFilter" editable="false"
+                                                        maxWidth="1.7976931348623157E308" onAction="#onTicketTypeYearFilter"
+                                                        promptText="Year"/>
+                                            <ChoiceBox fx:id="ticketTypeCategoryFilter" onAction="#onTicketTypeCategoryFilter"
+                                                       maxWidth="1.7976931348623157E308" />
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onAddTicketBtnPress" text="Add"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onEditTicketBtnPress" text="Edit"/>
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Price list"/>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                        </BorderPane.margin>
+                                    </VBox>
+                                </left>
+                                <center>
+                                    <TableView fx:id="ticketTypeTableView" prefHeight="200.0" prefWidth="200.0"
+                                               BorderPane.alignment="CENTER">
+                                        <columns>
+                                            <TableColumn editable="false" text="Type">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property=""/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Category">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property=""/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Year">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property=""/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property=""/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Duration">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property=""/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                </center>
+                            </BorderPane>
+                        </TitledPane>
+                    </panes>
+                </Accordion>
             </Tab>
           <Tab closable="false" text="Attractions">
                <content>

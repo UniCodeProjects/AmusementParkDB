@@ -16,6 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -141,6 +142,12 @@ public class StaffScreenController implements Initializable {
     private DatePicker ticketPunchDateFilter;
     @FXML
     private TableView<TicketTableItem> ticketTableView;
+    @FXML
+    private TextField ticketTypeSearchField;
+    @FXML
+    private DatePicker ticketTypeYearFilter;
+    @FXML
+    private ChoiceBox<String> ticketTypeCategoryFilter;
     @FXML
     private TableView<AttractionTableItem> attractionsTableView;
     @FXML
@@ -584,6 +591,36 @@ public class StaffScreenController implements Initializable {
         TicketSelectorScreenController.setEditMode(true);
         TicketSelectorScreenController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
         LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    }
+
+    /**
+     * Filters the ticket types by their type.
+     * @param keyEvent the event
+     */
+    @FXML
+    void onTicketTypeSearch(final KeyEvent keyEvent) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Filters the ticket types by their year.
+     * @param event the event
+     */
+    @FXML
+    void onTicketTypeYearFilter(final ActionEvent event) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Filters the ticket types by category.
+     * @param event the event
+     */
+    @FXML
+    void onTicketTypeCategoryFilter(final ActionEvent event) {
+        // TODO
+        throw new UnsupportedOperationException();
     }
 
     /**
