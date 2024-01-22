@@ -12,7 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.StringUtils;
+import org.apdb4j.controllers.guests.TicketController;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
@@ -39,16 +40,18 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     @FXML
     private Label totalPrice;
     private final DoubleProperty totalPriceProperty = new SimpleDoubleProperty();
-    private final Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice;
+    private final TicketController controller;
+    private final Collection<String> ticketTypes;
+    private final Collection<String> customerCategories;
 
     /**
      * Creates a new instance of this class with the provided ticket types and customers categories.
-     * @param ticketTypesAndCategoriesWithPrice a map that contains, for each ticket type, all the categories of the
-     *                                          customers, each one paired with the price of that ticket type.
+     * @param controller the MVC controller responsible for this view.
      */
-    public UserTicketsChooserController(
-            final @NonNull Map<String, Set<Pair<String, Double>>> ticketTypesAndCategoriesWithPrice) {
-        this.ticketTypesAndCategoriesWithPrice = Map.copyOf(ticketTypesAndCategoriesWithPrice);
+    public UserTicketsChooserController(final @NonNull TicketController controller) {
+        this.controller = controller;
+        this.ticketTypes = controller.getTicketTypes().stream().map(StringUtils::capitalize).toList();
+        this.customerCategories = controller.getCustomerCategories().stream().map(StringUtils::capitalize).toList();
     }
 
     /**
@@ -58,24 +61,22 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
         totalPrice.textProperty().bindBidirectional(totalPriceProperty, new PriceStringConverter());
-        for (final String ticketType : ticketTypesAndCategoriesWithPrice.keySet()) {
+        for (final String ticketType : ticketTypes) {
             final Label ticketTypeLabel = new Label(ticketType);
             ticketTypeLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 16));
             ticketsAndSeasonTicketsContainer.getChildren().add(ticketTypeLabel);
             VBox.setMargin(ticketTypeLabel, TICKET_TYPE_LABEL_MARGIN);
-            final Set<Pair<String, Double>> categoriesWithPrice = ticketTypesAndCategoriesWithPrice.entrySet()
-                    .stream()
-                    .filter(entry -> entry.getKey().equals(ticketType))
-                    .map(Map.Entry::getValue)
-                    .findFirst()
-                    .get(); // no check with isPresent() because the value is always present
-            for (final Pair<String, Double> categoryWithPrice : categoriesWithPrice) {
+            for (final String customerCategory : customerCategories) {
                 final HBox categoryContainer = new HBox();
                 ticketsAndSeasonTicketsContainer.getChildren().add(categoryContainer);
                 VBox.setMargin(categoryContainer, CATEGORY_CONTAINER_MARGIN);
                 final CheckBox categoryCheckbox =
-                        new CheckBox(categoryWithPrice.getKey()
-                                + " (" + EURO_SYMBOL + String.format(PRICE_FORMAT_SPECIFIER, categoryWithPrice.getValue()) + ")");
+                        new CheckBox(customerCategory
+                                + " ("
+                                + EURO_SYMBOL
+                                + String.format(PRICE_FORMAT_SPECIFIER,
+                                controller.getPriceForTicket(ticketType, customerCategory))
+                                + ")");
                 categoryContainer.getChildren().add(categoryCheckbox);
                 categoryCheckbox.setAllowIndeterminate(false);
                 categoryCheckbox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
@@ -97,32 +98,32 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
                     if (wasSelected && Double.compare(totalPriceProperty.get(), 0) > 0) {
                         totalPriceProperty.set(totalPriceProperty.get()
-                                - (categoryWithPrice.getValue() * quantitySpinner.getValue()));
+                                - (controller.getPriceForTicket(ticketType, customerCategory) * quantitySpinner.getValue()));
                     } else {
                         totalPriceProperty.set(totalPriceProperty.get()
-                                + (categoryWithPrice.getValue() * quantitySpinner.getValue()));
+                                + (controller.getPriceForTicket(ticketType, customerCategory) * quantitySpinner.getValue()));
                     }
                 });
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
-                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, categoryWithPrice.getKey());
+                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, customerCategory);
                     if (wasSelected && ticketTypeAndCategoryLabel.isPresent()) {
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (isSelected && ticketTypeAndCategoryLabel.isEmpty()) {
-                        addTicketToCart(ticketType, categoryWithPrice.getKey(), quantitySpinner.getValue());
+                        addTicketToCart(ticketType, customerCategory, quantitySpinner.getValue());
                     }
                 });
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) ->
                         totalPriceProperty.set(totalPriceProperty.get()
-                                + (categoryWithPrice.getValue() * (newAmount - previousAmount))));
+                                + (controller.getPriceForTicket(ticketType, customerCategory) * (newAmount - previousAmount))));
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
-                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, categoryWithPrice.getKey());
+                    final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, customerCategory);
                     if (newAmount == 0 && ticketTypeAndCategoryLabel.isPresent()) {
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (newAmount > 0) {
                         if (ticketTypeAndCategoryLabel.isEmpty()) {
-                            addTicketToCart(ticketType, categoryWithPrice.getKey(), newAmount);
+                            addTicketToCart(ticketType, customerCategory, newAmount);
                         } else {
-                            changeTicketQuantityInCart(ticketType, categoryWithPrice.getKey(), newAmount, previousAmount);
+                            changeTicketQuantityInCart(ticketType, customerCategory, newAmount);
                         }
                     }
                 });
@@ -133,38 +134,23 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     }
 
     private Optional<Label> getTicketFromCart(final String ticketType, final String customerCategory) {
-        /*
-        * Note: ticket type name is turned in singular form because if in the label the ticket type's name
-        * is in its singular form and in this method the ticket type is in its plural form, there would be no match.
-        */
         return cart.getItems()
                 .stream()
-                .filter(label -> label.getText().contains(customerCategory + " " + turnTicketTypeNameToSingularForm(ticketType)))
+                .filter(label -> label.getText().contains(customerCategory + " " + ticketType))
                 .findFirst();
     }
 
     private void addTicketToCart(final String ticketType, final String customerCategory, final int ticketQuantity) {
         if (ticketQuantity > 0) {
-            cart.getItems().add(new Label(ticketQuantity + " " + customerCategory + " " + (ticketQuantity > 1 ? ticketType
-                    : turnTicketTypeNameToSingularForm(ticketType))));
+            cart.getItems().add(new Label(ticketQuantity + " " + customerCategory + " " + ticketType));
         }
-    }
-
-    private String turnTicketTypeNameToSingularForm(final String ticketTypeName) {
-        return ticketTypeName.substring(0, ticketTypeName.length() - 1);
     }
 
     private void changeTicketQuantityInCart(final String ticketType,
                                             final String customerCategory,
-                                            final int newTicketQuantity,
-                                            final int oldTicketQuantity) {
+                                            final int newTicketQuantity) {
         final Label label = getTicketFromCart(ticketType, customerCategory).get();
         label.setText(label.getText().replaceFirst("\\b\\d+", String.valueOf(newTicketQuantity)));
-        if (newTicketQuantity > 1 && oldTicketQuantity == 1) {
-            label.setText(label.getText() + "s");
-        } else if (newTicketQuantity == 1 && oldTicketQuantity > 1) {
-            label.setText(label.getText().substring(0, label.getText().length() - 1));
-        }
     }
 
     /**
