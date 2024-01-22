@@ -20,6 +20,14 @@ public interface TicketTypeController extends AdministrationController, Filterab
     <T extends TicketTypeTableItem> Collection<T> filterByYear(Year year);
 
     /**
+     * Filters the ticket types by category.
+     * @param category the category
+     * @param <T> the {@code TicketTypeTableItem}
+     * @return a collection containing the filtered ticket types
+     */
+    <T extends TicketTypeTableItem> Collection<T> filterByCategory(String category);
+
+    /**
      * Returns all the ticket type categories present in the DB.
      * @return a collection of ticket type categories.
      */

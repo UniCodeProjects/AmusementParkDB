@@ -27,7 +27,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
@@ -36,7 +36,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
@@ -55,7 +55,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
@@ -74,7 +74,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String type) {
@@ -83,7 +83,7 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws DataAccessException if query fails
      */
     @Override
     public <T extends TicketTypeTableItem> Collection<T> filterByYear(final Year year) {
@@ -92,7 +92,16 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if the query fails
+     * @throws DataAccessException if query fails
+     */
+    @Override
+    public <T extends TicketTypeTableItem> Collection<T> filterByCategory(final String category) {
+        return extractData(searchQuery(TICKET_TYPES.CATEGORY.equalIgnoreCase(category)));
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws DataAccessException if query fails
      */
     @Override
     public Collection<String> getAllTicketTypeCategories() {
