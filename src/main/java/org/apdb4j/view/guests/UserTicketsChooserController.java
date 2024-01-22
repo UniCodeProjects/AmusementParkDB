@@ -62,7 +62,7 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
         super.initialize(location, resources);
         totalPrice.textProperty().bindBidirectional(totalPriceProperty, new PriceStringConverter());
         for (final String ticketType : ticketTypes) {
-            final Label ticketTypeLabel = new Label(ticketType);
+            final Label ticketTypeLabel = new Label(ticketType + "s");
             ticketTypeLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 16));
             ticketsAndSeasonTicketsContainer.getChildren().add(ticketTypeLabel);
             VBox.setMargin(ticketTypeLabel, TICKET_TYPE_LABEL_MARGIN);
