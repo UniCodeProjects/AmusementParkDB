@@ -16,7 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -38,6 +38,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
@@ -55,6 +56,7 @@ import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
+import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -68,12 +70,14 @@ import org.apdb4j.view.staff.tableview.ReviewTableItem;
 import org.apdb4j.view.staff.tableview.RideTableItem;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
+import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
 import org.jooq.exception.DataAccessException;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -145,9 +149,11 @@ public class StaffScreenController implements Initializable {
     @FXML
     private TextField ticketTypeSearchField;
     @FXML
-    private DatePicker ticketTypeYearFilter;
+    private TextField ticketTypeYearFilter;
     @FXML
-    private ChoiceBox<String> ticketTypeCategoryFilter;
+    private ComboBox<String> ticketTypeCategoryFilter;
+    @FXML
+    private TableView<TicketTypeTableItem> ticketTypeTableView;
     @FXML
     private TableView<AttractionTableItem> attractionsTableView;
     @FXML
@@ -599,18 +605,59 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onTicketTypeSearch(final KeyEvent keyEvent) {
-        // TODO
-        throw new UnsupportedOperationException();
+        if (!keyEvent.getEventType().equals(KeyEvent.KEY_TYPED)) {
+            return;
+        }
+        if (ticketTypeSearchField.getText().isBlank() || ticketTypeSearchField.getText() == null) {
+            // TODO: Put controller as field.
+            final Collection<TicketTypeTableItem> allItems = new TicketTypeControllerImpl().getData();
+            Platform.runLater(() -> {
+                ticketTypeTableView.getItems().clear();
+                ticketTypeTableView.getItems().addAll(allItems);
+            });
+        } else {
+            final Collection<TicketTypeTableItem> filtered = new TicketTypeControllerImpl()
+                    .filter(ticketTypeSearchField.getText());
+            Platform.runLater(() -> {
+                ticketTypeTableView.getItems().clear();
+                ticketTypeTableView.getItems().addAll(filtered);
+            });
+        }
     }
 
     /**
      * Filters the ticket types by their year.
-     * @param event the event
+     * @param keyEvent the event
      */
     @FXML
-    void onTicketTypeYearFilter(final ActionEvent event) {
-        // TODO
-        throw new UnsupportedOperationException();
+    void onTicketTypeYearFilter(final KeyEvent keyEvent) {
+        if (ticketTypeYearFilter.getText().isBlank() || ticketTypeYearFilter.getText() == null) {
+            // TODO: Put controller as field.
+            final Collection<TicketTypeTableItem> allItems = new TicketTypeControllerImpl().getData();
+            Platform.runLater(() -> {
+                ticketTypeTableView.getItems().clear();
+                ticketTypeTableView.getItems().addAll(allItems);
+            });
+        }
+        if (!keyEvent.getCode().equals(KeyCode.ENTER)) {
+            return;
+        }
+        final int isoYear;
+        try {
+            isoYear = Integer.parseInt(StringUtils.defaultString(ticketTypeYearFilter.getText()).trim());
+        } catch (final NumberFormatException e) {
+            new AlertBuilder(Alert.AlertType.WARNING)
+                    .setHeaderText("Wrong year format")
+                    .setContentText(e.getMessage())
+                    .show();
+            return;
+        }
+        final Collection<TicketTypeTableItem> filtered = new TicketTypeControllerImpl()
+                .filterByYear(Year.of(isoYear));
+        Platform.runLater(() -> {
+            ticketTypeTableView.getItems().clear();
+            ticketTypeTableView.getItems().addAll(filtered);
+        });
     }
 
     /**
@@ -619,8 +666,14 @@ public class StaffScreenController implements Initializable {
      */
     @FXML
     void onTicketTypeCategoryFilter(final ActionEvent event) {
-        // TODO
-        throw new UnsupportedOperationException();
+        final String chosenCategory = ticketTypeCategoryFilter.getValue();
+        final var ticketTypeItems = ticketTypeTableView.getItems();
+        ticketTypeItems.clear();
+        if (chosenCategory == null) {
+            Platform.runLater(() -> ticketTypeItems.addAll(new TicketTypeControllerImpl().getData()));
+            return;
+        }
+        Platform.runLater(() -> ticketTypeItems.addAll(new TicketTypeControllerImpl().filterByCategory(chosenCategory)));
     }
 
     /**
@@ -1338,6 +1391,14 @@ public class StaffScreenController implements Initializable {
                 ticketTableView.getItems().clear();
                 ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
             }
+        });
+        ticketTypeTableView.getItems().addAll(new TicketTypeControllerImpl().getData());
+        ticketTypeCategoryFilter.getItems().addAll(new TicketTypeControllerImpl().getAllTicketTypeCategories());
+        ticketTypeCategoryFilter.setOnKeyReleased(keyEvent -> {
+            if (!keyEvent.getCode().equals(KeyCode.BACK_SPACE) && !keyEvent.getCode().equals(KeyCode.DELETE)) {
+                return;
+            }
+            ticketTypeCategoryFilter.setValue(null);
         });
 
         contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
