@@ -11,6 +11,7 @@ import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
+import java.math.BigDecimal;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,8 +59,17 @@ public class TicketTypeControllerImpl implements TicketTypeController {
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
-        // TODO
-        throw new UnsupportedOperationException();
+        final TicketTypeTableItem ticketType = (TicketTypeTableItem) item;
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(TICKET_TYPES)
+                        .set(TICKET_TYPES.TYPE, ticketType.getType())
+                        .set(TICKET_TYPES.CATEGORY, ticketType.getCategory())
+                        .set(TICKET_TYPES.YEAR, ticketType.getYear().getValue())
+                        .set(TICKET_TYPES.PRICE, BigDecimal.valueOf(ticketType.getPrice()))
+                        .set(TICKET_TYPES.DURATION, ticketType.getDuration())
+                        .execute())
+                .closeConnection();
+        return item;
     }
 
     /**
