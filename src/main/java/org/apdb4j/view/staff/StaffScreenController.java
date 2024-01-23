@@ -583,9 +583,9 @@ public class StaffScreenController implements Initializable {
      * @param event the event
      */
     @FXML
-    void onAddTicketBtnPress(final ActionEvent event) {
-        TicketSelectorScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    void onTicketAdd(final ActionEvent event) {
+        TicketScreenController.setEditMode(false);
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Add a ticket");
     }
 
     /**
@@ -593,10 +593,41 @@ public class StaffScreenController implements Initializable {
      * @param event the event
      */
     @FXML
-    void onEditTicketBtnPress(final ActionEvent event) {
-        TicketSelectorScreenController.setEditMode(true);
-        TicketSelectorScreenController.setTicket(ticketTableView.getSelectionModel().getSelectedItem());
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-selector.fxml", "Select an option");
+    void onTicketEdit(final ActionEvent event) {
+        final TicketTableItem selectedTicket = ticketTableView.getSelectionModel().getSelectedItem();
+        if (selectedTicket == null) {
+            showAlertForUnselectedRowInTableView("ticket");
+            return;
+        }
+        TicketScreenController.setEditMode(true);
+        TicketScreenController.setTicket(selectedTicket);
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Edit ticket");
+    }
+
+    /**
+     * Opens the ticket type form.
+     * @param event the event
+     */
+    @FXML
+    void onTicketTypeAdd(final ActionEvent event) {
+        TicketTypeScreenController.setEditMode(false);
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Add a ticket type");
+    }
+
+    /**
+     * Opens the ticket type form for editing.
+     * @param event the event
+     */
+    @FXML
+    void onTicketTypeEdit(final ActionEvent event) {
+        final TicketTypeTableItem selectedTicketType = ticketTypeTableView.getSelectionModel().getSelectedItem();
+        if (selectedTicketType == null) {
+            showAlertForUnselectedRowInTableView("ticket type");
+            return;
+        }
+        TicketTypeScreenController.setEditMode(true);
+        TicketTypeScreenController.setTicketType(selectedTicketType);
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Edit ticket type");
     }
 
     /**
