@@ -300,9 +300,9 @@
                                                          toggleGroup="$radioBtnToggle"/>
                                             <Separator prefWidth="200.0"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                                    onAction="#onAddTicketBtnPress" text="Add"/>
+                                                    onAction="#onTicketAdd" text="Add"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                                    onAction="#onEditTicketBtnPress" text="Edit"/>
+                                                    onAction="#onTicketEdit" text="Edit"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Punch">
                                                 <tooltip>
                                                     <Tooltip text="Punches the selected ticket"/>
@@ -392,9 +392,9 @@
                                             </ComboBox>
                                             <Separator prefWidth="200.0"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                                    onAction="#onAddTicketBtnPress" text="Add"/>
+                                                    onAction="#onTicketTypeAdd" text="Add"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                                    onAction="#onEditTicketBtnPress" text="Edit"/>
+                                                    onAction="#onTicketTypeEdit" text="Edit"/>
                                             <Separator prefWidth="200.0"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Price list"/>
                                         </children>
