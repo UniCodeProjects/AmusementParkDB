@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.view.PopupInitializer;
+import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
 
 /**
  * The FXML controller for the ticket type screen.
@@ -31,6 +33,10 @@ public class TicketTypeScreenController extends PopupInitializer {
     private Button acceptAndCloseBtn;
     @Setter
     private static boolean editMode;
+    @Setter
+    private static TicketTypeTableItem ticketType;
+    @Setter
+    private static TableView<TicketTypeTableItem> tableView;
 
     /**
      * Default constructor.
