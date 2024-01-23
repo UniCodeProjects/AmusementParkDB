@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
@@ -32,6 +33,8 @@ public class TicketScreenController extends PopupInitializer {
     private static boolean editMode;
     @Setter
     private static TicketTableItem ticket;
+    @Setter
+    private static TableView<TicketTableItem> tableView;
 
     /**
      * Default constructor.
