@@ -9,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.Year;
@@ -51,10 +52,10 @@ public class TicketTableItem implements TableItem {
                            final LocalDate validUntil,
                            final int remainingEntrances,
                            final @NonNull String ownerID,
-                           final @NonNull Year year,
-                           final @NonNull String type,
+                           final Year year,
+                           final String type,
                            final @NonNull String category,
-                           final @NonNull LocalDate validationDate) {
+                           final LocalDate validationDate) {
         this.ticketID = new SimpleStringProperty(ticketID.trim());
         this.purchaseDate = new SimpleObjectProperty<>(purchaseDate);
         this.validOn = new SimpleObjectProperty<>(validOn);
@@ -62,7 +63,7 @@ public class TicketTableItem implements TableItem {
         this.remainingEntrances = new SimpleIntegerProperty(remainingEntrances);
         this.ownerID = new SimpleStringProperty(ownerID.trim());
         this.year = new SimpleObjectProperty<>(year);
-        this.type = new SimpleStringProperty(type.trim());
+        this.type = new SimpleStringProperty(StringUtils.defaultString(type).trim());
         this.category = new SimpleStringProperty(category.trim());
         this.validationDate = new SimpleObjectProperty<>(validationDate);
     }
