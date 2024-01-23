@@ -1,7 +1,9 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -9,8 +11,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.staff.TicketController;
+import org.apdb4j.controllers.staff.TicketControllerImpl;
+import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
+import org.jooq.exception.DataAccessException;
 
 /**
  * The FXML controller for the ticket screen.
@@ -18,9 +25,11 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 public class TicketScreenController extends PopupInitializer {
 
     @FXML
-    private ChoiceBox<String> categoryChoiceBox;
-    @FXML
     private GridPane gridPane;
+    @FXML
+    private DatePicker purchaseDatePicker;
+    @FXML
+    private ChoiceBox<String> categoryChoiceBox;
     @FXML
     private TextField ownerIDField;
     @FXML
@@ -47,10 +56,54 @@ public class TicketScreenController extends PopupInitializer {
     }
 
     /**
+     * Adds/edits the ticket in the DB.
+     * @param event the event
+     */
+    @FXML
+    void onAccept(final ActionEvent event) {
+        final TicketTableItem newTicket = new TicketTableItem(editMode ? ticket.getTicketID() : "T-000",
+                purchaseDatePicker.getValue(),
+                validOnDatePicker.getValue(),
+                validUntilDatePicker.getValue(),
+                -1,
+                ownerIDField.getText(),
+                null,
+                null,
+                categoryChoiceBox.getValue(),
+                null);
+        final TicketController controller = new TicketControllerImpl();
+        if (!editMode) {
+            try {
+                controller.addData(newTicket);
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+                return;
+            }
+            tableView.getItems().clear();
+            Platform.runLater(() -> tableView.getItems().addAll(controller.getData()));
+        } else {
+            try {
+                controller.editData(newTicket);
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+                return;
+            }
+            tableView.getItems().clear();
+            Platform.runLater(() -> tableView.getItems().addAll(controller.getData()));
+        }
+        gridPane.getScene().getWindow().hide();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     protected void customInit() {
+        categoryChoiceBox.getItems().addAll(new TicketTypeControllerImpl().getAllTicketTypeCategories());
         if (!editMode) {
             return;
         }
