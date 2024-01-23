@@ -81,8 +81,6 @@ public class TicketScreenController extends PopupInitializer {
                         .show();
                 return;
             }
-            tableView.getItems().clear();
-            Platform.runLater(() -> tableView.getItems().addAll(controller.getData()));
         } else {
             try {
                 controller.editData(newTicket);
@@ -92,9 +90,9 @@ public class TicketScreenController extends PopupInitializer {
                         .show();
                 return;
             }
-            tableView.getItems().clear();
-            Platform.runLater(() -> tableView.getItems().addAll(controller.getData()));
         }
+        tableView.getItems().clear();
+        Platform.runLater(() -> tableView.getItems().addAll(controller.getData()));
         gridPane.getScene().getWindow().hide();
     }
 
