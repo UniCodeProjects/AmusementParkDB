@@ -309,7 +309,9 @@
                                                 </tooltip>
                                             </Button>
                                             <Separator prefWidth="200.0"/>
-                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced"/>
+                                            <MenuButton fx:id="advancedTicketBtn" maxWidth="1.7976931348623157E308"
+                                                        mnemonicParsing="false"
+                                                         text="Advanced"/>
                                         </children>
                                         <BorderPane.margin>
                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
