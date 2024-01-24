@@ -145,6 +145,8 @@ public class StaffScreenController implements Initializable {
     @FXML
     private DatePicker ticketPunchDateFilter;
     @FXML
+    private MenuButton advancedTicketBtn;
+    @FXML
     private TableView<TicketTableItem> ticketTableView;
     @FXML
     private TextField ticketTypeSearchField;
