@@ -8,7 +8,6 @@ import org.apdb4j.view.staff.tableview.TicketTableItem;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
-import org.jooq.TableOnConditionStep;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
@@ -25,11 +24,6 @@ import static org.apdb4j.db.Tables.*;
  * An implementation of a ticket controller.
  */
 public class TicketControllerImpl implements TicketController {
-
-    private final TableOnConditionStep<Record> joinedTable = TICKETS.join(ATTRIBUTIONS)
-            .on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-            .leftJoin(VALIDATIONS)
-            .on(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID));
 
     /**
      * {@inheritDoc}
@@ -66,11 +60,12 @@ public class TicketControllerImpl implements TicketController {
     public <T extends TableItem> T editData(final T item) {
         final TicketTableItem ticket = (TicketTableItem) item;
         new QueryBuilder().createConnection()
-                .queryAction(db -> db.update(joinedTable)
+                .queryAction(db -> db.update(TICKETS.join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID)))
                         .set(TICKETS.VALIDON, ticket.getValidOn())
                         .set(TICKETS.VALIDUNTIL, ticket.getValidUntil())
                         .set(TICKETS.OWNERID, ticket.getOwnerID())
                         .set(ATTRIBUTIONS.CATEGORY, ticket.getCategory())
+                        .where(TICKETS.TICKETID.eq(ticket.getTicketID()))
                         .execute())
                 .closeConnection();
         return item;
@@ -132,7 +127,10 @@ public class TicketControllerImpl implements TicketController {
     private Result<Record> searchQuery(final Condition condition) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
-                        .from(joinedTable)
+                        .from(TICKETS.join(ATTRIBUTIONS)
+                                .on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
+                                .leftJoin(VALIDATIONS)
+                                .on(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID)))
                         .where(condition)
                         .fetch())
                 .closeConnection()
