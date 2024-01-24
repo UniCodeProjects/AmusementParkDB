@@ -1253,15 +1253,19 @@ public class StaffScreenController implements Initializable {
                     .show();
             return;
         }
-        Platform.runLater(() -> {
-            try {
-                picturesTableView.getItems().remove(new PictureControllerImpl().removePicture(selectedPicture));
-            } catch (final DataAccessException e) {
-                new AlertBuilder(Alert.AlertType.ERROR)
-                        .setContentText(e.getMessage())
-                        .show();
-            }
-        });
+        new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                .setHeaderText("Are you sure?")
+                .setContentText("Press OK to delete this picture from the database.")
+                .setOnClose(() -> Platform.runLater(() -> {
+                    try {
+                        picturesTableView.getItems().remove(new PictureControllerImpl().removePicture(selectedPicture));
+                    } catch (final DataAccessException e) {
+                        new AlertBuilder(Alert.AlertType.ERROR)
+                                .setContentText(e.getMessage())
+                                .show();
+                    }
+                }))
+                .show();
     }
 
     /**
