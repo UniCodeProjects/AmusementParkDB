@@ -1,6 +1,7 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.apdb4j.util.QueryBuilder;
 
 import static org.apdb4j.db.Tables.PICTURES;
@@ -59,7 +60,8 @@ public final class PictureManager {
      * @return {@code true} if the picture is removed successfully, {@code false} otherwise.
      */
     public static boolean removePicture(final @NonNull String path, final @NonNull String account) {
-        return Manager.removeTupleFromDB(PICTURES, account, path);
+        // Escaping path backslash if present.
+        return Manager.removeTupleFromDB(PICTURES, account, StringUtils.replace(path, "\\", "\\\\"));
     }
 
 }
