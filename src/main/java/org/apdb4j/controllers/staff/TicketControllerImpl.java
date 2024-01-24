@@ -28,7 +28,7 @@ public class TicketControllerImpl implements TicketController {
 
     private final TableOnConditionStep<Record> joinedTable = TICKETS.join(ATTRIBUTIONS)
             .on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-            .join(VALIDATIONS)
+            .leftJoin(VALIDATIONS)
             .on(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID))
             .join(TICKET_TYPES)
             .on(ATTRIBUTIONS.YEAR.eq(TICKET_TYPES.YEAR)
