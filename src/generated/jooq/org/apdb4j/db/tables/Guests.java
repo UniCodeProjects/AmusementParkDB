@@ -47,7 +47,7 @@ public class Guests extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.guests.GuestID</code>.
      */
-    public final TableField<Record, String> GUESTID = createField(DSL.name("GuestID"), SQLDataType.CHAR(72).nullable(false), this, "");
+    public final TableField<Record, String> GUESTID = createField(DSL.name("GuestID"), SQLDataType.CHAR(16).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.guests.Email</code>.

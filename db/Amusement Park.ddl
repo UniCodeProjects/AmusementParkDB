@@ -14,14 +14,14 @@ create table ACCOUNTS (
      constraint PSW_LENGTH check (length(Password) >= 8));
 
 create table attributions (
-     TicketID char(65) not null,
+     TicketID char(10) not null,
      Year int not null,
      Type varchar(50) not null,
      Category varchar(50) not null,
      constraint FKatt_TIC_ID primary key (TicketID));
 
 create table CONTRACTS (
-     ContractID char(65) not null,
+     ContractID char(10) not null,
      SubscriptionDate date not null,
      BeginDate date not null,
      EndDate date,
@@ -38,7 +38,7 @@ create table CONTRACTS (
      constraint SALARY_NON_NEGATIVITY_CHECK check (Salary > 0));
 
 create table COSTS (
-     ShopID char(6) not null,
+     ShopID char(11) not null,
      Revenue decimal(8,2) not null,
      Expenses decimal(8,2) not null,
      Month int not null,
@@ -49,7 +49,7 @@ create table COSTS (
      constraint IDCOST primary key (ShopID, Month, Year));
 
 create table EXHIBITION_DETAILS (
-     ExhibitionID char(6) not null,
+     ExhibitionID char(11) not null,
      Date date not null,
      Time time not null,
      MaxSeats int not null,
@@ -60,7 +60,7 @@ create table EXHIBITION_DETAILS (
      constraint EX_DET_MAX_SEATS_DOMAIN check (MaxSeats > 0));
 
 create table FACILITIES (
-     FacilityID char(6) not null,
+     FacilityID char(11) not null,
      OpeningTime time not null,
      ClosingTime time not null,
      IsShop boolean not null,
@@ -71,7 +71,7 @@ create table FACILITIES (
      constraint TIMES_CONSISTENCY check (OpeningTime < ClosingTime));
 
 create table GUESTS (
-     GuestID char(72) not null,
+     GuestID char(16) not null,
      Email varchar(256) not null,
      Name varchar(256) not null,
      Surname varchar(256) not null,
@@ -79,7 +79,7 @@ create table GUESTS (
      constraint FKR_1_ID unique (Email));
 
 create table MAINTENANCES (
-     FacilityID char(6) not null,
+     FacilityID char(11) not null,
      Price decimal(8,2) not null,
      Description varchar(4000) not null,
      Date date not null,
@@ -94,7 +94,7 @@ create table MONTHLY_RECAPS (
      constraint REVENUE_NON_NEGATIVITY_CHECK check (Revenue >= 0));
 
 create table PARK_SERVICES (
-     ParkServiceID char(6) not null,
+     ParkServiceID char(11) not null,
      Name varchar(256) not null,
      AvgRating decimal(2,1) not null,
      NumReviews int unsigned not null,
@@ -116,7 +116,7 @@ create table PERMISSIONS (
 
 create table PICTURES (
      Path varchar(256) not null,
-     ParkServiceID char(6) not null,
+     ParkServiceID char(11) not null,
      constraint IDPICTURE primary key (Path));
 
 create table PRICE_LISTS (
@@ -128,7 +128,7 @@ create table PUNCH_DATES (
      constraint IDPUNCH_DATES primary key (Date));
 
 create table responsibilities (
-     FacilityID char(6) not null,
+     FacilityID char(11) not null,
      Date date not null,
      EmployeeNID varchar(256) not null,
      constraint IDresponsibility primary key (EmployeeNID, FacilityID, Date));
@@ -140,13 +140,13 @@ create table REVIEWS (
      Time time not null,
      Description varchar(1000),
      Account varchar(256) not null,
-     ParkServiceID char(6) not null,
+     ParkServiceID char(11) not null,
      constraint IDRECENSIONE primary key (ReviewID),
      constraint IDREVIEW unique (Account, ParkServiceID),
      constraint RATING_FORMAT check (Rating between 1 and 5));
 
 create table RIDE_DETAILS (
-     RideID char(6) not null,
+     RideID char(11) not null,
      Status char(1) not null,
      EstimatedWaitTime time,
      constraint RIDEID_CHECK check (RideID like 'RI%'),
@@ -156,7 +156,7 @@ create table RIDE_DETAILS (
      constraint FKride_ride_detail_ID primary key (RideID));
 
 create table RIDES (
-     RideID char(6) not null,
+     RideID char(11) not null,
      Intensity varchar(50) not null,
      Duration time not null,
      MaxSeats int not null,
@@ -172,7 +172,7 @@ create table RIDES (
      constraint WEIGHT_VALUES_CONSISTENCY check (MinWeight < MaxWeight));
 
 create table STAFF (
-     StaffID char(72) not null,
+     StaffID char(16) not null,
      NationalID varchar(256) not null,
      Email varchar(256) not null,
      Name varchar(256) not null,
@@ -204,12 +204,12 @@ create table TICKET_TYPES (
      constraint PRICE_NON_NEGATIVITY_CHECK check (Price > 0));
 
 create table TICKETS (
-     TicketID char(9) not null,
+     TicketID char(10) not null,
      PurchaseDate date not null,
      ValidOn date,
      ValidUntil date,
      RemainingEntrances int unsigned not null,
-     OwnerID char(72) not null,
+     OwnerID char(16) not null,
      constraint IDTICKET_ID primary key (TicketID),
      constraint TICKETID_FORMAT check (TicketID like 'T%'),
      constraint PURCHASE_DATE_CHK check ((ValidOn is not null and PurchaseDate <= ValidOn) or (ValidUntil is not null and PurchaseDate <= ValidUntil)),
@@ -217,7 +217,7 @@ create table TICKETS (
 
 create table validations (
      Date date not null,
-     TicketID char(65) not null,
+     TicketID char(10) not null,
      constraint IDvalidations primary key (Date, TicketID));
 
 
