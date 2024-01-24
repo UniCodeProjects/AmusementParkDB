@@ -52,7 +52,7 @@ public class ExhibitionDetails extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.exhibition_details.ExhibitionID</code>.
      */
-    public final TableField<Record, String> EXHIBITIONID = createField(DSL.name("ExhibitionID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> EXHIBITIONID = createField(DSL.name("ExhibitionID"), SQLDataType.CHAR(11).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.exhibition_details.Date</code>.

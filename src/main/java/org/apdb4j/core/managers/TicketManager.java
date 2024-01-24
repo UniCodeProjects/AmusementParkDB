@@ -2,7 +2,6 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apdb4j.util.HashUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -84,6 +83,7 @@ public final class TicketManager {
 
     /**
      * Performs the SQL query that adds a new ticket.
+     * @param ticketID the identifier of the new ticket.
      * @param validOn if the ticket is a single-day ticket, this parameter represents the date on which the ticket
      *                is valid and can be punched. Otherwise, if the ticket is a season ticket, this parameter
      *                has to be {@code null}.
@@ -96,7 +96,8 @@ public final class TicketManager {
      *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful.
      */
-    public static boolean addNewTicket(final LocalDate validOn,
+    public static boolean addNewTicket(final @NonNull String ticketID,
+                                       final LocalDate validOn,
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
                                        final @NonNull String category,
@@ -107,7 +108,6 @@ public final class TicketManager {
             final String type = Objects.isNull(validOn) ? "Season ticket" : "Single day ticket";
             final LocalDateTime purchaseDateTime = LocalDateTime.now();
             final int year = purchaseDateTime.getYear();
-            final String ticketID = "T" + HashUtils.generate(purchaseDateTime);
             final int initialRemainingEntrances = new QueryBuilder().createConnection()
                     .queryAction(db -> db.select(TICKET_TYPES.DURATION)
                             .from(TICKET_TYPES)
