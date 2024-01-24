@@ -81,7 +81,7 @@ public class Reviews extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.reviews.ParkServiceID</code>.
      */
-    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(11).nullable(false), this, "");
 
     private Reviews(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);

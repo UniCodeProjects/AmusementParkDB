@@ -53,7 +53,7 @@ public class Validations extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.validations.TicketID</code>.
      */
-    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(65).nullable(false), this, "");
+    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(10).nullable(false), this, "");
 
     private Validations(Name alias, Table<Record> aliased) {
         this(alias, aliased, null);
