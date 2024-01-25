@@ -617,16 +617,17 @@ public class StaffScreenController implements Initializable {
             showAlertForUnselectedRowInTableView("ticket");
             return;
         }
+        final TicketTableItem punchedTicket;
+        try {
+            punchedTicket = new TicketControllerImpl().punchTicket(selectedTicket);
+        } catch (final DataAccessException e) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText(e.getMessage())
+                    .show();
+            return;
+        }
         final int index = ticketTableView.getItems().indexOf(selectedTicket);
-        Platform.runLater(() -> {
-            try {
-                ticketTableView.getItems().set(index, new TicketControllerImpl().punchTicket(selectedTicket));
-            } catch (final DataAccessException e) {
-                new AlertBuilder(Alert.AlertType.ERROR)
-                        .setContentText(e.getMessage())
-                        .show();
-            }
-        });
+        Platform.runLater(() -> ticketTableView.getItems().set(index, punchedTicket));
     }
 
     /**

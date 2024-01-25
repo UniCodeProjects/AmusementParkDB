@@ -81,7 +81,9 @@ public class TicketControllerImpl implements TicketController {
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while punching the ticket " + ticket.getTicketID());
         }
-        return ticket;
+        return (TicketTableItem) extractTicketData(searchQuery(TICKETS.TICKETID.eq(ticket.getTicketID()))).stream()
+                .findFirst()
+                .orElseThrow(() -> new DataAccessException("Could not find " + ticket.getTicketID() + " in the database."));
     }
 
     /**
