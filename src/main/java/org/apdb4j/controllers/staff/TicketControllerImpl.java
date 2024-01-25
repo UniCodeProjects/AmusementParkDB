@@ -61,6 +61,7 @@ public class TicketControllerImpl implements TicketController {
         final TicketTableItem ticket = (TicketTableItem) item;
         new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(TICKETS.join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID)))
+                        .set(TICKETS.PURCHASEDATE, ticket.getPurchaseDate())
                         .set(TICKETS.VALIDON, ticket.getValidOn())
                         .set(TICKETS.VALIDUNTIL, ticket.getValidUntil())
                         .set(TICKETS.OWNERID, ticket.getOwnerID())
