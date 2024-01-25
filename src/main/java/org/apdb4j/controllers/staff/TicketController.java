@@ -12,6 +12,13 @@ import java.util.Collection;
 public interface TicketController extends AdministrationController, Filterable {
 
     /**
+     * Punches the given ticket.
+     * @param ticket the ticket
+     * @return the punched ticket
+     */
+    TicketTableItem punchTicket(TicketTableItem ticket);
+
+    /**
      * Filters tickets by purchase date.
      * @param date the date
      * @param <T> the {@code TicketTableItem} type

@@ -73,6 +73,19 @@ public class TicketControllerImpl implements TicketController {
 
     /**
      * {@inheritDoc}
+     * @throws DataAccessException if the query fails
+     */
+    @Override
+    public TicketTableItem punchTicket(final TicketTableItem ticket) {
+        final boolean queryResult = TicketManager.punchTicket(ticket.getTicketID(), "");
+        if (!queryResult) {
+            throw new DataAccessException("Something went wrong while punching the ticket " + ticket.getTicketID());
+        }
+        return ticket;
+    }
+
+    /**
+     * {@inheritDoc}
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
