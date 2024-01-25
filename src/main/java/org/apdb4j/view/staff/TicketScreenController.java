@@ -19,6 +19,8 @@ import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
 import org.jooq.exception.DataAccessException;
 
+import java.time.LocalDate;
+
 /**
  * The FXML controller for the ticket screen.
  */
@@ -108,6 +110,8 @@ public class TicketScreenController extends PopupInitializer {
                 validOnDatePicker.setDisable(!newValue.isEmpty()));
         categoryChoiceBox.getItems().addAll(new TicketTypeControllerImpl().getAllTicketTypeCategories());
         if (!editMode) {
+            purchaseDatePicker.setDisable(true);
+            purchaseDatePicker.setValue(LocalDate.now());
             return;
         }
         purchaseDatePicker.setValue(ticket.getPurchaseDate());
