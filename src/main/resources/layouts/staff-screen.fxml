@@ -303,7 +303,8 @@
                                                     onAction="#onTicketAdd" text="Add"/>
                                             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                                     onAction="#onTicketEdit" text="Edit"/>
-                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Punch">
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketPunch" text="Punch">
                                                 <tooltip>
                                                     <Tooltip text="Punches the selected ticket"/>
                                                 </tooltip>

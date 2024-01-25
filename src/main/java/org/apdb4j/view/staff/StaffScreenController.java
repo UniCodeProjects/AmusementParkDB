@@ -607,6 +607,29 @@ public class StaffScreenController implements Initializable {
     }
 
     /**
+     * Punches the selected ticket.
+     * @param event the event
+     */
+    @FXML
+    void onTicketPunch(final ActionEvent event) {
+        final TicketTableItem selectedTicket = ticketTableView.getSelectionModel().getSelectedItem();
+        if (selectedTicket == null) {
+            showAlertForUnselectedRowInTableView("ticket");
+            return;
+        }
+        final int index = ticketTableView.getItems().indexOf(selectedTicket);
+        Platform.runLater(() -> {
+            try {
+                ticketTableView.getItems().set(index, new TicketControllerImpl().punchTicket(selectedTicket));
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+            }
+        });
+    }
+
+    /**
      * Opens the ticket type form.
      * @param event the event
      */
