@@ -102,6 +102,10 @@ public class TicketScreenController extends PopupInitializer {
      */
     @Override
     protected void customInit() {
+        validOnDatePicker.getEditor().textProperty().addListener((observableValue, oldValue, newValue) ->
+                validUntilDatePicker.setDisable(!newValue.isEmpty()));
+        validUntilDatePicker.getEditor().textProperty().addListener((observableValue, oldValue, newValue) ->
+                validOnDatePicker.setDisable(!newValue.isEmpty()));
         categoryChoiceBox.getItems().addAll(new TicketTypeControllerImpl().getAllTicketTypeCategories());
         if (!editMode) {
             return;
