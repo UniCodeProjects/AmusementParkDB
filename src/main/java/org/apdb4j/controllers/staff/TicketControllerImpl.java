@@ -17,6 +17,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,8 +91,9 @@ public class TicketControllerImpl implements TicketController {
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while punching the ticket " + ticket.getTicketID());
         }
-        return (TicketTableItem) extractTicketData(searchQuery(TICKETS.TICKETID.eq(ticket.getTicketID()))).stream()
-                .findFirst()
+        return extractTicketData(searchQuery(TICKETS.TICKETID.eq(ticket.getTicketID()))).stream()
+                .map(tableItem -> (TicketTableItem) tableItem)
+                .max(Comparator.comparing(TicketTableItem::getValidationDate))
                 .orElseThrow(() -> new DataAccessException("Could not find " + ticket.getTicketID() + " in the database."));
     }
 
