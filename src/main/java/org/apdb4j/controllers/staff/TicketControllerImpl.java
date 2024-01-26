@@ -27,13 +27,19 @@ import static org.apdb4j.db.Tables.*;
  */
 public class TicketControllerImpl implements TicketController {
 
+    private final Condition withMostRecentValidation = VALIDATIONS.DATE.eq(
+            DSL.select(DSL.max(VALIDATIONS.DATE))
+                    .from(VALIDATIONS)
+                    .where(TICKETS.TICKETID.eq(VALIDATIONS.TICKETID))
+    );
+
     /**
      * {@inheritDoc}
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
-        return extractTicketData(searchQuery(DSL.condition(true)));
+        return extractTicketData(searchQuery(withMostRecentValidation));
     }
 
     /**
@@ -95,7 +101,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<TicketTableItem> filterByPurchaseDate(final LocalDate date) {
-        return extractTicketData(searchQuery(TICKETS.PURCHASEDATE.eq(date)));
+        return extractTicketData(searchQuery(withMostRecentValidation.and(TICKETS.PURCHASEDATE.eq(date))));
     }
 
     /**
@@ -104,7 +110,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<TicketTableItem> filterByPunchDate(final LocalDate date) {
-        return extractTicketData(searchQuery(VALIDATIONS.DATE.eq(date)));
+        return extractTicketData(searchQuery(withMostRecentValidation.and(VALIDATIONS.DATE.eq(date))));
     }
 
     /**
@@ -113,7 +119,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<TicketTableItem> filterBySingleDayTicket() {
-        return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("single day")));
+        return extractTicketData(searchQuery(withMostRecentValidation.and(ATTRIBUTIONS.TYPE.containsIgnoreCase("single day"))));
     }
 
     /**
@@ -122,7 +128,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<TicketTableItem> filterBySeasonTicket() {
-        return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("season")));
+        return extractTicketData(searchQuery(withMostRecentValidation.and(ATTRIBUTIONS.TYPE.containsIgnoreCase("season"))));
     }
 
     /**
@@ -140,7 +146,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String ticketId) {
-        return extractTicketData(searchQuery(TICKETS.TICKETID.containsIgnoreCase(ticketId)));
+        return extractTicketData(searchQuery(withMostRecentValidation.and(TICKETS.TICKETID.containsIgnoreCase(ticketId))));
     }
 
     /**
