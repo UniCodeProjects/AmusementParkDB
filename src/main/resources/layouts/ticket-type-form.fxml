@@ -4,6 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.TicketTypeScreenController">
    <center>
       <GridPane fx:id="gridPane" alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
@@ -23,16 +25,24 @@
             <Label text="Price:" GridPane.rowIndex="1" />
             <Label text="Year:" GridPane.rowIndex="2" />
             <Label text="Category:" GridPane.rowIndex="3" />
-            <ChoiceBox fx:id="categoryChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label text="Duration:" GridPane.rowIndex="4" />
+             <ChoiceBox fx:id="typeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" />
+             <Spinner fx:id="priceSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                 <valueFactory>
+                     <SpinnerValueFactory.DoubleSpinnerValueFactory min="0.1" max="1.7976931348623157E308" amountToStepBy="0.1" />
+                 </valueFactory>
+             </Spinner>
+             <Spinner fx:id="yearSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                 <valueFactory>
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="2147483647" />
+                 </valueFactory>
+             </Spinner>
+             <ChoiceBox fx:id="categoryChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+             <Label text="Duration:" GridPane.rowIndex="4" />
              <Spinner fx:id="durationSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
                  <valueFactory>
                      <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="1" />
                  </valueFactory>
              </Spinner>
-            <TextField fx:id="typeField" GridPane.columnIndex="1" />
-            <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <padding>
             <Insets left="120.0" right="120.0" top="20.0" />
