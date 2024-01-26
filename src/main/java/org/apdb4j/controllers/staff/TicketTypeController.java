@@ -29,8 +29,14 @@ public interface TicketTypeController extends AdministrationController, Filterab
 
     /**
      * Returns all the ticket type categories present in the DB.
-     * @return a collection of ticket type categories.
+     * @return a collection of ticket type categories
      */
     Collection<String> getAllTicketTypeCategories();
+
+    /**
+     * Returns all the ticket types present in the DB.
+     * @return a collection of ticket types
+     */
+    Collection<String> getAllTicketTypes();
 
 }

@@ -117,6 +117,22 @@ public class TicketTypeControllerImpl implements TicketTypeController {
 
     /**
      * {@inheritDoc}
+     * @throws DataAccessException if query fails
+     */
+    @Override
+    public Collection<String> getAllTicketTypes() {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(TICKET_TYPES.TYPE)
+                        .from(TICKET_TYPES)
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().stream()
+                .map(record -> record.get(TICKET_TYPES.TYPE))
+                .toList();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
