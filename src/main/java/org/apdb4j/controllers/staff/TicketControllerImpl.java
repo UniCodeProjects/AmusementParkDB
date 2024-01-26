@@ -1,6 +1,7 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apdb4j.core.managers.TicketManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -13,6 +14,7 @@ import org.jooq.impl.DSL;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -121,6 +123,15 @@ public class TicketControllerImpl implements TicketController {
     @Override
     public <T extends TicketTableItem> Collection<T> filterBySeasonTicket() {
         return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("season")));
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws DataAccessException if the query fails
+     */
+    @Override
+    public Collection<ImmutablePair<LocalDate, Integer>> getDayWithMostVisits(final YearMonth month) {
+        return TicketManager.getDayWithMostVisits(month, "");
     }
 
     /**

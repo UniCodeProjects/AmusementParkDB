@@ -1,9 +1,11 @@
 package org.apdb4j.controllers.staff;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apdb4j.controllers.Filterable;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Collection;
 
 /**
@@ -47,5 +49,12 @@ public interface TicketController extends AdministrationController, Filterable {
      * @return a collection of filtered ticket table items
      */
     <T extends TicketTableItem> Collection<T> filterBySeasonTicket();
+
+    /**
+     * Returns the day(s) with the most visits.
+     * @param month the month used to filter the results
+     * @return a collection of {@code [date, visits]} pairs
+     */
+    Collection<ImmutablePair<LocalDate, Integer>> getDayWithMostVisits(YearMonth month);
 
 }

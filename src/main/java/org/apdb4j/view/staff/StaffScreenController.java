@@ -55,6 +55,7 @@ import org.apdb4j.controllers.staff.ReviewController;
 import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
+import org.apdb4j.controllers.staff.TicketController;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
@@ -628,6 +629,36 @@ public class StaffScreenController implements Initializable {
         }
         final int index = ticketTableView.getItems().indexOf(selectedTicket);
         Platform.runLater(() -> ticketTableView.getItems().set(index, punchedTicket));
+    }
+
+    /**
+     * Displays the day(s) with most visits.
+     * @param event the event
+     */
+    @FXML
+    void onMostVisits(final ActionEvent event) {
+        final DatePicker datePicker = new DatePicker();
+        datePicker.setDayCellFactory(d -> new JavaFXUtils.FirstDayDateCell());
+        final TicketController controller = new TicketControllerImpl();
+        new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                .setHeaderText("Choose a month")
+                .setContent(datePicker)
+                .setOnClose(() -> {
+                    final YearMonth month = YearMonth.of(datePicker.getValue().getYear(), datePicker.getValue().getMonth());
+                    final GridPane gridPane = new GridPane();
+                    gridPane.setHgap(20);
+                    gridPane.setVgap(4);
+                    final List<ImmutablePair<LocalDate, Integer>> days = controller.getDayWithMostVisits(month).stream().toList();
+                    for (int i = 0; i < days.size(); i++) {
+                        final ImmutablePair<LocalDate, Integer> pair = days.get(i);
+                        gridPane.addRow(i, new Label(pair.getLeft().toString()), new Label(pair.getRight().toString()));
+                    }
+                    new AlertBuilder(Alert.AlertType.INFORMATION)
+                            .setHeaderText("Days with most visits")
+                            .setContent(gridPane)
+                            .show();
+                })
+                .show();
     }
 
     /**
