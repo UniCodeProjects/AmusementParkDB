@@ -94,7 +94,7 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
-    public <T extends TicketTableItem> Collection<T> filterByPurchaseDate(final LocalDate date) {
+    public Collection<TicketTableItem> filterByPurchaseDate(final LocalDate date) {
         return extractTicketData(searchQuery(TICKETS.PURCHASEDATE.eq(date)));
     }
 
@@ -103,7 +103,7 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
-    public <T extends TicketTableItem> Collection<T> filterByPunchDate(final LocalDate date) {
+    public Collection<TicketTableItem> filterByPunchDate(final LocalDate date) {
         return extractTicketData(searchQuery(VALIDATIONS.DATE.eq(date)));
     }
 
@@ -112,7 +112,7 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
-    public <T extends TicketTableItem> Collection<T> filterBySingleDayTicket() {
+    public Collection<TicketTableItem> filterBySingleDayTicket() {
         return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("single day")));
     }
 
@@ -121,7 +121,7 @@ public class TicketControllerImpl implements TicketController {
      * @throws org.jooq.exception.DataAccessException if the query fails
      */
     @Override
-    public <T extends TicketTableItem> Collection<T> filterBySeasonTicket() {
+    public Collection<TicketTableItem> filterBySeasonTicket() {
         return extractTicketData(searchQuery(ATTRIBUTIONS.TYPE.containsIgnoreCase("season")));
     }
 

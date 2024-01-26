@@ -23,32 +23,28 @@ public interface TicketController extends AdministrationController, Filterable {
     /**
      * Filters tickets by purchase date.
      * @param date the date
-     * @param <T> the {@code TicketTableItem} type
      * @return a collection of filtered ticket table items
      */
-    <T extends TicketTableItem> Collection<T> filterByPurchaseDate(LocalDate date);
+    Collection<TicketTableItem> filterByPurchaseDate(LocalDate date);
 
     /**
      * Filters tickets by punch date.
      * @param date the date
-     * @param <T> the {@code TicketTableItem} type
      * @return a collection of filtered ticket table items
      */
-    <T extends TicketTableItem> Collection<T> filterByPunchDate(LocalDate date);
+    Collection<TicketTableItem> filterByPunchDate(LocalDate date);
 
     /**
      * Filters tickets by the 'single day' ticket type.
-     * @param <T> the {@code TicketTableItem} type
      * @return a collection of filtered ticket table items
      */
-    <T extends TicketTableItem> Collection<T> filterBySingleDayTicket();
+    Collection<TicketTableItem> filterBySingleDayTicket();
 
     /**
      * Filters tickets by the 'season' ticket type.
-     * @param <T> the {@code TicketTableItem} type
      * @return a collection of filtered ticket table items
      */
-    <T extends TicketTableItem> Collection<T> filterBySeasonTicket();
+    Collection<TicketTableItem> filterBySeasonTicket();
 
     /**
      * Returns the day(s) with the most visits.
