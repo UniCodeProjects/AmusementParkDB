@@ -219,22 +219,32 @@ public final class TicketManager {
      * Performs the SQL query that adds a new price list.
      * @param year the year in which the price list will be valid. Its value cannot be a year of the past,
      *             otherwise the query will not be executed.
+     *             If the year is present, nothing will be done, and {@code true} will be returned.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the insertion is successful, {@code false} otherwise.
+     * @return {@code true} if the insertion is successful, or the year is already present, {@code false} otherwise.
      */
     public static boolean addNewPriceList(final int year, final @NonNull String account) {
         if (year < LocalDate.now().getYear()) {
             return false;
-        } else {
-            return new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(PRICE_LISTS)
-                            .values(year)
-                            .onDuplicateKeyIgnore()
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
         }
+        final boolean yearIsPresent = new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(DSL.count())
+                        .from(PRICE_LISTS)
+                        .where(PRICE_LISTS.YEAR.eq(year))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (yearIsPresent) {
+            return true;
+        }
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.insertInto(PRICE_LISTS)
+                        .values(year)
+                        .onDuplicateKeyIgnore()
+                        .execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     private static boolean isGuestId(final @NonNull String personID) {
