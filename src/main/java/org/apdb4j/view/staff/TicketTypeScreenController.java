@@ -1,7 +1,9 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
@@ -9,8 +11,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
+import org.jooq.exception.DataAccessException;
+
+import java.time.Year;
 
 /**
  * The FXML controller for the ticket type screen.
@@ -47,6 +53,60 @@ public class TicketTypeScreenController extends PopupInitializer {
             super.setStage(gridPane.getScene().getWindow());
             super.setRoot(gridPane.getScene().getRoot());
         });
+    }
+
+    /**
+     * Adds/edits the ticket type entry in the DB.
+     * @param event the event
+     */
+    @FXML
+    void onAccept(final ActionEvent event) {
+        final TicketTypeTableItem newTicketType = new TicketTypeTableItem(typeChoiceBox.getValue(),
+                categoryChoiceBox.getValue(),
+                Year.of(yearSpinner.getValue()),
+                priceSpinner.getValue(),
+                durationSpinner.getValue());
+        if (!editMode) {
+            final TicketTypeTableItem added;
+            try {
+                added = controller.addData(newTicketType);
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+                return;
+            }
+            Platform.runLater(() -> tableView.getItems().add(added));
+        } else {
+            final TicketTypeTableItem edited;
+            try {
+                edited = controller.editData(newTicketType);
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+                return;
+            }
+            final int index = tableView.getItems().indexOf(ticketType);
+            Platform.runLater(() -> tableView.getItems().set(index, edited));
+        }
+        gridPane.getScene().getWindow().hide();
+    }
+
+    /**
+     * Disables the duration spinner based on the chosen ticket type.
+     * @param event the event
+     */
+    @FXML
+    void onTypeSelect(final ActionEvent event) {
+        switch (typeChoiceBox.getValue()) {
+            case "single day ticket" -> {
+                durationSpinner.setDisable(true);
+                durationSpinner.getValueFactory().setValue(1);
+            }
+            case "season ticket" -> durationSpinner.setDisable(false);
+            default -> throw new IllegalStateException("Unknown type was chosen.");
+        }
     }
 
     /**
