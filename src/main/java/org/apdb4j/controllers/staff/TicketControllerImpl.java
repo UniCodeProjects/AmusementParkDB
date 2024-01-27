@@ -50,7 +50,8 @@ public class TicketControllerImpl implements TicketController {
     @Override
     public <T extends TableItem> T addData(final T item) {
         final TicketTableItem ticket = (TicketTableItem) item;
-        final boolean queryResult = TicketManager.addNewTicket(ticket.getValidOn(),
+        final boolean queryResult = TicketManager.addNewTicket(ticket.getTicketID(),
+                ticket.getValidOn(),
                 ticket.getValidUntil(),
                 ticket.getOwnerID(),
                 ticket.getCategory(),
