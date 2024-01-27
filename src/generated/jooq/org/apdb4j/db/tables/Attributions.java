@@ -47,7 +47,7 @@ public class Attributions extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.attributions.TicketID</code>.
      */
-    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(65).nullable(false), this, "");
+    public final TableField<Record, String> TICKETID = createField(DSL.name("TicketID"), SQLDataType.CHAR(10).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.attributions.Year</code>.

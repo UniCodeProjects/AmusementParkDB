@@ -2,7 +2,6 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apdb4j.util.HashUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -84,6 +83,7 @@ public final class TicketManager {
 
     /**
      * Performs the SQL query that adds a new ticket.
+     * @param ticketID the identifier of the new ticket.
      * @param validOn if the ticket is a single-day ticket, this parameter represents the date on which the ticket
      *                is valid and can be punched. Otherwise, if the ticket is a season ticket, this parameter
      *                has to be {@code null}.
@@ -96,7 +96,8 @@ public final class TicketManager {
      *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful.
      */
-    public static boolean addNewTicket(final LocalDate validOn,
+    public static boolean addNewTicket(final @NonNull String ticketID,
+                                       final LocalDate validOn,
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
                                        final @NonNull String category,
@@ -107,7 +108,6 @@ public final class TicketManager {
             final String type = Objects.isNull(validOn) ? "Season ticket" : "Single day ticket";
             final LocalDateTime purchaseDateTime = LocalDateTime.now();
             final int year = purchaseDateTime.getYear();
-            final String ticketID = "T" + HashUtils.generate(purchaseDateTime);
             final int initialRemainingEntrances = new QueryBuilder().createConnection()
                     .queryAction(db -> db.select(TICKET_TYPES.DURATION)
                             .from(TICKET_TYPES)
@@ -219,22 +219,32 @@ public final class TicketManager {
      * Performs the SQL query that adds a new price list.
      * @param year the year in which the price list will be valid. Its value cannot be a year of the past,
      *             otherwise the query will not be executed.
+     *             If the year is present, nothing will be done, and {@code true} will be returned.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the insertion is successful, {@code false} otherwise.
+     * @return {@code true} if the insertion is successful, or the year is already present, {@code false} otherwise.
      */
     public static boolean addNewPriceList(final int year, final @NonNull String account) {
         if (year < LocalDate.now().getYear()) {
             return false;
-        } else {
-            return new QueryBuilder().createConnection()
-                    .queryAction(db -> db.insertInto(PRICE_LISTS)
-                            .values(year)
-                            .onDuplicateKeyIgnore()
-                            .execute())
-                    .closeConnection()
-                    .getResultAsInt() == 1;
         }
+        final boolean yearIsPresent = new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectDistinct(DSL.count())
+                        .from(PRICE_LISTS)
+                        .where(PRICE_LISTS.YEAR.eq(year))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (yearIsPresent) {
+            return true;
+        }
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.insertInto(PRICE_LISTS)
+                        .values(year)
+                        .onDuplicateKeyIgnore()
+                        .execute())
+                .closeConnection()
+                .getResultAsInt() == 1;
     }
 
     private static boolean isGuestId(final @NonNull String personID) {

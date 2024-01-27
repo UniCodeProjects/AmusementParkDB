@@ -38,11 +38,11 @@ public final class ContractManager {
      * @return {@code true} on successful tuple insertion
      */
     public static boolean signNewContract(final @NonNull String contractID,
-                                       final @NonNull String employeeNID, final @NonNull String employerNID,
-                                       final @NonNull LocalDate subscriptionDate,
-                                       final @NonNull LocalDate beginDate, final LocalDate endDate,
-                                       final double salary,
-                                       final @NonNull String account) throws AccessDeniedException {
+                                          final @NonNull String employeeNID, final @NonNull String employerNID,
+                                          final @NonNull LocalDate subscriptionDate,
+                                          final @NonNull LocalDate beginDate, final LocalDate endDate,
+                                          final double salary,
+                                          final @NonNull String account) throws AccessDeniedException {
         final Result<Record> existingBeginDate = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.select(CONTRACTS.BEGINDATE)

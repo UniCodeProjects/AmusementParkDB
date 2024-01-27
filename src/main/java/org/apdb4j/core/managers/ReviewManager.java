@@ -1,7 +1,6 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.util.HashUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
@@ -22,6 +21,7 @@ public final class ReviewManager {
 
     /**
      * Performs the SQL query that adds a review for the provided park service.
+     * @param reviewID the identifier of the new review.
      * @param parkServiceID the park service identifier. If the value of this parameter is not the identifier of a park service,
      *                      the query will not be executed.
      * @param rating the rating of the review.
@@ -30,7 +30,10 @@ public final class ReviewManager {
      *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the review is added successfully.
      */
-    public static boolean addReview(final @NonNull String parkServiceID, final int rating, final String description,
+    public static boolean addReview(final @NonNull String reviewID,
+                                    final @NonNull String parkServiceID,
+                                    final int rating,
+                                    final String description,
                                     final @NonNull String account) {
         final LocalDate currentDate = LocalDate.now();
         final LocalTime currentTime = LocalTime.now();
@@ -39,7 +42,7 @@ public final class ReviewManager {
                     db.transaction(configuration -> {
                         final var dslContext = configuration.dsl();
                         dslContext.insertInto(REVIEWS)
-                                .values(HashUtils.generate(currentDate, currentTime),
+                                .values(reviewID,
                                         rating,
                                         currentDate,
                                         currentTime,

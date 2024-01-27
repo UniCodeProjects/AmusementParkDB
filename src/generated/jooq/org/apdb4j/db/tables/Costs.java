@@ -50,7 +50,7 @@ public class Costs extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.costs.ShopID</code>.
      */
-    public final TableField<Record, String> SHOPID = createField(DSL.name("ShopID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> SHOPID = createField(DSL.name("ShopID"), SQLDataType.CHAR(11).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.costs.Revenue</code>.
