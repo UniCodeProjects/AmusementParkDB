@@ -10,6 +10,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
@@ -43,7 +44,7 @@ public class TicketTypeScreenController extends PopupInitializer {
     private static TicketTypeTableItem ticketType;
     @Setter
     private static TableView<TicketTypeTableItem> tableView;
-    private final TicketTypeControllerImpl controller = new TicketTypeControllerImpl();
+    private final TicketTypeController controller = new TicketTypeControllerImpl();
 
     /**
      * Default constructor.
@@ -119,6 +120,10 @@ public class TicketTypeScreenController extends PopupInitializer {
         if (!editMode) {
             return;
         }
+        typeChoiceBox.setDisable(true);
+        yearSpinner.setDisable(true);
+        categoryChoiceBox.setDisable(true);
+        durationSpinner.setDisable(true);
         typeChoiceBox.setValue(ticketType.getType());
         priceSpinner.getValueFactory().setValue(ticketType.getPrice());
         yearSpinner.getValueFactory().setValue(ticketType.getYear().getValue());
