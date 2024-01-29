@@ -1,7 +1,6 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
-import org.apdb4j.controllers.Filterable;
 import org.apdb4j.core.managers.ContractManager;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
@@ -20,9 +19,9 @@ import java.util.Optional;
 import static org.apdb4j.db.Tables.CONTRACTS;
 
 /**
- * An administration controller specifically used for contracts.
+ * An implementation of a contract controller.
  */
-public class ContractControllerImpl implements AdministrationController, Filterable {
+public class ContractControllerImpl implements ContractController {
 
     private String errorMessage;
 

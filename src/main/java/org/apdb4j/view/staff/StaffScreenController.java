@@ -41,6 +41,7 @@ import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.controllers.staff.ContractController;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeController;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
@@ -107,7 +108,7 @@ public class StaffScreenController implements Initializable {
     private static final MaintenanceController MAINTENANCE_CONTROLLER = new MaintenanceControllerImpl();
     private static final String TOOLTIP_STRING = "Press BACKSPACE or DELETE to clear date";
     private final EmployeeController employeeController = new EmployeeControllerImpl();
-    private final ContractControllerImpl contractController = new ContractControllerImpl();
+    private final ContractController contractController = new ContractControllerImpl();
     private final TicketController ticketController = new TicketControllerImpl();
     private final TicketTypeController ticketTypeController = new TicketTypeControllerImpl();
     private final ShopController shopController = new ShopControllerImpl();
