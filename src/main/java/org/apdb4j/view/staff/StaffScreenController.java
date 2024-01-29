@@ -62,6 +62,7 @@ import org.apdb4j.controllers.staff.TicketController;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
+import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -95,6 +96,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
+
+import static org.apdb4j.db.Tables.MONTHLY_RECAPS;
 
 /**
  * The FXML controller for the staff UI.
@@ -1430,13 +1433,13 @@ public class StaffScreenController implements Initializable {
         shopsNumField.setText(String.valueOf(overviewController.getShopsAmount()));
         employeesNumField.setText(String.valueOf(overviewController.getEmployeesAmount()));
         // Adding monthly report.
-        if (LocalDate.now().getDayOfMonth() == 1) {
+        if (monthlyRecapIsNeeded()) {
             try {
                 new ExpensesControllerImpl().addRecapForPreviousMonth();
             } catch (final IllegalStateException e) {
-                new AlertBuilder(Alert.AlertType.INFORMATION)
+                Platform.runLater(() -> new AlertBuilder(Alert.AlertType.INFORMATION)
                         .setContentText(e.getMessage())
-                        .show();
+                        .show());
             }
         }
         // Populating X axis with months.
@@ -1563,6 +1566,16 @@ public class StaffScreenController implements Initializable {
             }
         }));
         reviewsTableView.getItems().addAll(reviewController.getData());
+    }
+
+    private boolean monthlyRecapIsNeeded() {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(MONTHLY_RECAPS)
+                        .where(MONTHLY_RECAPS.DATE.eq(LocalDate.now().minusMonths(1)))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 0;
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
