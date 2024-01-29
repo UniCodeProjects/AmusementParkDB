@@ -42,6 +42,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
+import org.apdb4j.controllers.staff.EmployeeController;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
@@ -50,13 +51,16 @@ import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.controllers.staff.OverviewController;
 import org.apdb4j.controllers.staff.OverviewControllerImpl;
+import org.apdb4j.controllers.staff.PictureController;
 import org.apdb4j.controllers.staff.PictureControllerImpl;
 import org.apdb4j.controllers.staff.ReviewController;
 import org.apdb4j.controllers.staff.ReviewControllerImpl;
 import org.apdb4j.controllers.staff.RideControllerImpl;
+import org.apdb4j.controllers.staff.ShopController;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.controllers.staff.TicketController;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
+import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
@@ -99,6 +103,13 @@ public class StaffScreenController implements Initializable {
 
     private static final MaintenanceController MAINTENANCE_CONTROLLER = new MaintenanceControllerImpl();
     private static final String TOOLTIP_STRING = "Press BACKSPACE or DELETE to clear date";
+    private final EmployeeController employeeController = new EmployeeControllerImpl();
+    private final ContractControllerImpl contractController = new ContractControllerImpl();
+    private final TicketController ticketController = new TicketControllerImpl();
+    private final TicketTypeController ticketTypeController = new TicketTypeControllerImpl();
+    private final ShopController shopController = new ShopControllerImpl();
+    private final PictureController pictureController = new PictureControllerImpl();
+    private final ReviewController reviewController = new ReviewControllerImpl();
     @FXML
     private TextField parkNameField;
     @FXML
@@ -350,14 +361,13 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (employeeSearchField.getText().isBlank() || employeeSearchField.getText() == null) {
-            // TODO: Put controller as field.
-            final Collection<EmployeeTableItem> allItems = new EmployeeControllerImpl().getData();
+            final Collection<EmployeeTableItem> allItems = employeeController.getData();
             Platform.runLater(() -> {
                 employeeTableView.getItems().clear();
                 employeeTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<EmployeeTableItem> filtered = new EmployeeControllerImpl().filter(employeeSearchField.getText());
+            final Collection<EmployeeTableItem> filtered = employeeController.filter(employeeSearchField.getText());
             Platform.runLater(() -> {
                 employeeTableView.getItems().clear();
                 employeeTableView.getItems().addAll(filtered);
@@ -405,10 +415,10 @@ public class StaffScreenController implements Initializable {
             return;
         }
         Platform.runLater(() -> {
-            employeeTableView.getItems().remove(new EmployeeControllerImpl().fire(selectedEmployee));
+            employeeTableView.getItems().remove(employeeController.fire(selectedEmployee));
             // Refreshing contracts table view.
             contractsTableView.getItems().clear();
-            contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
+            contractsTableView.getItems().addAll(contractController.getData());
         });
     }
 
@@ -431,14 +441,13 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (contractSearchField.getText().isBlank() || contractSearchField.getText() == null) {
-            // TODO: Put controller as field.
-            final Collection<ContractTableItem> allItems = new ContractControllerImpl().getData();
+            final Collection<ContractTableItem> allItems = contractController.getData();
             Platform.runLater(() -> {
                 contractsTableView.getItems().clear();
                 contractsTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<ContractTableItem> filtered = new ContractControllerImpl().filter(contractSearchField.getText());
+            final Collection<ContractTableItem> filtered = contractController.filter(contractSearchField.getText());
             Platform.runLater(() -> {
                 contractsTableView.getItems().clear();
                 contractsTableView.getItems().addAll(filtered);
@@ -482,14 +491,13 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (ticketSearchField.getText().isBlank() || ticketSearchField.getText() == null) {
-            // TODO: Put controller as field.
-            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            final Collection<TicketTableItem> allItems = ticketController.getData();
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
                 ticketTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<TicketTableItem> filtered = new TicketControllerImpl().filter(ticketSearchField.getText());
+            final Collection<TicketTableItem> filtered = ticketController.filter(ticketSearchField.getText());
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
                 ticketTableView.getItems().addAll(filtered);
@@ -506,13 +514,13 @@ public class StaffScreenController implements Initializable {
         final String datePickerText = Objects.requireNonNull(ticketPurchaseDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
             // TODO: Extract method.
-            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            final Collection<TicketTableItem> allItems = ticketController.getData();
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
                 ticketTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<TicketTableItem> filtered = new TicketControllerImpl()
+            final Collection<TicketTableItem> filtered = ticketController
                     .filterByPurchaseDate(ticketPurchaseDateFilter.getValue());
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
@@ -531,13 +539,13 @@ public class StaffScreenController implements Initializable {
         final String datePickerText = Objects.requireNonNull(ticketPunchDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
             // TODO: Extract method.
-            final Collection<TicketTableItem> allItems = new TicketControllerImpl().getData();
+            final Collection<TicketTableItem> allItems = ticketController.getData();
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
                 ticketTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<TicketTableItem> filtered = new TicketControllerImpl()
+            final Collection<TicketTableItem> filtered = ticketController
                     .filterByPunchDate(ticketPunchDateFilter.getValue());
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
@@ -557,7 +565,7 @@ public class StaffScreenController implements Initializable {
         if (Objects.nonNull(selectedToggle)) {
             selectedToggle.setSelected(false);
             ticketTableView.getItems().clear();
-            Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().getData()));
+            Platform.runLater(() -> ticketTableView.getItems().addAll(ticketController.getData()));
         }
     }
 
@@ -568,7 +576,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onTicketSingleDayFilter(final ActionEvent event) {
         ticketTableView.getItems().clear();
-        Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().filterBySingleDayTicket()));
+        Platform.runLater(() -> ticketTableView.getItems().addAll(ticketController.filterBySingleDayTicket()));
     }
 
     /**
@@ -578,7 +586,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onTicketSeasonFilter(final ActionEvent event) {
         ticketTableView.getItems().clear();
-        Platform.runLater(() -> ticketTableView.getItems().addAll(new TicketControllerImpl().filterBySeasonTicket()));
+        Platform.runLater(() -> ticketTableView.getItems().addAll(ticketController.filterBySeasonTicket()));
     }
 
     /**
@@ -620,7 +628,7 @@ public class StaffScreenController implements Initializable {
         }
         final TicketTableItem punchedTicket;
         try {
-            punchedTicket = new TicketControllerImpl().punchTicket(selectedTicket);
+            punchedTicket = ticketController.punchTicket(selectedTicket);
         } catch (final DataAccessException e) {
             new AlertBuilder(Alert.AlertType.ERROR)
                     .setContentText(e.getMessage())
@@ -639,7 +647,7 @@ public class StaffScreenController implements Initializable {
     void onMostVisits(final ActionEvent event) {
         final DatePicker datePicker = new DatePicker();
         datePicker.setDayCellFactory(d -> new JavaFXUtils.FirstDayDateCell());
-        final TicketController controller = new TicketControllerImpl();
+        final TicketController controller = ticketController;
         new AlertBuilder(Alert.AlertType.CONFIRMATION)
                 .setHeaderText("Choose a month")
                 .setContent(datePicker)
@@ -697,15 +705,13 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (ticketTypeSearchField.getText().isBlank() || ticketTypeSearchField.getText() == null) {
-            // TODO: Put controller as field.
-            final Collection<TicketTypeTableItem> allItems = new TicketTypeControllerImpl().getData();
+            final Collection<TicketTypeTableItem> allItems = ticketTypeController.getData();
             Platform.runLater(() -> {
                 ticketTypeTableView.getItems().clear();
                 ticketTypeTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<TicketTypeTableItem> filtered = new TicketTypeControllerImpl()
-                    .filter(ticketTypeSearchField.getText());
+            final Collection<TicketTypeTableItem> filtered = ticketTypeController.filter(ticketTypeSearchField.getText());
             Platform.runLater(() -> {
                 ticketTypeTableView.getItems().clear();
                 ticketTypeTableView.getItems().addAll(filtered);
@@ -720,8 +726,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onTicketTypeYearFilter(final KeyEvent keyEvent) {
         if (ticketTypeYearFilter.getText().isBlank() || ticketTypeYearFilter.getText() == null) {
-            // TODO: Put controller as field.
-            final Collection<TicketTypeTableItem> allItems = new TicketTypeControllerImpl().getData();
+            final Collection<TicketTypeTableItem> allItems = ticketTypeController.getData();
             Platform.runLater(() -> {
                 ticketTypeTableView.getItems().clear();
                 ticketTypeTableView.getItems().addAll(allItems);
@@ -740,7 +745,7 @@ public class StaffScreenController implements Initializable {
                     .show();
             return;
         }
-        final Collection<TicketTypeTableItem> filtered = new TicketTypeControllerImpl()
+        final Collection<TicketTypeTableItem> filtered = ticketTypeController
                 .filterByYear(Year.of(isoYear));
         Platform.runLater(() -> {
             ticketTypeTableView.getItems().clear();
@@ -758,10 +763,10 @@ public class StaffScreenController implements Initializable {
         final var ticketTypeItems = ticketTypeTableView.getItems();
         ticketTypeItems.clear();
         if (chosenCategory == null) {
-            Platform.runLater(() -> ticketTypeItems.addAll(new TicketTypeControllerImpl().getData()));
+            Platform.runLater(() -> ticketTypeItems.addAll(ticketTypeController.getData()));
             return;
         }
-        Platform.runLater(() -> ticketTypeItems.addAll(new TicketTypeControllerImpl().filterByCategory(chosenCategory)));
+        Platform.runLater(() -> ticketTypeItems.addAll(ticketTypeController.filterByCategory(chosenCategory)));
     }
 
     /**
@@ -1094,14 +1099,13 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (shopSearchField.getText().isBlank() || shopSearchField.getText() == null) {
-            // TODO: Put controller as field. Extract method.
-            final Collection<ShopTableItem> allItems = new ShopControllerImpl().getData();
+            final Collection<ShopTableItem> allItems = shopController.getData();
             Platform.runLater(() -> {
                 shopsTableView.getItems().clear();
                 shopsTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<ShopTableItem> filtered = new ShopControllerImpl().filter(shopSearchField.getText());
+            final Collection<ShopTableItem> filtered = shopController.filter(shopSearchField.getText());
             Platform.runLater(() -> {
                 shopsTableView.getItems().clear();
                 shopsTableView.getItems().addAll(filtered);
@@ -1254,14 +1258,14 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (picturesSearchField.getText().isBlank() || picturesSearchField.getText() == null) {
-            // TODO: make controller into field, extract method.
-            final Collection<PictureTableItem> allItems = new PictureControllerImpl().getData();
+            // TODO: Extract method.
+            final Collection<PictureTableItem> allItems = pictureController.getData();
             Platform.runLater(() -> {
                 picturesTableView.getItems().clear();
                 picturesTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<PictureTableItem> filtered = new PictureControllerImpl().filter(picturesSearchField.getText());
+            final Collection<PictureTableItem> filtered = pictureController.filter(picturesSearchField.getText());
             Platform.runLater(() -> {
                 picturesTableView.getItems().clear();
                 picturesTableView.getItems().addAll(filtered);
@@ -1313,7 +1317,7 @@ public class StaffScreenController implements Initializable {
                 .setContentText("Press OK to delete this picture from the database.")
                 .setOnClose(() -> Platform.runLater(() -> {
                     try {
-                        picturesTableView.getItems().remove(new PictureControllerImpl().removePicture(selectedPicture));
+                        picturesTableView.getItems().remove(pictureController.removePicture(selectedPicture));
                     } catch (final DataAccessException e) {
                         new AlertBuilder(Alert.AlertType.ERROR)
                                 .setContentText(e.getMessage())
@@ -1333,14 +1337,14 @@ public class StaffScreenController implements Initializable {
             return;
         }
         if (reviewSearchField.getText().isBlank() || reviewSearchField.getText() == null) {
-            // TODO: make controller into field, extract method.
-            final Collection<ReviewTableItem> allItems = new ReviewControllerImpl().getData();
+            // TODO: Extract method.
+            final Collection<ReviewTableItem> allItems = reviewController.getData();
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
                 reviewsTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<ReviewTableItem> filtered = new ReviewControllerImpl().filter(reviewSearchField.getText());
+            final Collection<ReviewTableItem> filtered = reviewController.filter(reviewSearchField.getText());
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
                 reviewsTableView.getItems().addAll(filtered);
@@ -1357,13 +1361,13 @@ public class StaffScreenController implements Initializable {
         final String datePickerText = Objects.requireNonNull(reviewDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
             // TODO: Extract method.
-            final Collection<ReviewTableItem> allItems = new ReviewControllerImpl().getData();
+            final Collection<ReviewTableItem> allItems = reviewController.getData();
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
                 reviewsTableView.getItems().addAll(allItems);
             });
         } else {
-            final Collection<ReviewTableItem> filtered = new ReviewControllerImpl()
+            final Collection<ReviewTableItem> filtered = reviewController
                     .filterByDate(reviewDateFilter.getValue());
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
@@ -1380,7 +1384,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onReviewRanged(final ActionEvent event) {
         final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
-        final ReviewController controller = new ReviewControllerImpl();
+        final ReviewController controller = reviewController;
         tableItems.clear();
         if (rangedCheckBox.isSelected()) {
             tableItems.addAll(controller.filterByRatingRange(Math.toIntExact(Math.round(ratingFilterSlider.getValue()))));
@@ -1397,7 +1401,7 @@ public class StaffScreenController implements Initializable {
     void onReviewServiceFilter(final ActionEvent event) {
         final RadioButton selected = (RadioButton) reviewFilterToggle.getSelectedToggle();
         final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
-        final ReviewController controller = new ReviewControllerImpl();
+        final ReviewController controller = reviewController;
         final Consumer<String> handleFiltering = label -> {
             tableItems.clear();
             switch (label.toLowerCase(Locale.getDefault())) {
@@ -1462,19 +1466,19 @@ public class StaffScreenController implements Initializable {
         onRideBtnClick(null);
         // Populating the table views.
         EmployeeScreenController.setTableView(employeeTableView);
-        employeeTableView.getItems().addAll(new EmployeeControllerImpl().getData());
+        employeeTableView.getItems().addAll(employeeController.getData());
         EmployeeControllerImpl.setContractTableView(contractsTableView);
 
         TicketScreenController.setTableView(ticketTableView);
         TicketTypeScreenController.setTableView(ticketTypeTableView);
-        ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+        ticketTableView.getItems().addAll(ticketController.getData());
         ticketPurchaseDateFilter.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.BACK_SPACE) || event.getCode().equals(KeyCode.DELETE)) {
                 ticketPurchaseDateFilter.getEditor().clear();
                 ticketPurchaseDateFilter.setTooltip(null);
                 ticketPurchaseDateFilter.setValue(null);
                 ticketTableView.getItems().clear();
-                ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+                ticketTableView.getItems().addAll(ticketController.getData());
             }
         });
         ticketPunchDateFilter.setOnKeyReleased(event -> {
@@ -1483,11 +1487,11 @@ public class StaffScreenController implements Initializable {
                 ticketPunchDateFilter.setTooltip(null);
                 ticketPunchDateFilter.setValue(null);
                 ticketTableView.getItems().clear();
-                ticketTableView.getItems().addAll(new TicketControllerImpl().getData());
+                ticketTableView.getItems().addAll(ticketController.getData());
             }
         });
-        ticketTypeTableView.getItems().addAll(new TicketTypeControllerImpl().getData());
-        ticketTypeCategoryFilter.getItems().addAll(new TicketTypeControllerImpl().getAllTicketTypeCategories());
+        ticketTypeTableView.getItems().addAll(ticketTypeController.getData());
+        ticketTypeCategoryFilter.getItems().addAll(ticketTypeController.getAllTicketTypeCategories());
         ticketTypeCategoryFilter.setOnKeyReleased(keyEvent -> {
             if (!keyEvent.getCode().equals(KeyCode.BACK_SPACE) && !keyEvent.getCode().equals(KeyCode.DELETE)) {
                 return;
@@ -1495,7 +1499,7 @@ public class StaffScreenController implements Initializable {
             ticketTypeCategoryFilter.setValue(null);
         });
 
-        contractsTableView.getItems().addAll(new ContractControllerImpl().getData());
+        contractsTableView.getItems().addAll(contractController.getData());
         ContractScreenController.setContractTableView(contractsTableView);
         ContractScreenController.setEmployeeTableView(employeeTableView);
 
@@ -1503,7 +1507,7 @@ public class StaffScreenController implements Initializable {
         RideScreenController.setTableView(attractionsTableView);
         ExhibitionScreenController.setTableView(attractionsTableView);
 
-        shopsTableView.getItems().addAll(new ShopControllerImpl().getData());
+        shopsTableView.getItems().addAll(shopController.getData());
         ShopScreenController.setTableView(shopsTableView);
 
         // Clears the maintenance search date picker field.
@@ -1519,7 +1523,7 @@ public class StaffScreenController implements Initializable {
         maintenanceTableView.getItems().addAll(MAINTENANCE_CONTROLLER.getData());
         MaintenanceScreenController.setTableView(maintenanceTableView);
 
-        picturesTableView.getItems().addAll(new PictureControllerImpl().getData());
+        picturesTableView.getItems().addAll(pictureController.getData());
         PictureScreenController.setTableView(picturesTableView);
 
         // Clears the review search date picker field.
@@ -1529,7 +1533,7 @@ public class StaffScreenController implements Initializable {
                 reviewDateFilter.setTooltip(null);
                 reviewDateFilter.setValue(null);
                 reviewsTableView.getItems().clear();
-                reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
+                reviewsTableView.getItems().addAll(reviewController.getData());
             }
         });
         ratingFilterSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -1542,7 +1546,7 @@ public class StaffScreenController implements Initializable {
             ratingFilterSlider.setValue(newValue.intValue());
             if (oldValue.intValue() != newValue.intValue()) {
                 final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
-                final ReviewController controller = new ReviewControllerImpl();
+                final ReviewController controller = reviewController;
                 tableItems.clear();
                 if (rangedCheckBox.isSelected()) {
                     tableItems.addAll(controller.filterByRatingRange(newValue.intValue()));
@@ -1555,10 +1559,10 @@ public class StaffScreenController implements Initializable {
             if (keyEvent.getCode().equals(KeyCode.BACK_SPACE) || keyEvent.getCode().equals(KeyCode.DELETE)) {
                 toggle.setSelected(false);
                 reviewsTableView.getItems().clear();
-                reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
+                reviewsTableView.getItems().addAll(reviewController.getData());
             }
         }));
-        reviewsTableView.getItems().addAll(new ReviewControllerImpl().getData());
+        reviewsTableView.getItems().addAll(reviewController.getData());
     }
 
     private static void addListenersToDatePicker(final DatePicker datePicker1,
