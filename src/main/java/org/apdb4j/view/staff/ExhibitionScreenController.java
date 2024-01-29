@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
@@ -86,8 +87,9 @@ public class ExhibitionScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        // TODO: use id generator.
-        final ExhibitionTableItem exhibitionItem = new ExhibitionTableItem(editMode ? exhibition.getId() : "EX-000",
+        final ExhibitionTableItem exhibitionItem = new ExhibitionTableItem(editMode
+                ? exhibition.getId()
+                : IDGenerationUtils.generateExhibitionID(),
                 nameField.getText(),
                 typeComboBox.getValue(),
                 descriptionTextArea.getText(),

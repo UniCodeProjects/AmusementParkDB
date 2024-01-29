@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.RideController;
 import org.apdb4j.controllers.staff.RideControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
@@ -96,7 +97,7 @@ public class RideScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        final RideTableItem rideItem = new RideTableItem(editMode ? ride.getId() : "RI-000",    // TODO: use ID generator.
+        final RideTableItem rideItem = new RideTableItem(editMode ? ride.getId() : IDGenerationUtils.generateRideID(),
                 nameField.getText(),
                 LocalTime.of(openingHourSpinner.getValue(), openingMinuteSpinner.getValue()),
                 LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
