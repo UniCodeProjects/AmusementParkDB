@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import lombok.NonNull;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
@@ -104,7 +105,7 @@ public class EmployeeScreenController extends PopupInitializer {
             return;
         }
         final var newEmployee = new EmployeeTableItem(
-                "E-000",    // TODO: use the ID generator.
+                IDGenerationUtils.generatePersonID(employee.getName(), employee.getSurname(), employee.getEmail()),
                 nationalIDField.getText(),
                 nameField.getText(),
                 surnameField.getText(),

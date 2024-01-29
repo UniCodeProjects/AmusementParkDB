@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.TicketController;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
@@ -63,7 +64,9 @@ public class TicketScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        final TicketTableItem newTicket = new TicketTableItem(editMode ? ticket.getTicketID() : "T-000",    // TODO: use id gen.
+        final TicketTableItem newTicket = new TicketTableItem(editMode
+                ? ticket.getTicketID()
+                : IDGenerationUtils.generateTicketID(),
                 purchaseDatePicker.getValue(),
                 validOnDatePicker.getValue(),
                 validUntilDatePicker.getValue(),

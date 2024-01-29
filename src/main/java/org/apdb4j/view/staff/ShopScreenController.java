@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.ShopController;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
@@ -82,7 +83,7 @@ public class ShopScreenController extends PopupInitializer {
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        final ShopTableItem shopItem = new ShopTableItem(editMode ? shop.getId() : "SH-00",    // TODO: use id generator.
+        final ShopTableItem shopItem = new ShopTableItem(editMode ? shop.getId() : IDGenerationUtils.generateShopID(),
                 nameField.getText(),
                 LocalTime.of(openingHourSpinner.getValue(), openingMinuteSpinner.getValue()),
                 LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
