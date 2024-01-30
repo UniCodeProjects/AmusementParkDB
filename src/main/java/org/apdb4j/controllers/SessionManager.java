@@ -36,6 +36,12 @@ public final class SessionManager {
         }
     }
 
-    private record SessionInfo(String username, String personID) {
+    /**
+     * Record that keeps track of the username of the logged account and of the person ID
+     * of the owner of said account.
+     * @param username the username of the account that is logged in.
+     * @param personID the identifier of the owner of the logged account.
+     */
+    public record SessionInfo(String username, String personID) {
     }
 }
