@@ -148,9 +148,12 @@ public class ExhibitionScreenController extends PopupInitializer {
         nameField.setText(exhibition.getName());
         typeComboBox.setValue(exhibition.getType());
         descriptionTextArea.setText(exhibition.getDescription());
+        datePicker.setDisable(true);
         datePicker.setValue(exhibition.getDate());
         if (Objects.nonNull(exhibition.getTime())) {
+            timeHourSpinner.setDisable(true);
             timeHourSpinner.getValueFactory().setValue(exhibition.getTime().getHour());
+            timeMinuteSpinner.setDisable(true);
             timeMinuteSpinner.getValueFactory().setValue(exhibition.getTime().getMinute());
         }
         maxSeatsSpinner.getValueFactory().setValue(exhibition.getMaxSeats());

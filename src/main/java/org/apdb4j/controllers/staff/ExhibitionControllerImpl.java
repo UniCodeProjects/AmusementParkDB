@@ -61,30 +61,14 @@ public class ExhibitionControllerImpl implements ExhibitionController {
     @Override
     public <T extends TableItem> T editData(final T item) {
         final ExhibitionTableItem exhibition = (ExhibitionTableItem) item;
-        // FIXME: duplicate key (NAME).
-        if (exhibition.getDate() == null || exhibition.getTime() == null) {
-            new QueryBuilder().createConnection()
-                    .queryAction(db -> db.update(PARK_SERVICES
-                                    .join(EXHIBITION_DETAILS)
-                                    .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
-                            .set(PARK_SERVICES.NAME, exhibition.getName())
-                            .set(PARK_SERVICES.TYPE, exhibition.getType())
-                            .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
-                            .execute())
-                    .closeConnection();
-        } else {
-            new QueryBuilder().createConnection()
-                    .queryAction(db -> db.update(PARK_SERVICES
-                                    .join(EXHIBITION_DETAILS)
-                                    .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
-                            .set(PARK_SERVICES.NAME, exhibition.getName())
-                            .set(PARK_SERVICES.TYPE, exhibition.getType())
-                            .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
-                            .set(EXHIBITION_DETAILS.DATE, exhibition.getDate())
-                            .set(EXHIBITION_DETAILS.TIME, exhibition.getTime())
-                            .execute())
-                    .closeConnection();
-        }
+        new QueryBuilder().createConnection()
+                .queryAction(db -> db.update(PARK_SERVICES)
+                        .set(PARK_SERVICES.NAME, exhibition.getName())
+                        .set(PARK_SERVICES.TYPE, exhibition.getType())
+                        .set(PARK_SERVICES.DESCRIPTION, exhibition.getDescription())
+                        .where(PARK_SERVICES.PARKSERVICEID.eq(exhibition.getId()))
+                        .execute())
+                .closeConnection();
         return item;
     }
 
