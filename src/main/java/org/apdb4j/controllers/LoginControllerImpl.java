@@ -37,7 +37,7 @@ public class LoginControllerImpl implements LoginController {
                 .getResultAsRecords();
         // Checking if got only one result, and it is unique (accounts are unique).
         if (resultCount.size() == 1 && resultCount.get(0).get(0, Integer.class) == 1) {
-            SessionManager.getSession().login(username);
+            SessionManager.getSessionManager().login(username);
             return true;
         }
         errorMessage = "No account found, please check and try again.";
@@ -57,7 +57,7 @@ public class LoginControllerImpl implements LoginController {
             return false;
         }
         if (queryResult) {
-            SessionManager.getSession().login(username);
+            SessionManager.getSessionManager().login(username);
         }
         return queryResult;
     }
