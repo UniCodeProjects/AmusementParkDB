@@ -109,6 +109,7 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
     private void addReviewInListView(final Record review) {
         final VBox reviewContainer = new VBox();
         reviews.getItems().add(reviewContainer);
+        // TODO: change the email with the username
         reviewContainer.getChildren().add(new Label("Author: " + review.get(REVIEWS.ACCOUNT)));
         final HBox ratingAndDate = new HBox();
         reviewContainer.getChildren().add(ratingAndDate);
