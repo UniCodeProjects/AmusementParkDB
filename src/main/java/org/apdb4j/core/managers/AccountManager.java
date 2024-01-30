@@ -171,6 +171,50 @@ public final class AccountManager {
                 .getResultAsInt() == 1;
     }
 
+    /**
+     * Retrieves the "person ID" of the owner of the account with the provided {@code username}.<br/>
+     * The "person ID" is {@link org.apdb4j.db.tables.Guests#GUESTID} if the owner of the account is a guest<br/>
+     * or {@link org.apdb4j.db.tables.Staff#STAFFID} if the owner of the account is a staff member.
+     *
+     * @param username the username of an account.
+     * @return the identifier of the owner of the account with the provided username.
+     */
+    public static @NonNull String getPersonID(final @NonNull String username) {
+        final QueryBuilder queryBuilder = new QueryBuilder();
+        final boolean isUsernameValid = queryBuilder
+                .createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (!isUsernameValid) {
+            throw new IllegalArgumentException("There is no account with the provided username");
+        }
+        final String accountEmail = queryBuilder
+                .createConnection()
+                .queryAction(db -> db.select(ACCOUNTS.EMAIL)
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().get(0).get(ACCOUNTS.EMAIL);
+        final var personIDField = isGuest(accountEmail) ? GUESTS.GUESTID : STAFF.STAFFID;
+        final var table = isGuest(accountEmail) ? GUESTS : STAFF;
+        final var joinField = isGuest(accountEmail) ? GUESTS.EMAIL : STAFF.EMAIL;
+        return queryBuilder
+                .createConnection()
+                .queryAction(db -> db.select(personIDField)
+                        .from(ACCOUNTS)
+                        .join(table)
+                        .on(ACCOUNTS.EMAIL.eq(joinField))
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().get(0).get(personIDField);
+    }
+
     private static boolean permissionTypeNotExists(final String permissionType) {
         final Result<Record> count = DB.createConnection()
                 .queryAction(db -> db.selectCount()
