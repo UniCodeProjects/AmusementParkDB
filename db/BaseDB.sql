@@ -35,7 +35,8 @@ values ("C-001", '2021-12-10', '2022-01-01', null, 1100.00, "MRARSS77E15A944I", 
        ("C-004", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "VRDNDR66T22F839F");
 
 insert into price_lists
-values (2023);
+values (2023),
+	   (2024);
 
 insert into park_services
 values ("RI-001", "Ride1", 4.5, 2, "type1", null, false),
@@ -134,7 +135,15 @@ values (2023, 25.00, "single day ticket", "kids", 1),
        (2023, 75.00, "season ticket", "kids", 10),
        (2023, 150.00, "season ticket", "adults", 10),
        (2023, 75.00, "season ticket", "senior", 10),
-       (2023, 75.00, "season ticket", "disable", 10);
+       (2023, 75.00, "season ticket", "disable", 10),
+       (2024, 25.00, "single day ticket", "kids", 1),
+       (2024, 50.00, "single day ticket", "adults", 1),
+       (2024, 25.00, "single day ticket", "senior", 1),
+       (2024, 25.00, "single day ticket", "disable", 1),
+       (2024, 75.00, "season ticket", "kids", 10),
+       (2024, 150.00, "season ticket", "adults", 10),
+       (2024, 75.00, "season ticket", "senior", 10),
+       (2024, 75.00, "season ticket", "disable", 10);
        
 insert into attributions
 values ("T-001", 2023, "single day ticket", "adults"),
