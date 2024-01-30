@@ -43,12 +43,11 @@ public class ReviewControllerImpl implements ReviewController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
+     * @throws UnsupportedOperationException if this operation is forbidden to the user
      */
     @Override
     public <T extends TableItem> T editData(final T item) {
-        // TODO
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Forbidden operation: staff members cannot edit reviews.");
     }
 
     /**
