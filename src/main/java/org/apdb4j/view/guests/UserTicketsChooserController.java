@@ -1,8 +1,10 @@
 package org.apdb4j.view.guests;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -13,7 +15,10 @@ import javafx.scene.text.FontWeight;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.guests.TicketController;
+import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
@@ -33,6 +38,10 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     private static final int SPINNERS_MAX_VALUE = 9999;
     private static final String EURO_SYMBOL = "\u20AC";
     private static final String PRICE_FORMAT_SPECIFIER = "%.2f";
+    private static final int TICKETS_CONTAINER_MIN_WIDTH = 600;
+    private static final Insets DATE_LABEL_MARGIN = new Insets(3, 0, 0, 10);
+    private static final int DATE_PICKER_PREF_WIDTH = 110;
+    private static final Insets DATE_PICKER_MARGIN = new Insets(0, 0, 0, 10);
     @FXML
     private ListView<Label> cart;
     @FXML
@@ -43,9 +52,12 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     private final TicketController controller;
     private final Collection<String> ticketTypes;
     private final Collection<String> customerCategories;
+    private final Map<Pair<String, String>, Integer> chosenTickets = new HashMap<>();
+    private final Map<Pair<String, String>, DatePicker> ticketsWithChosenDates = new HashMap<>();
 
     /**
-     * Creates a new instance of this class with the provided ticket types and customers categories.
+     * Creates a new instance of this class that exchanges info
+     * with the database through the provided {@code controller}.
      * @param controller the MVC controller responsible for this view.
      */
     public UserTicketsChooserController(final @NonNull TicketController controller) {
@@ -60,6 +72,7 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
+        ticketsAndSeasonTicketsContainer.setMinWidth(TICKETS_CONTAINER_MIN_WIDTH);
         totalPrice.textProperty().bindBidirectional(totalPriceProperty, new PriceStringConverter());
         for (final String ticketType : ticketTypes) {
             final Label ticketTypeLabel = new Label(ticketType + "s");
@@ -86,6 +99,8 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 categoryContainer.getChildren().add(quantitySpinner);
                 quantitySpinner.setEditable(true);
                 quantitySpinner.setDisable(true);
+                quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
+                HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
                 quantitySpinner.getEditor().setOnAction(event -> {
                     try {
                         Integer.parseInt(quantitySpinner.getEditor().getText());
@@ -93,8 +108,22 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                         quantitySpinner.getEditor().setText("0");
                     }
                 });
-                categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) ->
-                        quantitySpinner.setDisable(wasSelected));
+
+                final Label dateLabel = new Label();
+                dateLabel.setText("Single day ticket".equals(ticketType) ? "Choose date: " : "Last date of validity: ");
+                categoryContainer.getChildren().add(dateLabel);
+                HBox.setMargin(dateLabel, DATE_LABEL_MARGIN);
+
+                final DatePicker datePicker = new DatePicker();
+                ticketsWithChosenDates.put(new ImmutablePair<>(ticketType, customerCategory), datePicker);
+                datePicker.setDisable(true);
+                datePicker.setPrefWidth(DATE_PICKER_PREF_WIDTH);
+                categoryContainer.getChildren().add(datePicker);
+                HBox.setMargin(datePicker, DATE_PICKER_MARGIN);
+                categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
+                    quantitySpinner.setDisable(wasSelected);
+                    datePicker.setDisable(wasSelected);
+                });
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
                     if (wasSelected && Double.compare(totalPriceProperty.get(), 0) > 0) {
                         totalPriceProperty.set(totalPriceProperty.get()
@@ -107,8 +136,10 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 categoryCheckbox.selectedProperty().addListener((observable, wasSelected, isSelected) -> {
                     final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, customerCategory);
                     if (wasSelected && ticketTypeAndCategoryLabel.isPresent()) {
+                        chosenTickets.remove(new ImmutablePair<>(ticketType, customerCategory));
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (isSelected && ticketTypeAndCategoryLabel.isEmpty()) {
+                        chosenTickets.put(new ImmutablePair<>(ticketType, customerCategory), quantitySpinner.getValue());
                         addTicketToCart(ticketType, customerCategory, quantitySpinner.getValue());
                     }
                 });
@@ -118,18 +149,44 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 quantitySpinner.valueProperty().addListener((observable, previousAmount, newAmount) -> {
                     final Optional<Label> ticketTypeAndCategoryLabel = getTicketFromCart(ticketType, customerCategory);
                     if (newAmount == 0 && ticketTypeAndCategoryLabel.isPresent()) {
+                        chosenTickets.remove(new ImmutablePair<>(ticketType, customerCategory));
                         cart.getItems().remove(ticketTypeAndCategoryLabel.get());
                     } else if (newAmount > 0) {
                         if (ticketTypeAndCategoryLabel.isEmpty()) {
+                            chosenTickets.put(new ImmutablePair<>(ticketType, customerCategory), newAmount);
                             addTicketToCart(ticketType, customerCategory, newAmount);
                         } else {
+                            chosenTickets.replace(new ImmutablePair<>(ticketType, customerCategory), newAmount);
                             changeTicketQuantityInCart(ticketType, customerCategory, newAmount);
                         }
                     }
                 });
-                quantitySpinner.setPrefWidth(SPINNERS_PREF_WIDTH);
-                HBox.setMargin(quantitySpinner, SPINNERS_MARGIN);
             }
+        }
+    }
+
+    /**
+     * Allows the user to buy the tickets that are in the cart.
+     * @param event the click on the "buy" button.
+     */
+    @FXML
+    void onBuyButtonPressed(final ActionEvent event) {
+        if (ticketsWithChosenDates.entrySet().stream().filter(entry -> chosenTickets.containsKey(entry.getKey()))
+                .anyMatch(entry -> Objects.isNull(entry.getValue().getValue()))) {
+            Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "A date must be selected for all the chosen tickets",
+                    ButtonType.CLOSE).show());
+        } else {
+            chosenTickets.forEach((ticketTypeAndCategory, quantity) -> {
+                final var ticketBought = controller.buyTicket(ticketTypeAndCategory.getKey(),
+                        ticketsWithChosenDates.get(ticketTypeAndCategory).getValue(),
+                        ticketTypeAndCategory.getValue(),
+                        quantity);
+                if (!ticketBought) {
+                    Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "An error occurred while buying tickets",
+                            ButtonType.CLOSE).show());
+                }
+            });
+            LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false);
         }
     }
 
