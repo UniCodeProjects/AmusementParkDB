@@ -1,7 +1,6 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
 import org.apdb4j.core.managers.MaintenanceManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
@@ -15,7 +14,6 @@ import org.jooq.impl.DSL;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -66,25 +64,11 @@ public class MaintenanceControllerImpl implements MaintenanceController {
     public <T extends TableItem> T editData(final T item) {
         final MaintenanceTableItem maintenance = (MaintenanceTableItem) item;
         new QueryBuilder().createConnection()
-                .queryAction(db -> {
-                    db.transaction(configuration -> {
-                        // FIXME
-                        tokenizeEmployeeIDs(maintenance.getEmployeeIDs()).forEach(id -> configuration.dsl()
-                                .update(RESPONSIBILITIES)
-                                .set(RESPONSIBILITIES.EMPLOYEENID, id)
-                                .where(RESPONSIBILITIES.FACILITYID.eq(maintenance.getFacilityID()))
-                                .and(RESPONSIBILITIES.DATE.eq(maintenance.getDate()))
-                                .execute());
-                        configuration.dsl()
-                                .update(MAINTENANCES)
-                                .set(MAINTENANCES.PRICE, BigDecimal.valueOf(maintenance.getPrice()))
-                                .set(MAINTENANCES.DESCRIPTION, maintenance.getDescription())
-                                .set(MAINTENANCES.DATE, maintenance.getDate())
-                                .where(MAINTENANCES.FACILITYID.eq(maintenance.getFacilityID()))
-                                .execute();
-                    });
-                    return 1;
-                })
+                .queryAction(db -> db.update(MAINTENANCES)
+                        .set(MAINTENANCES.PRICE, BigDecimal.valueOf(maintenance.getPrice()))
+                        .set(MAINTENANCES.DESCRIPTION, maintenance.getDescription())
+                        .where(MAINTENANCES.FACILITYID.eq(maintenance.getFacilityID()))
+                        .execute())
                 .closeConnection();
         return item;
     }
@@ -180,11 +164,6 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                 record.get(MAINTENANCES.DATE),
                 record.get(RESPONSIBILITIES.EMPLOYEENID))));
         return data;
-    }
-
-    private Collection<String> tokenizeEmployeeIDs(final String ids) {
-        // Possible separators: ", " - "," - " "
-        return Arrays.stream(StringUtils.split(ids, "[, ]")).toList();
     }
 
 }
