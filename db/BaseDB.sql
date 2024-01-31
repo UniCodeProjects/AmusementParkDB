@@ -136,14 +136,14 @@ values (2023, 25.00, "single day ticket", "kids", 1),
        (2023, 150.00, "season ticket", "adults", 10),
        (2023, 75.00, "season ticket", "senior", 10),
        (2023, 75.00, "season ticket", "disable", 10),
-       (2024, 25.00, "single day ticket", "kids", 1),
-       (2024, 50.00, "single day ticket", "adults", 1),
-       (2024, 25.00, "single day ticket", "senior", 1),
-       (2024, 25.00, "single day ticket", "disable", 1),
-       (2024, 75.00, "season ticket", "kids", 10),
-       (2024, 150.00, "season ticket", "adults", 10),
-       (2024, 75.00, "season ticket", "senior", 10),
-       (2024, 75.00, "season ticket", "disable", 10);
+       (2024, 20.00, "single day ticket", "kids", 1),
+       (2024, 40.00, "single day ticket", "adults", 1),
+       (2024, 20.00, "single day ticket", "senior", 1),
+       (2024, 15.00, "single day ticket", "disable", 1),
+       (2024, 70.00, "season ticket", "kids", 10),
+       (2024, 135.00, "season ticket", "adults", 10),
+       (2024, 65.00, "season ticket", "senior", 10),
+       (2024, 60.00, "season ticket", "disable", 10);
        
 insert into attributions
 values ("T-001", 2023, "single day ticket", "adults"),
