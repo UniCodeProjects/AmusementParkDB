@@ -80,15 +80,16 @@ public class MaintenanceScreenController extends PopupInitializer {
             });
         } else {
             final int selectedIndex = tableView.getItems().indexOf(maintenance);
+            try {
+                tableView.getItems().set(selectedIndex, controller.editData(maintenanceItem));
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(e.getMessage())
+                        .show();
+            }
             Platform.runLater(() -> {
-                tableView.getItems().remove(maintenance);
-                try {
-                    tableView.getItems().add(selectedIndex, controller.editData(maintenanceItem));
-                } catch (final DataAccessException e) {
-                    new AlertBuilder(Alert.AlertType.ERROR)
-                            .setContentText(e.getMessage())
-                            .show();
-                }
+                tableView.getItems().clear();
+                tableView.getItems().addAll(controller.getData());
                 tableView.getSelectionModel().select(selectedIndex);
             });
         }
