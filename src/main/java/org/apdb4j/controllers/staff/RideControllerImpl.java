@@ -77,7 +77,6 @@ public class RideControllerImpl implements RideController {
     public <T extends TableItem> T editData(final T item) {
         final RideTableItem ride = (RideTableItem) item;
         final Duration rideDuration = Duration.ofMinutes(ride.getDuration());
-        // fixme
         new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES
                                 .join(RIDE_DETAILS)
@@ -86,7 +85,6 @@ public class RideControllerImpl implements RideController {
                                 .on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                                 .join(FACILITIES)
                                 .on(FACILITIES.FACILITYID.eq(RIDES.RIDEID)))
-                        .set(RIDES.RIDEID, ride.getId())
                         .set(PARK_SERVICES.NAME, ride.getName())
                         .set(FACILITIES.OPENINGTIME, ride.getOpeningTime())
                         .set(FACILITIES.CLOSINGTIME, ride.getClosingTime())
@@ -102,6 +100,7 @@ public class RideControllerImpl implements RideController {
                         .set(RIDE_DETAILS.STATUS, ride.getStatus())
                         .set(PARK_SERVICES.AVGRATING, BigDecimal.valueOf(ride.getAverageRating()))
                         .set(PARK_SERVICES.NUMREVIEWS, UInteger.valueOf(ride.getRatings()))
+                        .where(RIDES.RIDEID.eq(ride.getId()))
                         .execute())
                 .closeConnection();
         return item;
