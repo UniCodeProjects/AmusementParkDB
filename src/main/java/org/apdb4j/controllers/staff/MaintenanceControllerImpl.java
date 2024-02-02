@@ -64,10 +64,14 @@ public class MaintenanceControllerImpl implements MaintenanceController {
     public <T extends TableItem> T editData(final T item) {
         final MaintenanceTableItem maintenance = (MaintenanceTableItem) item;
         new QueryBuilder().createConnection()
-                .queryAction(db -> db.update(MAINTENANCES)
+                .queryAction(db -> db.update(MAINTENANCES
+                                .join(RESPONSIBILITIES)
+                                .on(MAINTENANCES.FACILITYID.eq(RESPONSIBILITIES.FACILITYID)))
                         .set(MAINTENANCES.PRICE, BigDecimal.valueOf(maintenance.getPrice()))
                         .set(MAINTENANCES.DESCRIPTION, maintenance.getDescription())
                         .where(MAINTENANCES.FACILITYID.eq(maintenance.getFacilityID()))
+                        .and(MAINTENANCES.DATE.eq(maintenance.getDate()))
+                        .and(RESPONSIBILITIES.EMPLOYEENID.eq(maintenance.getEmployeeIDs()))
                         .execute())
                 .closeConnection();
         return item;
