@@ -77,6 +77,23 @@ public class RideControllerImpl implements RideController {
     public <T extends TableItem> T editData(final T item) {
         final RideTableItem ride = (RideTableItem) item;
         final Duration rideDuration = Duration.ofMinutes(ride.getDuration());
+        if ("O".equals(ride.getStatus())) {
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(RIDE_DETAILS)
+                            .set(RIDE_DETAILS.ESTIMATEDWAITTIME, LocalTime.MIN)
+                            .set(RIDE_DETAILS.STATUS, ride.getStatus())
+                            .where(RIDE_DETAILS.RIDEID.eq(ride.getId()))
+                            .execute())
+                    .closeConnection();
+        } else {
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(RIDE_DETAILS)
+                            .set(RIDE_DETAILS.ESTIMATEDWAITTIME, (LocalTime) null)
+                            .set(RIDE_DETAILS.STATUS, ride.getStatus())
+                            .where(RIDE_DETAILS.RIDEID.eq(ride.getId()))
+                            .execute())
+                    .closeConnection();
+        }
         new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES
                                 .join(RIDE_DETAILS)
@@ -97,7 +114,6 @@ public class RideControllerImpl implements RideController {
                         .set(RIDES.MAXHEIGHT, UInteger.valueOf(ride.getMaxHeight()))
                         .set(RIDES.MINWEIGHT, UInteger.valueOf(Math.round(ride.getMinWeight())))
                         .set(RIDES.MAXWEIGHT, UInteger.valueOf(Math.round(ride.getMaxWeight())))
-                        .set(RIDE_DETAILS.STATUS, ride.getStatus())
                         .set(PARK_SERVICES.AVGRATING, BigDecimal.valueOf(ride.getAverageRating()))
                         .set(PARK_SERVICES.NUMREVIEWS, UInteger.valueOf(ride.getRatings()))
                         .where(RIDES.RIDEID.eq(ride.getId()))
@@ -159,13 +175,12 @@ public class RideControllerImpl implements RideController {
     private Result<Record> searchQuery(final Condition condition) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select()
-                        .from(RIDES)
-                        .join(RIDE_DETAILS)
-                        .on(RIDE_DETAILS.RIDEID.eq(RIDES.RIDEID))
-                        .join(PARK_SERVICES)
-                        .on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
-                        .join(FACILITIES)
-                        .on(FACILITIES.FACILITYID.eq(RIDES.RIDEID))
+                        .from(RIDES.join(RIDE_DETAILS)
+                                .on(RIDE_DETAILS.RIDEID.eq(RIDES.RIDEID))
+                                .join(PARK_SERVICES)
+                                .on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                                .join(FACILITIES)
+                                .on(FACILITIES.FACILITYID.eq(RIDES.RIDEID)))
                         .where(condition)
                         .fetch())
                 .closeConnection()
