@@ -808,57 +808,10 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onRideBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
-        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Ride ID");
-        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
-        final TableColumn<AttractionTableItem, LocalTime> openingTime = new TableColumn<>("Opening");
-        final TableColumn<AttractionTableItem, LocalTime> closingTime = new TableColumn<>("Closing");
-        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
-        final TableColumn<AttractionTableItem, String> intensity = new TableColumn<>("Intensity");
-        final TableColumn<AttractionTableItem, LocalTime> duration = new TableColumn<>("Duration");
-        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
-        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
-        final TableColumn<AttractionTableItem, Integer> minHeight = new TableColumn<>("Min height");
-        final TableColumn<AttractionTableItem, Integer> maxHeight = new TableColumn<>("Max height");
-        final TableColumn<AttractionTableItem, Integer> minWeight = new TableColumn<>("Min weight");
-        final TableColumn<AttractionTableItem, Integer> maxWeight = new TableColumn<>("Max weight");
-        final TableColumn<AttractionTableItem, Character> status = new TableColumn<>("Status");
-        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
-        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        openingTime.setCellValueFactory(new PropertyValueFactory<>("openingTime"));
-        closingTime.setCellValueFactory(new PropertyValueFactory<>("closingTime"));
-        type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        intensity.setCellValueFactory(new PropertyValueFactory<>("intensity"));
-        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        minHeight.setCellValueFactory(new PropertyValueFactory<>("minHeight"));
-        maxHeight.setCellValueFactory(new PropertyValueFactory<>("maxHeight"));
-        minWeight.setCellValueFactory(new PropertyValueFactory<>("minWeight"));
-        maxWeight.setCellValueFactory(new PropertyValueFactory<>("maxWeight"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
-        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
-        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
-                name,
-                openingTime,
-                closingTime,
-                type,
-                intensity,
-                duration,
-                maxSeats,
-                description,
-                minHeight,
-                maxHeight,
-                minWeight,
-                maxWeight,
-                status,
-                averageRating,
-                numRating);
-        attractionsTableView.getColumns().addAll(columns);
+        initRideTable();
         attractionsTableView.getItems().clear();
-        Platform.runLater(() -> attractionsTableView.getItems().addAll(new RideControllerImpl().getData()));
+        final RideControllerImpl rideController = new RideControllerImpl();
+        Platform.runLater(() -> attractionsTableView.getItems().addAll(rideController.getData()));
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.remove(vboxChildren.indexOf(exhibitionsRadioBtn) + 1);
     }
@@ -870,37 +823,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onExhibitionBtnClick(final ActionEvent event) {
         attractionsTableView.getColumns().clear();
-        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Exhibition ID");
-        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
-        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
-        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
-        final TableColumn<AttractionTableItem, LocalDate> date = new TableColumn<>("Date");
-        final TableColumn<AttractionTableItem, LocalTime> time = new TableColumn<>("Time");
-        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
-        final TableColumn<AttractionTableItem, Integer> spectators = new TableColumn<>("Spectators");
-        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
-        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        time.setCellValueFactory(new PropertyValueFactory<>("time"));
-        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
-        spectators.setCellValueFactory(new PropertyValueFactory<>("spectators"));
-        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
-        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
-        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
-                name,
-                type,
-                description,
-                date,
-                time,
-                maxSeats,
-                spectators,
-                averageRating,
-                numRating);
-        attractionsTableView.getColumns().addAll(columns);
+        initExhibitionTable();
         attractionsTableView.getItems().clear();
         final ExhibitionController exhibitionController = new ExhibitionControllerImpl();
         Platform.runLater(() -> attractionsTableView.getItems().addAll(exhibitionController.getData()));
@@ -1467,7 +1390,7 @@ public class StaffScreenController implements Initializable {
         clearButton.setDisable(true);
         addListenersToDatePicker(datePicker1, datePicker2, clearButton);
         // Loading the ride tableview by default.
-        onRideBtnClick(null);
+        initRideTable();
         // Populating the table views.
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(employeeController.getData());
@@ -1602,6 +1525,92 @@ public class StaffScreenController implements Initializable {
         datePicker1.getEditor().setText("");
         datePicker2.getEditor().setText("");
         clearButton.setDisable(true);
+    }
+
+    private void initRideTable() {
+        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Ride ID");
+        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableItem, LocalTime> openingTime = new TableColumn<>("Opening");
+        final TableColumn<AttractionTableItem, LocalTime> closingTime = new TableColumn<>("Closing");
+        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableItem, String> intensity = new TableColumn<>("Intensity");
+        final TableColumn<AttractionTableItem, LocalTime> duration = new TableColumn<>("Duration");
+        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableItem, Integer> minHeight = new TableColumn<>("Min height");
+        final TableColumn<AttractionTableItem, Integer> maxHeight = new TableColumn<>("Max height");
+        final TableColumn<AttractionTableItem, Integer> minWeight = new TableColumn<>("Min weight");
+        final TableColumn<AttractionTableItem, Integer> maxWeight = new TableColumn<>("Max weight");
+        final TableColumn<AttractionTableItem, Character> status = new TableColumn<>("Status");
+        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        openingTime.setCellValueFactory(new PropertyValueFactory<>("openingTime"));
+        closingTime.setCellValueFactory(new PropertyValueFactory<>("closingTime"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        intensity.setCellValueFactory(new PropertyValueFactory<>("intensity"));
+        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        minHeight.setCellValueFactory(new PropertyValueFactory<>("minHeight"));
+        maxHeight.setCellValueFactory(new PropertyValueFactory<>("maxHeight"));
+        minWeight.setCellValueFactory(new PropertyValueFactory<>("minWeight"));
+        maxWeight.setCellValueFactory(new PropertyValueFactory<>("maxWeight"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
+        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
+        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
+                name,
+                openingTime,
+                closingTime,
+                type,
+                intensity,
+                duration,
+                maxSeats,
+                description,
+                minHeight,
+                maxHeight,
+                minWeight,
+                maxWeight,
+                status,
+                averageRating,
+                numRating);
+        attractionsTableView.getColumns().addAll(columns);
+    }
+
+    private void initExhibitionTable() {
+        final TableColumn<AttractionTableItem, String> id = new TableColumn<>("Exhibition ID");
+        final TableColumn<AttractionTableItem, String> name = new TableColumn<>("Name");
+        final TableColumn<AttractionTableItem, String> type = new TableColumn<>("Type");
+        final TableColumn<AttractionTableItem, String> description = new TableColumn<>("Description");
+        final TableColumn<AttractionTableItem, LocalDate> date = new TableColumn<>("Date");
+        final TableColumn<AttractionTableItem, LocalTime> time = new TableColumn<>("Time");
+        final TableColumn<AttractionTableItem, Integer> maxSeats = new TableColumn<>("Max seats");
+        final TableColumn<AttractionTableItem, Integer> spectators = new TableColumn<>("Spectators");
+        final TableColumn<AttractionTableItem, Double> averageRating = new TableColumn<>("Average rating");
+        final TableColumn<AttractionTableItem, Integer> numRating = new TableColumn<>("Ratings");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        maxSeats.setCellValueFactory(new PropertyValueFactory<>("maxSeats"));
+        spectators.setCellValueFactory(new PropertyValueFactory<>("spectators"));
+        averageRating.setCellValueFactory(new PropertyValueFactory<>("averageRating"));
+        numRating.setCellValueFactory(new PropertyValueFactory<>("ratings"));
+        final List<TableColumn<AttractionTableItem, ?>> columns = List.of(id,
+                name,
+                type,
+                description,
+                date,
+                time,
+                maxSeats,
+                spectators,
+                averageRating,
+                numRating);
+        attractionsTableView.getColumns().addAll(columns);
     }
 
     private GridPane createAverageSpectatorsByTypeGridPane(final Collection<Pair<String, Integer>> typeSpectatorsPairs) {
