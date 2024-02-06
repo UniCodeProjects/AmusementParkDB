@@ -17,7 +17,6 @@ import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
 import org.apdb4j.db.tables.MonthlyRecaps;
 import org.apdb4j.db.tables.ParkServices;
-import org.apdb4j.db.tables.Permissions;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
 import org.apdb4j.db.tables.PunchDates;
@@ -96,11 +95,6 @@ public class AmusementPark extends SchemaImpl {
      * The table <code>amusement_park.park_services</code>.
      */
     public final ParkServices PARK_SERVICES = ParkServices.PARK_SERVICES;
-
-    /**
-     * The table <code>amusement_park.permissions</code>.
-     */
-    public final Permissions PERMISSIONS = Permissions.PERMISSIONS;
 
     /**
      * The table <code>amusement_park.pictures</code>.
@@ -183,7 +177,6 @@ public class AmusementPark extends SchemaImpl {
             Maintenances.MAINTENANCES,
             MonthlyRecaps.MONTHLY_RECAPS,
             ParkServices.PARK_SERVICES,
-            Permissions.PERMISSIONS,
             Pictures.PICTURES,
             PriceLists.PRICE_LISTS,
             PunchDates.PUNCH_DATES,
