@@ -2,10 +2,10 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.GuestPermission;
 import org.apdb4j.util.QueryBuilder;
 
-import static org.apdb4j.db.Tables.*;
+import static org.apdb4j.db.Tables.GUESTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * Contains all the SQL queries that are related to the {@link org.apdb4j.db.tables.Guests} table.
@@ -13,7 +13,7 @@ import static org.apdb4j.db.Tables.*;
 public final class GuestManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
-    private static final String PERMISSION_TYPE = GuestPermission.class.getSimpleName().replace("Permission", "");
+    private static final String PERMISSION_TYPE = "Guest";
 
     private GuestManager() {
     }

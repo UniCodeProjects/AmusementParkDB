@@ -4,8 +4,6 @@ import lombok.NonNull;
 import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
-import org.jooq.Record;
-import org.jooq.Result;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -32,9 +30,6 @@ public final class AccountManager {
      */
      public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
                                          final @NonNull String account) throws AccessDeniedException {
-         if (permissionTypeNotExists(permissionType)) {
-             throw new IllegalArgumentException(permissionType + " is not present in the DB.");
-         }
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
@@ -65,9 +60,6 @@ public final class AccountManager {
                                         final @NonNull String password,
                                         final @NonNull String permissionType,
                                         final String account) throws AccessDeniedException {
-        if (permissionTypeNotExists(permissionType)) {
-            throw new IllegalStateException(permissionType + " is not present in the DB.");
-        }
         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
             return false;
         }
@@ -213,18 +205,6 @@ public final class AccountManager {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords().get(0).get(personIDField);
-    }
-
-    private static boolean permissionTypeNotExists(final String permissionType) {
-        final Result<Record> count = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        return count.size() != 1 || count.get(0).get(0, int.class) != 1;
     }
 
 }
