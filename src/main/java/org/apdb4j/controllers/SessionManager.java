@@ -43,5 +43,28 @@ public final class SessionManager {
      * @param personID the identifier of the owner of the logged account.
      */
     public record SessionInfo(String username, String personID) {
+        /**
+         * Checks if the logged user is an admin.
+         * @return {@code true} if an admin
+         */
+        public boolean isAdmin() {
+            return AccountManager.isAdminByUsername(username);
+        }
+
+        /**
+         * Checks if the logged user is an employee.
+         * @return {@code true} if an employee
+         */
+        public boolean isEmployee() {
+            return AccountManager.isEmployeeByUsername(username);
+        }
+
+        /**
+         * Checks if the logged user is a guest.
+         * @return {@code true} if a guest
+         */
+        public boolean isGuest() {
+            return AccountManager.isGuestByUsername(username);
+        }
     }
 }
