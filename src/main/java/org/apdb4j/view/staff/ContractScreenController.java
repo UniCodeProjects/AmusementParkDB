@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import lombok.Setter;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
@@ -133,7 +134,8 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
                 throw new IllegalStateException("Employee table item is null.");
             }
             partialEmployee.setSalary(salarySpinner.getValue());
-            final ContractTableItem contract = new ContractTableItem("C-000",
+            final ContractTableItem contract = new ContractTableItem(
+                    IDGenerationUtils.generateContractID(employeeNIDField.getText(), employerNIDField.getText()),
                     employeeNIDField.getText(),
                     employerNIDField.getText(),
                     signedDatePicker.getValue(),
