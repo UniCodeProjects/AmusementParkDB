@@ -17,6 +17,7 @@ import org.apdb4j.controllers.staff.ShopController;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 import org.jooq.exception.DataAccessException;
@@ -31,7 +32,7 @@ import java.util.stream.IntStream;
 /**
  * The FXML controller for the shop screen.
  */
-public class ShopScreenController extends PopupInitializer {
+public class ShopScreenController extends PopupInitializer implements FXMLController {
 
     private static final ShopController CONTROLLER = new ShopControllerImpl();
     @FXML

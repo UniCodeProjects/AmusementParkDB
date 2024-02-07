@@ -15,13 +15,14 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
 /**
  * The FXML controller for the employee hiring screen.
  */
-public class EmployeeScreenController extends PopupInitializer {
+public class EmployeeScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private GridPane gridPane;
@@ -123,7 +124,7 @@ public class EmployeeScreenController extends PopupInitializer {
             ContractScreenController.setEditMode(false);
             ContractScreenController.setFromEmployeeMode(newEmployee, (e, c) -> Platform.runLater(() ->
                     tableView.getItems().add((EmployeeTableItem) new EmployeeControllerImpl().addData(e, c))));
-            LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
+            LoadFXML.fromEventAsPopup(event, "layouts/contract-screen.fxml", "Add contract");
         }
     }
 

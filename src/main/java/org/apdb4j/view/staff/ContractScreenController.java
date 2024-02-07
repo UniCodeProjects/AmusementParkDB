@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.util.view.JavaFXUtils;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
@@ -26,7 +27,7 @@ import java.util.function.BiConsumer;
 /**
  * The FXML controller for the maintenance screen.
  */
-public class ContractScreenController extends PopupInitializer {
+public class ContractScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private GridPane gridPane;
