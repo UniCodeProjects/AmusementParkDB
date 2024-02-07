@@ -49,13 +49,13 @@ values ("RI-001", '09:00:00', '19:00:00', false),
        ("SH-002", '09:00:00', '19:00:00', true);
 
 insert into pictures
-values ("path/to/pic1", "RI-001"),
-       ("path/to/pic2", "RI-002"),
-       ("path/to/pic3", "RI-003"),
-       ("path/to/pic4", "EX-001"),
-       ("path/to/pic5", "EX-002"),
-       ("path/to/pic6", "SH-001"),
-       ("path/to/pic7", "SH-002");
+values ("img/ride1.jpg", "RI-001"),
+       ("img/ride2.jpg", "RI-002"),
+       ("img/ride3.jpg", "RI-003"),
+       ("img/exhibition1.jpg", "EX-001"),
+       ("img/exhibition2.jpg", "EX-002"),
+       ("img/shop1.jpg", "SH-001"),
+       ("img/shop2.jpg", "SH-002");
        
 insert into rides
 values ("RI-001", "intensity1", '00:03:00', 30, 100, 200, 40, 200),

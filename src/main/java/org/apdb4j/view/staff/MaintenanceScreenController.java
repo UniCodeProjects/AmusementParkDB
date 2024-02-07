@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.MaintenanceController;
 import org.apdb4j.controllers.staff.MaintenanceControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
 import org.jooq.exception.DataAccessException;
@@ -22,7 +23,7 @@ import org.jooq.exception.DataAccessException;
 /**
  * The FXML controller for the maintenance screen.
  */
-public class MaintenanceScreenController extends PopupInitializer {
+public class MaintenanceScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private TextField facilityIDField;

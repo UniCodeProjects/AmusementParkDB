@@ -16,6 +16,7 @@ import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
 import org.jooq.exception.DataAccessException;
@@ -25,7 +26,7 @@ import java.time.LocalDate;
 /**
  * The FXML controller for the ticket screen.
  */
-public class TicketScreenController extends PopupInitializer {
+public class TicketScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private GridPane gridPane;

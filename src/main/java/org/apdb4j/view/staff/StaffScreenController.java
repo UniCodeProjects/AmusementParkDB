@@ -67,6 +67,7 @@ import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
@@ -103,7 +104,7 @@ import static org.apdb4j.db.Tables.MONTHLY_RECAPS;
 /**
  * The FXML controller for the staff UI.
  */
-public class StaffScreenController implements Initializable {
+public class StaffScreenController implements FXMLController, Initializable {
 
     private static final MaintenanceController MAINTENANCE_CONTROLLER = new MaintenanceControllerImpl();
     private static final String TOOLTIP_STRING = "Press BACKSPACE or DELETE to clear date";
@@ -387,7 +388,7 @@ public class StaffScreenController implements Initializable {
     void onEmployeeHire(final ActionEvent event) {
         EmployeeScreenController.setFromHire(true);
         EmployeeScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-form.fxml", "Hire employee");
+        LoadFXML.fromEventAsPopup(event, "layouts/employee-screen.fxml", "Hire employee");
     }
 
     /**
@@ -404,7 +405,7 @@ public class StaffScreenController implements Initializable {
         EmployeeScreenController.setFromHire(false);
         EmployeeScreenController.setEditMode(true);
         EmployeeScreenController.setEmployee(selectedEmployee);
-        LoadFXML.fromEventAsPopup(event, "layouts/hire-employee-form.fxml", "Edit employee");
+        LoadFXML.fromEventAsPopup(event, "layouts/employee-screen.fxml", "Edit employee");
     }
 
     /**
@@ -466,7 +467,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onContractAdd(final ActionEvent event) {
         ContractScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Add contract");
+        LoadFXML.fromEventAsPopup(event, "layouts/contract-screen.fxml", "Add contract");
     }
 
     /**
@@ -482,7 +483,7 @@ public class StaffScreenController implements Initializable {
         }
         ContractScreenController.setEditMode(true);
         ContractScreenController.setContract(selectedContract);
-        LoadFXML.fromEventAsPopup(event, "layouts/contract-form.fxml", "Edit contract");
+        LoadFXML.fromEventAsPopup(event, "layouts/contract-screen.fxml", "Edit contract");
     }
 
     /**
@@ -600,7 +601,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onTicketAdd(final ActionEvent event) {
         TicketScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Add a ticket");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-screen.fxml", "Add a ticket");
     }
 
     /**
@@ -616,7 +617,7 @@ public class StaffScreenController implements Initializable {
         }
         TicketScreenController.setEditMode(true);
         TicketScreenController.setTicket(selectedTicket);
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-form.fxml", "Edit ticket");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-screen.fxml", "Edit ticket");
     }
 
     /**
@@ -680,7 +681,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onTicketTypeAdd(final ActionEvent event) {
         TicketTypeScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Add a ticket type");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-screen.fxml", "Add a ticket type");
     }
 
     /**
@@ -696,7 +697,7 @@ public class StaffScreenController implements Initializable {
         }
         TicketTypeScreenController.setEditMode(true);
         TicketTypeScreenController.setTicketType(selectedTicketType);
-        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-form.fxml", "Edit ticket type");
+        LoadFXML.fromEventAsPopup(event, "layouts/ticket-type-screen.fxml", "Edit ticket type");
     }
 
     /**
@@ -987,10 +988,10 @@ public class StaffScreenController implements Initializable {
     void onAddAttraction(final ActionEvent event) {
         if (ridesRadioBtn.isSelected()) {
             RideScreenController.setEditMode(false);
-            LoadFXML.fromEventAsPopup(event, "layouts/ride-form.fxml", "Add ride");
+            LoadFXML.fromEventAsPopup(event, "layouts/ride-screen.fxml", "Add ride");
         } else {
             ExhibitionScreenController.setEditMode(false);
-            LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Add exhibition");
+            LoadFXML.fromEventAsPopup(event, "layouts/exhibition-screen.fxml", "Add exhibition");
         }
     }
 
@@ -1008,11 +1009,11 @@ public class StaffScreenController implements Initializable {
         if (ridesRadioBtn.isSelected()) {
             RideScreenController.setEditMode(true);
             RideScreenController.setRide((RideTableItem) selectedAttraction);
-            LoadFXML.fromEventAsPopup(event, "layouts/ride-form.fxml", "Edit ride");
+            LoadFXML.fromEventAsPopup(event, "layouts/ride-screen.fxml", "Edit ride");
         } else {
             ExhibitionScreenController.setEditMode(true);
             ExhibitionScreenController.setExhibition((ExhibitionTableItem) selectedAttraction);
-            LoadFXML.fromEventAsPopup(event, "layouts/exhibition-form.fxml", "Edit exhibition");
+            LoadFXML.fromEventAsPopup(event, "layouts/exhibition-screen.fxml", "Edit exhibition");
         }
     }
 
@@ -1047,7 +1048,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onAddShop(final ActionEvent event) {
         ShopScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/shop-form.fxml", "Add shop");
+        LoadFXML.fromEventAsPopup(event, "layouts/shop-screen.fxml", "Add shop");
     }
 
     /**
@@ -1063,7 +1064,7 @@ public class StaffScreenController implements Initializable {
         }
         ShopScreenController.setEditMode(true);
         ShopScreenController.setShop(selectedShop);
-        LoadFXML.fromEventAsPopup(event, "layouts/shop-form.fxml", "Edit shop");
+        LoadFXML.fromEventAsPopup(event, "layouts/shop-screen.fxml", "Edit shop");
     }
 
     /**
@@ -1156,7 +1157,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onAddMaintenance(final ActionEvent event) {
         MaintenanceScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/maintenance-form.fxml", "Add maintenance");
+        LoadFXML.fromEventAsPopup(event, "layouts/maintenance-screen.fxml", "Add maintenance");
     }
 
     /**
@@ -1172,7 +1173,7 @@ public class StaffScreenController implements Initializable {
         }
         MaintenanceScreenController.setEditMode(true);
         MaintenanceScreenController.setMaintenance(selectedMaintenance);
-        LoadFXML.fromEventAsPopup(event, "layouts/maintenance-form.fxml", "Edit maintenance");
+        LoadFXML.fromEventAsPopup(event, "layouts/maintenance-screen.fxml", "Edit maintenance");
     }
 
     /**
@@ -1207,7 +1208,7 @@ public class StaffScreenController implements Initializable {
     @FXML
     void onPictureAdd(final ActionEvent event) {
         PictureScreenController.setEditMode(false);
-        LoadFXML.fromEventAsPopup(event, "layouts/picture-form.fxml", "Add a picture");
+        LoadFXML.fromEventAsPopup(event, "layouts/picture-screen.fxml", "Add a picture");
     }
 
     /**
@@ -1223,7 +1224,7 @@ public class StaffScreenController implements Initializable {
         }
         PictureScreenController.setEditMode(true);
         PictureScreenController.setPicture(selectedPicture);
-        LoadFXML.fromEventAsPopup(event, "layouts/picture-form.fxml", "Edit picture");
+        LoadFXML.fromEventAsPopup(event, "layouts/picture-screen.fxml", "Edit picture");
     }
 
     /**

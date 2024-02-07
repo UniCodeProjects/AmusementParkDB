@@ -5,13 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 
 /**
  * The FXML controller for the employee history screen.
  */
-public class EmployeeHistoryController extends PopupInitializer {
+public class EmployeeHistoryController extends PopupInitializer implements FXMLController {
 
     @FXML
     private BorderPane borderPane;

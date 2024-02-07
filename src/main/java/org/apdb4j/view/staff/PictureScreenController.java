@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.PictureController;
 import org.apdb4j.controllers.staff.PictureControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.PictureTableItem;
 import org.jooq.exception.DataAccessException;
@@ -23,7 +24,7 @@ import java.io.IOException;
 /**
  * The FXML controller for the pictures screen.
  */
-public class PictureScreenController extends PopupInitializer {
+public class PictureScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private GridPane gridPane;

@@ -19,6 +19,7 @@ import org.apdb4j.controllers.staff.RideController;
 import org.apdb4j.controllers.staff.RideControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.RideTableItem;
@@ -30,7 +31,7 @@ import java.util.Locale;
 /**
  * The FXML controller for the ride screen.
  */
-public class RideScreenController extends PopupInitializer {
+public class RideScreenController extends PopupInitializer implements FXMLController {
 
     private static final RideController CONTROLLER = new RideControllerImpl();
     @FXML

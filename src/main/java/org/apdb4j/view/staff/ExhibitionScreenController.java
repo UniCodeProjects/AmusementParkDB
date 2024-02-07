@@ -19,6 +19,7 @@ import org.apdb4j.controllers.staff.ExhibitionController;
 import org.apdb4j.controllers.staff.ExhibitionControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.AttractionTableItem;
 import org.apdb4j.view.staff.tableview.ExhibitionTableItem;
@@ -31,7 +32,7 @@ import java.util.Objects;
 /**
  * The FXML controller for the exhibition screen.
  */
-public class ExhibitionScreenController extends PopupInitializer {
+public class ExhibitionScreenController extends PopupInitializer implements FXMLController {
 
     private static final ExhibitionController CONTROLLER = new ExhibitionControllerImpl();
     @FXML

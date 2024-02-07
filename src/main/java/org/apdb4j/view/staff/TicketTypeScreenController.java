@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.FXMLController;
 import org.apdb4j.view.PopupInitializer;
 import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
 import org.jooq.exception.DataAccessException;
@@ -22,7 +23,7 @@ import java.time.Year;
 /**
  * The FXML controller for the ticket type screen.
  */
-public class TicketTypeScreenController extends PopupInitializer {
+public class TicketTypeScreenController extends PopupInitializer implements FXMLController {
 
     @FXML
     private GridPane gridPane;
