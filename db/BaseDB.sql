@@ -33,13 +33,13 @@ values (2023),
 	   (2024);
 
 insert into park_services
-values ("RI-3c6dfaa5", "Ride1", 4.5, 2, "type1", null, false),
-       ("RI-e607d536", "Ride2", 4, 1, "type1", null, false),
-       ("RI-5c53cbe6", "Ride3", 5, 1, "type2", null, false),
-       ("EX-39234f38", "Exhibition1", 4.5, 2, "type3", null, true),
-       ("EX-dc28f34b", "Exhibition2", 5, 1, "type4", null, true),
-       ("SH-eaa716ef", "Shop1", 4.5, 2, "type5", null, false),
-       ("SH-d08f831a", "Shop2", 4, 1, "type5", null, false);
+values ("RI-3c6dfaa5", "Nitro Blast", 4.5, 2, "Launched coaster", null, false),
+       ("RI-e607d536", "Phantom Flyer", 4, 1, "Inverted coaster", null, false),
+       ("RI-5c53cbe6", "Tidal Twister", 5, 1, "Water coaster", null, false),
+       ("EX-39234f38", "Adventure Avenue", 4.5, 2, "Theatre play", null, true),
+       ("EX-dc28f34b", "Extreme Evolution", 5, 1, "Stunt show", null, true),
+       ("SH-eaa716ef", "Burger Town", 4.5, 2, "Restaurant", null, false),
+       ("SH-d08f831a", "Gizmo Grove", 4, 1, "Gadgets", null, false);
 
 insert into facilities
 values ("RI-3c6dfaa5", '09:00:00', '19:00:00', false),
@@ -49,18 +49,18 @@ values ("RI-3c6dfaa5", '09:00:00', '19:00:00', false),
        ("SH-d08f831a", '09:00:00', '19:00:00', true);
 
 insert into pictures
-values ("img/ride1.jpg", "RI-3c6dfaa5"),
-       ("img/ride2.jpg", "RI-e607d536"),
-       ("img/ride3.jpg", "RI-5c53cbe6"),
-       ("img/exhibition1.jpg", "EX-39234f38"),
-       ("img/exhibition2.jpg", "EX-dc28f34b"),
-       ("img/shop1.jpg", "SH-eaa716ef"),
-       ("img/shop2.jpg", "SH-d08f831a");
+values ("img/NitroBlast.jpg", "RI-3c6dfaa5"),
+       ("img/PhantomFlyer.jpg", "RI-e607d536"),
+       ("img/TidalTwister.jpg", "RI-5c53cbe6"),
+       ("img/AdventureAvenue.jpg", "EX-39234f38"),
+       ("img/ExtremeEvolution.jpg", "EX-dc28f34b"),
+       ("img/BurgerTown.jpg", "SH-eaa716ef"),
+       ("img/GizmoGrove.jpg", "SH-d08f831a");
        
 insert into rides
-values ("RI-3c6dfaa5", "intensity1", '00:03:00', 30, 100, 200, 40, 200),
-       ("RI-e607d536", "intensity1", '00:02:30', 25, 100, 200, 20, 150),
-       ("RI-5c53cbe6", "intensity2", '00:02:00', 40, 100, 190, 20, 160);
+values ("RI-3c6dfaa5", "Extreme", '00:03:00', 30, 100, 200, 40, 200),
+       ("RI-e607d536", "Extreme", '00:02:30', 25, 100, 200, 20, 150),
+       ("RI-5c53cbe6", "Mild", '00:02:00', 40, 100, 190, 20, 160);
        
 insert into ride_details
 values ("RI-3c6dfaa5", "O", '00:00:00'),
