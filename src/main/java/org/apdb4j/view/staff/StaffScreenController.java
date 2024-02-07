@@ -26,6 +26,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -41,6 +42,7 @@ import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.controllers.staff.ContractController;
 import org.apdb4j.controllers.staff.ContractControllerImpl;
 import org.apdb4j.controllers.staff.EmployeeController;
@@ -115,6 +117,8 @@ public class StaffScreenController implements FXMLController, Initializable {
     private final ShopController shopController = new ShopControllerImpl();
     private final PictureController pictureController = new PictureControllerImpl();
     private final ReviewController reviewController = new ReviewControllerImpl();
+    @FXML
+    private Tab expensesTab;
     @FXML
     private TextField parkNameField;
     @FXML
@@ -1367,29 +1371,33 @@ public class StaffScreenController implements FXMLController, Initializable {
                         .show());
             }
         }
-        // Populating X axis with months.
-        ((CategoryAxis) chart.getXAxis()).setCategories(FXCollections.observableList(IntStream.rangeClosed(1, 12)
-                .mapToObj(Month::of)
-                .map(month -> month.getDisplayName(TextStyle.SHORT, Locale.ROOT))
-                .toList()));
-        List.of(expensesDatePicker1, expensesDatePicker2)
-                .forEach(datePicker -> datePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell()));
-        /*
-         * Disables or enables the delete all rows button
-         * based on the presence of at least one new row.
-         */
-        expensesVBox.getChildren().addListener((ListChangeListener<Node>) change -> {
-            while (change.next()) {
-                deleteAllRowsBtn.setDisable(!change.wasAdded());
-            }
-        });
-        // Sets the default first row.
-        final HBox firstRow = (HBox) expensesVBox.getChildren().get(0);
-        final DatePicker datePicker1 = (DatePicker) firstRow.getChildren().get(1);
-        final DatePicker datePicker2 = (DatePicker) firstRow.getChildren().get(2);
-        final Button clearButton = (Button) firstRow.getChildren().get(3);
-        clearButton.setDisable(true);
-        addListenersToDatePicker(datePicker1, datePicker2, clearButton);
+        if (SessionManager.getSessionManager().getSession().isAdmin()) {
+            // Populating X axis with months.
+            ((CategoryAxis) chart.getXAxis()).setCategories(FXCollections.observableList(IntStream.rangeClosed(1, 12)
+                    .mapToObj(Month::of)
+                    .map(month -> month.getDisplayName(TextStyle.SHORT, Locale.ROOT))
+                    .toList()));
+            List.of(expensesDatePicker1, expensesDatePicker2)
+                    .forEach(datePicker -> datePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell()));
+            /*
+             * Disables or enables the delete all rows button
+             * based on the presence of at least one new row.
+             */
+            expensesVBox.getChildren().addListener((ListChangeListener<Node>) change -> {
+                while (change.next()) {
+                    deleteAllRowsBtn.setDisable(!change.wasAdded());
+                }
+            });
+            // Sets the default first row.
+            final HBox firstRow = (HBox) expensesVBox.getChildren().get(0);
+            final DatePicker datePicker1 = (DatePicker) firstRow.getChildren().get(1);
+            final DatePicker datePicker2 = (DatePicker) firstRow.getChildren().get(2);
+            final Button clearButton = (Button) firstRow.getChildren().get(3);
+            clearButton.setDisable(true);
+            addListenersToDatePicker(datePicker1, datePicker2, clearButton);
+        } else {
+            expensesTab.setDisable(true);
+        }
         // Loading the ride tableview by default.
         initRideTable();
         // Populating the table views.
