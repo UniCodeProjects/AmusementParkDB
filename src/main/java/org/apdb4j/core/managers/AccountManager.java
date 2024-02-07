@@ -149,6 +149,56 @@ public final class AccountManager {
      }
 
     /**
+     * Determines if the account with the given username is an admin.
+     * @param username the account's username
+     * @return {@code true} if admin
+     */
+     public static boolean isAdminByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(STAFF.join(ACCOUNTS)
+                                 .on(STAFF.EMAIL.eq(ACCOUNTS.EMAIL)))
+                         .where(STAFF.ISADMIN.isTrue())
+                         .and(ACCOUNTS.USERNAME.eq(username))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
+     }
+
+    /**
+     * Determines if the account with the given username is an employee.
+     * @param username the account's username
+     * @return {@code true} if employee
+     */
+     public static boolean isEmployeeByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(STAFF.join(ACCOUNTS)
+                                 .on(STAFF.EMAIL.eq(ACCOUNTS.EMAIL)))
+                         .where(STAFF.ISEMPLOYEE.isTrue())
+                         .and(ACCOUNTS.USERNAME.eq(username))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
+     }
+
+    /**
+     * Determines if the account with the given username is a guest.
+     * @param username the account's username
+     * @return {@code true} if guest
+     */
+     public static boolean isGuestByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(ACCOUNTS)
+                         .where(ACCOUNTS.USERNAME.eq(username))
+                         .and(ACCOUNTS.PERMISSIONTYPE.eq("Guest"))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
+     }
+
+    /**
      * Determines if the given account is a guest.
      * @param email the account's email
      * @return {@code true} if it is a guest
