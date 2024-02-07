@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apdb4j.controllers.LoginControllerImpl;
+import org.apdb4j.core.managers.AccountManager;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -29,9 +30,9 @@ public class LoginCommonController {
     void showUserScreen(final @NonNull Event event, final @NonNull String username) {
         Platform.runLater(() -> {
             JavaFXUtils.setStageTitle(event, username);
-            if (getController().isStaff(username)) {
+            if (AccountManager.isAdminByUsername(username) || AccountManager.isEmployeeByUsername(username)) {
                 LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true, false);
-            } else if (getController().isGuest(username)) {
+            } else if (AccountManager.isGuestByUsername(username)) {
                 LoadFXML.fromEvent(event, "layouts/user-screen.fxml", false, true, false);
             } else {
                 throw new IllegalStateException("Unknown permission type for '" + username + "'.");
