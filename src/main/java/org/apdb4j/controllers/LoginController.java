@@ -24,18 +24,4 @@ public interface LoginController extends Controller {
      */
     boolean checkSignUp(@NonNull String email, @NonNull String username, @NonNull String password);
 
-    /**
-     * Checks whether the given user is a staff account.
-     * @param username the account's username
-     * @return {@code true} if it is a staff account
-     */
-    boolean isStaff(@NonNull String username);
-
-    /**
-     * Checks whether the given user is a guest account.
-     * @param username the account's username
-     * @return {@code true} if it is a guest account
-     */
-    boolean isGuest(@NonNull String username);
-
 }
