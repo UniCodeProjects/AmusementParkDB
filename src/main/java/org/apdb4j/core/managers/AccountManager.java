@@ -234,14 +234,7 @@ public final class AccountManager {
         if (!isUsernameValid) {
             throw new IllegalArgumentException("There is no account with the provided username");
         }
-        final String accountEmail = queryBuilder
-                .createConnection()
-                .queryAction(db -> db.select(ACCOUNTS.EMAIL)
-                        .from(ACCOUNTS)
-                        .where(ACCOUNTS.USERNAME.eq(username))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords().get(0).get(ACCOUNTS.EMAIL);
+        final String accountEmail = getAccountEmail(username);
         final var personIDField = isGuest(accountEmail) ? GUESTS.GUESTID : STAFF.STAFFID;
         final var table = isGuest(accountEmail) ? GUESTS : STAFF;
         final var joinField = isGuest(accountEmail) ? GUESTS.EMAIL : STAFF.EMAIL;
@@ -255,6 +248,23 @@ public final class AccountManager {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords().get(0).get(personIDField);
+    }
+
+    /**
+     * Retrieves the account email given a username.
+     * @param username the account's username
+     * @return the username
+     */
+    public static @NonNull String getAccountEmail(final @NonNull String username) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(ACCOUNTS.EMAIL)
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords()
+                .get(0)
+                .get(ACCOUNTS.EMAIL);
     }
 
 }
