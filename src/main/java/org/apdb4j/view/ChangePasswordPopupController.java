@@ -4,10 +4,16 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apdb4j.controllers.SessionManager;
+import org.apdb4j.core.managers.AccountManager;
+import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.util.view.AlertBuilder;
+import org.jooq.exception.DataAccessException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,9 +36,28 @@ public class ChangePasswordPopupController implements Initializable {
      */
     @FXML
     void onConfirm(final ActionEvent event) {
-        // todo: checks needed.
-        final Stage stage = safeCastToStage(confirmBtn.getScene().getWindow());
-        stage.close();
+        final boolean queryResult;
+        try {
+            queryResult = AccountManager.updateAccountPassword(SessionManager.getSessionManager().getSession().email(),
+                    oldPasswordField.getText().trim(),
+                    newPasswordField.getText().trim(),
+                    "");
+        } catch (final AccessDeniedException | DataAccessException e) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText(e.getMessage())
+                    .show();
+            return;
+        }
+        if (!queryResult) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText("Something went wrong while updating the password.")
+                    .show();
+            return;
+        }
+        new AlertBuilder(Alert.AlertType.INFORMATION)
+                .setContentText("Password has been updated successfully.")
+                .show();
+        confirmBtn.getScene().getWindow().hide();
     }
 
     /**
