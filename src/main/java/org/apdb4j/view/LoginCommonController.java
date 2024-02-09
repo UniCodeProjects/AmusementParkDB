@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.apdb4j.controllers.LoginControllerImpl;
 import org.apdb4j.core.managers.AccountManager;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -46,12 +47,9 @@ public class LoginCommonController {
      * If no message was given, a simple "Error" text will be displayed.
      */
     void showErrorDialog() {
-        Platform.runLater(() -> {
-            final var alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("An error has occurred.");
-            alert.setContentText(controller.getErrorMessage().orElse("Error"));
-            alert.show();
-        });
+        Platform.runLater(() -> new AlertBuilder(Alert.AlertType.ERROR)
+                .setContentText(getController().getErrorMessage().orElse("Error"))
+                .show());
     }
 
 }
