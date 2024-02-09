@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.guests.TicketController;
-import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
@@ -182,11 +181,10 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                         ticketTypeAndCategory.getValue(),
                         quantity);
                 if (!ticketBought) {
-                    Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "An error occurred while buying tickets",
+                    Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "An error occurred",
                             ButtonType.CLOSE).show());
                 }
             });
-            LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false);
         }
     }
 

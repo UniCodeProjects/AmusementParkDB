@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
@@ -94,7 +95,7 @@ public final class TicketManager {
      * @param category the category of the ticket type.
      * @param account the account that is performing this operation. If this account has not the permissions
      *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} if the insertion is successful.
+     * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
     public static boolean addNewTicket(final @NonNull String ticketID,
                                        final LocalDate validOn,
@@ -117,25 +118,28 @@ public final class TicketManager {
                             .fetchOne(0, int.class))
                     .closeConnection()
                     .getResultAsInt();
-            new QueryBuilder().createConnection()
-                    .queryAction(db -> {
-                        db.transaction(configuration -> {
-                            final var dslContext = configuration.dsl();
-                            dslContext.insertInto(TICKETS)
-                                    .values(ticketID,
-                                            purchaseDateTime.toLocalDate(),
-                                            validOn,
-                                            validUntil,
-                                            initialRemainingEntrances,
-                                            ownerID)
-                                    .execute();
-                            dslContext.insertInto(ATTRIBUTIONS)
-                                    .values(ticketID, year, type, category)
-                                    .execute();
-                        });
-                        return 1;
-                    })
-                    .closeConnection();
+            try {
+                new QueryBuilder().createConnection()
+                        .queryAction(db -> {
+                            db.transaction(configuration -> {
+                                final var dslContext = configuration.dsl();
+                                dslContext.insertInto(TICKETS)
+                                        .values(ticketID,
+                                                purchaseDateTime.toLocalDate(),
+                                                validOn,
+                                                validUntil,
+                                                initialRemainingEntrances,
+                                                ownerID)
+                                        .execute();
+                                dslContext.insertInto(ATTRIBUTIONS)
+                                        .values(ticketID, year, type, category)
+                                        .execute();
+                            });
+                            return 1;
+                        }).closeConnection();
+            } catch (final DataAccessException e) {
+                return false;
+            }
             return true;
         }
     }
