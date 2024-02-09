@@ -1,7 +1,6 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -33,16 +32,13 @@ public final class ContractManager {
      *                contract is a permanent contract. It has to be in the future compared to {@code beginDate},
      *                otherwise the query will not be executed.
      * @param salary the salary of the provided employee.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean signNewContract(final @NonNull String contractID,
                                           final @NonNull String employeeNID, final @NonNull String employerNID,
                                           final @NonNull LocalDate subscriptionDate,
                                           final @NonNull LocalDate beginDate, final LocalDate endDate,
-                                          final double salary,
-                                          final @NonNull String account) throws AccessDeniedException {
+                                          final double salary) {
         final Result<Record> existingBeginDate = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.select(CONTRACTS.BEGINDATE)

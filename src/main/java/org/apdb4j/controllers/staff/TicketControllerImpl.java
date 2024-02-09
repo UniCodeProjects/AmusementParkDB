@@ -54,8 +54,8 @@ public class TicketControllerImpl implements TicketController {
                 ticket.getValidOn(),
                 ticket.getValidUntil(),
                 ticket.getOwnerID(),
-                ticket.getCategory(),
-                "");
+                ticket.getCategory()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while adding a new ticket.");
         }
@@ -88,7 +88,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public TicketTableItem punchTicket(final TicketTableItem ticket) {
-        final boolean queryResult = TicketManager.punchTicket(ticket.getTicketID(), "");
+        final boolean queryResult = TicketManager.punchTicket(ticket.getTicketID());
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while punching the ticket " + ticket.getTicketID());
         }
@@ -142,7 +142,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<ImmutablePair<LocalDate, Integer>> getDayWithMostVisits(final YearMonth month) {
-        return TicketManager.getDayWithMostVisits(month, "");
+        return TicketManager.getDayWithMostVisits(month);
     }
 
     /**

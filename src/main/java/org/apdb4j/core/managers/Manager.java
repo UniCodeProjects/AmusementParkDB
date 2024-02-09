@@ -22,12 +22,9 @@ public final class Manager {
      * Performs the SQL query that retrieves all the tuples of the table with the provided name.
      * @param table the table on which the query is performed. If in the database does not exist any table
      *              with the provided name, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return all the tuples of the table with the provided name.
      */
-    public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull Table<Record> table,
-                                                               final @NonNull String account) {
+    public static @NonNull Result<Record> viewAllInfoFromTable(final @NonNull Table<Record> table) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select().from(table).fetch())
                 .closeConnection()
@@ -38,14 +35,11 @@ public final class Manager {
      * Performs the SQL query that retrieves a projection on the provided attributes of the tuples of the given table.
      * @param table the table on which the query is performed. If in the database does not exist any table
      *                  with the provided name, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @param attributes the names of the attributes on which the projection is made. If at least one of these attributes'
      *                   names is not the name of an attribute of the provided table, the query will not be executed.
      * @return all the tuples of the table projected on the given attributes.
      */
     public static @NonNull Result<Record> viewPartialInfoFromTable(final @NonNull Table<Record> table,
-                                                                   final @NonNull String account,
                                                                    final @NonNull SelectFieldOrAsterisk... attributes) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(attributes).from(table).fetch())
@@ -56,15 +50,13 @@ public final class Manager {
     /**
      * Removes from the provided table the tuple whose primary key has the provided values.
      * @param table the table.
-     * @param account the account that is performing this operation. If the account has not the permission to do
-     *                this operation, the query will not be executed.
      * @param pkValues the primary key values of the tuple to remove. In case the primary key is composed by multiple attributes,
      *                 the values must be passed in the same order as their related attributes show in the primary key
      *                 declaration.
      *                 Otherwise, the deletion will not be successful.
      * @return {@code true} if the deletion is successful, {@code false} otherwise.
      */
-    public static boolean removeTupleFromDB(final @NonNull Table<Record> table, final @NonNull String account,
+    public static boolean removeTupleFromDB(final @NonNull Table<Record> table,
                                             final @NonNull Object... pkValues) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.execute(generateDeletionQuery(table, pkValues)))

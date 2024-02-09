@@ -1,7 +1,6 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 
@@ -37,8 +36,6 @@ public final class StaffManager {
      * @param role the role of the new staff member. It can be {@code null} only if the provided staff is an admin.
      * @param isAdmin determines whether the provided staff is an admin or not.
      * @param isEmployee determines whether the provided staff is an employee or not.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean hireNewStaffMember(final @NonNull String nationalID, final @NonNull String staffID,
@@ -46,15 +43,14 @@ public final class StaffManager {
                                              final @NonNull String name, final @NonNull String surname,
                                              final @NonNull LocalDate dateOfBirth, final @NonNull String birthPlace,
                                              final char gender,
-                                             final String role, final boolean isAdmin, final boolean isEmployee,
-                                             final @NonNull String account) throws AccessDeniedException {
+                                             final String role, final boolean isAdmin, final boolean isEmployee) {
         if (AccountManager.isGuest(email)) {
             return false;
         }
         DB.createConnection()
                 .queryAction(db -> {
                     db.transaction(configuration -> {
-                        AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION, account);
+                        AccountManager.addNewAccount(email, isAdmin ? ADMIN_PERMISSION : STAFF_PERMISSION);
                         configuration.dsl()
                                 .insertInto(STAFF)
                                 .values(staffID,
@@ -80,11 +76,9 @@ public final class StaffManager {
      * Performs the SQL query that fires the provided staff member.
      * @param staffNationalID the national identifier of the staff member to fire. If the value of this parameter
      *                        is not the national identifier of a staff member, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
-    public static boolean fireStaffMember(final @NonNull String staffNationalID, final @NonNull String account) {
+    public static boolean fireStaffMember(final @NonNull String staffNationalID) {
         final LocalDate currentDate = LocalDate.now();
         final int lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth()).getDayOfMonth();
         final int updatedTuples = DB.createConnection()
@@ -103,15 +97,12 @@ public final class StaffManager {
      *                        identifier of a staff member, the query will not be executed and the controller will be informed.
      * @param newContractID the new ID used for the updated contract.
      * @param newSalary the new salary for the provided staff member.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     @SuppressWarnings("PMD.PrematureDeclaration")   // Not a premature declaration, changes happen in DB.
      public static boolean updateStaffSalary(final @NonNull String staffNationalID,
                                              final @NonNull String newContractID,
-                                             final double newSalary,
-                                             final @NonNull String account) throws AccessDeniedException {
+                                             final double newSalary) {
          final Record oldContract = DB.createConnection()
                  .queryAction(db -> db.select()
                          .from(CONTRACTS)
@@ -120,7 +111,7 @@ public final class StaffManager {
                  .closeConnection()
                  .getResultAsRecords()
                  .get(0);
-         final boolean updatedOldContract = fireStaffMember(staffNationalID, account);
+         final boolean updatedOldContract = fireStaffMember(staffNationalID);
          if (!updatedOldContract) {
              return false;
          }
@@ -130,8 +121,8 @@ public final class StaffManager {
                  LocalDate.now(),
                  LocalDate.now(),
                  oldContract.get(CONTRACTS.ENDDATE),
-                 newSalary,
-                 account);
+                 newSalary
+         );
          // Rollback changes to old contract.
          if (!updatedNewContract) {
              return DB.createConnection()

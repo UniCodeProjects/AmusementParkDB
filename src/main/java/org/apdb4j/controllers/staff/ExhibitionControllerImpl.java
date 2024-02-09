@@ -46,8 +46,8 @@ public class ExhibitionControllerImpl implements ExhibitionController {
         final boolean queryResult = ExhibitionManager.addNewExhibitionWithDescription(exhibition.getId(),
                 exhibition.getName(),
                 exhibition.getType(),
-                exhibition.getDescription(),
-                "");
+                exhibition.getDescription()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while adding a new exhibition.");
         }
@@ -90,8 +90,8 @@ public class ExhibitionControllerImpl implements ExhibitionController {
         final boolean queryResult = ExhibitionManager.addSpectatorsNum(exhibition.getId(),
                 exhibition.getDate(),
                 exhibition.getTime(),
-                exhibition.getSpectators(),
-                "");
+                exhibition.getSpectators()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while updating the spectators number");
         }
@@ -107,8 +107,8 @@ public class ExhibitionControllerImpl implements ExhibitionController {
         final boolean queryResult = ExhibitionManager.changeMaxSeats(exhibition.getId(),
                 exhibition.getDate(),
                 exhibition.getTime(),
-                exhibition.getMaxSeats(),
-                "");
+                exhibition.getMaxSeats()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while updating the maximum seats number");
         }
@@ -124,8 +124,8 @@ public class ExhibitionControllerImpl implements ExhibitionController {
         final boolean queryResult = ExhibitionManager.planNewExhibition(exhibition.getId(),
                 exhibition.getDate(),
                 exhibition.getTime(),
-                exhibition.getMaxSeats(),
-                "");
+                exhibition.getMaxSeats()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while planning and exhibition.");
         }
@@ -138,7 +138,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
      */
     @Override
     public Collection<Pair<String, Integer>> getAverageSpectatorsByType() {
-        return ExhibitionManager.getAverageSpectatorsForType("");
+        return ExhibitionManager.getAverageSpectatorsForType();
     }
 
     /**
@@ -147,7 +147,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
      */
     @Override
     public double getSoldOutExhibitionPercentage() {
-        return ExhibitionManager.computePercentageOfSoldOutExhibitions("");
+        return ExhibitionManager.computePercentageOfSoldOutExhibitions();
     }
 
     /**
@@ -156,7 +156,7 @@ public class ExhibitionControllerImpl implements ExhibitionController {
      */
     @Override
     public <T extends ExhibitionTableItem> Collection<T> viewPlannedExhibitions() {
-        return extractExhibitionData(ExhibitionManager.viewAllPlannedExhibitions(""));
+        return extractExhibitionData(ExhibitionManager.viewAllPlannedExhibitions());
     }
 
     /**

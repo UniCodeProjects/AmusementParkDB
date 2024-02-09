@@ -39,7 +39,7 @@ public class PictureControllerImpl implements PictureController {
     @Override
     public <T extends TableItem> T addData(final T item) {
         final PictureTableItem picture = (PictureTableItem) item;
-        final boolean queryResult = PictureManager.addPicture(picture.getPath(), picture.getServiceID(), "");
+        final boolean queryResult = PictureManager.addPicture(picture.getPath(), picture.getServiceID());
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while adding a new picture.");
         }
@@ -61,7 +61,7 @@ public class PictureControllerImpl implements PictureController {
      */
     @Override
     public <T extends PictureTableItem> T editPicture(final String oldPath, final T newPicture) {
-        final boolean queryResult = PictureManager.editPicture(oldPath, newPicture.getPath(), "");
+        final boolean queryResult = PictureManager.editPicture(oldPath, newPicture.getPath());
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while editing the picture.");
         }
@@ -74,7 +74,7 @@ public class PictureControllerImpl implements PictureController {
      */
     @Override
     public <T extends PictureTableItem> T removePicture(final T picture) {
-        final boolean queryResult = PictureManager.removePicture(picture.getPath(), "");
+        final boolean queryResult = PictureManager.removePicture(picture.getPath());
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while removing the picture.");
         }
