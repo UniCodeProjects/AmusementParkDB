@@ -768,10 +768,10 @@ class DBConstraintsTest {
 
     @AfterAll
     static void tearDown() {
-        TUPLES_TO_REMOVE.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
+        TUPLES_TO_REMOVE.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), pair.getRight())));
     }
 
     private static void removeTuplesFromDB(final Collection<Pair<Table<Record>, Object[]>> tuplesToRemove) {
-        tuplesToRemove.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), "foo@bar.com", pair.getRight())));
+        tuplesToRemove.forEach(pair -> assertTrue(Manager.removeTupleFromDB(pair.getLeft(), pair.getRight())));
     }
 }

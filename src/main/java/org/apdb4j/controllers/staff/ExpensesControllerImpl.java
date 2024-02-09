@@ -15,7 +15,7 @@ public class ExpensesControllerImpl implements ExpensesController {
     /**
      * {@inheritDoc}
      * @throws IllegalArgumentException when no income is found for the given parameters, or {@code m1} is after {@code m2}
-     * @throws IllegalStateException if {@link org.apdb4j.core.managers.MoneyManager#getIncomes(String, YearMonth...)}
+     * @throws IllegalStateException if {@link #getIncomes(YearMonth...)}
      *                               returns more or less than two values
      */
     @Override
@@ -23,7 +23,7 @@ public class ExpensesControllerImpl implements ExpensesController {
         if (m1.isAfter(m2)) {
             throw new IllegalArgumentException("Wrong month order: " + m1 + " is after " + m2);
         }
-        final List<Pair<YearMonth, Double>> incomes = MoneyManager.getIncomes("", m1, m2).stream().toList();
+        final List<Pair<YearMonth, Double>> incomes = MoneyManager.getIncomes(m1, m2).stream().toList();
         if (incomes.size() != 2) {
             throw new IllegalStateException("MoneyManager returned " + incomes.size() + " values instead of 2");
         }
@@ -36,7 +36,7 @@ public class ExpensesControllerImpl implements ExpensesController {
      */
     @Override
     public void addRecapForPreviousMonth() {
-        final boolean success = MoneyManager.addRecapForPreviousMonth("");
+        final boolean success = MoneyManager.addRecapForPreviousMonth();
         if (!success) {
             throw new IllegalStateException("Monthly recap could not get added.");
         }

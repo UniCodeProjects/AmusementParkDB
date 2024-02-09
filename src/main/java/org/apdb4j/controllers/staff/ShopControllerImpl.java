@@ -60,22 +60,22 @@ public class ShopControllerImpl implements ShopController {
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
-                    shop.getType(),
-                    "");
+                    shop.getType()
+            );
         } else {
             query1Successful = ShopManager.addNewShopWithDescription(shop.getId(),
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
                     shop.getType(),
-                    shop.getDescription(),
-                    "");
+                    shop.getDescription()
+            );
         }
         final boolean query2Successful = ShopManager.addNewMonthlyCost(shop.getId(),
                 shop.getYearMonth(),
                 shop.getExpenses(),
-                shop.getRevenue(),
-                "");
+                shop.getRevenue()
+        );
         if (!query1Successful || !query2Successful) {
             errorMessage = "Something went wrong";
             throw new DataAccessException(errorMessage);

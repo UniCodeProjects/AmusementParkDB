@@ -80,8 +80,8 @@ public class EmployeeControllerImpl implements EmployeeController {
                                 employee.getGender().charAt(0),
                                 employee.getRole(),
                                 employee.isAdmin(),
-                                !employee.isAdmin(),
-                                "");
+                                !employee.isAdmin()
+                        );
                         ContractTableItem contract = null;
                         try {
                             contract = (ContractTableItem) new ContractControllerImpl().addData(contractItem);
@@ -142,7 +142,7 @@ public class EmployeeControllerImpl implements EmployeeController {
     @Override
     public <T extends TableItem> T fire(final T employeeItem) {
         final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
-        StaffManager.fireStaffMember(employee.getNationalID(), "");
+        StaffManager.fireStaffMember(employee.getNationalID());
         return employeeItem;
     }
 

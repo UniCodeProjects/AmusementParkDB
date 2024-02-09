@@ -1,7 +1,6 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 
 import static org.apdb4j.db.Tables.GUESTS;
@@ -24,19 +23,17 @@ public final class GuestManager {
      * @param name the guest's name.
      * @param surname the guest's surname.
      * @param email the guest's email.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewGuest(final @NonNull String guestID, final @NonNull String name, final @NonNull String surname,
-                                      final @NonNull String email, final @NonNull String account) throws AccessDeniedException {
+                                      final @NonNull String email) {
         if (isStaff(email)) {
             return false;
         }
         DB.createConnection()
                 .queryAction(db -> {
                     db.transaction(configuration -> {
-                        AccountManager.addNewAccount(email, PERMISSION_TYPE, account);
+                        AccountManager.addNewAccount(email, PERMISSION_TYPE);
                         configuration.dsl()
                                 .insertInto(GUESTS)
                                 .values(guestID, email, name, surname)
@@ -56,8 +53,6 @@ public final class GuestManager {
      * @param email the guest's email.
      * @param username the username of the new account.
      * @param password the password of the new account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewGuest(final @NonNull String guestID,
@@ -65,8 +60,7 @@ public final class GuestManager {
                                       final @NonNull String surname,
                                       final @NonNull String email,
                                       final @NonNull String username,
-                                      final @NonNull String password,
-                                      final @NonNull String account) throws AccessDeniedException {
+                                      final @NonNull String password) {
         if (isStaff(email)) {
             return false;
         }
@@ -76,8 +70,8 @@ public final class GuestManager {
                         AccountManager.addNewAccount(email,
                                 username,
                                 password,
-                                PERMISSION_TYPE,
-                                account);
+                                PERMISSION_TYPE
+                        );
                         configuration.dsl()
                                 .insertInto(GUESTS)
                                 .values(guestID, email, name, surname)
