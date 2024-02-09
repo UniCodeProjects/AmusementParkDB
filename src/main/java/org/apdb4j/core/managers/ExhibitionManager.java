@@ -36,15 +36,12 @@ public final class ExhibitionManager {
      * @param exhibitionID the identifier of the new exhibition.
      * @param name the name of the new exhibition.
      * @param type the type of the new exhibition.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibition(final @NonNull String exhibitionID,
                                            final @NonNull String name,
-                                           final @NonNull String type,
-                                           final @NonNull String account) {
-        return addNewExhibitionWithDescription(exhibitionID, name, type, null, account);
+                                           final @NonNull String type) {
+        return addNewExhibitionWithDescription(exhibitionID, name, type, null);
     }
 
     /**
@@ -54,16 +51,13 @@ public final class ExhibitionManager {
      * @param type the type of the new exhibition.
      * @param description the description of the new exhibition. If it is {@code null} the behavior of this method
      *                    is the same of
-     *                    {@link ExhibitionManager#addNewExhibition(String, String, String, String)}.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     *                    {@link #addNewExhibition(String, String, String)}.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibitionWithDescription(final @NonNull String exhibitionID,
                                                           final @NonNull String name,
                                                           final @NonNull String type,
-                                                          final String description,
-                                                          final @NonNull String account) {
+                                                          final String description) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(PARK_SERVICES,
                                 PARK_SERVICES.PARKSERVICEID,
@@ -94,14 +88,11 @@ public final class ExhibitionManager {
      * @param date the date on which the exhibition will be performed.
      * @param time the hour on which the exhibition will be performed.
      * @param maxSeats the maximum number of seats of the exhibition venue.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean planNewExhibition(final @NonNull String exhibitionID,
                                             final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                            final int maxSeats,
-                                            final @NonNull String account) {
+                                            final int maxSeats) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(EXHIBITION_DETAILS)
                         .values(exhibitionID, date, time, maxSeats, null)
@@ -121,14 +112,11 @@ public final class ExhibitionManager {
      *             The time needs to be in the future if {@code date} is the current day. Otherwise, the query will not
      *             be executed.
      * @param newMaxSeats the new maximum number of seats.
-     * @param account the account that is performing this operation. If the account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean changeMaxSeats(final @NonNull String exhibitionID,
                                          final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                         final int newMaxSeats,
-                                         final @NonNull String account) {
+                                         final int newMaxSeats) {
         final int updatedTuples;
         if (date.equals(LocalDate.now())) {
             updatedTuples = DB.createConnection()
@@ -165,14 +153,11 @@ public final class ExhibitionManager {
      * @param time the hour on which the exhibition was performed. The time has to be in the past if {@code date} is the
      *             current date, otherwise the query will not be executed.
      * @param spectators the number of people that watched the exhibition.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean addSpectatorsNum(final @NonNull String exhibitionID,
                                            final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                           final int spectators,
-                                           final @NonNull String account) {
+                                           final int spectators) {
         final int updatedTuples;
         if (date.equals(LocalDate.now())) {
             updatedTuples = DB.createConnection()
@@ -204,11 +189,9 @@ public final class ExhibitionManager {
     /**
      * Performs the SQL query that computes the average number of spectators for each
      * exhibition type.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return a collection in which each exhibition type is paired with its average number of spectators.
      */
-    public static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType(final @NonNull String account) {
+    public static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType() {
         final Result<Record> exhibitionTypes = DB.createConnection()
                 .queryAction(db -> db.select(PARK_SERVICES.TYPE)
                         .from(PARK_SERVICES)
@@ -238,11 +221,9 @@ public final class ExhibitionManager {
 
     /**
      * Performs the SQL query that computes the percentage of exhibitions that were sold-out until now.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return the percentage of sold-out exhibitions.
      */
-    public static double computePercentageOfSoldOutExhibitions(final @NonNull String account) {
+    public static double computePercentageOfSoldOutExhibitions() {
         final int soldOutAmount = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(EXHIBITION_DETAILS)
@@ -260,11 +241,9 @@ public final class ExhibitionManager {
 
     /**
      * Realises the SQL query that retrieves all the exhibitions that are going to be performed in the future.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return all the exhibitions that are planned for the future.
      */
-     public static @NonNull Collection<Record> viewAllPlannedExhibitions(final @NonNull String account) {
+     public static @NonNull Collection<Record> viewAllPlannedExhibitions() {
          return DB.createConnection()
                  .queryAction(db -> db.select()
                          .from(EXHIBITION_DETAILS

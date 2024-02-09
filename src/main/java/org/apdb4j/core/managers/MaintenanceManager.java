@@ -1,14 +1,14 @@
 package org.apdb4j.core.managers;
 
+import lombok.NonNull;
+import org.apdb4j.util.QueryBuilder;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
-import java.util.Map;
 import java.util.HashMap;
-
-import lombok.NonNull;
-import org.apdb4j.util.QueryBuilder;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -28,8 +28,6 @@ public final class MaintenanceManager {
      * @param price the price of the maintenance.
      * @param description the description of the maintenance.
      * @param date the date on which the maintenance will be carried out.
-     * @param account the account that performs this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @param employeeNIDs the employees that are responsible for the maintenance.<br/>
      *                     The query will not be executed if: <ul>
      *                     <li>at least one of the values of this parameter is not the national identifier of an employee, or</li>
@@ -41,7 +39,6 @@ public final class MaintenanceManager {
                                             final double price,
                                             final @NonNull String description,
                                             final @NonNull LocalDate date,
-                                            final @NonNull String account,
                                             final @NonNull String... employeeNIDs) {
         if (employeeNIDs.length == 0 || !areAllContractsValid(date, employeeNIDs)) {
             return false;
@@ -67,12 +64,10 @@ public final class MaintenanceManager {
 
     /**
      * Performs the SQL query that retrieves all the facilities with the date of their last maintenance.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return all the park's facilities, with the date of their last maintenance. The date is {@code null} if the
      *         facility has never been maintained.
      */
-    public static @NonNull Map<String, LocalDate> sortFacilitiesByLastMaintenanceDate(final @NonNull String account) {
+    public static @NonNull Map<String, LocalDate> sortFacilitiesByLastMaintenanceDate() {
         final var sortedMaintenances = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(FACILITIES.FACILITYID, MAINTENANCES.DATE)
                         .from(FACILITIES)
@@ -122,8 +117,5 @@ public final class MaintenanceManager {
         }
         return validContracts == employeeNIDs.length;
     }
-
-    // viewAllPlannedMaintenances();
-    // methods that add/edit/delete one or more employees (for maintenances not already carried out).
 
 }

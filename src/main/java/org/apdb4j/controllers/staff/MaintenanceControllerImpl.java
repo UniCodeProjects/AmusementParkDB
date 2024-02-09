@@ -47,7 +47,6 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                 maintenance.getPrice(),
                 maintenance.getDescription(),
                 maintenance.getDate(),
-                "",
                 maintenance.getEmployeeIDs());
         if (!successfulQuery) {
             errorMessage = "Something went wrong.";

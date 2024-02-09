@@ -2,7 +2,6 @@ package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
 import org.apdb4j.core.managers.ContractManager;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -22,8 +21,6 @@ import static org.apdb4j.db.Tables.CONTRACTS;
  * An implementation of a contract controller.
  */
 public class ContractControllerImpl implements ContractController {
-
-    private String errorMessage;
 
     /**
      * {@inheritDoc}
@@ -47,18 +44,16 @@ public class ContractControllerImpl implements ContractController {
     @Override
     public <T extends TableItem> T addData(final T item) {
         final ContractTableItem contract = (ContractTableItem) item;
-        try {
-            ContractManager.signNewContract(contract.getId(),
-                    contract.getEmployeeNID(),
-                    contract.getEmployerNID(),
-                    contract.getSignedDate(),
-                    contract.getBeginDate(),
-                    contract.getEndDate(),
-                    contract.getSalary(),
-                    "");
-        } catch (final AccessDeniedException e) {
-            errorMessage = e.getMessage();
-            throw new DataAccessException(e.getMessage(), e);
+        final boolean queryResult = ContractManager.signNewContract(contract.getId(),
+                contract.getEmployeeNID(),
+                contract.getEmployerNID(),
+                contract.getSignedDate(),
+                contract.getBeginDate(),
+                contract.getEndDate(),
+                contract.getSalary()
+        );
+        if (!queryResult) {
+            throw new DataAccessException("Something went wrong while adding a contract");
         }
         return item;
     }
@@ -105,7 +100,7 @@ public class ContractControllerImpl implements ContractController {
      */
     @Override
     public @NonNull Optional<String> getErrorMessage() {
-        return Optional.ofNullable(errorMessage);
+        return Optional.empty();
     }
 
     @SuppressWarnings("unchecked")
