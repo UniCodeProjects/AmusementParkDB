@@ -21,6 +21,11 @@ import java.util.stream.Stream;
  * The FXML controller for the sign-up scene.
  */
 public class SignUpScreenController extends LoginCommonController implements Initializable {
+
+    @FXML
+    private TextField name;
+    @FXML
+    private TextField surname;
     @FXML
     private TextField email;
     @FXML
@@ -38,7 +43,11 @@ public class SignUpScreenController extends LoginCommonController implements Ini
     void signUp(final ActionEvent event) {
         CompletableFuture.supplyAsync(() -> {
             Platform.runLater(() -> signUpBtn.setDisable(true));
-            return getController().checkSignUp(email.getText(), username.getText(), password.getText());
+            return getController().checkSignUp(name.getText().trim(),
+                    surname.getText().trim(),
+                    email.getText().trim(),
+                    username.getText().trim(),
+                    password.getText().trim());
         }).thenAcceptAsync(result -> {
             Platform.runLater(() -> signUpBtn.setDisable(false));
             if (result) {
@@ -67,6 +76,8 @@ public class SignUpScreenController extends LoginCommonController implements Ini
     public void initialize(final URL location, final ResourceBundle resources) {
         final var screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
         final var width = screenDimensions.getWidth() * 0.2;
+        name.setPrefWidth(width);
+        surname.setPrefWidth(width);
         email.setPrefWidth(width);
         username.setPrefWidth(width);
         password.setPrefWidth(width);

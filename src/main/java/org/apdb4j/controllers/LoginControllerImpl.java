@@ -1,7 +1,8 @@
 package org.apdb4j.controllers;
 
 import lombok.NonNull;
-import org.apdb4j.core.managers.AccountManager;
+import org.apdb4j.core.managers.GuestManager;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -47,18 +48,29 @@ public class LoginControllerImpl implements LoginController {
      * {@inheritDoc}
      */
     @Override
-    public boolean checkSignUp(final @NonNull String email, final @NonNull String username, final @NonNull String password) {
+    public boolean checkSignUp(final @NonNull String name,
+                               final @NonNull String surname,
+                               final @NonNull String email,
+                               final @NonNull String username,
+                               final @NonNull String password) {
         boolean queryResult;
         try {
-            queryResult = AccountManager.addNewAccount(email, username, password, "Guest");
+            queryResult = GuestManager.addNewGuest(IDGenerationUtils.generatePersonID(name, surname, email),
+                    name,
+                    surname,
+                    email,
+                    username,
+                    password);
         } catch (final DataAccessException e) {
             errorMessage = e.getCause().toString();
             return false;
         }
-        if (queryResult) {
-            SessionManager.getSessionManager().login(username);
+        if (!queryResult) {
+            errorMessage = "Something went wrong while adding a guest account.";
+            return false;
         }
-        return queryResult;
+        SessionManager.getSessionManager().login(username);
+        return true;
     }
 
     /**

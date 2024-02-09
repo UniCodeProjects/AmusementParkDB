@@ -17,11 +17,17 @@ public interface LoginController extends Controller {
 
     /**
      * Checks the validity of an account sign-up by inserting it in the DB.
+     * @param name the provided name
+     * @param surname the provided surname
      * @param email the provided email
      * @param username the provided username
      * @param password the provided password
      * @return {@code true} if the account is successfully inserted in the database
      */
-    boolean checkSignUp(@NonNull String email, @NonNull String username, @NonNull String password);
+    boolean checkSignUp(@NonNull String name,
+                        @NonNull String surname,
+                        @NonNull String email,
+                        @NonNull String username,
+                        @NonNull String password);
 
 }
