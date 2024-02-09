@@ -1,7 +1,6 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
 
@@ -73,14 +72,11 @@ public final class AccountManager {
      *              of an account, the query will not be executed.
      * @param username the username provided for the account.
      * @param password the password provided for the account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean addCredentialsForAccount(final @NonNull String email,
                                                    final @NonNull String username,
-                                                   final @NonNull String password,
-                                                   final @NonNull String account) throws AccessDeniedException {
+                                                   final @NonNull String password) {
         final boolean areCredentialsPresent = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(ACCOUNTS)
@@ -92,13 +88,6 @@ public final class AccountManager {
                 .getResultAsInt() == 1;
         if (areCredentialsPresent) {
             return false;
-        }
-        /*
-         The query executor is a guest;
-         however, they are not allowed to modify an account that is not one and not theirs.
-        */
-        if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
-            throw new AccessDeniedException("Guest account has no permission over " + email);
         }
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
@@ -119,17 +108,11 @@ public final class AccountManager {
      *                    If the value of this parameter is not the password of the provided account,
      *                    the query will not be executed.
      * @param newPassword the new password for the account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
      public static boolean updateAccountPassword(final @NonNull String email,
                                                  final @NonNull String oldPassword,
-                                                 final @NonNull String newPassword,
-                                                 final @NonNull String account) throws AccessDeniedException {
-         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
-             throw new AccessDeniedException("Guest account has no permission over " + email);
-         }
+                                                 final @NonNull String newPassword) {
          final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)
