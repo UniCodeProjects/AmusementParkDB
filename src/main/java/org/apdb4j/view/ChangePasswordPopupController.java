@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.core.managers.AccountManager;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.view.AlertBuilder;
 import org.jooq.exception.DataAccessException;
 
@@ -40,9 +39,8 @@ public class ChangePasswordPopupController implements Initializable {
         try {
             queryResult = AccountManager.updateAccountPassword(SessionManager.getSessionManager().getSession().email(),
                     oldPasswordField.getText().trim(),
-                    newPasswordField.getText().trim(),
-                    "");
-        } catch (final AccessDeniedException | DataAccessException e) {
+                    newPasswordField.getText().trim());
+        } catch (final DataAccessException e) {
             new AlertBuilder(Alert.AlertType.ERROR)
                     .setContentText(e.getMessage())
                     .show();
