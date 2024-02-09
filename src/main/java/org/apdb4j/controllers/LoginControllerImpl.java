@@ -2,7 +2,6 @@ package org.apdb4j.controllers;
 
 import lombok.NonNull;
 import org.apdb4j.core.managers.AccountManager;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -51,8 +50,8 @@ public class LoginControllerImpl implements LoginController {
     public boolean checkSignUp(final @NonNull String email, final @NonNull String username, final @NonNull String password) {
         boolean queryResult;
         try {
-            queryResult = AccountManager.addNewAccount(email, username, password, "Guest", null);
-        } catch (final DataAccessException | AccessDeniedException e) {
+            queryResult = AccountManager.addNewAccount(email, username, password, "Guest");
+        } catch (final DataAccessException e) {
             errorMessage = e.getCause().toString();
             return false;
         }

@@ -24,12 +24,9 @@ public final class AccountManager {
      * @param email the email of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
-     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
-                                         final @NonNull String account) throws AccessDeniedException {
+     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType) {
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
@@ -50,16 +47,12 @@ public final class AccountManager {
      * @param password the password of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
-     *                Its value must be {@code null} when a guest is creating his account.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewAccount(final @NonNull String email,
                                         final @NonNull String username,
                                         final @NonNull String password,
-                                        final @NonNull String permissionType,
-                                        final String account) throws AccessDeniedException {
+                                        final @NonNull String permissionType) {
         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
             return false;
         }

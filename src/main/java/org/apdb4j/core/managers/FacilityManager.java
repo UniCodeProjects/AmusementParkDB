@@ -1,9 +1,10 @@
 package org.apdb4j.core.managers;
 
-import java.time.LocalTime;
-
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
+
+import java.time.LocalTime;
+
 import static org.apdb4j.db.Tables.FACILITIES;
 
 /**
@@ -19,12 +20,9 @@ public final class FacilityManager {
      * @param facilityID the facility identifier. If the value of this parameter is not the identifier of a facility,
      *                   the query will not be executed.
      * @param newOpeningTime the new opening time of the provided facility.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeOpeningTime(final @NonNull String facilityID, final @NonNull LocalTime newOpeningTime,
-                                            final @NonNull String account) {
+    public static boolean changeOpeningTime(final @NonNull String facilityID, final @NonNull LocalTime newOpeningTime) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(FACILITIES)
                         .set(FACILITIES.OPENINGTIME, newOpeningTime)
@@ -39,12 +37,9 @@ public final class FacilityManager {
      * @param facilityID the facility identifier. If the value of this parameter is not the identifier of a facility,
      *                   the query will not be executed.
      * @param newClosingTime the new closing time of the given facility.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeClosingTime(final @NonNull String facilityID, final @NonNull LocalTime newClosingTime,
-                                            final @NonNull String account) {
+    public static boolean changeClosingTime(final @NonNull String facilityID, final @NonNull LocalTime newClosingTime) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(FACILITIES)
                         .set(FACILITIES.CLOSINGTIME, newClosingTime)

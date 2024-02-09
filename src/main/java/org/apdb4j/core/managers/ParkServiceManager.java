@@ -24,12 +24,9 @@ public final class ParkServiceManager {
      * @param parkServiceID the park service identifier. If the value of this parameter is not the identifier of a
      *                      park service, the query will not be executed.
      * @param newName the new name of the provided park service.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
-    public static boolean changeName(final @NonNull String parkServiceID, final @NonNull String newName,
-                                     final @NonNull String account) {
+    public static boolean changeName(final @NonNull String parkServiceID, final @NonNull String newName) {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(PARK_SERVICES)
                         .set(PARK_SERVICES.NAME, newName)
@@ -45,12 +42,9 @@ public final class ParkServiceManager {
      * @param parkServiceID the park service identifier. If the value of this parameter is not the identifier of a
      *                      park service, the query will not be executed.
      * @param newAverageRating the new average rating of the given park service.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
-    public static boolean editAverageRating(final @NonNull String parkServiceID, final double newAverageRating,
-                                            final @NonNull String account) {
+    public static boolean editAverageRating(final @NonNull String parkServiceID, final double newAverageRating) {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(PARK_SERVICES)
                         .set(PARK_SERVICES.AVGRATING, BigDecimal.valueOf(newAverageRating))
@@ -65,11 +59,9 @@ public final class ParkServiceManager {
      * Performs the SQL query that increments of one unit the number of reviews for the provided park service.
      * @param parkServiceID the park service identifier. If the value of this parameter is not the identifier of a
      *                      park service, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
-    public static boolean incrementReviews(final @NonNull String parkServiceID, final @NonNull String account) {
+    public static boolean incrementReviews(final @NonNull String parkServiceID) {
         final int beforeNum = DB.createConnection()
                 .queryAction(db -> db.select(PARK_SERVICES.NUMREVIEWS)
                         .from(PARK_SERVICES)
@@ -99,12 +91,9 @@ public final class ParkServiceManager {
      * @param parkServiceID the park service identifier. If the value of this parameter is not the identifier of a
      *                      park service, the query will not be executed.
      * @param newType the new type of the provided park service.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
-    public static boolean changeType(final @NonNull String parkServiceID, final @NonNull String newType,
-                                     final @NonNull String account) {
+    public static boolean changeType(final @NonNull String parkServiceID, final @NonNull String newType) {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(PARK_SERVICES)
                         .set(PARK_SERVICES.TYPE, newType)
@@ -121,13 +110,10 @@ public final class ParkServiceManager {
      * @param parkServiceID the park service. If the value of this parameter is not the identifier of a park service,
      *                      the query will not be executed.
      * @param description the description to add for the provided park service.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean addDescription(final @NonNull String parkServiceID,
-                                         final @NonNull String description,
-                                         final @NonNull String account) {
+                                         final @NonNull String description) {
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(PARK_SERVICES)
                         .set(PARK_SERVICES.DESCRIPTION, description)
@@ -140,11 +126,9 @@ public final class ParkServiceManager {
 
     /**
      * Performs the SQL query that retrieves the park's best services according to their average rating.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return the park's best services.
      */
-    public static @NonNull List<Record> getBestParkServices(final @NonNull String account) {
+    public static @NonNull List<Record> getBestParkServices() {
         return DB.createConnection()
                 .queryAction(db -> db.select()
                         .from(PARK_SERVICES)

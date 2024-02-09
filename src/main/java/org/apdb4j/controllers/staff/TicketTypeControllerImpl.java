@@ -40,13 +40,13 @@ public class TicketTypeControllerImpl implements TicketTypeController {
     @Override
     public <T extends TableItem> T addData(final T item) {
         final TicketTypeTableItem ticketType = (TicketTypeTableItem) item;
-        final boolean queryResult1 = TicketManager.addNewPriceList(ticketType.getYear().getValue(), "");
+        final boolean queryResult1 = TicketManager.addNewPriceList(ticketType.getYear().getValue());
         final boolean queryResult2 = TicketManager.addNewTicketType(ticketType.getType(),
                 ticketType.getPrice(),
                 ticketType.getYear().getValue(),
                 ticketType.getCategory(),
-                ticketType.getDuration(),
-                "");
+                ticketType.getDuration()
+        );
         if (!queryResult1 || !queryResult2) {
             throw new DataAccessException("Something went wrong while adding a new ticket type.");
         }
@@ -62,8 +62,8 @@ public class TicketTypeControllerImpl implements TicketTypeController {
         final TicketTypeTableItem ticketType = (TicketTypeTableItem) item;
         final boolean queryResult = TicketManager.updateTicketTypePrice(ticketType.getType(),
                 ticketType.getCategory(),
-                ticketType.getPrice(),
-                "");
+                ticketType.getPrice()
+        );
         if (!queryResult) {
             throw new DataAccessException("Something went wrong while updating ticket type price: " + ticketType.getPrice());
         }

@@ -34,7 +34,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<String> getTicketTypes() {
-        return Manager.viewPartialInfoFromTable(TICKET_TYPES, "REMOVE ME", TICKET_TYPES.TYPE)
+        return Manager.viewPartialInfoFromTable(TICKET_TYPES, TICKET_TYPES.TYPE)
                 .stream()
                 .map(record -> record.get(TICKET_TYPES.TYPE))
                 .distinct()
@@ -46,7 +46,7 @@ public class TicketControllerImpl implements TicketController {
      */
     @Override
     public Collection<String> getCustomerCategories() {
-        return Manager.viewPartialInfoFromTable(TICKET_TYPES, "REMOVE ME", TICKET_TYPES.CATEGORY)
+        return Manager.viewPartialInfoFromTable(TICKET_TYPES, TICKET_TYPES.CATEGORY)
                 .stream()
                 .map(record -> record.get(TICKET_TYPES.CATEGORY))
                 .distinct()
@@ -84,8 +84,8 @@ public class TicketControllerImpl implements TicketController {
                     "Single day ticket".equals(ticketType) ? validOnOrValidUntil : null,
                     "Season ticket".equals(ticketType) ? validOnOrValidUntil : null,
                     SessionManager.getSessionManager().getSession().personID(),
-                    customerCategory,
-                    "REMOVE ME");
+                    customerCategory
+            );
             if (!ticketAdded) {
                 return false;
             }

@@ -60,8 +60,8 @@ public class RideControllerImpl implements RideController {
                 ride.getMaxHeight(),
                 Math.toIntExact(Math.round(ride.getMinWeight())),
                 Math.toIntExact(Math.round(ride.getMaxWeight())),
-                ride.getStatus().charAt(0),
-                "");
+                ride.getStatus().charAt(0)
+        );
         if (!successfulQuery) {
             errorMessage = "Could not add ride.";
             throw new DataAccessException(errorMessage);
