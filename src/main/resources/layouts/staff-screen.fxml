@@ -59,6 +59,8 @@
                         <Label text="Closing time:" GridPane.rowIndex="2" />
                         <TextField fx:id="openingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="closingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                         <Label text="Top Park Services:" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.valignment="TOP" />
+                         <ListView fx:id="topParkServicesTopList" GridPane.rowIndex="7" GridPane.columnIndex="1" />
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
