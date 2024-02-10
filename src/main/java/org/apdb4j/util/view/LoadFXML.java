@@ -4,11 +4,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.NonNull;
 import org.apdb4j.view.BackableFXMLController;
 import org.apdb4j.view.FXMLController;
@@ -127,7 +130,7 @@ public final class LoadFXML {
     public static void fromEventAsPopup(final @NonNull Event event,
                                         final @NonNull String fxml,
                                         final @NonNull String title) {
-        fromEventAsPopup(event, fxml, title, 0.3, 0.3);
+        fromEventAsPopup(event, fxml, title, 1, 1);
     }
 
     /**
@@ -178,9 +181,14 @@ public final class LoadFXML {
         popupStage.setScene(popupScene);
         popupStage.setTitle(title);
         popupStage.initModality(Modality.APPLICATION_MODAL);
-        // Showing the popup window
+        // Showing and centering the popup window.
+        popupStage.addEventHandler(WindowEvent.WINDOW_SHOWN, windowEvent -> {
+            final Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            popupStage.setX((screenBounds.getWidth() - popupStage.getWidth()) / 2);
+            popupStage.setY((screenBounds.getHeight() - popupStage.getHeight()) / 2);
+        });
         root.requestFocus();
-        popupStage.show();
+        Platform.runLater(popupStage::show);
     }
 
     /**
@@ -305,7 +313,7 @@ public final class LoadFXML {
             }
         }
         if (Objects.isNull(fxmlControllerClass)) {
-            throw new IllegalArgumentException("Could not load any fxml controller from the given fxml file.");
+            throw new IllegalArgumentException("Could not load any fxml controller from the given fxml file: " + fxmlPath);
         }
         return fxmlControllerClass;
     }

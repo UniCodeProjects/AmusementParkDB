@@ -29,14 +29,11 @@ public final class MoneyManager {
 
     /**
      * Performs the SQL query that retrieves a collection of the provided months with the related income.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @param months the months to be examined. If there is no money data for at least one of the provided months,
      *               the query will not be executed.
      * @return a collection of months and years paired with the related income.
      */
-    public static @NonNull Collection<Pair<YearMonth, Double>> getIncomes(final @NonNull String account,
-                                                                          final @NonNull YearMonth... months) {
+    public static @NonNull Collection<Pair<YearMonth, Double>> getIncomes(final @NonNull YearMonth... months) {
         if (months.length == 0) {
             throw new IllegalArgumentException("Months cannot be empty");
         }
@@ -50,11 +47,9 @@ public final class MoneyManager {
     /**
      * Performs the SQL query that adds in the {@link org.apdb4j.db.tables.MonthlyRecaps} table the tuple
      * with the economic data of the previous month.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the tuple is inserted, {@code false} otherwise.
      */
-    public static boolean addRecapForPreviousMonth(final @NonNull String account) {
+    public static boolean addRecapForPreviousMonth() {
         final BigDecimal previousMonthShopIncome = previousMonthShopIncome();
         final BigDecimal previousMonthMaintenancesCosts = previousMonthMaintenancesCosts();
         if (previousMonthShopIncome == null || previousMonthMaintenancesCosts == null) {

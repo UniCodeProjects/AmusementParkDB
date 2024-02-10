@@ -2,11 +2,14 @@ package org.apdb4j.util.view;
 
 import javafx.event.Event;
 import javafx.scene.Node;
+import javafx.scene.control.DateCell;
 import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 
 /**
  * Utility class for JavaFX.
@@ -74,4 +77,32 @@ public final class JavaFXUtils {
         labeledImageView.setFitWidth(width);
         labeled.setGraphic(labeledImageView);
     }
+    /**
+     * A date cell that enables only the first day of the month.
+     */
+    public static class FirstDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != 1);
+        }
+    }
+
+    /**
+     * A date cell that enables only the last day of the month.
+     */
+    public static class LastDayDateCell extends DateCell {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate item, final boolean empty) {
+            super.updateItem(item, empty);
+            setDisable(item != null && item.getDayOfMonth() != item.lengthOfMonth());
+        }
+    }
+
 }
