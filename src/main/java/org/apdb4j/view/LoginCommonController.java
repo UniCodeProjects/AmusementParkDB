@@ -30,7 +30,7 @@ public class LoginCommonController {
      */
     void showUserScreen(final @NonNull Event event, final @NonNull String username) {
         Platform.runLater(() -> {
-            JavaFXUtils.setStageTitle(event, username);
+            JavaFXUtils.setStageTitle(event, username, true);
             if (AccountManager.isAdminByUsername(username) || AccountManager.isEmployeeByUsername(username)) {
                 LoadFXML.fromEvent(event, "layouts/staff-screen.fxml", false, true, false);
             } else if (AccountManager.isGuestByUsername(username)) {

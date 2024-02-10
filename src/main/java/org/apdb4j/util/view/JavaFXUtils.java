@@ -37,10 +37,16 @@ public final class JavaFXUtils {
      * set one, with the new one.
      * @param event the event source
      * @param title the new title
+     * @param concat {@code true} if the new title should be the previous title concatenated with {@code title},
+     *               {@code false} if the new title should be only {@code title}.
      */
-    public static void setStageTitle(final Event event, final String title) {
+    public static void setStageTitle(final Event event, final String title, final boolean concat) {
         final var stage = getStage(event);
-        stage.setTitle(stage.getTitle() + " - " + title);
+        if (concat) {
+            stage.setTitle(stage.getTitle() + " - " + title);
+        } else {
+            stage.setTitle(title);
+        }
     }
 
     /**
