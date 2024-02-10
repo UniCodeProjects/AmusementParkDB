@@ -129,7 +129,7 @@ public class ParkServicesInfoScreenController implements Initializable {
                 true,
                 true,
                 parkServiceName);
-        JavaFXUtils.setStageTitle(event, "reviews");
+        JavaFXUtils.setStageTitle(event, "reviews", true);
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")

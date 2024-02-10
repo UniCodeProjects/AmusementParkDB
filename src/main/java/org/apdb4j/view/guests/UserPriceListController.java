@@ -40,7 +40,7 @@ public class UserPriceListController extends BackableAbstractFXMLController {
     @FXML
     void onBuyTicketsButtonPressed(final ActionEvent event) {
         LoadFXML.fromEvent(event, UserTicketsChooserController.class, true, true, true, new TicketControllerImpl());
-        JavaFXUtils.setStageTitle(event, "Buy tickets");
+        JavaFXUtils.setStageTitle(event, "Buy tickets", true);
     }
 
 }
