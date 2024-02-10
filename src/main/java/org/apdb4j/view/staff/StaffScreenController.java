@@ -244,6 +244,15 @@ public class StaffScreenController implements FXMLController, Initializable {
     }
 
     /**
+     * Exits the application.
+     * @param event the event
+     */
+    @FXML
+    void onAppExit(final ActionEvent event) {
+        Platform.exit();
+    }
+
+    /**
      * Shows the park expenses on a line chart.
      * @param event the event
      */
