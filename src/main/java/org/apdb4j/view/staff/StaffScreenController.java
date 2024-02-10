@@ -68,6 +68,7 @@ import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
 import org.apdb4j.core.managers.ParkServiceManager;
+import org.apdb4j.core.managers.RideManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
@@ -84,6 +85,7 @@ import org.apdb4j.view.staff.tableview.RideTableItem;
 import org.apdb4j.view.staff.tableview.ShopTableItem;
 import org.apdb4j.view.staff.tableview.TicketTableItem;
 import org.apdb4j.view.staff.tableview.TicketTypeTableItem;
+import org.jooq.Record;
 import org.jooq.exception.DataAccessException;
 
 import java.net.URL;
@@ -104,8 +106,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-import static org.apdb4j.db.Tables.MONTHLY_RECAPS;
-import static org.apdb4j.db.Tables.PARK_SERVICES;
+import static org.apdb4j.db.Tables.*;
 
 /**
  * The FXML controller for the staff UI.
@@ -834,7 +835,7 @@ public class StaffScreenController implements FXMLController, Initializable {
         Platform.runLater(() -> attractionsTableView.getItems().addAll(rideController.getData()));
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.remove(vboxChildren.indexOf(exhibitionsRadioBtn) + 1);
-        advancedAttractionBtn.setDisable(true);
+        initRideAdvancedButton();
     }
 
     /**
@@ -861,7 +862,6 @@ public class StaffScreenController implements FXMLController, Initializable {
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
         advancedAttractionBtn.getItems().clear();
-        advancedAttractionBtn.setDisable(false);
         final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
         planExhibitionItem.setOnAction(a -> {
             final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
@@ -1420,6 +1420,7 @@ public class StaffScreenController implements FXMLController, Initializable {
         }
         // Loading the ride tableview by default.
         initRideTable();
+        initRideAdvancedButton();
         // Populating the table views.
         EmployeeScreenController.setTableView(employeeTableView);
         employeeTableView.getItems().addAll(employeeController.getData());
@@ -1606,6 +1607,50 @@ public class StaffScreenController implements FXMLController, Initializable {
                 averageRating,
                 numRating);
         attractionsTableView.getColumns().addAll(columns);
+    }
+
+    private void initRideAdvancedButton() {
+        advancedAttractionBtn.getItems().clear();
+        final MenuItem addEstimatedWaitTime = new MenuItem("Add/edit estimated wait time");
+        addEstimatedWaitTime.setOnAction(event -> {
+            final RideTableItem selectedRide = (RideTableItem) attractionsTableView.getSelectionModel().getSelectedItem();
+            if (selectedRide == null) {
+                showAlertForUnselectedRowInTableView("ride");
+                return;
+            }
+            final Spinner<Integer> hours = new Spinner<>();
+            hours.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23));
+            hours.getValueFactory().setWrapAround(true);
+            hours.setEditable(true);
+            final Spinner<Integer> minutes = new Spinner<>();
+            minutes.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59));
+            minutes.getValueFactory().setWrapAround(true);
+            minutes.setEditable(true);
+            final HBox hBox = new HBox(hours, new Label(":"), minutes);
+            hBox.setAlignment(Pos.CENTER);
+            hBox.setSpacing(5);
+            new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                    .setContent(hBox)
+                    .setOnClose(() -> RideManager.addEstimatedWaitTime(selectedRide.getId(),
+                            LocalTime.of(hours.getValue(), minutes.getValue())))
+                    .show();
+        });
+        final MenuItem viewEstimatedWaitTimes = new MenuItem("View estimated wait times");
+        viewEstimatedWaitTimes.setOnAction(event -> {
+            final GridPane gridPane = new GridPane();
+            gridPane.setHgap(20);
+            final List<Record> records = RideManager.viewRidesEstimatedWaitTime().stream().toList();
+            for (int i = 0; i < records.size(); i++) {
+                final Record record = records.get(i);
+                gridPane.addRow(i,
+                        new Label(record.get(RIDES.RIDEID)),
+                        new Label(String.valueOf(record.get(RIDE_DETAILS.ESTIMATEDWAITTIME))));
+            }
+            new AlertBuilder(Alert.AlertType.INFORMATION)
+                    .setContent(gridPane)
+                    .show();
+        });
+        advancedAttractionBtn.getItems().addAll(addEstimatedWaitTime, viewEstimatedWaitTimes);
     }
 
     private void initExhibitionTable() {
