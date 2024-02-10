@@ -473,7 +473,7 @@
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddAttraction" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditAttraction" text="Edit" />
                               <Separator prefWidth="200.0" />
-                               <MenuButton fx:id="advancedAttractionBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Run advanced action" />
+                               <MenuButton fx:id="advancedAttractionBtn" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Run advanced action" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
