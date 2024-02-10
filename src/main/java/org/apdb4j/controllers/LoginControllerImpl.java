@@ -1,8 +1,8 @@
 package org.apdb4j.controllers;
 
 import lombok.NonNull;
-import org.apdb4j.core.managers.AccountManager;
-import org.apdb4j.core.permissions.AccessDeniedException;
+import org.apdb4j.core.managers.GuestManager;
+import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -48,53 +48,29 @@ public class LoginControllerImpl implements LoginController {
      * {@inheritDoc}
      */
     @Override
-    public boolean checkSignUp(final @NonNull String email, final @NonNull String username, final @NonNull String password) {
+    public boolean checkSignUp(final @NonNull String name,
+                               final @NonNull String surname,
+                               final @NonNull String email,
+                               final @NonNull String username,
+                               final @NonNull String password) {
         boolean queryResult;
         try {
-            queryResult = AccountManager.addNewAccount(email, username, password, "Guest", null);
-        } catch (final DataAccessException | AccessDeniedException e) {
+            queryResult = GuestManager.addNewGuest(IDGenerationUtils.generatePersonID(name, surname, email),
+                    name,
+                    surname,
+                    email,
+                    username,
+                    password);
+        } catch (final DataAccessException e) {
             errorMessage = e.getCause().toString();
             return false;
         }
-        if (queryResult) {
-            SessionManager.getSessionManager().login(username);
+        if (!queryResult) {
+            errorMessage = "Something went wrong while adding a guest account.";
+            return false;
         }
-        return queryResult;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isStaff(final @NonNull String username) {
-        final Result<Record> resultCount = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(ACCOUNTS)
-                        .where(ACCOUNTS.USERNAME.eq(username))
-                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Admin")
-                                .or(ACCOUNTS.PERMISSIONTYPE.eq("Staff")))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        return resultCount.size() == 1 && resultCount.get(0).get(0, Integer.class) == 1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isGuest(final @NonNull String username) {
-        final Result<Record> resultCount = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(ACCOUNTS)
-                        .where(ACCOUNTS.USERNAME.eq(username))
-                        .and(ACCOUNTS.PERMISSIONTYPE.eq("Guest"))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        return resultCount.size() == 1 && resultCount.get(0).get(0, Integer.class) == 1;
+        SessionManager.getSessionManager().login(username);
+        return true;
     }
 
     /**

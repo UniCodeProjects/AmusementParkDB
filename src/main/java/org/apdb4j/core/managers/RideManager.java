@@ -37,8 +37,6 @@ public final class RideManager {
      * @param minWeight the minimum weight required to get in the ride.
      * @param maxWeight the maximum weight to get in the ride.
      * @param status the status of the new ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the ride is added successfully.
      */
     public static boolean addNewRide(final @NonNull String rideID,
@@ -50,8 +48,7 @@ public final class RideManager {
                                      final int maxSeats,
                                      final int minHeight, final int maxHeight,
                                      final int minWeight, final int maxWeight,
-                                     final char status,
-                                     final @NonNull String account) {
+                                     final char status) {
         return addNewRide(rideID,
                 name,
                 openingTime,
@@ -65,15 +62,14 @@ public final class RideManager {
                 maxHeight,
                 minWeight,
                 maxWeight,
-                status,
-                account);
+                status
+        );
     }
 
     /**
      * Performs the SQL query that adds a new ride in the database, with the provided description.
      * Note that if the description is {@code null} the method will have the same behavior of the method
-     * {@link RideManager#addNewRide(String, String, LocalTime, LocalTime, String, String,
-     * LocalTime, int, int, int, int, int, char, String)}.
+     * {@link #addNewRide(String, String, LocalTime, LocalTime, String, String, LocalTime, int, int, int, int, int, char)}.
      * @param rideID the identifier of the new ride.
      * @param name the name of the new ride.
      * @param openingTime the opening time of the ride.
@@ -88,8 +84,6 @@ public final class RideManager {
      * @param minWeight the minimum weight required to get in the ride.
      * @param maxWeight the maximum weight to get in the ride.
      * @param status the status of the new ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the ride is added successfully.
      */
     public static boolean addNewRide(final @NonNull String rideID,
@@ -102,8 +96,7 @@ public final class RideManager {
                                      final String description,
                                      final int minHeight, final int maxHeight,
                                      final int minWeight, final int maxWeight,
-                                     final char status,
-                                     final @NonNull String account) {
+                                     final char status) {
         new QueryBuilder().createConnection()
                 .queryAction(db -> {
                     db.transaction(configuration -> {
@@ -138,12 +131,9 @@ public final class RideManager {
      * @param rideID the ride identifier. If the value of this parameter is not the identifier of a ride,
      *               the query will not be executed.
      * @param newIntensity the new intensity of the provided ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the intensity is modified successfully, {@code false} otherwise.
      */
-    public static boolean changeIntensity(final @NonNull String rideID, final @NonNull String newIntensity,
-                                          final @NonNull String account) {
+    public static boolean changeIntensity(final @NonNull String rideID, final @NonNull String newIntensity) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES)
                         .set(RIDES.INTENSITY, newIntensity)
@@ -158,12 +148,9 @@ public final class RideManager {
      * @param rideID the ride identifier. If the value of this parameter is not the identifier of a ride,
      *               the query will not be executed.
      * @param newDuration the new duration of the ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the duration is modified successfully, {@code false} otherwise.
      */
-    public static boolean changeDuration(final @NonNull String rideID, final @NonNull LocalTime newDuration,
-                                         final @NonNull String account) {
+    public static boolean changeDuration(final @NonNull String rideID, final @NonNull LocalTime newDuration) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES)
                         .set(RIDES.DURATION, newDuration)
@@ -179,11 +166,9 @@ public final class RideManager {
      * @param rideID the ride identifier. If the value of this parameter is not the identifier of a ride,
      *               the query will not be executed.
      * @param newMaxSeats the new maximum number of seats.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeMaxSeats(final @NonNull String rideID, final int newMaxSeats, final @NonNull String account) {
+    public static boolean changeMaxSeats(final @NonNull String rideID, final int newMaxSeats) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES)
                         .set(RIDES.MAXSEATS, newMaxSeats)
@@ -200,12 +185,9 @@ public final class RideManager {
      *               the query will not be executed.
      * @param minHeight the new minimum height requirements for the ride.
      * @param maxHeight the new maximum height requirements for the ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeHeightRequirements(final @NonNull String rideID, final int minHeight,  final int maxHeight,
-                                                   final @NonNull String account) {
+    public static boolean changeHeightRequirements(final @NonNull String rideID, final int minHeight,  final int maxHeight) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES)
                         .set(RIDES.MINHEIGHT, UInteger.valueOf(minHeight))
@@ -222,12 +204,9 @@ public final class RideManager {
      *               the query will not be executed.
      * @param minWeight the new minimum weight requirements for the ride.
      * @param maxWeight the new maximum weight requirements for the ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeWeightRequirements(final @NonNull String rideID, final int minWeight, final int maxWeight,
-                                                   final @NonNull String account) {
+    public static boolean changeWeightRequirements(final @NonNull String rideID, final int minWeight, final int maxWeight) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDES)
                         .set(RIDES.MINWEIGHT, UInteger.valueOf(minWeight))
@@ -242,12 +221,9 @@ public final class RideManager {
      * @param rideID the ride identifier. If the value of this parameter is not the identifier of a ride,
      *               the query will not be executed.
      * @param estimatedWaitTime the estimated wait time to get in the ride.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
-    public static boolean addEstimatedWaitTime(final @NonNull String rideID, final @NonNull LocalTime estimatedWaitTime,
-                                               final @NonNull String account) {
+    public static boolean addEstimatedWaitTime(final @NonNull String rideID, final @NonNull LocalTime estimatedWaitTime) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(RIDE_DETAILS)
                         .set(RIDE_DETAILS.ESTIMATEDWAITTIME, estimatedWaitTime)
@@ -261,11 +237,9 @@ public final class RideManager {
      * @param rideID the ride. If the value of this parameter is not present in the database, the query will not be executed.
      * @param newStatus the new status of the provided ride. If the value of this parameter is not valid, the query
      *                  will not be executed.
-     * @param account the account that is performing this operation. If the account has not the permissions to
-     *                accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
-    public static boolean changeRideStatus(final @NonNull String rideID, final String newStatus, final @NonNull String account) {
+    public static boolean changeRideStatus(final @NonNull String rideID, final String newStatus) {
         if ("C".equals(newStatus) || "M".equals(newStatus)) {
             return new QueryBuilder().createConnection()
                     .queryAction(db -> db.update(RIDE_DETAILS)
@@ -290,21 +264,17 @@ public final class RideManager {
 
     /**
      * Retrieves all the rides paired with their estimated wait time.
-     * @param account the account that is performing the operation. If the account has not the permissions to
-     *                accomplish the operation, the query will not be executed.
      * @return all the rides with their estimated wait time.
      */
-    public static Collection<Record> viewRidesEstimatedWaitTime(final String account) {
-        return Manager.viewPartialInfoFromTable(RIDE_DETAILS, account, RIDE_DETAILS.RIDEID, RIDE_DETAILS.ESTIMATEDWAITTIME);
+    public static Collection<Record> viewRidesEstimatedWaitTime() {
+        return Manager.viewPartialInfoFromTable(RIDE_DETAILS, RIDE_DETAILS.RIDEID, RIDE_DETAILS.ESTIMATEDWAITTIME);
     }
 
     /**
      * Retrieves the static and dynamic ride info.
-     * @param account the account that is performing the operation. If the account has not the permissions to
-     *                accomplish the operation, the query will not be executed.
      * @return the static and dynamic ride info.
      */
-    public static Collection<Record> viewAllRidesInfo(final String account) {
+    public static Collection<Record> viewAllRidesInfo() {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(RIDES.RIDEID,
                                 RIDES.INTENSITY,
@@ -322,4 +292,5 @@ public final class RideManager {
                 .closeConnection()
                 .getResultAsRecords();
     }
+
 }

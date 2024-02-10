@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.ContractScreenController">
+   <center>
+      <GridPane fx:id="gridPane" alignment="CENTER_RIGHT" vgap="5.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Employee NID:" />
+            <Label text="Employer NID:" GridPane.rowIndex="1" />
+            <Label text="Signed date:" GridPane.rowIndex="2" />
+            <Label text="Begin date:" GridPane.rowIndex="3" />
+            <Label text="End date:" GridPane.rowIndex="4" />
+            <Label text="Salary:" GridPane.rowIndex="5" />
+            <TextField fx:id="employeeNIDField" GridPane.columnIndex="1" />
+            <TextField fx:id="employerNIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="signedDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="beginDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+             <Spinner fx:id="salarySpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                 <valueFactory>
+                     <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="50" max="1.7976931348623157E308" min="0" />
+                 </valueFactory>
+             </Spinner>
+         </children>
+         <padding>
+            <Insets left="120.0" right="120.0" top="20.0" />
+         </padding>
+      </GridPane>
+   </center>
+   <bottom>
+      <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </BorderPane.margin>
+         <children>
+            <CheckBox fx:id="advancedEditCheckBox" mnemonicParsing="false" onAction="#onAdvancedEdit" selected="true" text="Advanced edit">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </CheckBox>
+            <Button fx:id="acceptAndCloseBtn" mnemonicParsing="false" onAction="#onAccept" text="Accept and close" />
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>

@@ -26,8 +26,7 @@ public final class ReviewManager {
      *                      the query will not be executed.
      * @param rating the rating of the review.
      * @param description the possible description of the review.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     * @param account the account that is leaving a review.
      * @return {@code true} if the review is added successfully.
      */
     public static boolean addReview(final @NonNull String reviewID,

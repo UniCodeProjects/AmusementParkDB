@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.StaffScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.staff.StaffScreenController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -31,8 +40,8 @@
                      <children>
                         <Label text="Park name:" />
                         <Label text="Administrator:" GridPane.rowIndex="3" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="parkNameField" editable="false" focusTraversable="false" GridPane.columnIndex="1" />
+                        <TextField fx:id="adminField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                            <image>
                               <Image url="@../img/apdb4j-logo.png" />
@@ -40,16 +49,16 @@
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin></ImageView>
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="attractionsNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="Attractions:" GridPane.rowIndex="4" />
                         <Label text="Shops:" GridPane.rowIndex="5" />
                         <Label text="Employees:" GridPane.rowIndex="6" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <TextField fx:id="shopsNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="employeesNumField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="Opening time:" GridPane.rowIndex="1" />
                         <Label text="Closing time:" GridPane.rowIndex="2" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="openingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="closingTimeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -57,7 +66,7 @@
                   </GridPane>
                </content>
           </Tab>
-            <Tab closable="false" text="Expenses">
+            <Tab fx:id="expensesTab" closable="false" text="Expenses">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <top>
@@ -68,13 +77,13 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                                  <content>
-                                    <VBox fx:id="vBox">
+                                    <VBox fx:id="expensesVBox">
                                        <children>
                                           <HBox alignment="CENTER" spacing="20.0">
                                              <children>
                                                 <Label text="Net profit" />
-                                                <DatePicker maxWidth="1.7976931348623157E308" promptText="Start date" />
-                                                <DatePicker maxWidth="1.7976931348623157E308" promptText="End date" />
+                                                <DatePicker fx:id="expensesDatePicker1" maxWidth="1.7976931348623157E308" promptText="Start date" />
+                                                <DatePicker fx:id="expensesDatePicker2" maxWidth="1.7976931348623157E308" promptText="End date" />
                                                  <Button fx:id="clearBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#clearRowBtn" text="Clear">
                                                      <cursor>
                                                          <Cursor fx:constant="HAND" />
@@ -95,6 +104,7 @@
                               </ScrollPane>
                               <HBox alignment="CENTER" spacing="10.0">
                                  <children>
+                                    <Button defaultButton="true" mnemonicParsing="false" onAction="#showExpensesChart" text="OK" />
                                     <Button fx:id="addRowBtn" mnemonicParsing="false" onAction="#addRow" text="Add new row" />
                                     <Button fx:id="deleteAllRowsBtn" disable="true" mnemonicParsing="false" onAction="#deleteAllRows" text="Delete all rows" />
                                  </children>
@@ -108,10 +118,10 @@
                      <center>
                         <LineChart fx:id="chart" BorderPane.alignment="CENTER">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <CategoryAxis label="Months" side="BOTTOM" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis side="LEFT" />
+                            <NumberAxis label="Revenue" side="LEFT" />
                           </yAxis>
                         </LineChart>
                      </center>
@@ -124,14 +134,15 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Employee name" />
+                              <TextField fx:id="employeeSearchField" onKeyTyped="#onEmployeeSearch" promptText="Employee name" />
                               <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHire" text="Hire" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Fire" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeHire" text="Hire" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeEdit" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeFire" text="Fire" />
                               <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeeHistory" text="History" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
                            <BorderPane.margin>
@@ -140,62 +151,306 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="employeeTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn editable="false" text="Staff ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="staffID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="National ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="nationalID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Name">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="name" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Surname">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="surname" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="DoB">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="dob" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Birthplace">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="birthplace" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Gender">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="gender" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Role">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="role" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Admin">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="admin" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Salary">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="salary" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Email">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="email" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
                   </BorderPane>
                </content>
             </Tab>
-            <Tab closable="false" text="Tickets">
+            <Tab text="Contracts">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TextField promptText="TicketID" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Purchase date" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Punch date" />
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                 <children>
-                                    <Label text="Ticket type:" />
-                                    <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#onClearBtn" text="Clear" />
-                                 </children>
-                              </HBox>
-                              <RadioButton mnemonicParsing="false" text="Single day">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="radioBtnToggle" />
-                                 </toggleGroup></RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Season" toggleGroup="$radioBtnToggle" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
-                              <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddTicketBtnPress" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditTicketBtnPress" text="Edit" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Punch">
-                                 <tooltip>
-                                    <Tooltip text="Punches the selected ticket" />
-                                 </tooltip></Button>
-                              <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
-                           </children>
                            <BorderPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </BorderPane.margin>
+                           <children>
+                              <TextField fx:id="contractSearchField" onKeyTyped="#onContractSearch" promptText="Employee NID" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <Separator prefWidth="200.0" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onContractEdit" text="Edit" />
+                           </children>
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
-                           </columns>
+                        <TableView fx:id="contractsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <columns>
+                              <TableColumn editable="false" text="Contract ID">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="id" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="Employee NID">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="employeeNID" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="Employer NID">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="employerNID" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="Signed">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="signedDate" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="Begin">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="beginDate" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="End">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="endDate" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                              <TableColumn editable="false" text="Salary">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="salary" />
+                                  </cellValueFactory>
+                              </TableColumn>
+                          </columns>
                         </TableView>
                      </center>
                   </BorderPane>
                </content>
+            </Tab>
+            <Tab closable="false" text="Tickets">
+                <Accordion expandedPane="$ticketPane">
+                    <panes>
+                        <TitledPane fx:id="ticketPane" text="Ticket">
+                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                <left>
+                                    <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <TextField fx:id="ticketSearchField" onKeyTyped="#onTicketSearch"
+                                                       promptText="TicketID"/>
+                                            <DatePicker fx:id="ticketPurchaseDateFilter" editable="false"
+                                                        maxWidth="1.7976931348623157E308" onAction="#onTicketPurchaseDateFilter"
+                                                        promptText="Purchase date"/>
+                                            <DatePicker fx:id="ticketPunchDateFilter" editable="false"
+                                                        maxWidth="1.7976931348623157E308" onAction="#onTicketPunchDateFilter"
+                                                        promptText="Punch (validation) date"/>
+                                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                <children>
+                                                    <Label text="Ticket type:"/>
+                                                    <Button fx:id="clearBtn" mnemonicParsing="false"
+                                                            onAction="#onTicketFilterClear" text="Clear"/>
+                                                </children>
+                                            </HBox>
+                                            <RadioButton mnemonicParsing="false" onAction="#onTicketSingleDayFilter"
+                                                         text="Single day">
+                                                <toggleGroup>
+                                                    <ToggleGroup fx:id="radioBtnToggle"/>
+                                                </toggleGroup>
+                                            </RadioButton>
+                                            <RadioButton mnemonicParsing="false" onAction="#onTicketSeasonFilter" text="Season"
+                                                         toggleGroup="$radioBtnToggle"/>
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketAdd" text="Add"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketEdit" text="Edit"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketPunch" text="Punch">
+                                                <tooltip>
+                                                    <Tooltip text="Punches the selected ticket"/>
+                                                </tooltip>
+                                            </Button>
+                                            <Separator prefWidth="200.0"/>
+                                            <MenuButton fx:id="advancedTicketBtn" maxWidth="1.7976931348623157E308"
+                                                        mnemonicParsing="false"
+                                                        text="Advanced">
+                                                <items>
+                                                    <MenuItem text="Days with most visits" onAction="#onMostVisits" />
+                                                </items>
+                                            </MenuButton>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                        </BorderPane.margin>
+                                    </VBox>
+                                </left>
+                                <center>
+                                    <TableView fx:id="ticketTableView" prefHeight="200.0" prefWidth="200.0"
+                                               BorderPane.alignment="CENTER">
+                                        <columns>
+                                            <TableColumn editable="false" text="Ticket ID">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="ticketID"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Purchased">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="purchaseDate"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Valid on">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validOn"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Valid until">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validUntil"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Entrances">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="remainingEntrances"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Owner ID">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="ownerID"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Year">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="year"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Type">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="type"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Category">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="category"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Validation">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="validationDate"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                </center>
+                            </BorderPane>
+                        </TitledPane>
+                        <TitledPane text="Ticket type">
+                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                <left>
+                                    <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <TextField fx:id="ticketTypeSearchField" onKeyTyped="#onTicketTypeSearch"
+                                                       promptText="Type"/>
+                                            <TextField fx:id="ticketTypeYearFilter" maxWidth="1.7976931348623157E308"
+                                                       onKeyReleased="#onTicketTypeYearFilter" promptText="Year" />
+                                            <ComboBox fx:id="ticketTypeCategoryFilter" onAction="#onTicketTypeCategoryFilter"
+                                                      maxWidth="1.7976931348623157E308">
+                                                <tooltip>
+                                                    <Tooltip text="Category" />
+                                                </tooltip>
+                                            </ComboBox>
+                                            <Separator prefWidth="200.0"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketTypeAdd" text="Add"/>
+                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                    onAction="#onTicketTypeEdit" text="Edit"/>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                        </BorderPane.margin>
+                                    </VBox>
+                                </left>
+                                <center>
+                                    <TableView fx:id="ticketTypeTableView" prefHeight="200.0" prefWidth="200.0"
+                                               BorderPane.alignment="CENTER">
+                                        <columns>
+                                            <TableColumn editable="false" text="Type">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="type"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Category">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="category"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Year">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="year"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Price">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="price"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                            <TableColumn editable="false" text="Duration">
+                                                <cellValueFactory>
+                                                    <PropertyValueFactory property="duration"/>
+                                                </cellValueFactory>
+                                            </TableColumn>
+                                        </columns>
+                                    </TableView>
+                                </center>
+                            </BorderPane>
+                        </TitledPane>
+                    </panes>
+                </Accordion>
             </Tab>
           <Tab closable="false" text="Attractions">
                <content>
@@ -203,16 +458,20 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Attraction name" />
+                              <TextField fx:id="attractionNameSearchField" onKeyTyped="#onAttractionSearch" promptText="Attraction name" />
                               <Label text="Attraction type:" />
-                              <CheckBox mnemonicParsing="false" text="Rides" />
-                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
+                               <RadioButton fx:id="ridesRadioBtn" mnemonicParsing="false" onAction="#onRideBtnClick" selected="true" text="Rides">
+                                   <toggleGroup>
+                                       <ToggleGroup fx:id="attractionsToggleGroup" />
+                                   </toggleGroup>
+                               </RadioButton>
+                              <RadioButton fx:id="exhibitionsRadioBtn" mnemonicParsing="false" onAction="#onExhibitionBtnClick" text="Exhibitions" toggleGroup="$attractionsToggleGroup" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddAttraction" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditAttraction" text="Edit" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
+                               <MenuButton fx:id="advancedAttractionBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Run advanced action" />
                            </children>
                            <BorderPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -220,12 +479,7 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
+                        <TableView fx:id="attractionsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                </content>
@@ -236,12 +490,12 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Shop name" />
+                              <TextField fx:id="shopSearchField" onKeyTyped="#onShopSearch" promptText="Shop name" />
                               <ChoiceBox maxWidth="1.7976931348623157E308" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddShop" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditShop" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -251,10 +505,53 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="shopsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn editable="false" text="Shop ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="id" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Name">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="name" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Opening">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="openingTime" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Closing">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="closingTime" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Type">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="type" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Expense">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="expenses" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Revenue">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="revenue" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Date">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="yearMonth" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
@@ -267,16 +564,15 @@
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Facility name" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Maintenance date" />
+                              <TextField fx:id="maintenanceSearchField" onKeyTyped="#onMaintenanceSearch" promptText="Facility ID" />
+                              <DatePicker fx:id="maintenanceSearchDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onMaintenanceDateSearch" promptText="Maintenance date" />
                               <Label text="Filter for:" />
-                              <CheckBox mnemonicParsing="false" text="Rides" />
-                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
-                              <CheckBox mnemonicParsing="false" text="Shops" />
+                              <CheckBox fx:id="maintenanceRideFilter" mnemonicParsing="false" onAction="#onMaintenanceRideFilter" text="Rides" />
+                              <CheckBox fx:id="maintenanceShopFilter" mnemonicParsing="false" onAction="#onMaintenanceShopFilter" text="Shops" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddMaintenance" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditMaintenance" text="Edit" />
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -286,38 +582,108 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="maintenanceTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn editable="false" text="Facility ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="facilityID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Price">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="price" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Date">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="date" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn editable="false" text="Employee IDs">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="employeeIDs" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
                   </BorderPane>
                </content></Tab>
+            <Tab closable="false" text="Pictures">
+                <content>
+                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                        <left>
+                            <VBox spacing="6.0" BorderPane.alignment="CENTER">
+                                <children>
+                                    <TextField fx:id="picturesSearchField" onKeyTyped="#onPictureSearch" promptText="Park Service ID" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureAdd" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureEdit" text="Edit" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPictureRemove" text="Remove" />
+                                    <Separator prefWidth="200.0" />
+                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
+                                </children>
+                                <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </BorderPane.margin>
+                            </VBox>
+                        </left>
+                        <center>
+                            <TableView fx:id="picturesTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                    <TableColumn text="Park service ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="serviceID" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Path">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="path" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </center>
+                    </BorderPane>
+                </content>
+            </Tab>
             <Tab closable="false" text="Reviews">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
                         <VBox spacing="6.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Facility name" />
-                              <DatePicker maxWidth="1.7976931348623157E308" promptText="Review date" />
+                              <TextField fx:id="reviewSearchField" onKeyTyped="#onReviewSearch" promptText="Park service ID" />
+                              <DatePicker fx:id="reviewDateFilter" editable="false" maxWidth="1.7976931348623157E308" onAction="#onReviewDateSearch" promptText="Review date" />
                               <Label text="Filter by rating:" />
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                 <children>
-                                    <CheckBox mnemonicParsing="false" text="1" />
-                                    <CheckBox mnemonicParsing="false" text="2" />
-                                    <CheckBox mnemonicParsing="false" text="3" />
-                                    <CheckBox mnemonicParsing="false" text="4" />
-                                    <CheckBox mnemonicParsing="false" text="5" />
-                                 </children>
-                              </HBox>
+                              <Slider fx:id="ratingFilterSlider" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" />
+                              <CheckBox fx:id="rangedCheckBox" mnemonicParsing="false" onAction="#onReviewRanged" selected="true" text="Ranged" />
                               <Label text="Filter for:" />
-                              <CheckBox mnemonicParsing="false" text="Rides" />
-                              <CheckBox mnemonicParsing="false" text="Exhibitions" />
-                              <CheckBox mnemonicParsing="false" text="Shops" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Search" />
+                              <RadioButton fx:id="reviewRideFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Rides">
+                                  <toggleGroup>
+                                      <ToggleGroup fx:id="reviewFilterToggle" />
+                                  </toggleGroup>
+                                  <tooltip>
+                                      <Tooltip text="Press BACKSPACE or DELETE to clear." />
+                                  </tooltip>
+                              </RadioButton>
+                              <RadioButton fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions">
+                                  <tooltip>
+                                      <Tooltip text="Press BACKSPACE or DELETE to clear." />
+                                  </tooltip>
+                                 <toggleGroup>
+                                            <ToggleGroup fx:id="reviewFilterToggle" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="reviewShopFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Shops" toggleGroup="$reviewFilterToggle">
+                                  <tooltip>
+                                      <Tooltip text="Press BACKSPACE or DELETE to clear." />
+                                  </tooltip>
+                              </RadioButton>
                               <Separator prefWidth="200.0" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Advanced" />
                            </children>
@@ -327,10 +693,43 @@
                         </VBox>
                      </left>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="reviewsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn text="Review ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="reviewID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Service ID">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="serviceID" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Rating">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="rating" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Description">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="description" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Date">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="date" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Time">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="time" />
+                                   </cellValueFactory>
+                               </TableColumn>
+                               <TableColumn text="Author">
+                                   <cellValueFactory>
+                                       <PropertyValueFactory property="author" />
+                                   </cellValueFactory>
+                               </TableColumn>
                            </columns>
                         </TableView>
                      </center>
@@ -345,12 +744,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Add" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="View">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" text="Refresh" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Account">

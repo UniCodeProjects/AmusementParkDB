@@ -1,11 +1,8 @@
 package org.apdb4j.core.managers;
 
 import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
-import org.jooq.Record;
-import org.jooq.Result;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -26,15 +23,9 @@ public final class AccountManager {
      * @param email the email of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
-     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType,
-                                         final @NonNull String account) throws AccessDeniedException {
-         if (permissionTypeNotExists(permissionType)) {
-             throw new IllegalArgumentException(permissionType + " is not present in the DB.");
-         }
+     public static boolean addNewAccount(final @NonNull String email, final @NonNull String permissionType) {
          if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
              return false;
          }
@@ -55,19 +46,12 @@ public final class AccountManager {
      * @param password the password of the new account.
      * @param permissionType the permissions of the new account. If the provided permission type does not exist
      *                       in the database, the query will not be executed.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
-     *                Its value must be {@code null} when a guest is creating his account.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewAccount(final @NonNull String email,
                                         final @NonNull String username,
                                         final @NonNull String password,
-                                        final @NonNull String permissionType,
-                                        final String account) throws AccessDeniedException {
-        if (permissionTypeNotExists(permissionType)) {
-            throw new IllegalStateException(permissionType + " is not present in the DB.");
-        }
+                                        final @NonNull String permissionType) {
         if (RegexUtils.getMatch(email, EMAIL_REGEX).isEmpty()) {
             return false;
         }
@@ -88,14 +72,11 @@ public final class AccountManager {
      *              of an account, the query will not be executed.
      * @param username the username provided for the account.
      * @param password the password provided for the account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean addCredentialsForAccount(final @NonNull String email,
                                                    final @NonNull String username,
-                                                   final @NonNull String password,
-                                                   final @NonNull String account) throws AccessDeniedException {
+                                                   final @NonNull String password) {
         final boolean areCredentialsPresent = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(ACCOUNTS)
@@ -107,13 +88,6 @@ public final class AccountManager {
                 .getResultAsInt() == 1;
         if (areCredentialsPresent) {
             return false;
-        }
-        /*
-         The query executor is a guest;
-         however, they are not allowed to modify an account that is not one and not theirs.
-        */
-        if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
-            throw new AccessDeniedException("Guest account has no permission over " + email);
         }
         final int updatedTuples = DB.createConnection()
                 .queryAction(db -> db.update(ACCOUNTS)
@@ -134,17 +108,11 @@ public final class AccountManager {
      *                    If the value of this parameter is not the password of the provided account,
      *                    the query will not be executed.
      * @param newPassword the new password for the account.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
      public static boolean updateAccountPassword(final @NonNull String email,
                                                  final @NonNull String oldPassword,
-                                                 final @NonNull String newPassword,
-                                                 final @NonNull String account) throws AccessDeniedException {
-         if (isGuest(account) && !isGuest(email) && !account.equals(email)) {
-             throw new AccessDeniedException("Guest account has no permission over " + email);
-         }
+                                                 final @NonNull String newPassword) {
          final int updatedTuples = DB.createConnection()
                  .queryAction(db -> db.update(ACCOUNTS)
                          .set(ACCOUNTS.PASSWORD, newPassword)
@@ -154,6 +122,56 @@ public final class AccountManager {
                  .closeConnection()
                  .getResultAsInt();
          return updatedTuples == 1;
+     }
+
+    /**
+     * Determines if the account with the given username is an admin.
+     * @param username the account's username
+     * @return {@code true} if admin
+     */
+     public static boolean isAdminByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(STAFF.join(ACCOUNTS)
+                                 .on(STAFF.EMAIL.eq(ACCOUNTS.EMAIL)))
+                         .where(STAFF.ISADMIN.isTrue())
+                         .and(ACCOUNTS.USERNAME.eq(username))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
+     }
+
+    /**
+     * Determines if the account with the given username is an employee.
+     * @param username the account's username
+     * @return {@code true} if employee
+     */
+     public static boolean isEmployeeByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(STAFF.join(ACCOUNTS)
+                                 .on(STAFF.EMAIL.eq(ACCOUNTS.EMAIL)))
+                         .where(STAFF.ISEMPLOYEE.isTrue())
+                         .and(ACCOUNTS.USERNAME.eq(username))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
+     }
+
+    /**
+     * Determines if the account with the given username is a guest.
+     * @param username the account's username
+     * @return {@code true} if guest
+     */
+     public static boolean isGuestByUsername(final String username) {
+         return DB.createConnection()
+                 .queryAction(db -> db.selectCount()
+                         .from(ACCOUNTS)
+                         .where(ACCOUNTS.USERNAME.eq(username))
+                         .and(ACCOUNTS.PERMISSIONTYPE.eq("Guest"))
+                         .fetchOne(0, int.class))
+                 .closeConnection()
+                 .getResultAsInt() == 1;
      }
 
     /**
@@ -192,14 +210,7 @@ public final class AccountManager {
         if (!isUsernameValid) {
             throw new IllegalArgumentException("There is no account with the provided username");
         }
-        final String accountEmail = queryBuilder
-                .createConnection()
-                .queryAction(db -> db.select(ACCOUNTS.EMAIL)
-                        .from(ACCOUNTS)
-                        .where(ACCOUNTS.USERNAME.eq(username))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords().get(0).get(ACCOUNTS.EMAIL);
+        final String accountEmail = getAccountEmail(username);
         final var personIDField = isGuest(accountEmail) ? GUESTS.GUESTID : STAFF.STAFFID;
         final var table = isGuest(accountEmail) ? GUESTS : STAFF;
         final var joinField = isGuest(accountEmail) ? GUESTS.EMAIL : STAFF.EMAIL;
@@ -215,16 +226,21 @@ public final class AccountManager {
                 .getResultAsRecords().get(0).get(personIDField);
     }
 
-    private static boolean permissionTypeNotExists(final String permissionType) {
-        final Result<Record> count = DB.createConnection()
-                .queryAction(db -> db.selectCount()
-                        .from(PERMISSIONS)
-                        .where(PERMISSIONS.PERMISSIONTYPE.eq(permissionType))
+    /**
+     * Retrieves the account email given a username.
+     * @param username the account's username
+     * @return the username
+     */
+    public static @NonNull String getAccountEmail(final @NonNull String username) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(ACCOUNTS.EMAIL)
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
                         .fetch())
                 .closeConnection()
-                .getResultAsRecords();
-        // Checking if got only one result, and it is unique (accounts are unique).
-        return count.size() != 1 || count.get(0).get(0, int.class) != 1;
+                .getResultAsRecords()
+                .get(0)
+                .get(ACCOUNTS.EMAIL);
     }
 
 }

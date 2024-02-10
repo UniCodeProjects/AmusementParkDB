@@ -35,16 +35,13 @@ public final class TicketManager {
      * @param category the category of people to whom the ticket is addressed. If the value of this parameter is
      *                 not a valid category, the query will not be executed.
      * @param duration the number of times that a ticket of this type can be validated.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
     public static boolean addNewTicketType(final @NonNull String type,
                                            final double price,
                                            final int year,
                                            final @NonNull String category,
-                                           final int duration,
-                                           final @NonNull String account) {
+                                           final int duration) {
         if (year < LocalDate.now().getYear()) {
             return false;
         } else {
@@ -64,13 +61,10 @@ public final class TicketManager {
      * @param category the category of people to whom the ticket is addressed. If the value of this parameter
      *                 is not valid, the query will not be executed.
      * @param newPrice the new price of the provided ticket type.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the update is successful, {@code false} otherwise.
      */
     public static boolean updateTicketTypePrice(final @NonNull String type, final @NonNull String category,
-                                                final double newPrice,
-                                                final @NonNull String account) {
+                                                final double newPrice) {
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.update(TICKET_TYPES)
                         .set(TICKET_TYPES.PRICE, BigDecimal.valueOf(newPrice))
@@ -93,16 +87,13 @@ public final class TicketManager {
      * @param ownerID the identifier of the ticket owner. If the value of this parameter is not a guest identifier,
      *                the query will not be executed.
      * @param category the category of the ticket type.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful, {@code false} otherwise.
      */
     public static boolean addNewTicket(final @NonNull String ticketID,
                                        final LocalDate validOn,
                                        final LocalDate validUntil,
                                        final @NonNull String ownerID,
-                                       final @NonNull String category,
-                                       final @NonNull String account) {
+                                       final @NonNull String category) {
         if (!isGuestId(ownerID)) {
             return false;
         } else {
@@ -149,12 +140,9 @@ public final class TicketManager {
      * of visits.
      *
      * @param month   the month.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return the day(s) of the provided month with the most visits, paired with its number of visits.
      */
-    public static @NonNull Collection<ImmutablePair<LocalDate, Integer>> getDayWithMostVisits(final @NonNull YearMonth month,
-                                                                                              final @NonNull String account) {
+    public static @NonNull Collection<ImmutablePair<LocalDate, Integer>> getDayWithMostVisits(final @NonNull YearMonth month) {
         final String countColumnName = "NumVisitors";
         final Result<Record> daysAndVisits = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(VALIDATIONS.DATE, DSL.count().as(countColumnName))
@@ -187,11 +175,9 @@ public final class TicketManager {
      *                 <li>the ticket with the provided identifier cannot be punched one more time</li>
      *                 </ul>
      *                 the query will not be executed.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful.
      */
-    public static boolean punchTicket(final @NonNull String ticketID, final @NonNull String account) {
+    public static boolean punchTicket(final @NonNull String ticketID) {
         final LocalDate punchDate = LocalDate.now();
         if (!isTicketID(ticketID) || !isTicketValid(punchDate, ticketID) || getRemainingEntrances(ticketID) == 0) {
             return false;
@@ -224,11 +210,9 @@ public final class TicketManager {
      * @param year the year in which the price list will be valid. Its value cannot be a year of the past,
      *             otherwise the query will not be executed.
      *             If the year is present, nothing will be done, and {@code true} will be returned.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} if the insertion is successful, or the year is already present, {@code false} otherwise.
      */
-    public static boolean addNewPriceList(final int year, final @NonNull String account) {
+    public static boolean addNewPriceList(final int year) {
         if (year < LocalDate.now().getYear()) {
             return false;
         }

@@ -11,7 +11,8 @@ create table ACCOUNTS (
      PermissionType varchar(30) not null,
      constraint IDACCOUNT primary key (Email),
      constraint IDACCOUNT_1 unique (Username),
-     constraint PSW_LENGTH check (length(Password) >= 8));
+     constraint PSW_LENGTH check (length(Password) >= 8),
+     constraint PERMISSION_CHECK check (PermissionType in ("Admin", "Staff", "Guest")));
 
 create table attributions (
      TicketID char(10) not null,
@@ -108,11 +109,6 @@ create table PARK_SERVICES (
      constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%'))),
      constraint AVGRATING_DOMAIN check (AvgRating between 0 and 5),
      constraint AVGRATING_CHECK check ((AvgRating = 0.0 and NumReviews = 0) or (AvgRating >= 1.0 and NumReviews >= 1)));
-
-create table PERMISSIONS (
-     PermissionType varchar(30) not null,
-     AccessSequence varchar(1500) not null,
-     constraint IDACCESS primary key (PermissionType));
 
 create table PICTURES (
      Path varchar(256) not null,
@@ -222,11 +218,7 @@ create table validations (
 
 
 -- Foreign key constraints
--- ___________________ 
-
-alter table ACCOUNTS add constraint FKpossessions
-     foreign key (PermissionType)
-     references PERMISSIONS (PermissionType);
+-- ___________________
 
 alter table attributions add constraint FKatt_TIC_FK
      foreign key (TicketID)
