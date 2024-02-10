@@ -1,6 +1,7 @@
 package org.apdb4j.view.staff;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -19,6 +20,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -65,6 +67,7 @@ import org.apdb4j.controllers.staff.TicketController;
 import org.apdb4j.controllers.staff.TicketControllerImpl;
 import org.apdb4j.controllers.staff.TicketTypeController;
 import org.apdb4j.controllers.staff.TicketTypeControllerImpl;
+import org.apdb4j.core.managers.ParkServiceManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
@@ -102,6 +105,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import static org.apdb4j.db.Tables.MONTHLY_RECAPS;
+import static org.apdb4j.db.Tables.PARK_SERVICES;
 
 /**
  * The FXML controller for the staff UI.
@@ -133,6 +137,8 @@ public class StaffScreenController implements FXMLController, Initializable {
     private TextField openingTimeField;
     @FXML
     private TextField closingTimeField;
+    @FXML
+    private ListView<String> topParkServicesTopList;
     @FXML
     private DatePicker expensesDatePicker1;
     @FXML
@@ -1361,6 +1367,9 @@ public class StaffScreenController implements FXMLController, Initializable {
         attractionsNumField.setText(String.valueOf(overviewController.getAttractionsAmount()));
         shopsNumField.setText(String.valueOf(overviewController.getShopsAmount()));
         employeesNumField.setText(String.valueOf(overviewController.getEmployeesAmount()));
+        topParkServicesTopList.getItems().addAll(ParkServiceManager.getBestParkServices().stream()
+                .map(record -> "(" + record.get(PARK_SERVICES.AVGRATING) + ") " + record.get(PARK_SERVICES.NAME)).toList());
+        topParkServicesTopList.prefHeightProperty().bind(Bindings.size(topParkServicesTopList.getItems()).multiply(24));
         // Adding monthly report.
         if (monthlyRecapIsNeeded()) {
             try {
