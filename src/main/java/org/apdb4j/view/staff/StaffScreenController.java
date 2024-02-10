@@ -538,7 +538,6 @@ public class StaffScreenController implements FXMLController, Initializable {
     void onTicketPurchaseDateFilter(final ActionEvent event) {
         final String datePickerText = Objects.requireNonNull(ticketPurchaseDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
-            // TODO: Extract method.
             final Collection<TicketTableItem> allItems = ticketController.getData();
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
@@ -563,7 +562,6 @@ public class StaffScreenController implements FXMLController, Initializable {
     void onTicketPunchDateFilter(final ActionEvent event) {
         final String datePickerText = Objects.requireNonNull(ticketPunchDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
-            // TODO: Extract method.
             final Collection<TicketTableItem> allItems = ticketController.getData();
             Platform.runLater(() -> {
                 ticketTableView.getItems().clear();
@@ -1098,7 +1096,6 @@ public class StaffScreenController implements FXMLController, Initializable {
             return;
         }
         if (maintenanceSearchField.getText().isBlank() || maintenanceSearchField.getText() == null) {
-            // TODO: Extract method.
             final Collection<MaintenanceTableItem> allItems = MAINTENANCE_CONTROLLER.getData();
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
@@ -1122,7 +1119,6 @@ public class StaffScreenController implements FXMLController, Initializable {
     void onMaintenanceDateSearch(final ActionEvent event) {
         final String datePickerText = Objects.requireNonNull(maintenanceSearchDatePicker.getEditor().getText());
         if (datePickerText.isBlank()) {
-            // TODO: Extract method.
             final Collection<MaintenanceTableItem> allItems = MAINTENANCE_CONTROLLER.getData();
             Platform.runLater(() -> {
                 maintenanceTableView.getItems().clear();
@@ -1207,7 +1203,6 @@ public class StaffScreenController implements FXMLController, Initializable {
             return;
         }
         if (picturesSearchField.getText().isBlank() || picturesSearchField.getText() == null) {
-            // TODO: Extract method.
             final Collection<PictureTableItem> allItems = pictureController.getData();
             Platform.runLater(() -> {
                 picturesTableView.getItems().clear();
@@ -1286,7 +1281,6 @@ public class StaffScreenController implements FXMLController, Initializable {
             return;
         }
         if (reviewSearchField.getText().isBlank() || reviewSearchField.getText() == null) {
-            // TODO: Extract method.
             final Collection<ReviewTableItem> allItems = reviewController.getData();
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
@@ -1309,7 +1303,6 @@ public class StaffScreenController implements FXMLController, Initializable {
     void onReviewDateSearch(final ActionEvent event) {
         final String datePickerText = Objects.requireNonNull(reviewDateFilter.getEditor().getText());
         if (datePickerText.isBlank()) {
-            // TODO: Extract method.
             final Collection<ReviewTableItem> allItems = reviewController.getData();
             Platform.runLater(() -> {
                 reviewsTableView.getItems().clear();
