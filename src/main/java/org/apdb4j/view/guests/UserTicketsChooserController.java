@@ -19,6 +19,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.controllers.guests.TicketController;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
@@ -178,8 +179,9 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                         .filter(t -> t.getValue() != 0)
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).containsKey(entry.getKey()))
                 .anyMatch(entry -> Objects.isNull(entry.getValue().getValue()))) {
-            Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "A date must be selected for all the chosen tickets",
-                    ButtonType.CLOSE).show());
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText("A date must be selected for all the chosen tickets")
+                    .show();
         } else {
             chosenTickets.entrySet().stream().filter(t -> t.getValue() != 0).forEach(ticketTypeAndCategoryWithNumber -> {
                 final var ticketBought = controller.buyTicket(ticketTypeAndCategoryWithNumber.getKey().getKey(),
@@ -187,15 +189,18 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                         ticketTypeAndCategoryWithNumber.getKey().getValue(),
                         ticketTypeAndCategoryWithNumber.getValue());
                 if (!ticketBought) {
-                    Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "An error occurred",
-                            ButtonType.CLOSE).show());
+                    new AlertBuilder(Alert.AlertType.ERROR).show();
                 } else {
-                    JavaFXUtils.setStageTitle(event,
-                            "APDB4J - " + SessionManager.getSessionManager().getSession().username(),
-                            false);
-                    Platform.runLater(() -> new Alert(Alert.AlertType.INFORMATION, "Purchase successful",
-                            ButtonType.CLOSE).show());
-                    LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false);
+                    new AlertBuilder(Alert.AlertType.INFORMATION)
+                            .setContentText("Purchase successful")
+                            .setOnClose(() -> {
+                                JavaFXUtils.setStageTitle(event,
+                                        "APDB4J - " + SessionManager.getSessionManager().getSession().username(),
+                                        false);
+                                Platform.runLater(() ->
+                                        LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false));
+                            })
+                            .show();
                 }
             });
         }
