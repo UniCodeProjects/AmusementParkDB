@@ -834,6 +834,7 @@ public class StaffScreenController implements FXMLController, Initializable {
         Platform.runLater(() -> attractionsTableView.getItems().addAll(rideController.getData()));
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.remove(vboxChildren.indexOf(exhibitionsRadioBtn) + 1);
+        advancedAttractionBtn.setDisable(true);
     }
 
     /**
@@ -860,6 +861,7 @@ public class StaffScreenController implements FXMLController, Initializable {
         final ObservableList<Node> vboxChildren = ((VBox) exhibitionsRadioBtn.getParent()).getChildren();
         vboxChildren.add(vboxChildren.indexOf(exhibitionsRadioBtn) + 1, plannedExhibitionsCheckBox);
         advancedAttractionBtn.getItems().clear();
+        advancedAttractionBtn.setDisable(false);
         final MenuItem planExhibitionItem = new MenuItem("Plan exhibition");
         planExhibitionItem.setOnAction(a -> {
             final ExhibitionTableItem selectedExhibition = (ExhibitionTableItem) attractionsTableView.getSelectionModel()
