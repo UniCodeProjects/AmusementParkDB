@@ -29,7 +29,7 @@ import static org.apdb4j.db.Tables.*;
  */
 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH") // TODO: remove. The code that causes the false positive should be in the controller.
 // TODO: remove all the direct usages of the model. Only for testing GUI.
-public class UserRidesScreenController extends BackableAbstractFXMLController {
+public class UserParkServicesScreenController extends BackableAbstractFXMLController {
 
     private static final double RIDE_INFO_FONT_SIZE = 18;
     private static final double FILTERS_TITLE_FONT_SIZE = 14;
