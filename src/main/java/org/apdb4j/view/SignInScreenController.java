@@ -78,8 +78,8 @@ public class SignInScreenController extends LoginCommonController implements Ini
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         // TODO: remove
-        username.setText("mario.rossi");
-        password.setText("A@BbCc11");
+        username.setText("francesco.esposito");
+        password.setText("A@BbCc88");
         signInBtn.fire();
 
         final var screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
