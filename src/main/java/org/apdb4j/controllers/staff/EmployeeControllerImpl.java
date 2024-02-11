@@ -57,7 +57,22 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> T addData(final T item) {
-        throw new UnsupportedOperationException();
+        final EmployeeTableItem employee = (EmployeeTableItem) item;
+        final boolean queryResult = StaffManager.hireNewStaffMember(employee.getNationalID(),
+                employee.getStaffID(),
+                employee.getEmail(),
+                employee.getName(),
+                employee.getSurname(),
+                employee.getDob(),
+                employee.getBirthplace(),
+                employee.getGender().charAt(0),
+                employee.getRole(),
+                employee.isAdmin(),
+                !employee.isAdmin());
+        if (!queryResult) {
+            throw new DataAccessException("Something went wrong while adding a new employee.");
+        }
+        return item;
     }
 
     /**
