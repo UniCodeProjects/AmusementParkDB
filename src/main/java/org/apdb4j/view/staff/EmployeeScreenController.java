@@ -106,7 +106,7 @@ public class EmployeeScreenController extends PopupInitializer implements FXMLCo
             return;
         }
         final var newEmployee = new EmployeeTableItem(
-                IDGenerationUtils.generatePersonID(employee.getName(), employee.getSurname(), employee.getEmail()),
+                IDGenerationUtils.generatePersonID(nameField.getText(), surnameField.getText(), emailField.getText()),
                 nationalIDField.getText(),
                 nameField.getText(),
                 surnameField.getText(),
