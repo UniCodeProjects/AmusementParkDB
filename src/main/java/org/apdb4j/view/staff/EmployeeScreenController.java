@@ -12,6 +12,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.apdb4j.controllers.staff.EmployeeController;
 import org.apdb4j.controllers.staff.EmployeeControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -24,6 +26,7 @@ import org.apdb4j.view.staff.tableview.EmployeeTableItem;
  */
 public class EmployeeScreenController extends PopupInitializer implements FXMLController {
 
+    private final EmployeeController controller = new EmployeeControllerImpl();
     @FXML
     private GridPane gridPane;
     @FXML
@@ -99,7 +102,7 @@ public class EmployeeScreenController extends PopupInitializer implements FXMLCo
                 final EmployeeTableItem currentEmployee = tableView.getItems().get(tableView.getItems().indexOf(employee));
                 final int index = tableView.getItems().indexOf(currentEmployee);
                 tableView.getItems().remove(currentEmployee);
-                tableView.getItems().add(index, new EmployeeControllerImpl().editData(editedEmployee));
+                tableView.getItems().add(index, controller.editData(editedEmployee));
                 tableView.getSelectionModel().select(editedEmployee);
                 tableView.requestFocus();
             });
@@ -113,18 +116,20 @@ public class EmployeeScreenController extends PopupInitializer implements FXMLCo
                 dobPicker.getValue(),
                 birthplaceField.getText(),
                 maleRadioBtn.isSelected() ? "M" : "F",
-                roleField.getText(),
+                StringUtils.defaultIfEmpty(roleField.getText(), null),
                 adminRadioBtn.isSelected(),
                 -1,
                 emailField.getText()
         );
         gridPane.getScene().getWindow().hide();
         // Opening the add-contract form.
-        if (fromHire) {
+        if (fromHire && employeeRadioBtn.isSelected()) {
             ContractScreenController.setEditMode(false);
             ContractScreenController.setFromEmployeeMode(newEmployee, (e, c) -> Platform.runLater(() ->
-                    tableView.getItems().add((EmployeeTableItem) new EmployeeControllerImpl().addData(e, c))));
+                    tableView.getItems().add((EmployeeTableItem) controller.addData(e, c))));
             LoadFXML.fromEventAsPopup(event, "layouts/contract-screen.fxml", "Add contract");
+        } else {
+            Platform.runLater(() -> tableView.getItems().add(controller.addData(newEmployee)));
         }
     }
 
