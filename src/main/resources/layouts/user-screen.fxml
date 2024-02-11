@@ -69,7 +69,7 @@
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin></Hyperlink>
-            <Hyperlink text="See our best services according to you!" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="See our best services according to you!" underline="true" visited="true">
                <font>
                   <Font size="18.0" />
                </font>
