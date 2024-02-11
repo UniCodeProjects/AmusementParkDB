@@ -183,8 +183,7 @@ public class EmployeeControllerImpl implements EmployeeController {
                         .from(STAFF)
                         .leftJoin(CONTRACTS)
                         .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
-                        .where(fired ? CONTRACTS.ENDDATE.isNotNull() : CONTRACTS.ENDDATE.isNull())
-                        .or(STAFF.ISADMIN.isTrue())
+                        .where(fired ? CONTRACTS.ENDDATE.isNotNull() : CONTRACTS.ENDDATE.isNull().or(STAFF.ISADMIN.isTrue()))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
