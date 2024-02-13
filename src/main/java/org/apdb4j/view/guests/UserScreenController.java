@@ -126,7 +126,46 @@ public class UserScreenController implements FXMLController, Initializable {
      */
     @FXML
     void onRidesClick(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/user-park-services-screen.fxml", true, true, true);
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RIDE);
         JavaFXUtils.setStageTitle(event, "Our rides", true);
+    }
+
+    /**
+     * Opens the screen that displays a list of the best park services according to the users' reviews.
+     * @param event the click.
+     */
+    @FXML
+    void onBestParkServicesClick(final ActionEvent event) {
+        // TODO: handle best park services with a personalized screen
+    }
+
+    /**
+     * Opens the screen that displays all the info about the souvenir shops.
+     * @param event the click.
+     */
+    @FXML
+    void onSouvenirShopsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.SHOP);
+        JavaFXUtils.setStageTitle(event, "Our shops", true);
+    }
+
+    /**
+     * Opens the screen that displays all the info about the restaurants.
+     * @param event the click.
+     */
+    @FXML
+    void onRestaurantsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RESTAURANT);
+        JavaFXUtils.setStageTitle(event, "Our restaurants", true);
+    }
+
+    /**
+     * Opens the screen that displays all the info about the exhibitions.
+     * @param event the click.
+     */
+    @FXML
+    void onExhibitionsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.EXHIBITION);
+        JavaFXUtils.setStageTitle(event, "Our exhibitions", true);
     }
 }
