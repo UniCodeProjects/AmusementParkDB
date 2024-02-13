@@ -40,7 +40,7 @@
             </BorderPane>
             <Label fx:id="priceListPeriod">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="30.0" />
                </font>
                <VBox.margin>
                   <Insets top="15.0" />

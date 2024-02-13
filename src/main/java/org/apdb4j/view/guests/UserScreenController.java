@@ -65,11 +65,11 @@ public class UserScreenController implements FXMLController, Initializable {
         accountInfo.getItems().addAll(List.of(accountPurchases, accountPersonalData, new Separator(), logOutButton));
         accountPurchases.setOnAction(event -> {
             LoadFXML.fromEvent(event, "layouts/user-purchases.fxml", true, true, true);
-            JavaFXUtils.setStageTitle(event, "My purchases");
+            JavaFXUtils.setStageTitle(event, "My purchases", true);
         });
         accountPersonalData.setOnAction(event -> {
             LoadFXML.fromEvent(event, "layouts/user-personal-data.fxml", true, true, true);
-            JavaFXUtils.setStageTitle(event, "My personal data");
+            JavaFXUtils.setStageTitle(event, "My personal data", true);
         });
         logOutButton.setOnAction(event -> Platform.exit());
         for (final var accountInfoItem : accountInfo.getItems()) {
@@ -117,7 +117,7 @@ public class UserScreenController implements FXMLController, Initializable {
     @FXML
     void onTicketsClick(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/user-price-list.fxml", true, true, true);
-        JavaFXUtils.setStageTitle(event, "Tickets price list");
+        JavaFXUtils.setStageTitle(event, "Tickets price list", true);
     }
 
     /**
@@ -126,7 +126,7 @@ public class UserScreenController implements FXMLController, Initializable {
      */
     @FXML
     void onRidesClick(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/user-rides-screen.fxml", true, true, true);
-        JavaFXUtils.setStageTitle(event, "Our rides");
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RIDE);
+        JavaFXUtils.setStageTitle(event, "Our rides", true);
     }
 }

@@ -28,7 +28,7 @@
                <content>
                   <VBox fx:id="descriptionAndInfoContainer">
                      <children>
-                        <Label fx:id="parkServiceDescriptionLabel" text="Park service description">
+                        <Label fx:id="parkServiceDescriptionLabel" text=" description">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" top="5.0" />
                            </VBox.margin>
@@ -41,7 +41,7 @@
                               <Insets left="5.0" right="5.0" />
                            </VBox.margin>
                         </TextArea>
-                        <Label fx:id="parkServiceInfoLabel" text="Park service info">
+                        <Label fx:id="parkServiceInfoLabel" text=" info">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" top="10.0" />
                            </VBox.margin>

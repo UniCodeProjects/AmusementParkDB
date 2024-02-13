@@ -17,12 +17,16 @@ import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.controllers.guests.TicketController;
+import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * FXML controller for the screen that allows the user to buy either tickets or season tickets, or both.
@@ -171,22 +175,34 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
      */
     @FXML
     void onBuyButtonPressed(final ActionEvent event) {
-        if (ticketsWithChosenDates.entrySet().stream().filter(entry -> chosenTickets.containsKey(entry.getKey()))
+        if (ticketsWithChosenDates.entrySet().stream().filter(entry -> chosenTickets.entrySet().stream()
+                        .filter(t -> t.getValue() != 0)
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)).containsKey(entry.getKey()))
                 .anyMatch(entry -> Objects.isNull(entry.getValue().getValue()))) {
-            Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "A date must be selected for all the chosen tickets",
-                    ButtonType.CLOSE).show());
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText("A date must be selected for all the chosen tickets")
+                    .show();
         } else {
-            chosenTickets.forEach((ticketTypeAndCategory, quantity) -> {
-                final var ticketBought = controller.buyTicket(ticketTypeAndCategory.getKey(),
-                        ticketsWithChosenDates.get(ticketTypeAndCategory).getValue(),
-                        ticketTypeAndCategory.getValue(),
-                        quantity);
+            chosenTickets.entrySet().stream().filter(t -> t.getValue() != 0).forEach(ticketTypeAndCategoryWithNumber -> {
+                final var ticketBought = controller.buyTicket(ticketTypeAndCategoryWithNumber.getKey().getKey(),
+                        ticketsWithChosenDates.get(ticketTypeAndCategoryWithNumber.getKey()).getValue(),
+                        ticketTypeAndCategoryWithNumber.getKey().getValue(),
+                        ticketTypeAndCategoryWithNumber.getValue());
                 if (!ticketBought) {
-                    Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "An error occurred while buying tickets",
-                            ButtonType.CLOSE).show());
+                    new AlertBuilder(Alert.AlertType.ERROR).show();
+                } else {
+                    new AlertBuilder(Alert.AlertType.INFORMATION)
+                            .setContentText("Purchase successful")
+                            .setOnClose(() -> {
+                                JavaFXUtils.setStageTitle(event,
+                                        "APDB4J - " + SessionManager.getSessionManager().getSession().username(),
+                                        false);
+                                Platform.runLater(() ->
+                                        LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false));
+                            })
+                            .show();
                 }
             });
-            LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false);
         }
     }
 
