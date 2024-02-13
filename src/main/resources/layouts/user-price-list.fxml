@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.apdb4j.view.guests.UserPriceListController">
+   <center>
+      <ListView fx:id="ticketsAndSeasonTickets" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="15.0" top="10.0" />
+         </BorderPane.margin>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ListView>
+   </center>
+   <top>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <children>
+            <BorderPane prefHeight="0.0" prefWidth="600.0">
+               <left>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </BorderPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </left>
+            </BorderPane>
+            <Label fx:id="priceListPeriod">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+   </top>
+   <right>
+      <Button mnemonicParsing="false" onAction="#onBuyTicketsButtonPressed" text="Buy your tickets HERE!" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets right="15.0" />
+         </BorderPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </right>
+</BorderPane>

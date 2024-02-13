@@ -51,7 +51,7 @@ public class ParkServices extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.park_services.ParkServiceID</code>.
      */
-    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> PARKSERVICEID = createField(DSL.name("ParkServiceID"), SQLDataType.CHAR(11).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.park_services.Name</code>.

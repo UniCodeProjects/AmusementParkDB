@@ -50,7 +50,7 @@ public class Staff extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.staff.StaffID</code>.
      */
-    public final TableField<Record, String> STAFFID = createField(DSL.name("StaffID"), SQLDataType.CHAR(72).nullable(false), this, "");
+    public final TableField<Record, String> STAFFID = createField(DSL.name("StaffID"), SQLDataType.CHAR(16).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.staff.NationalID</code>.

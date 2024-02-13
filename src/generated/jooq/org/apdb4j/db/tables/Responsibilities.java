@@ -48,7 +48,7 @@ public class Responsibilities extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.responsibilities.FacilityID</code>.
      */
-    public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(6).nullable(false), this, "");
+    public final TableField<Record, String> FACILITYID = createField(DSL.name("FacilityID"), SQLDataType.CHAR(11).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.responsibilities.Date</code>.

@@ -51,7 +51,7 @@ public class Contracts extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.contracts.ContractID</code>.
      */
-    public final TableField<Record, String> CONTRACTID = createField(DSL.name("ContractID"), SQLDataType.CHAR(65).nullable(false), this, "");
+    public final TableField<Record, String> CONTRACTID = createField(DSL.name("ContractID"), SQLDataType.CHAR(10).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.contracts.SubscriptionDate</code>.

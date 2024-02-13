@@ -9,6 +9,7 @@ import java.time.YearMonth;
 
 import static org.apdb4j.db.Tables.COSTS;
 import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.PARK_SERVICES;
 
 /**
  * Contains all the SQL queries that are related to the SHOP entity.
@@ -27,16 +28,13 @@ public final class ShopManager {
      * @param openingTime the opening time of the new shop.
      * @param closingTime the closing time of the new shop.
      * @param type the type of the new shop.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewShop(final @NonNull String shopID,
                                      final @NonNull String name,
                                      final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
-                                     final @NonNull String type,
-                                     final @NonNull String account) {
-        return addNewShopWithDescription(shopID, name, openingTime, closingTime, type, null, account);
+                                     final @NonNull String type) {
+        return addNewShopWithDescription(shopID, name, openingTime, closingTime, type, null);
     }
 
     /**
@@ -48,24 +46,30 @@ public final class ShopManager {
      * @param type the type of the new shop.
      * @param description the possible description of the new shop. If the value of this parameter is {@code null}, the
      *                    behaviour of this method will be the same of the method
-     *                    {@link ShopManager#addNewShop(String, String, LocalTime, LocalTime, String, String)}.
-     * @param account the account that is performing this operation. If the account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     *                    {@link #addNewShop(String, String, LocalTime, LocalTime, String)}.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewShopWithDescription(final @NonNull String shopID,
                                                     final @NonNull String name,
                                                     final @NonNull LocalTime openingTime, final @NonNull LocalTime closingTime,
                                                     final @NonNull String type,
-                                                    final String description,
-                                                    final @NonNull String account) {
-        final int insertedTuples = DB.createConnection()
-                .queryAction(db -> db.insertInto(FACILITIES)
-                        .values(shopID, name, openingTime, closingTime, type, description, true)
-                        .execute())
+                                                    final String description) {
+        return DB.createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        configuration.dsl()
+                                .insertInto(PARK_SERVICES)
+                                .values(shopID, name, BigDecimal.ZERO, 0, type, description, false)
+                                .execute();
+                        configuration.dsl()
+                                .insertInto(FACILITIES)
+                                .values(shopID, openingTime, closingTime, true)
+                                .execute();
+                    });
+                    return 1;
+                })
                 .closeConnection()
-                .getResultAsInt();
-        return insertedTuples == 1;
+                .getResultAsInt() == 1;
     }
 
     /**
@@ -75,16 +79,13 @@ public final class ShopManager {
      * @param month the month.
      * @param expense the expenses made by the provided shop.
      * @param revenue the revenue made by the provided shop.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewMonthlyCost(final @NonNull String shopID, final YearMonth month,
-                                            final double expense, final double revenue,
-                                            final @NonNull String account) {
+                                            final double expense, final double revenue) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(COSTS)
-                        .values(shopID, month.getMonthValue(), month.getYear(), expense, revenue)
+                        .values(shopID, revenue, expense, month.getMonthValue(), month.getYear())
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
@@ -100,14 +101,11 @@ public final class ShopManager {
      *               the query will not be executed.
      * @param actualMonth the actual month of the money info.
      * @param newMonth the new month of the money info.
-     * @param account the account that is performing this operation.
-     *                If this account has not the permissions to accomplish the operation, the query will not be executed.
-     * @return {@code true} on successful tuple insertion 
+     * @return {@code true} on successful tuple insertion
      */
     public static boolean editCostDate(final @NonNull String shopID,
                                        final YearMonth actualMonth,
-                                       final YearMonth newMonth,
-                                       final @NonNull String account) {
+                                       final YearMonth newMonth) {
         final int modifiedTuples = DB.createConnection()
                 .queryAction(db -> db.update(COSTS)
                         .set(COSTS.MONTH, newMonth.getMonthValue())
@@ -134,14 +132,11 @@ public final class ShopManager {
      * @param month the month of the money info.
      * @param newRevenue the new revenue of the money info.
      * @param newExpense the new expense of the money info.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
-     * @return {@code true} on successful tuple insertion 
+     * @return {@code true} on successful tuple insertion
      */
     public static boolean editCostMoney(final @NonNull String shopID,
                                         final YearMonth month,
-                                        final double newRevenue, final double newExpense,
-                                        final @NonNull String account) {
+                                        final double newRevenue, final double newExpense) {
         final int modifiedTuples = DB.createConnection()
                 .queryAction(db -> db.update(COSTS)
                         .set(COSTS.REVENUE, BigDecimal.valueOf(newRevenue))

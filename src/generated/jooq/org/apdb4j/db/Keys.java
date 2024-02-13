@@ -14,7 +14,6 @@ import org.apdb4j.db.tables.Guests;
 import org.apdb4j.db.tables.Maintenances;
 import org.apdb4j.db.tables.MonthlyRecaps;
 import org.apdb4j.db.tables.ParkServices;
-import org.apdb4j.db.tables.Permissions;
 import org.apdb4j.db.tables.Pictures;
 import org.apdb4j.db.tables.PriceLists;
 import org.apdb4j.db.tables.PunchDates;
@@ -59,7 +58,6 @@ public class Keys {
     public static final UniqueKey<Record> KEY_MONTHLY_RECAPS_PRIMARY = Internal.createUniqueKey(MonthlyRecaps.MONTHLY_RECAPS, DSL.name("KEY_monthly_recaps_PRIMARY"), new TableField[] { MonthlyRecaps.MONTHLY_RECAPS.DATE }, true);
     public static final UniqueKey<Record> KEY_PARK_SERVICES_IDPARK_SERVICE_1 = Internal.createUniqueKey(ParkServices.PARK_SERVICES, DSL.name("KEY_park_services_IDPARK_SERVICE_1"), new TableField[] { ParkServices.PARK_SERVICES.NAME }, true);
     public static final UniqueKey<Record> KEY_PARK_SERVICES_PRIMARY = Internal.createUniqueKey(ParkServices.PARK_SERVICES, DSL.name("KEY_park_services_PRIMARY"), new TableField[] { ParkServices.PARK_SERVICES.PARKSERVICEID }, true);
-    public static final UniqueKey<Record> KEY_PERMISSIONS_PRIMARY = Internal.createUniqueKey(Permissions.PERMISSIONS, DSL.name("KEY_permissions_PRIMARY"), new TableField[] { Permissions.PERMISSIONS.PERMISSIONTYPE }, true);
     public static final UniqueKey<Record> KEY_PICTURES_PRIMARY = Internal.createUniqueKey(Pictures.PICTURES, DSL.name("KEY_pictures_PRIMARY"), new TableField[] { Pictures.PICTURES.PATH }, true);
     public static final UniqueKey<Record> KEY_PRICE_LISTS_PRIMARY = Internal.createUniqueKey(PriceLists.PRICE_LISTS, DSL.name("KEY_price_lists_PRIMARY"), new TableField[] { PriceLists.PRICE_LISTS.YEAR }, true);
     public static final UniqueKey<Record> KEY_PUNCH_DATES_PRIMARY = Internal.createUniqueKey(PunchDates.PUNCH_DATES, DSL.name("KEY_punch_dates_PRIMARY"), new TableField[] { PunchDates.PUNCH_DATES.DATE }, true);
@@ -79,7 +77,6 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<Record, Record> FKPOSSESSIONS = Internal.createForeignKey(Accounts.ACCOUNTS, DSL.name("FKpossessions"), new TableField[] { Accounts.ACCOUNTS.PERMISSIONTYPE }, Keys.KEY_PERMISSIONS_PRIMARY, new TableField[] { Permissions.PERMISSIONS.PERMISSIONTYPE }, true);
     public static final ForeignKey<Record, Record> FKATT_TIC_1 = Internal.createForeignKey(Attributions.ATTRIBUTIONS, DSL.name("FKatt_TIC_1"), new TableField[] { Attributions.ATTRIBUTIONS.YEAR, Attributions.ATTRIBUTIONS.TYPE, Attributions.ATTRIBUTIONS.CATEGORY }, Keys.KEY_TICKET_TYPES_PRIMARY, new TableField[] { TicketTypes.TICKET_TYPES.YEAR, TicketTypes.TICKET_TYPES.TYPE, TicketTypes.TICKET_TYPES.CATEGORY }, true);
     public static final ForeignKey<Record, Record> FKATT_TIC_FK = Internal.createForeignKey(Attributions.ATTRIBUTIONS, DSL.name("FKatt_TIC_FK"), new TableField[] { Attributions.ATTRIBUTIONS.TICKETID }, Keys.KEY_TICKETS_PRIMARY, new TableField[] { Tickets.TICKETS.TICKETID }, true);
     public static final ForeignKey<Record, Record> FKEMPLOYMENT = Internal.createForeignKey(Contracts.CONTRACTS, DSL.name("FKemployment"), new TableField[] { Contracts.CONTRACTS.EMPLOYEENID }, Keys.KEY_STAFF_PRIMARY, new TableField[] { Staff.STAFF.NATIONALID }, true);
