@@ -22,7 +22,7 @@
    <center>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="welcomeLabel" text="Welcome to amusement park!">
+            <Label text="Welcome to amusement park!">
                <VBox.margin>
                   <Insets bottom="15.0" />
                </VBox.margin>
@@ -30,7 +30,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Hyperlink fx:id="tickets" focusTraversable="false" onAction="#onTicketsClick" text="Tickets" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" onAction="#onTicketsClick" text="Tickets" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -38,7 +38,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="rides" focusTraversable="false" onAction="#onRidesClick" text="Rides" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" onAction="#onRidesClick" text="Rides" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -46,7 +46,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="exhibitions" focusTraversable="false" text="Exhibitions" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Exhibitions" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -54,7 +54,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="restaurants" focusTraversable="false" text="Restaurants" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Restaurants" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -62,10 +62,18 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="souvenirShops" focusTraversable="false" text="Souvenir shops" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Souvenir shops" underline="true" visited="true">
                <font>
                   <Font size="18.0" />
-               </font></Hyperlink>
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></Hyperlink>
+            <Hyperlink focusTraversable="false" text="See our best services according to you!" underline="true" visited="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Hyperlink>
          </children>
       </VBox>
    </center>

@@ -18,7 +18,7 @@ public class UserPurchasesController extends BackableAbstractFXMLController {
     @FXML
     void onTicketsButtonPressed(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
-        JavaFXUtils.setStageTitle(event, "My tickets");
+        JavaFXUtils.setStageTitle(event, "My tickets", true);
     }
 
     /**
@@ -28,6 +28,6 @@ public class UserPurchasesController extends BackableAbstractFXMLController {
     @FXML
     void onSeasonTicketsButtonPressed(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/user-tickets-screen.fxml", true, true, true);
-        JavaFXUtils.setStageTitle(event, "My season tickets");
+        JavaFXUtils.setStageTitle(event, "My season tickets", true);
     }
 }
