@@ -77,11 +77,6 @@ public class SignInScreenController extends LoginCommonController implements Ini
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        // TODO: remove
-        username.setText("francesco.esposito");
-        password.setText("A@BbCc88");
-        signInBtn.fire();
-
         final var screenDimensions = Toolkit.getDefaultToolkit().getScreenSize();
         final var width = screenDimensions.getWidth() * 0.2;
         username.setPrefWidth(width);
