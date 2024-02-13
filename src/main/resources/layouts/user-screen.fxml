@@ -46,7 +46,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink focusTraversable="false" onAction="#onExhibitionsClick" text="Exhibitions" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Exhibitions" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -54,7 +54,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink focusTraversable="false" onAction="#onRestaurantsClick" text="Restaurants" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Restaurants" underline="true" visited="true">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -62,14 +62,14 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink focusTraversable="false" onAction="#onSouvenirShopsClick" text="Souvenir shops" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="Souvenir shops" underline="true" visited="true">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin></Hyperlink>
-            <Hyperlink focusTraversable="false" onAction="#onBestParkServicesClick" text="See our best services according to you!" underline="true" visited="true">
+            <Hyperlink focusTraversable="false" text="See our best services according to you!" underline="true" visited="true">
                <font>
                   <Font size="18.0" />
                </font>
