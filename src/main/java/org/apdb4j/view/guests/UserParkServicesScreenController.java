@@ -54,12 +54,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
      */
     public UserParkServicesScreenController(final ParkServiceType parkServiceType) {
         this.parkServiceType = parkServiceType;
-        controller = switch (parkServiceType) {
-            case RIDE -> new RideController();
-            case SHOP -> new ShopController();
-            case RESTAURANT -> new RestaurantController();
-            case EXHIBITION -> new ExhibitionController();
-        };
+        controller = new RideController();
     }
 
     /**
