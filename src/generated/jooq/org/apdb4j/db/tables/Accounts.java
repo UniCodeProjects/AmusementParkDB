@@ -115,26 +115,9 @@ public class Accounts extends TableImpl<Record> {
     }
 
     @Override
-    public List<ForeignKey<Record, ?>> getReferences() {
-        return Arrays.asList(Keys.FKPOSSESSIONS);
-    }
-
-    private transient Permissions _permissions;
-
-    /**
-     * Get the implicit join path to the <code>amusement_park.permissions</code>
-     * table.
-     */
-    public Permissions permissions() {
-        if (_permissions == null)
-            _permissions = new Permissions(this, Keys.FKPOSSESSIONS);
-
-        return _permissions;
-    }
-
-    @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
+            Internal.createCheck(this, DSL.name("PERMISSION_CHECK"), "(`PermissionType` in (_utf8mb4\\'Admin\\',_utf8mb4\\'Staff\\',_utf8mb4\\'Guest\\'))", true),
             Internal.createCheck(this, DSL.name("PSW_LENGTH"), "(length(`Password`) >= 8)", true)
         );
     }

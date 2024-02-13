@@ -1,17 +1,6 @@
 package org.apdb4j.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import lombok.NonNull;
-import org.apdb4j.core.permissions.AccessDeniedException;
-import org.apdb4j.core.permissions.AccessSetting;
-import org.apdb4j.core.permissions.AccessType;
-import org.apdb4j.core.permissions.Permission;
-import org.apdb4j.core.permissions.uid.AppPermissionUID;
-import org.apdb4j.core.permissions.uid.DBPermissionUID;
-import org.apdb4j.core.permissions.uid.ReturnSequence;
-import org.apdb4j.core.permissions.uid.UID;
-import org.apdb4j.core.permissions.uid.UIDParser;
-import org.apdb4j.core.permissions.uid.UIDSection;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -20,12 +9,7 @@ import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -35,33 +19,6 @@ public class QueryBuilder {
 
     private Connection connection;
     private Object queryResult;
-
-    /**
-     * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param permission the object that defines the permission for the query
-     * @return {@link QueryBuilder} for fluent style
-     * @throws AccessDeniedException when the requiredPermission objects are incompatible
-     */
-    public QueryBuilder definePermissions(final @NonNull Permission permission) throws AccessDeniedException {
-        if (invalidAccess(permission)) {
-            throw new AccessDeniedException();
-        }
-        return this;
-    }
-
-    /**
-     * Defines the requiredPermission that allows the execution of the following query(ies).
-     * @param permissions the objects that define the permissions for the query
-     * @return {@link QueryBuilder} for fluent style
-     * @throws AccessDeniedException when the requiredPermission objects are incompatible
-     */
-    public QueryBuilder definePermissions(final @NonNull Set<? extends Permission> permissions)
-            throws AccessDeniedException {
-        if (invalidAccess(permissions)) {
-            throw new AccessDeniedException();
-        }
-        return this;
-    }
 
     /**
      * Creates a JDBC connection to run the successive queries.
@@ -157,64 +114,6 @@ public class QueryBuilder {
         } catch (final SQLException e) {
             return false;
         }
-    }
-
-    private boolean invalidAccess(final @NonNull Permission permission) {
-        final UID uidFromDb;
-        try {
-            uidFromDb = new DBPermissionUID(permission.email()).getUid();
-        } catch (final NoSuchElementException e) {
-            // The provided email does not exist in the DB.
-            return true;
-        }
-        // The UID from the database and none of the newly generated ones from the provided permission are equals.
-        if (Arrays.stream(permission.requiredPermission())
-                .noneMatch(access -> Objects.equals(new AppPermissionUID(access).getUid(), uidFromDb))) {
-            return true;
-        }
-        final List<UIDSection> parsed = UIDParser.parse(uidFromDb.uid());
-        // If all attributes are empty and READ and WRITE are set to GLOBAL, it is an admin permission.
-        if (isAdmin(parsed)) {
-            return false;
-        }
-        // Otherwise, it is a normal permission.
-        final var returnSequences = parsed.stream()
-                .map(UIDSection::returnSequence)
-                .flatMap(Collection::stream)
-                .toList();
-        return permission.values().stream()
-                .noneMatch(accessSetting -> returnSequences.contains(new ReturnSequence(accessSetting))
-                        && accessTypesHaveEqualsOrHigherPriority(accessSetting, returnSequences));
-    }
-
-    private boolean isAdmin(final List<UIDSection> parsed) {
-        return parsed.stream()
-                .map(UIDSection::returnSequence)
-                .allMatch(returnSequences -> returnSequences.stream()
-                        .allMatch(returnSequence -> returnSequence.getAttribute().isEmpty()
-                                && returnSequence.getRead().equals(AccessType.Read.GLOBAL)
-                                && returnSequence.getWrite().equals(AccessType.Write.GLOBAL)));
-    }
-
-    private boolean accessTypesHaveEqualsOrHigherPriority(final AccessSetting access,
-                                                          final List<ReturnSequence> returnSequences) {
-        return returnSequences.stream().allMatch(returned -> {
-            final var isReadPriorityValid = hasHigherOrEqualPriority(access.getReadAccess().getLeft(), returned.getRead());
-            final var isWritePriorityValid = hasHigherOrEqualPriority(access.getWriteAccess().getLeft(), returned.getWrite());
-            return isReadPriorityValid || isWritePriorityValid;
-        });
-    }
-
-    private boolean hasHigherOrEqualPriority(final AccessType.Read r1, final AccessType.Read r2) {
-        return r1.compareTo(r2) >= 0;
-    }
-
-    private boolean hasHigherOrEqualPriority(final AccessType.Write w1, final AccessType.Write w2) {
-        return w1.compareTo(w2) >= 0;
-    }
-
-    private boolean invalidAccess(final @NonNull Set<? extends Permission> permissions) {
-        return permissions.stream().anyMatch(this::invalidAccess);
     }
 
 }

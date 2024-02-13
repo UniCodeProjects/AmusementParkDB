@@ -9,6 +9,7 @@ import org.jooq.Result;
 import org.jooq.types.UByte;
 import org.jooq.types.UInteger;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -35,15 +36,12 @@ public final class ExhibitionManager {
      * @param exhibitionID the identifier of the new exhibition.
      * @param name the name of the new exhibition.
      * @param type the type of the new exhibition.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibition(final @NonNull String exhibitionID,
                                            final @NonNull String name,
-                                           final @NonNull String type,
-                                           final @NonNull String account) {
-        return addNewExhibitionWithDescription(exhibitionID, name, type, null, account);
+                                           final @NonNull String type) {
+        return addNewExhibitionWithDescription(exhibitionID, name, type, null);
     }
 
     /**
@@ -53,24 +51,29 @@ public final class ExhibitionManager {
      * @param type the type of the new exhibition.
      * @param description the description of the new exhibition. If it is {@code null} the behavior of this method
      *                    is the same of
-     *                    {@link ExhibitionManager#addNewExhibition(String, String, String, String)}.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
+     *                    {@link #addNewExhibition(String, String, String)}.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean addNewExhibitionWithDescription(final @NonNull String exhibitionID,
                                                           final @NonNull String name,
                                                           final @NonNull String type,
-                                                          final String description,
-                                                          final @NonNull String account) {
+                                                          final String description) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(PARK_SERVICES,
                                 PARK_SERVICES.PARKSERVICEID,
                                 PARK_SERVICES.NAME,
                                 PARK_SERVICES.TYPE,
                                 PARK_SERVICES.DESCRIPTION,
+                                PARK_SERVICES.AVGRATING,
+                                PARK_SERVICES.NUMREVIEWS,
                                 PARK_SERVICES.ISEXHIBITION)
-                        .values(exhibitionID, name, type, description, UByte.valueOf(1).byteValue())
+                        .values(exhibitionID,
+                                name,
+                                type,
+                                description,
+                                BigDecimal.ZERO,
+                                UInteger.valueOf(0),
+                                (byte) 1)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
@@ -85,17 +88,14 @@ public final class ExhibitionManager {
      * @param date the date on which the exhibition will be performed.
      * @param time the hour on which the exhibition will be performed.
      * @param maxSeats the maximum number of seats of the exhibition venue.
-     * @param account the account that is performing this operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple insertion
      */
     public static boolean planNewExhibition(final @NonNull String exhibitionID,
                                             final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                            final int maxSeats,
-                                            final @NonNull String account) {
+                                            final int maxSeats) {
         final int insertedTuples = DB.createConnection()
                 .queryAction(db -> db.insertInto(EXHIBITION_DETAILS)
-                        .values(exhibitionID, date, time, maxSeats)
+                        .values(exhibitionID, date, time, maxSeats, null)
                         .execute())
                 .closeConnection()
                 .getResultAsInt();
@@ -112,25 +112,35 @@ public final class ExhibitionManager {
      *             The time needs to be in the future if {@code date} is the current day. Otherwise, the query will not
      *             be executed.
      * @param newMaxSeats the new maximum number of seats.
-     * @param account the account that is performing this operation. If the account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean changeMaxSeats(final @NonNull String exhibitionID,
                                          final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                         final int newMaxSeats,
-                                         final @NonNull String account) {
-        final int updatedTuples = DB.createConnection()
-                .queryAction(db -> db.update(EXHIBITION_DETAILS)
-                        .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
-                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
-                        .and(EXHIBITION_DETAILS.DATE.eq(date))
-                        .and(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
-                        .and(EXHIBITION_DETAILS.TIME.eq(time))
-                        .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
+                                         final int newMaxSeats) {
+        final int updatedTuples;
+        if (date.equals(LocalDate.now())) {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        } else {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.MAXSEATS, newMaxSeats)
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        }
         return updatedTuples == 1;
     }
 
@@ -143,36 +153,45 @@ public final class ExhibitionManager {
      * @param time the hour on which the exhibition was performed. The time has to be in the past if {@code date} is the
      *             current date, otherwise the query will not be executed.
      * @param spectators the number of people that watched the exhibition.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return {@code true} on successful tuple update
      */
     public static boolean addSpectatorsNum(final @NonNull String exhibitionID,
                                            final @NonNull LocalDate date, final @NonNull LocalTime time,
-                                           final int spectators,
-                                           final @NonNull String account) {
-        final int updatedTuples = DB.createConnection()
-                .queryAction(db -> db.update(EXHIBITION_DETAILS)
-                        .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
-                        .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
-                        .and(EXHIBITION_DETAILS.DATE.eq(date))
-                        .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
-                        .and(EXHIBITION_DETAILS.TIME.eq(time))
-                        .and(EXHIBITION_DETAILS.TIME.lessOrEqual(LocalTime.now()))
-                        .execute())
-                .closeConnection()
-                .getResultAsInt();
+                                           final int spectators) {
+        final int updatedTuples;
+        if (date.equals(LocalDate.now())) {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .and(EXHIBITION_DETAILS.TIME.lessOrEqual(LocalTime.now()))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        } else {
+            updatedTuples = DB.createConnection()
+                    .queryAction(db -> db.update(EXHIBITION_DETAILS)
+                            .set(EXHIBITION_DETAILS.SPECTATORS, UInteger.valueOf(spectators))
+                            .where(EXHIBITION_DETAILS.EXHIBITIONID.eq(exhibitionID))
+                            .and(EXHIBITION_DETAILS.DATE.eq(date))
+                            .and(EXHIBITION_DETAILS.DATE.lessOrEqual(LocalDate.now()))
+                            .and(EXHIBITION_DETAILS.TIME.eq(time))
+                            .execute())
+                    .closeConnection()
+                    .getResultAsInt();
+        }
         return updatedTuples == 1;
     }
 
     /**
      * Performs the SQL query that computes the average number of spectators for each
      * exhibition type.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return a collection in which each exhibition type is paired with its average number of spectators.
      */
-    public static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType(final @NonNull String account) {
+    public static @NonNull Collection<Pair<String, Integer>> getAverageSpectatorsForType() {
         final Result<Record> exhibitionTypes = DB.createConnection()
                 .queryAction(db -> db.select(PARK_SERVICES.TYPE)
                         .from(PARK_SERVICES)
@@ -187,7 +206,10 @@ public final class ExhibitionManager {
             final int average = DB.createConnection()
                     .queryAction(db -> db.select(avg(EXHIBITION_DETAILS.SPECTATORS))
                             .from(EXHIBITION_DETAILS)
+                            .join(PARK_SERVICES)
+                            .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID))
                             .where(EXHIBITION_DETAILS.SPECTATORS.isNotNull())
+                            .and(PARK_SERVICES.TYPE.eq(type.get(0, String.class)))
                             .fetchOne(0, int.class))
                     .closeConnection()
                     .getResultAsInt();
@@ -199,11 +221,9 @@ public final class ExhibitionManager {
 
     /**
      * Performs the SQL query that computes the percentage of exhibitions that were sold-out until now.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return the percentage of sold-out exhibitions.
      */
-    public static double computePercentageOfSoldOutExhibitions(final @NonNull String account) {
+    public static double computePercentageOfSoldOutExhibitions() {
         final int soldOutAmount = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(EXHIBITION_DETAILS)
@@ -221,18 +241,17 @@ public final class ExhibitionManager {
 
     /**
      * Realises the SQL query that retrieves all the exhibitions that are going to be performed in the future.
-     * @param account the account that is performing the operation. If this account has not the permissions
-     *                to accomplish the operation, the query will not be executed.
      * @return all the exhibitions that are planned for the future.
      */
-     public static @NonNull Collection<Record> viewAllPlannedExhibitions(final @NonNull String account) {
+     public static @NonNull Collection<Record> viewAllPlannedExhibitions() {
          return DB.createConnection()
                  .queryAction(db -> db.select()
                          .from(EXHIBITION_DETAILS
                                  .join(PARK_SERVICES)
                                  .on(PARK_SERVICES.PARKSERVICEID.eq(EXHIBITION_DETAILS.EXHIBITIONID)))
-                         .where(EXHIBITION_DETAILS.DATE.greaterOrEqual(LocalDate.now()))
-                         .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now()))
+                         .where(EXHIBITION_DETAILS.DATE.greaterThan(LocalDate.now()))
+                         .or(EXHIBITION_DETAILS.DATE.equal(LocalDate.now())
+                                 .and(EXHIBITION_DETAILS.TIME.greaterThan(LocalTime.now())))
                          .fetch())
                  .closeConnection()
                  .getResultAsRecords().stream()
