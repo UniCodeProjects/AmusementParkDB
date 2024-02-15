@@ -31,25 +31,21 @@ import static org.apdb4j.db.Tables.*;
 // TODO: remove all the direct usages of the model. Only for testing GUI.
 public class UserParkServicesScreenController extends BackableAbstractFXMLController {
 
-    private static final double RIDE_INFO_FONT_SIZE = 18;
+    private static final double PARK_SERVICES_INFO_FONT_SIZE = 18;
     private static final double FILTERS_TITLE_FONT_SIZE = 14;
     private static final double ATTRIBUTE_NAME_FONT_SIZE = 12;
     private static final double FILTERS_MENU_WIDTH = 250;
-    private static final double CHECKBOXES_PREF_WIDTH = 100;
+    private static final double CHECKBOXES_PREF_WIDTH = 150;
     private static final Insets ATTRIBUTES_TITLE_PADDING = new Insets(5, 0, 0, 0);
 
     @FXML
     private BorderPane pane;
-
     @FXML
-    private ListView<Hyperlink> ridesListView;
-
+    private ListView<Hyperlink> parkServicesListView;
     @FXML
     private Button showFiltersButton;
-
     @FXML
     private ComboBox<String> sortMenu;
-
     private boolean areFiltersOpen;
     private final ScrollPane filterScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
@@ -122,9 +118,9 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                             0.5,
                             0.5,
                             rideName));
-            rideInfoHyperlink.setFont(Font.font(RIDE_INFO_FONT_SIZE));
+            rideInfoHyperlink.setFont(Font.font(PARK_SERVICES_INFO_FONT_SIZE));
             rideInfoHyperlink.setFocusTraversable(false);
-            ridesListView.getItems().add(rideInfoHyperlink);
+            parkServicesListView.getItems().add(rideInfoHyperlink);
             rideInfo.delete(0, rideInfo.length());
         }
     }
