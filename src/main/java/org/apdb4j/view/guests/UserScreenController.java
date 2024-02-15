@@ -129,4 +129,36 @@ public class UserScreenController implements FXMLController, Initializable {
         LoadFXML.fromEvent(event, "layouts/user-park-services-screen.fxml", true, true, true);
         JavaFXUtils.setStageTitle(event, "Our rides", true);
     }
+
+    /**
+     * Opens the screen that displays all the exhibitions' info.
+     * @param event the click on related hyperlink
+     */
+    @FXML
+    void onExhibitionsClick(final ActionEvent event) {
+    }
+
+    /**
+     * Opens the screen that displays all the restaurants' info.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onRestaurantsClick(final ActionEvent event) {
+    }
+
+    /**
+     * Opens the screen that displays all the shops' info.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onShopsClick(final ActionEvent event) {
+    }
+
+    /**
+     * Opens the screen that displays the best park services according to their average rating.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onBestParkServicesClick(final ActionEvent event) {
+    }
 }
