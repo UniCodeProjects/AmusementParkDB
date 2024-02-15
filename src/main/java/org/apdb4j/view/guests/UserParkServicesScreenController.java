@@ -8,7 +8,6 @@ import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -37,6 +36,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     private static final double FILTERS_MENU_WIDTH = 250;
     private static final double CHECKBOXES_PREF_WIDTH = 150;
     private static final Insets ATTRIBUTES_TITLE_PADDING = new Insets(5, 0, 0, 0);
+    private static final int MAX_RATING = 5;
 
     @FXML
     private BorderPane pane;
@@ -157,18 +157,17 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         });
 
         addNewAttributeToFilters("Average rating");
-        final var hBox1 = new HBox();
-        final var hBox2 = new HBox();
-        final var firstRatingInterval = new CheckBox("0-1.9 stars");
-        final var secondRatingInterval = new CheckBox("2-2.9 stars");
-        hBox1.getChildren().addAll(firstRatingInterval, secondRatingInterval);
-        HBox.setMargin(secondRatingInterval, new Insets(0, 0, 0, 5));
-        final var thirdRatingInterval = new CheckBox("3-3.9 stars");
-        final var lastRatingInterval = new CheckBox("4-5 stars");
-        hBox2.getChildren().addAll(thirdRatingInterval, lastRatingInterval);
-        HBox.setMargin(lastRatingInterval, new Insets(0, 0, 0, 5));
-        filters.addAll(List.of(firstRatingInterval, secondRatingInterval, thirdRatingInterval, lastRatingInterval));
-        filtersToolBar.getItems().addAll(hBox1, hBox2);
+        final Slider averageRatingSlider = new Slider(1, MAX_RATING, MAX_RATING);
+        averageRatingSlider.setBlockIncrement(1);
+        averageRatingSlider.setShowTickMarks(true);
+        averageRatingSlider.setShowTickLabels(true);
+        averageRatingSlider.setMajorTickUnit(1);
+        averageRatingSlider.setMinorTickCount(0);
+        averageRatingSlider.setSnapToTicks(true);
+        filtersToolBar.getItems().add(averageRatingSlider);
+        final CheckBox rangedCheckBox = new CheckBox("Ranged");
+        rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
+        filtersToolBar.getItems().add(rangedCheckBox);
 
         addNewAttributeToFilters("Type");
         final var rideTypes = new QueryBuilder().createConnection()
