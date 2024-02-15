@@ -69,7 +69,7 @@
       </BorderPane>
    </top>
    <center>
-      <ListView fx:id="ridesListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ListView fx:id="parkServicesListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" />
          </BorderPane.margin>
