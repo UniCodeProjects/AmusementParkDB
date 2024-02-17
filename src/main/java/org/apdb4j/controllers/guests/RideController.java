@@ -2,12 +2,14 @@ package org.apdb4j.controllers.guests;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.*;
 import org.jooq.Record;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.apdb4j.db.Tables.*;
@@ -100,22 +102,28 @@ public class RideController implements ParkServiceController {
     /**
      * {@inheritDoc}
      */
+    // TODO: re-calculates actualContent each time from scratch, without considering the previous filters.
     @Override
-    public Map<String, Collection<String>> getAllFiltersWithValues() {
+    public Map<String, Collection<? extends Pair<String, Supplier<List<Map<String, String>>>>>> getFiltersWithValuesAndAction() {
         return Map.of("Type", new QueryBuilder().createConnection()
                 .queryAction(db -> db.selectDistinct(PARK_SERVICES.TYPE)
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords()
-                .getValues(PARK_SERVICES.TYPE),
+                .getValues(PARK_SERVICES.TYPE).stream()
+                .map(type -> new ImmutablePair<String, Supplier<List<Map<String, String>>>>(type, () -> filterByType(type)))
+                .toList(),
                 "Intensity", new QueryBuilder().createConnection()
                         .queryAction(db -> db.selectDistinct(RIDES.INTENSITY)
                                 .from(RIDES)
                                 .fetch())
                         .closeConnection()
                         .getResultAsRecords()
-                        .getValues(RIDES.INTENSITY));
+                        .getValues(RIDES.INTENSITY).stream()
+                        .map(intensity -> new ImmutablePair<String, Supplier<List<Map<String, String>>>>(intensity, () ->
+                                filterByIntensity(intensity)))
+                        .toList());
     }
 
     /**
@@ -140,5 +148,27 @@ public class RideController implements ParkServiceController {
                 .map(field -> new ImmutablePair<>(field.getName(), ride.get(field).toString()))
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
                 .toList();
+    }
+
+    private List<Map<String, String>> filterByType(final String type) {
+        actualContent = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(OVERVIEW_FIELDS.toArray(new SelectFieldOrAsterisk[]{}))
+                        .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .where(PARK_SERVICES.TYPE.eq(type))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return formatActualContent();
+    }
+
+    private List<Map<String, String>> filterByIntensity(final String intensity) {
+        actualContent = new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(OVERVIEW_FIELDS.toArray(new SelectFieldOrAsterisk[]{}))
+                        .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .where(RIDES.INTENSITY.eq(intensity))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
+        return formatActualContent();
     }
 }

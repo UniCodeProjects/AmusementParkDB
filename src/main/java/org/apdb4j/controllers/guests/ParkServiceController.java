@@ -2,12 +2,14 @@ package org.apdb4j.controllers.guests;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.Controller;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
 import org.jooq.Result;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 
@@ -40,10 +42,9 @@ public interface ParkServiceController extends Controller {
      */
     List<Map<String, String>> sortByName(@NonNull Order order);
 
-    // TODO: add link to RideController when implemented
     /**
-     * Returns an overview of all the park services handled by this controller (e.g. in a RideController is returned
-     * an overview of all the rides).
+     * Returns an overview of all the park services handled by this controller (e.g. in a {@link RideController}
+     * is returned an overview of all the rides).
      * In this method the names of the attributes and their values are formatted for the view.
      * @return a partial set of information about all the park services handled by the controller.
      */
@@ -73,10 +74,11 @@ public interface ParkServiceController extends Controller {
     }
 
     /**
-     * Returns all the names of the filters with the related values.
-     * @return all the names of the filters with the related values.
+     * Returns all the names of the filters with the related values and the action that should be performed when the user
+     * wants to apply that filter with that value.
+     * @return all the names of the filters with the related values and action for each value.
      */
-    Map<String, Collection<String>> getAllFiltersWithValues();
+    Map<String, Collection<? extends Pair<String, Supplier<List<Map<String, String>>>>>> getFiltersWithValuesAndAction();
 
     /**
      * Filters the shown park services according to the values of {@code maxRating} and {@code ranged}.
