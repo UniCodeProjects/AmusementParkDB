@@ -31,4 +31,18 @@ public enum ParkServiceType {
     ParkServiceType(final String name) {
         this.name = name;
     }
+
+    /**
+     * Returns the MVC controller that handles park services of the provided type.
+     * Each time this method is called a new instance is returned.
+     * @param parkServiceType the park service type
+     * @return the MVC controller for the provided park service type
+     */
+    // TODO: update switch statement with new controllers
+    public static ParkServiceController getController(final ParkServiceType parkServiceType) {
+        return switch (parkServiceType) {
+            case RIDE -> new RideController();
+            default -> throw new IllegalArgumentException("Controller for provided parkServiceType not implemented yet");
+        };
+    }
 }
