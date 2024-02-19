@@ -1,6 +1,5 @@
 package org.apdb4j.view.guests;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -12,22 +11,17 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import org.apdb4j.db.tables.ParkServices;
-import org.apdb4j.db.tables.Rides;
-import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.controllers.guests.ParkServiceController;
+import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.*;
 
-import static org.apdb4j.db.Tables.*;
-
 /**
  * FXML controller for the screen that allows the user to see all the rides' info.
  */
-@SuppressFBWarnings("NP_NULL_ON_SOME_PATH") // TODO: remove. The code that causes the false positive should be in the controller.
-// TODO: remove all the direct usages of the model. Only for testing GUI.
 public class UserParkServicesScreenController extends BackableAbstractFXMLController {
 
     private static final double PARK_SERVICES_INFO_FONT_SIZE = 18;
@@ -45,12 +39,23 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     @FXML
     private Button showFiltersButton;
     @FXML
-    private ComboBox<String> sortMenu;
+    private Button estimatedWaitTimesButton;
     private boolean areFiltersOpen;
     private final ScrollPane filterScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
-    private final List<CheckBox> filters = new ArrayList<>();
-    private final Set<String> sortMenuFields = Set.of("Name", "Average rating");
+    private final ToggleGroup sortButtons = new ToggleGroup();
+    private final ToggleGroup filters = new ToggleGroup();
+    private final ParkServiceType parkServiceType;
+    private final ParkServiceController controller;
+
+    /**
+     * Default constructor.
+     * @param type the type of the park service handled by this screen.
+     */
+    public UserParkServicesScreenController(final ParkServiceType type) {
+        parkServiceType = type;
+        controller = ParkServiceType.getController(parkServiceType);
+    }
 
     /**
      * {@inheritDoc}
@@ -58,8 +63,10 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
-        initializeSortMenu();
-        initializeRidesListView();
+        if (parkServiceType != ParkServiceType.RIDE) {
+            estimatedWaitTimesButton.setVisible(false);
+        }
+        initializeListView(controller.getOverview());
         initializeFiltersMenu();
     }
 
@@ -89,40 +96,35 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         LoadFXML.fromEventAsPopup(event, "layouts/live-estimated-wait-times.fxml", "Live rides estimated wait times!", 0.5, 0.5);
     }
 
-    private void initializeSortMenu() {
-        sortMenuFields.forEach(field -> sortMenu.getItems().addAll(field + " (ascending)", field + " (descending)"));
-        sortMenu.getItems().add("No sorting");
+    private void initializeSortFields() {
+        controller.getSortOptionsWithActions().forEach((sortOption, action) -> {
+            final RadioButton sortOptionButton = new RadioButton(sortOption);
+            sortOptionButton.setOnAction(e -> {
+                if (((RadioButton) e.getSource()).isSelected()) {
+                    initializeListView(action.get());
+                }
+            });
+            filtersToolBar.getItems().add(sortOptionButton);
+            sortOptionButton.setToggleGroup(sortButtons);
+        });
     }
 
-    private void initializeRidesListView() {
-        final var queryBuilder = new QueryBuilder();
-        final var rides = queryBuilder.createConnection()
-                .queryAction(db -> db.select(PARK_SERVICES.NAME, RIDES.INTENSITY)
-                        .from(PARK_SERVICES, RIDES)
-                        .where(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        for (final var ride : rides) {
-            final StringBuilder rideInfo = new StringBuilder();
-            for (int i = 0; i < ride.size(); i++) {
-                final String iteratingFieldName = Objects.requireNonNull(ride.field(i)).getName();
-                rideInfo.append(iteratingFieldName).append(": ").append(ride.get(i)).append(' ');
-            }
-            final var rideInfoHyperlink = new Hyperlink(rideInfo.toString());
-            final var rideName = ride.get(PARK_SERVICES.NAME);
-            rideInfoHyperlink.setOnAction(event ->
-                    LoadFXML.fromEventAsPopup(event,
-                            ParkServicesInfoScreenController.class,
-                            rideName + " info",
-                            0.5,
-                            0.5,
-                            rideName));
-            rideInfoHyperlink.setFont(Font.font(PARK_SERVICES_INFO_FONT_SIZE));
-            rideInfoHyperlink.setFocusTraversable(false);
-            parkServicesListView.getItems().add(rideInfoHyperlink);
-            rideInfo.delete(0, rideInfo.length());
-        }
+    private void initializeListView(final Collection<Map<String, String>> parkServices) {
+        parkServicesListView.getItems().clear();
+        parkServices.forEach(parkService -> {
+            final Hyperlink parkServiceHyperlink = new Hyperlink();
+            parkService.forEach((attribute, value) ->
+                    parkServiceHyperlink.setText(parkServiceHyperlink.getText() + attribute + ": " + value + " - "));
+            parkServiceHyperlink.setOnAction(e -> LoadFXML.fromEventAsPopup(e,
+                    ParkServicesInfoScreenController.class,
+                    parkService.get("Name") + " info",
+                    0.5,
+                    0.5,
+                    parkService.get("Name")));
+            parkServiceHyperlink.setFont(new Font(PARK_SERVICES_INFO_FONT_SIZE));
+            parkServiceHyperlink.setFocusTraversable(false);
+            parkServicesListView.getItems().add(parkServiceHyperlink);
+        });
     }
 
     private void addNewAttributeToFilters(final String attributeName) {
@@ -143,17 +145,19 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         filtersTitle.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FILTERS_TITLE_FONT_SIZE));
         filtersToolBar.getItems().add(filtersTitle);
 
-        addNewAttributeToFilters("Intensity");
-        final var intensities = new QueryBuilder().createConnection()
-                .queryAction(db -> db.selectDistinct(Rides.RIDES.INTENSITY)
-                        .from(Rides.RIDES)
-                        .fetch())
-                .closeConnection().getResultAsRecords();
-        intensities.forEach(intensity -> {
-            final var intensityCheckbox = new CheckBox(Objects.requireNonNull(intensity.get(0)).toString());
-            intensityCheckbox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
-            filters.add(intensityCheckbox);
-            filtersToolBar.getItems().add(intensityCheckbox);
+        final var sortByTitle = new Label("Sort by");
+        sortByTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, ATTRIBUTE_NAME_FONT_SIZE));
+        filtersToolBar.getItems().add(sortByTitle);
+        initializeSortFields();
+
+        controller.getFiltersWithValuesAndAction().forEach((filterTitle, valuesWithAction) -> {
+            addNewAttributeToFilters(filterTitle);
+            valuesWithAction.forEach(valueWithAction -> {
+                final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
+                filterOptionButton.setToggleGroup(filters);
+                filtersToolBar.getItems().add(filterOptionButton);
+                filterOptionButton.setOnAction(e -> initializeListView(valueWithAction.getValue().get()));
+            });
         });
 
         addNewAttributeToFilters("Average rating");
@@ -167,29 +171,26 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         filtersToolBar.getItems().add(averageRatingSlider);
         final CheckBox rangedCheckBox = new CheckBox("Ranged");
         rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
+        rangedCheckBox.setOnAction(e -> initializeListView(controller
+                .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
         filtersToolBar.getItems().add(rangedCheckBox);
 
-        addNewAttributeToFilters("Type");
-        final var rideTypes = new QueryBuilder().createConnection()
-                .queryAction(db -> db.selectDistinct(ParkServices.PARK_SERVICES.TYPE)
-                        .from(ParkServices.PARK_SERVICES)
-                        .where(ParkServices.PARK_SERVICES.PARKSERVICEID.like("RI%"))
-                        .fetch())
-                .closeConnection().getResultAsRecords();
-        rideTypes.forEach(type -> {
-            final var typeCheckbox = new CheckBox(Objects.requireNonNull(type.get(0)).toString());
-            typeCheckbox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
-            filters.add(typeCheckbox);
-            filtersToolBar.getItems().add(typeCheckbox);
-        });
+        averageRatingSlider.valueProperty().addListener((observableValue, previousValue, newValue) ->
+                initializeListView(controller.filterByAverageRating(newValue.intValue(), rangedCheckBox.isSelected())));
 
-        filters.forEach(checkBox -> checkBox.setPrefWidth(CHECKBOXES_PREF_WIDTH));
-
-        final var applyFiltersButton = new Button("Apply filters");
         final var resetFiltersButton = new Button("Reset filters");
-        applyFiltersButton.setCursor(Cursor.HAND);
-        resetFiltersButton.setOnAction(e -> filters.forEach(checkBox -> checkBox.setSelected(false)));
+        resetFiltersButton.setOnAction(e -> {
+            if (sortButtons.getSelectedToggle() != null) {
+                sortButtons.getSelectedToggle().setSelected(false);
+            }
+            if (filters.getSelectedToggle() != null) {
+                filters.getSelectedToggle().setSelected(false);
+            }
+            averageRatingSlider.setValue(MAX_RATING);
+            rangedCheckBox.setSelected(false);
+            initializeListView(controller.getOverview());
+        });
         resetFiltersButton.setCursor(Cursor.HAND);
-        filtersToolBar.getItems().addAll(applyFiltersButton, resetFiltersButton);
+        filtersToolBar.getItems().add(resetFiltersButton);
     }
 }
