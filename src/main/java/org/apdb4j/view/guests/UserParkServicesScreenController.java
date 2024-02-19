@@ -170,6 +170,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         averageRatingSlider.setSnapToTicks(true);
         filtersToolBar.getItems().add(averageRatingSlider);
         final CheckBox rangedCheckBox = new CheckBox("Ranged");
+        rangedCheckBox.setSelected(true);
         rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
         rangedCheckBox.setOnAction(e -> initializeListView(controller
                 .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
@@ -187,7 +188,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                 filters.getSelectedToggle().setSelected(false);
             }
             averageRatingSlider.setValue(MAX_RATING);
-            rangedCheckBox.setSelected(false);
+            rangedCheckBox.setSelected(true);
             initializeListView(controller.getOverview());
         });
         resetFiltersButton.setCursor(Cursor.HAND);
