@@ -44,27 +44,12 @@ public class RideController implements ParkServiceController {
     /**
      * {@inheritDoc}
      */
-    // TODO: this method is the same for all ParkServiceController, if it is used the actualContent field. Put in a superclass.
     @Override
-    public List<Map<String, String>> sortByAverageRating(final @NonNull Order order) {
-        actualContent = actualContent.stream().sorted((ride1, ride2) -> switch (order) {
-            case ASCENDING -> ride1.get(PARK_SERVICES.AVGRATING).compareTo(ride2.get(PARK_SERVICES.AVGRATING));
-            case DESCENDING -> ride2.get(PARK_SERVICES.AVGRATING).compareTo(ride1.get(PARK_SERVICES.AVGRATING));
-        }).toList();
-        return formatActualContent();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    // TODO: same as above.
-    @Override
-    public List<Map<String, String>> sortByName(final @NonNull Order order) {
-        actualContent = actualContent.stream().sorted((ride1, ride2) -> switch (order) {
-            case ASCENDING -> ride1.get(PARK_SERVICES.NAME).compareTo(ride2.get(PARK_SERVICES.NAME));
-            case DESCENDING -> ride2.get(PARK_SERVICES.NAME).compareTo(ride1.get(PARK_SERVICES.NAME));
-        }).toList();
-        return formatActualContent();
+    public Map<String, Supplier<List<Map<String, String>>>> getSortOptionsWithActions() {
+        return Map.of("Average rating (" + Order.ASCENDING.getName() + ")", () -> sortByAverageRating(Order.ASCENDING),
+                "Average rating (" + Order.DESCENDING.getName() + ")", () -> sortByAverageRating(Order.DESCENDING),
+                "Name (" + Order.ASCENDING.getName() + ")", () -> sortByName(Order.ASCENDING),
+                "Name (" + Order.DESCENDING.getName() + ")", () -> sortByName(Order.DESCENDING));
     }
 
     /**
@@ -148,6 +133,24 @@ public class RideController implements ParkServiceController {
                 .map(field -> new ImmutablePair<>(field.getName(), ride.get(field).toString()))
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
                 .toList();
+    }
+
+    // TODO: this method is the same for all ParkServiceController, if it is used the actualContent field. Put in a superclass.
+    private List<Map<String, String>> sortByAverageRating(final @NonNull Order order) {
+        actualContent = actualContent.stream().sorted((ride1, ride2) -> switch (order) {
+            case ASCENDING -> ride1.get(PARK_SERVICES.AVGRATING).compareTo(ride2.get(PARK_SERVICES.AVGRATING));
+            case DESCENDING -> ride2.get(PARK_SERVICES.AVGRATING).compareTo(ride1.get(PARK_SERVICES.AVGRATING));
+        }).toList();
+        return formatActualContent();
+    }
+
+    // TODO: same as above.
+    private List<Map<String, String>> sortByName(final @NonNull Order order) {
+        actualContent = actualContent.stream().sorted((ride1, ride2) -> switch (order) {
+            case ASCENDING -> ride1.get(PARK_SERVICES.NAME).compareTo(ride2.get(PARK_SERVICES.NAME));
+            case DESCENDING -> ride2.get(PARK_SERVICES.NAME).compareTo(ride1.get(PARK_SERVICES.NAME));
+        }).toList();
+        return formatActualContent();
     }
 
     private List<Map<String, String>> filterByType(final String type) {
