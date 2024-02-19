@@ -124,7 +124,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                     parkService.get("Name") + " info",
                     0.5,
                     0.5,
-                    parkService.get("Name")));
+                    parkService.get("Name"), parkServiceType));
             parkServiceHyperlink.setFont(new Font(PARK_SERVICES_INFO_FONT_SIZE));
             parkServiceHyperlink.setFocusTraversable(false);
             parkServicesListView.getItems().add(parkServiceHyperlink);
