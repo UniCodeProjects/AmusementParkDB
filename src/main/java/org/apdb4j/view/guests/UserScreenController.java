@@ -11,6 +11,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.FXMLController;
@@ -126,7 +127,7 @@ public class UserScreenController implements FXMLController, Initializable {
      */
     @FXML
     void onRidesClick(final ActionEvent event) {
-        LoadFXML.fromEvent(event, "layouts/user-park-services-screen.fxml", true, true, true);
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RIDE);
         JavaFXUtils.setStageTitle(event, "Our rides", true);
     }
 
