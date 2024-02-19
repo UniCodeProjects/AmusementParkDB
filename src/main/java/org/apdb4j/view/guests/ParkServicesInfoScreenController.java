@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -38,10 +37,6 @@ public class ParkServicesInfoScreenController implements Initializable {
     private Label parkServiceInfoLabel;
     @FXML
     private Label parkServiceNameLabel;
-    @FXML
-    private Button photosButton;
-    @FXML
-    private Button reviewsButton;
     private final String parkServiceName;
 
     /**
