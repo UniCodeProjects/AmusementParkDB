@@ -109,11 +109,15 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         });
     }
 
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     private void initializeListView(final Collection<Map<String, String>> parkServices) {
         parkServicesListView.getItems().clear();
         parkServices.forEach(parkService -> {
+            final var parkServiceInfo = new HashMap<>(parkService);
             final Hyperlink parkServiceHyperlink = new Hyperlink();
-            parkService.forEach((attribute, value) ->
+            parkServiceHyperlink.setText("Name: " + parkServiceInfo.get("Name") + " - ");
+            parkServiceInfo.remove("Name");
+            parkServiceInfo.forEach((attribute, value) ->
                     parkServiceHyperlink.setText(parkServiceHyperlink.getText() + attribute + ": " + value + " - "));
             parkServiceHyperlink.setOnAction(e -> LoadFXML.fromEventAsPopup(e,
                     ParkServicesInfoScreenController.class,
@@ -124,6 +128,11 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
             parkServiceHyperlink.setFont(new Font(PARK_SERVICES_INFO_FONT_SIZE));
             parkServiceHyperlink.setFocusTraversable(false);
             parkServicesListView.getItems().add(parkServiceHyperlink);
+        });
+        parkServicesListView.getItems().forEach(parkServiceHyperlink -> {
+            final var hyperlinkText = parkServiceHyperlink.getText();
+            parkServiceHyperlink.setText(new StringBuilder(hyperlinkText)
+                    .replace(hyperlinkText.length() - 3, hyperlinkText.length(), "").toString());
         });
     }
 
