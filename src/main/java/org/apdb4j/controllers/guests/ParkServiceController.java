@@ -19,28 +19,10 @@ import static org.apdb4j.db.Tables.PARK_SERVICES;
 public interface ParkServiceController extends Controller {
 
     /**
-     * Returns the names of the sorting options.
-     * Subclasses that override this method have to do it only by
-     * adding elements to the collection returned by this method.
-     * @return the names of the sorting options.
+     * Returns the names of the sorting options with the related action.
+     * @return the names of the sorting options with the related action.
      */
-    default Collection<String> getSortFields() {
-        return Set.of("Average rating", "Name");
-    }
-
-    /**
-     * Orders the shown park services by average rating, following the provided order.
-     * @param order the sorting order.
-     * @return the park services ordered by their average rating, following the provided order.
-     */
-    List<Map<String, String>> sortByAverageRating(@NonNull Order order);
-
-    /**
-     * Orders the shown park services by name, following the provided order.
-     * @param order the sorting order.
-     * @return the park services ordered by their name, following the provided order.
-     */
-    List<Map<String, String>> sortByName(@NonNull Order order);
+    Map<String, Supplier<List<Map<String, String>>>> getSortOptionsWithActions();
 
     /**
      * Returns an overview of all the park services handled by this controller (e.g. in a {@link RideController}
