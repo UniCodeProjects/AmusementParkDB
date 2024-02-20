@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import lombok.NonNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.guests.ParkServiceOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.RideOverviewController;
@@ -19,6 +21,7 @@ import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * FXML controller for the screen that allows the user to see all the rides' info.
@@ -140,11 +143,19 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         });
     }
 
-    private void addNewAttributeToFilters(final String attributeName) {
+    private void addNewAttributeToFilters(final String attributeName,
+                                          final @NonNull Collection<? extends Pair<String, Supplier<List<Map<String, String>>>>>
+                                                  valuesWithAction) {
         final var attributeFilterTitle = new Label(attributeName);
         attributeFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, ATTRIBUTE_NAME_FONT_SIZE));
         attributeFilterTitle.setPadding(ATTRIBUTES_TITLE_PADDING);
         filtersToolBar.getItems().add(attributeFilterTitle);
+        valuesWithAction.forEach(valueWithAction -> {
+            final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
+            filterOptionButton.setToggleGroup(filters);
+            filtersToolBar.getItems().add(filterOptionButton);
+            filterOptionButton.setOnAction(e -> initializeListView(valueWithAction.getValue().get()));
+        });
     }
 
     private void initializeFiltersMenu() {
@@ -163,17 +174,12 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         filtersToolBar.getItems().add(sortByTitle);
         initializeSortFields();
 
-        controller.getFiltersWithValuesAndAction().forEach((filterTitle, valuesWithAction) -> {
-            addNewAttributeToFilters(filterTitle);
-            valuesWithAction.forEach(valueWithAction -> {
-                final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
-                filterOptionButton.setToggleGroup(filters);
-                filtersToolBar.getItems().add(filterOptionButton);
-                filterOptionButton.setOnAction(e -> initializeListView(valueWithAction.getValue().get()));
-            });
-        });
+        controller.getFiltersWithValuesAndAction().forEach(this::addNewAttributeToFilters);
 
-        addNewAttributeToFilters("Average rating");
+        final var averageRatingFilterTitle = new Label("Average rating");
+        averageRatingFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, ATTRIBUTE_NAME_FONT_SIZE));
+        averageRatingFilterTitle.setPadding(ATTRIBUTES_TITLE_PADDING);
+        filtersToolBar.getItems().add(averageRatingFilterTitle);
         final Slider averageRatingSlider = new Slider(1, MAX_RATING, MAX_RATING);
         averageRatingSlider.setBlockIncrement(1);
         averageRatingSlider.setShowTickMarks(true);
