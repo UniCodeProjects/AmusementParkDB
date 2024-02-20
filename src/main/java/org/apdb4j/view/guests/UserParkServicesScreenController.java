@@ -11,8 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import org.apdb4j.controllers.guests.ParkServiceController;
+import org.apdb4j.controllers.guests.ParkServiceOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceType;
+import org.apdb4j.controllers.guests.RideOverviewController;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
@@ -46,7 +47,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     private final ToggleGroup sortButtons = new ToggleGroup();
     private final ToggleGroup filters = new ToggleGroup();
     private final ParkServiceType parkServiceType;
-    private final ParkServiceController controller;
+    private final ParkServiceOverviewController controller;
 
     /**
      * Default constructor.
@@ -54,7 +55,10 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
      */
     public UserParkServicesScreenController(final ParkServiceType type) {
         parkServiceType = type;
-        controller = ParkServiceType.getController(parkServiceType);
+        controller = switch (type) {
+            case RIDE -> new RideOverviewController();
+            default -> throw new IllegalArgumentException("Overview controller for provided type not implemented yet.");
+        };
     }
 
     /**

@@ -13,6 +13,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apdb4j.controllers.guests.ParkServiceController;
 import org.apdb4j.controllers.guests.ParkServiceType;
+import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
+import org.apdb4j.controllers.guests.SingleRideInfoController;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 
@@ -36,7 +38,7 @@ public class ParkServicesInfoScreenController implements Initializable {
     private Label parkServiceNameLabel;
     private final String parkServiceName;
     private final ParkServiceType parkServiceType;
-    private final ParkServiceController controller;
+    private final SingleParkServiceInfoController controller;
 
     /**
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}, of type
@@ -48,7 +50,10 @@ public class ParkServicesInfoScreenController implements Initializable {
                                             final @NonNull ParkServiceType parkServiceType) {
         this.parkServiceName = parkServiceName;
         this.parkServiceType = parkServiceType;
-        controller = ParkServiceType.getController(parkServiceType);
+        controller = switch (parkServiceType) {
+            case RIDE -> new SingleRideInfoController();
+            default -> throw new IllegalArgumentException("Single info controller not implemented yet for provided type.");
+        };
     }
 
     /**

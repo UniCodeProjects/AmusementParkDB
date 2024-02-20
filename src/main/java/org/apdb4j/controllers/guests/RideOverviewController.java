@@ -15,22 +15,11 @@ import java.util.stream.Collectors;
 import static org.apdb4j.db.Tables.*;
 
 /**
- * MVC controller for rides.
+ * MVC overview controller for rides.
  */
-public class RideController implements ParkServiceController {
+public class RideOverviewController implements ParkServiceOverviewController {
 
     private static final List<Field<?>> OVERVIEW_FIELDS = List.of(PARK_SERVICES.NAME, PARK_SERVICES.AVGRATING, RIDES.INTENSITY);
-    private static final List<Field<?>> ALL_INFO_FIELDS = List.of(RIDES.INTENSITY,
-            RIDES.DURATION,
-            RIDES.MAXSEATS,
-            RIDES.MINHEIGHT,
-            RIDES.MAXHEIGHT,
-            RIDES.MINWEIGHT,
-            RIDES.MAXWEIGHT,
-            FACILITIES.OPENINGTIME,
-            FACILITIES.CLOSINGTIME,
-            PARK_SERVICES.TYPE,
-            RIDE_DETAILS.STATUS);
     private List<Record> actualContent = new ArrayList<>();
 
     /**
@@ -64,24 +53,6 @@ public class RideController implements ParkServiceController {
                 .closeConnection()
                 .getResultAsRecords();
         return formatActualContent();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, String> getAllParkServiceInfo(final @NonNull String parkServiceName) {
-        actualContent = new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(ALL_INFO_FIELDS.toArray(new SelectFieldOrAsterisk[]{}))
-                        .from(PARK_SERVICES)
-                        .join(FACILITIES).on(PARK_SERVICES.PARKSERVICEID.eq(FACILITIES.FACILITYID))
-                        .join(RIDES).on(FACILITIES.FACILITYID.eq(RIDES.RIDEID))
-                        .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
-                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-        return formatActualContent().get(0);
     }
 
     /**
