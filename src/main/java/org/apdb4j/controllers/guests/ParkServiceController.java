@@ -25,22 +25,6 @@ public interface ParkServiceController extends Controller {
     Map<String, Supplier<List<Map<String, String>>>> getSortOptionsWithActions();
 
     /**
-     * Returns an overview of all the park services handled by this controller (e.g. in a {@link RideController}
-     * is returned an overview of all the rides).
-     * In this method the names of the attributes and their values are formatted for the view.
-     * @return a partial set of information about all the park services handled by the controller.
-     */
-    Collection<Map<String, String>> getOverview();
-
-    /**
-     * Returns all the info about the park service with the provided name.
-     * In this method the names of the attributes and their values are formatted for the view.
-     * @param parkServiceName the name of the park service.
-     * @return all the info about the park service with the provided name.
-     */
-    Map<String, String> getAllParkServiceInfo(@NonNull String parkServiceName);
-
-    /**
      * Returns the description of the provided park service.
      * @param parkServiceName the park service.
      * @return the description of the provided park service.
@@ -61,17 +45,6 @@ public interface ParkServiceController extends Controller {
      * @return all the names of the filters with the related values and action for each value.
      */
     Map<String, Collection<? extends Pair<String, Supplier<List<Map<String, String>>>>>> getFiltersWithValuesAndAction();
-
-    /**
-     * Filters the shown park services according to the values of {@code maxRating} and {@code ranged}.
-     * @param maxRating if {@code ranged} is true, the value of this parameter is the maximum average rating allowed.
-     *                  Otherwise, it is the exact average rating allowed.
-     * @param ranged if {@code true}, are returned all the rides whose average rating is between the minimum
-     *               rating and {@code maxRating}.
-     *               If {@code false}, are returned all the rides whose average rating is equal to {@code maxRating}.
-     * @return the park services that satisfy the specified average rating constraint.
-     */
-    Collection<Map<String, String>> filterByAverageRating(int maxRating, boolean ranged);
 
     /**
      * Returns the identifier of the park service with the provided name, if exists,
