@@ -38,8 +38,6 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
     private Button showFiltersButton;
     private final ScrollPane filtersScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
-    @FXML
-    private ComboBox<String> sortMenu;
     private final ToggleGroup filters = new ToggleGroup();
     private final ToggleGroup sortButtons = new ToggleGroup();
     private boolean areFiltersOpen;
