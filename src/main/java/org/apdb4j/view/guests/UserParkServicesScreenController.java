@@ -100,7 +100,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
      */
     @FXML
     void onEstimatedWaitTimesButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEventAsPopup(event, "layouts/live-estimated-wait-times.fxml", "Live rides estimated wait times!", 0.5, 0.5);
+        LoadFXML.fromEventAsPopup(event, "layouts/live-estimated-wait-times.fxml", "Live rides estimated wait times!", 0.9, 0.7);
     }
 
     private void initializeSortFields() {
