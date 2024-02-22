@@ -17,4 +17,11 @@ public interface SingleParkServiceInfoController extends Controller {
      * @return all the info about the park service with the provided name.
      */
     Map<String, String> getAllParkServiceInfo(@NonNull String parkServiceName);
+
+    /**
+     * Returns the description of the provided park service.
+     * @param parkServiceName the park service.
+     * @return the description of the provided park service.
+     */
+    String getParkServiceDescription(@NonNull String parkServiceName);
 }

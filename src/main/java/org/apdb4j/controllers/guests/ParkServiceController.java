@@ -25,21 +25,6 @@ public interface ParkServiceController extends Controller {
     Map<String, Supplier<List<Map<String, String>>>> getSortOptionsWithActions();
 
     /**
-     * Returns the description of the provided park service.
-     * @param parkServiceName the park service.
-     * @return the description of the provided park service.
-     */
-    static String getParkServiceDescription(final @NonNull String parkServiceName) {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(PARK_SERVICES.DESCRIPTION)
-                        .from(PARK_SERVICES)
-                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords().getValue(0, PARK_SERVICES.DESCRIPTION);
-    }
-
-    /**
      * Returns all the names of the filters with the related values and the action that should be performed when the user
      * wants to apply that filter with that value.
      * @return all the names of the filters with the related values and action for each value.

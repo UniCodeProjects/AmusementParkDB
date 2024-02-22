@@ -62,7 +62,7 @@ public class ParkServicesInfoScreenController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         parkServiceNameLabel.setText(parkServiceName);
-        description.setText(ParkServiceController.getParkServiceDescription(parkServiceName));
+        description.setText(controller.getParkServiceDescription(parkServiceName));
         description.setEditable(false);
         parkServiceDescriptionLabel.setText(parkServiceType.getName() + parkServiceDescriptionLabel.getText());
         parkServiceInfoLabel.setText(parkServiceType.getName() + parkServiceInfoLabel.getText());

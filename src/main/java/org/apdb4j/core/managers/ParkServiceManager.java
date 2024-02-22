@@ -139,4 +139,29 @@ public final class ParkServiceManager {
                 .getResultAsRecords();
     }
 
+    /**
+     * Returns the description of the provided park service.
+     * If there is no park service with the provided name, an {@link IllegalArgumentException} is thrown.
+     * @param parkServiceName the park service.
+     * @return the description of the provided park service.
+     */
+    public static String getParkServiceDescription(final @NonNull String parkServiceName) {
+        final boolean isParkServiceName = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (!isParkServiceName) {
+            throw new IllegalArgumentException(parkServiceName + " is not a valid park service name");
+        }
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.DESCRIPTION)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().getValue(0, PARK_SERVICES.DESCRIPTION);
+    }
 }
