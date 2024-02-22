@@ -3,6 +3,7 @@ package org.apdb4j.controllers.guests;
 import lombok.NonNull;
 import org.apdb4j.controllers.Controller;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,4 +25,11 @@ public interface SingleParkServiceInfoController extends Controller {
      * @return the description of the provided park service.
      */
     String getParkServiceDescription(@NonNull String parkServiceName);
+
+    /**
+     * Returns all the paths of the photos of the park service with the provided name.
+     * @param parkServiceName the name of the park service.
+     * @return all the paths of the photos of the provided park service.
+     */
+    List<String> getPhotosPath(@NonNull String parkServiceName);
 }
