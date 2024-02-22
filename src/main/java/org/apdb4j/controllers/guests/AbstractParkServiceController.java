@@ -1,15 +1,12 @@
 package org.apdb4j.controllers.guests;
 
 import lombok.NonNull;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jooq.Record;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 
@@ -52,10 +49,7 @@ abstract class AbstractParkServiceController implements ParkServiceController {
      * @return the data well-formatted for the GUI.
      */
     protected List<Map<String, String>> formatActualContent() {
-        return actualContent.stream().map(ride -> Arrays.stream(ride.fields())
-                        .map(field -> new ImmutablePair<>(field.getName(), ride.get(field).toString()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
-                .toList();
+        return Formatter.format(actualContent);
     }
 
     /**
