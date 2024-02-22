@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import org.apdb4j.controllers.guests.ParkServiceController;
 import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
 import org.apdb4j.controllers.guests.SingleRideInfoController;
@@ -89,7 +88,7 @@ public class ParkServicesInfoScreenController implements Initializable {
                 parkServiceName + " photos",
                 1,
                 1,
-                ParkServiceController.getParkServiceID(parkServiceName));
+                controller.getPhotosPath(parkServiceName));
     }
 
     /**

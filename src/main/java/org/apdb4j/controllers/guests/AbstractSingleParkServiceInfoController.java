@@ -2,6 +2,7 @@ package org.apdb4j.controllers.guests;
 
 import lombok.NonNull;
 import org.apdb4j.core.managers.ParkServiceManager;
+import org.apdb4j.core.managers.PictureManager;
 import org.jooq.Record;
 
 import java.util.List;
@@ -18,6 +19,14 @@ abstract class AbstractSingleParkServiceInfoController implements SingleParkServ
     @Override
     public final String getParkServiceDescription(final @NonNull String parkServiceName) {
         return ParkServiceManager.getParkServiceDescription(parkServiceName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getPhotosPath(final @NonNull String parkServiceName) {
+        return PictureManager.getPictures(parkServiceName);
     }
 
     /**
