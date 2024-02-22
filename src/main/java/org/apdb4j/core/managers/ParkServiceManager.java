@@ -1,11 +1,14 @@
 package org.apdb4j.core.managers;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
+import org.jooq.Result;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 
@@ -163,5 +166,27 @@ public final class ParkServiceManager {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords().getValue(0, PARK_SERVICES.DESCRIPTION);
+    }
+
+    /**
+     * Returns the identifier of the park service with the provided name, if exists,
+     * otherwise an {@link IllegalArgumentException} will be thrown.
+     * @param parkServiceName the name of the park service.
+     * @return the identifier of the park service with the provided name.
+     */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
+    public static String getParkServiceID(final @NonNull String parkServiceName) {
+        final Result<Record> parkServiceID = Objects.requireNonNull(DB.createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.PARKSERVICEID)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords());
+        if (parkServiceID.isEmpty()) {
+            throw new IllegalArgumentException(parkServiceName + " is not a valid park service name");
+        } else {
+            return parkServiceID.getValue(0, PARK_SERVICES.PARKSERVICEID);
+        }
     }
 }
