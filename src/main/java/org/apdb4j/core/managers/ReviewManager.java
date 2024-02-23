@@ -7,7 +7,9 @@ import org.jooq.Record;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
+import static org.apdb4j.db.Tables.ACCOUNTS;
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 import static org.apdb4j.db.Tables.REVIEWS;
 
@@ -64,6 +66,61 @@ public final class ReviewManager {
                     return 1;
                 }).closeConnection();
         return true;
+    }
+
+    /**
+     * Returns the average rating of the park service with the provided name, if in the database is present
+     * a park service with the provided name.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param parkServiceName the name of the park service.
+     * @return the average rating of the provided park service.
+     */
+    public static double getAverageRating(final @NonNull String parkServiceName) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.AVGRATING)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.PARKSERVICEID.eq(ParkServiceManager.getParkServiceID(parkServiceName)))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().getValue(0, PARK_SERVICES.AVGRATING).doubleValue();
+    }
+
+    /**
+     * Retrieves the number of reviews written for the park service with the provided name, if in the database is present
+     * a park service with the provided name.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param parkServiceName the name of the park service.
+     * @return the number of reviews written for the provided park service.
+     */
+    public static int getNumberOfReviews(final @NonNull String parkServiceName) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.NUMREVIEWS)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.PARKSERVICEID.eq(ParkServiceManager.getParkServiceID(parkServiceName)))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt();
+    }
+
+    /**
+     * Returns all the reviews concerning the park service with the provided name, if in the database exists a park service
+     * with the provided name.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param parkServiceName the name of the park service.
+     * @return the reviews for the provided park service.
+     */
+    public static List<Record> getReviews(final @NonNull String parkServiceName) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(REVIEWS.RATING,
+                        REVIEWS.DATE,
+                        REVIEWS.TIME,
+                        REVIEWS.DESCRIPTION,
+                        ACCOUNTS.USERNAME)
+                        .from(REVIEWS).join(ACCOUNTS).on(REVIEWS.ACCOUNT.eq(ACCOUNTS.EMAIL))
+                        .where(REVIEWS.PARKSERVICEID.eq(ParkServiceManager.getParkServiceID(parkServiceName)))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
     }
 
     private static BigDecimal calculateNewAvgRating(final Record parkServiceOldStats, final int newReviewRating) {
