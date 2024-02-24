@@ -3,6 +3,7 @@ package org.apdb4j.core.managers;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
+import org.jooq.exception.DataAccessException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +30,7 @@ public final class ReviewManager {
      * @param rating the rating of the review.
      * @param description the possible description of the review.
      * @param account the account that is leaving a review.
-     * @return {@code true} if the review is added successfully.
+     * @return {@code true} if the review is added successfully, {@code false} otherwise.
      */
     public static boolean addReview(final @NonNull String reviewID,
                                     final @NonNull String parkServiceID,
@@ -38,33 +39,37 @@ public final class ReviewManager {
                                     final @NonNull String account) {
         final LocalDate currentDate = LocalDate.now();
         final LocalTime currentTime = LocalTime.now();
-        new QueryBuilder().createConnection()
-                .queryAction(db -> {
-                    db.transaction(configuration -> {
-                        final var dslContext = configuration.dsl();
-                        dslContext.insertInto(REVIEWS)
-                                .values(reviewID,
-                                        rating,
-                                        currentDate,
-                                        currentTime,
-                                        description,
-                                        account,
-                                        parkServiceID)
-                                .execute();
-                        final var parkServiceOldStats = dslContext.select(PARK_SERVICES.AVGRATING, PARK_SERVICES.NUMREVIEWS)
-                                .from(PARK_SERVICES)
-                                .where(PARK_SERVICES.PARKSERVICEID.eq(parkServiceID))
-                                .fetchOne();
-                        if (parkServiceOldStats != null) {
-                            dslContext.update(PARK_SERVICES)
-                                    .set(PARK_SERVICES.NUMREVIEWS, PARK_SERVICES.NUMREVIEWS.plus(1))
-                                    .set(PARK_SERVICES.AVGRATING, calculateNewAvgRating(parkServiceOldStats, rating))
-                                    .where(PARK_SERVICES.PARKSERVICEID.eq(parkServiceID))
+        try {
+            new QueryBuilder().createConnection()
+                    .queryAction(db -> {
+                        db.transaction(configuration -> {
+                            final var dslContext = configuration.dsl();
+                            dslContext.insertInto(REVIEWS)
+                                    .values(reviewID,
+                                            rating,
+                                            currentDate,
+                                            currentTime,
+                                            description,
+                                            account,
+                                            parkServiceID)
                                     .execute();
-                        }
-                    });
-                    return 1;
-                }).closeConnection();
+                            final var parkServiceOldStats = dslContext.select(PARK_SERVICES.AVGRATING, PARK_SERVICES.NUMREVIEWS)
+                                    .from(PARK_SERVICES)
+                                    .where(PARK_SERVICES.PARKSERVICEID.eq(parkServiceID))
+                                    .fetchOne();
+                            if (parkServiceOldStats != null) {
+                                dslContext.update(PARK_SERVICES)
+                                        .set(PARK_SERVICES.NUMREVIEWS, PARK_SERVICES.NUMREVIEWS.plus(1))
+                                        .set(PARK_SERVICES.AVGRATING, calculateNewAvgRating(parkServiceOldStats, rating))
+                                        .where(PARK_SERVICES.PARKSERVICEID.eq(parkServiceID))
+                                        .execute();
+                            }
+                        });
+                        return 1;
+                    }).closeConnection();
+        } catch (final DataAccessException e) {
+            return false;
+        }
         return true;
     }
 
