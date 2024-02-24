@@ -138,7 +138,6 @@ create table REVIEWS (
      Account varchar(256) not null,
      ParkServiceID char(11) not null,
      constraint IDRECENSIONE primary key (ReviewID),
-     constraint IDREVIEW unique (Account, ParkServiceID),
      constraint RATING_FORMAT check (Rating between 1 and 5));
 
 create table RIDE_DETAILS (
