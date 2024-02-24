@@ -33,4 +33,13 @@ public interface ReviewController {
      * @return the number of reviews of the park service referred by this instance.
      */
     int getNumberOfReviews();
+
+    /**
+     * Adds a new review with the provided {@code rating} and {@code description}
+     * for the park service referred by this instance.
+     * @param rating the rating of the review.
+     * @param description the description of the review.
+     * @return {@code true} whether the insertion is successful, {@code false} otherwise.
+     */
+    boolean addReview(int rating, String description);
 }

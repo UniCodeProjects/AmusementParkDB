@@ -2,7 +2,10 @@ package org.apdb4j.controllers.guests;
 
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apdb4j.controllers.SessionManager;
+import org.apdb4j.core.managers.ParkServiceManager;
 import org.apdb4j.core.managers.ReviewManager;
+import org.apdb4j.util.IDGenerationUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,5 +55,17 @@ public class ReviewControllerImpl implements ReviewController {
     @Override
     public int getNumberOfReviews() {
         return ReviewManager.getNumberOfReviews(parkServiceName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean addReview(final int rating, final String description) {
+        return ReviewManager.addReview(IDGenerationUtils.generateReviewID(),
+                ParkServiceManager.getParkServiceID(parkServiceName),
+                rating,
+                description,
+                SessionManager.getSessionManager().getSession().email());
     }
 }

@@ -69,7 +69,8 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
                 "Share your opinion on " + parkServiceName,
                 1,
                 1,
-                parkServiceName);
+                parkServiceName,
+                controller);
     }
 
     private void addReviewInListView(final @NonNull Map<String, String> review) {
