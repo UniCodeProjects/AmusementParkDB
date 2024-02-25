@@ -37,7 +37,7 @@ public class ReviewControllerImpl implements ReviewController {
                 .map(review -> Arrays.stream(review.fields())
                         .map(field -> new ImmutablePair<>(field.getName(),
                                 Objects.isNull(review.get(field)) ? "" : review.get(field).toString()))
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)))
+                        .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)))
                 .toList();
     }
 
