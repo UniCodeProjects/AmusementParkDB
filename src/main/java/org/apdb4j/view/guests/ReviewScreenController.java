@@ -1,5 +1,6 @@
 package org.apdb4j.view.guests;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apdb4j.controllers.guests.ReviewController;
 import org.apdb4j.controllers.guests.ReviewControllerImpl;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
 import java.util.Map;
@@ -34,14 +37,19 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
     private Label title;
     private final String parkServiceName;
     private final ReviewController controller;
+    private final BackableFXMLController userParkServicesScreenController;
 
     /**
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}.
      * @param parkServiceName the name of the park service referred by the scene.
+     * @param userParkServicesScreenController the controller of the screen that shows all the park services.
      */
-    public ReviewScreenController(final @NonNull String parkServiceName) {
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public ReviewScreenController(final @NonNull String parkServiceName,
+                                  final @NonNull BackableFXMLController userParkServicesScreenController) {
         this.parkServiceName = parkServiceName;
         controller = new ReviewControllerImpl(parkServiceName);
+        this.userParkServicesScreenController = userParkServicesScreenController;
     }
 
     /**
@@ -69,8 +77,8 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
                 "Share your opinion on " + parkServiceName,
                 1,
                 1,
-                parkServiceName,
-                controller);
+                JavaFXUtils.getStage(event),
+                parkServiceName, controller, userParkServicesScreenController);
     }
 
     private void addReviewInListView(final @NonNull Map<String, String> review) {

@@ -10,9 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.NonNull;
 import org.apdb4j.controllers.guests.ReviewController;
 import org.apdb4j.util.view.AlertBuilder;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,17 +36,22 @@ public class AddReviewScreenController implements Initializable {
     private Label title;
     private final String parkServiceName;
     private final ReviewController controller;
+    private final BackableFXMLController userParkServicesScreenController;
 
     /**
      * Creates a new instance of this class which refers to the park service {@code parkServiceName} and whose MVC controller
      * is {@code controller}.
      * @param parkServiceName the name of the park service referred by the scene.
      * @param controller the MVC controller.
+     * @param userParkServicesScreenController the controller of the screen that shows all the park services.
      */
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public AddReviewScreenController(final @NonNull String parkServiceName, final @NonNull ReviewController controller) {
+    public AddReviewScreenController(final @NonNull String parkServiceName,
+                                     final @NonNull ReviewController controller,
+                                     final @NonNull BackableFXMLController userParkServicesScreenController) {
         this.parkServiceName = parkServiceName;
         this.controller = controller;
+        this.userParkServicesScreenController = userParkServicesScreenController;
     }
 
     /**
@@ -60,7 +68,12 @@ public class AddReviewScreenController implements Initializable {
                     .setContentText("An error occurred while inserting your review. Please try again.")
                     .show();
         } else {
-            new AlertBuilder(Alert.AlertType.INFORMATION).setContentText("Review added successfully").show();
+            new AlertBuilder(Alert.AlertType.INFORMATION).setContentText("Review added successfully")
+                    .setOnClose(() -> Window.getWindows().stream()
+                            .filter(window -> window instanceof Stage)
+                            .filter(stage -> ((Stage) stage).getOwner() != null)
+                            .forEach(s -> ((Stage) s).close())).show();
+            userParkServicesScreenController.fireBackButton();
         }
     }
 

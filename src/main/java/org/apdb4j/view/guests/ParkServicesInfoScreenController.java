@@ -1,5 +1,6 @@
 package org.apdb4j.view.guests;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
 import org.apdb4j.controllers.guests.SingleRideInfoController;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,17 +40,22 @@ public class ParkServicesInfoScreenController implements Initializable {
     private final String parkServiceName;
     private final ParkServiceType parkServiceType;
     private final SingleParkServiceInfoController controller;
+    private final BackableFXMLController userParkServicesScreenController;
 
     /**
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}, of type
      * {@code parkServiceType}.
      * @param parkServiceName the name of the park service referred by the scene.
      * @param parkServiceType the type of the park service referred by the scene.
+     * @param userParkServicesScreenController the controller of the screen that shows all the park services.
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ParkServicesInfoScreenController(final @NonNull String parkServiceName,
-                                            final @NonNull ParkServiceType parkServiceType) {
+                                            final @NonNull ParkServiceType parkServiceType,
+                                            final @NonNull BackableFXMLController userParkServicesScreenController) {
         this.parkServiceName = parkServiceName;
         this.parkServiceType = parkServiceType;
+        this.userParkServicesScreenController = userParkServicesScreenController;
         controller = switch (parkServiceType) {
             case RIDE -> new SingleRideInfoController();
             default -> throw new IllegalArgumentException("Single info controller not implemented yet for provided type.");
@@ -88,6 +95,7 @@ public class ParkServicesInfoScreenController implements Initializable {
                 parkServiceName + " photos",
                 1,
                 1,
+                null,
                 controller.getPhotosPath(parkServiceName));
     }
 
@@ -103,7 +111,7 @@ public class ParkServicesInfoScreenController implements Initializable {
                 true,
                 true,
                 true,
-                parkServiceName);
+                parkServiceName, userParkServicesScreenController);
         JavaFXUtils.setStageTitle(event, "reviews", true);
     }
 }
