@@ -50,21 +50,27 @@ public class RidesEstimatedWaitTimesControllerImpl extends AbstractRideControlle
      */
     @Override
     public Collection<Map<String, String>> getRidesWithWaitTimes() {
-        setActualContent(new QueryBuilder().createConnection()
+        return Formatter.format(new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(getSelectFields())
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords());
-        return formatActualContent();
     }
 
     private List<Map<String, String>> sortByEstimatedWaitTimes(final @NonNull Order order) {
-        setActualContent(getActualContent().stream().sorted((ride1, ride2) -> switch (order) {
-            case ASCENDING -> ride1.get(RIDE_DETAILS.ESTIMATEDWAITTIME).compareTo(ride2.get(RIDE_DETAILS.ESTIMATEDWAITTIME));
-            case DESCENDING -> ride2.get(RIDE_DETAILS.ESTIMATEDWAITTIME).compareTo(ride1.get(RIDE_DETAILS.ESTIMATEDWAITTIME));
-        }).toList());
-        return formatActualContent();
+        return Formatter.format(new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(getSelectFields())
+                        .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
+                        .orderBy(
+                                switch (order) {
+                            case ASCENDING -> RIDE_DETAILS.ESTIMATEDWAITTIME.asc();
+                            case DESCENDING -> RIDE_DETAILS.ESTIMATEDWAITTIME.desc();
+                        })
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords());
     }
 }
