@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.controllers.guests.ParkServiceOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.RideOverviewController;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
 
@@ -131,7 +132,8 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                     parkService.get("Name") + " info",
                     0.5,
                     0.5,
-                    parkService.get("Name"), parkServiceType));
+                    JavaFXUtils.getStage(e),
+                    parkService.get("Name"), parkServiceType, this));
             parkServiceHyperlink.setFont(new Font(PARK_SERVICES_INFO_FONT_SIZE));
             parkServiceHyperlink.setFocusTraversable(false);
             parkServicesListView.getItems().add(parkServiceHyperlink);
