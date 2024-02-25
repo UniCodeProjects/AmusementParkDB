@@ -70,7 +70,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
-        if (parkServiceType != ParkServiceType.RIDE) {
+        if (!parkServiceType.equals(ParkServiceType.RIDE)) {
             estimatedWaitTimesButton.setVisible(false);
         }
         initializeListView(controller.getOverview());
