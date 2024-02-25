@@ -55,8 +55,44 @@ abstract class AbstractRideController extends AbstractParkServiceController {
         return selectFields;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final List<Map<String, String>> sortByName(final @NonNull Order order) {
+        return Formatter.format(new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(selectFields)
+                        .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
+                        .orderBy(
+                                switch (order) {
+                            case ASCENDING -> PARK_SERVICES.NAME.asc();
+                            case DESCENDING -> PARK_SERVICES.NAME.desc();
+                        })
+                        .fetch())
+                .closeConnection().getResultAsRecords());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final List<Map<String, String>> sortByAverageRating(final @NonNull Order order) {
+        return Formatter.format(new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(selectFields)
+                        .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
+                        .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
+                        .orderBy(
+                                switch (order) {
+                            case ASCENDING -> PARK_SERVICES.AVGRATING.asc();
+                            case DESCENDING -> PARK_SERVICES.AVGRATING.desc();
+                        })
+                        .fetch())
+                .closeConnection().getResultAsRecords());
+    }
+
     private List<Map<String, String>> filterByIntensity(final String intensity) {
-        setActualContent(new QueryBuilder().createConnection()
+        return Formatter.format(new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(selectFields)
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .join(RIDE_DETAILS).on(RIDES.RIDEID.eq(RIDE_DETAILS.RIDEID))
@@ -64,6 +100,5 @@ abstract class AbstractRideController extends AbstractParkServiceController {
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords());
-        return formatActualContent();
     }
 }

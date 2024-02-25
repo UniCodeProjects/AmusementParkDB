@@ -38,13 +38,12 @@ public class RideOverviewController extends AbstractRideController implements Pa
      */
     @Override
     public Collection<Map<String, String>> getOverview() {
-        setActualContent(new QueryBuilder().createConnection()
+        return Formatter.format(new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(getSelectFields())
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords());
-        return formatActualContent();
     }
 
     /**
@@ -75,7 +74,7 @@ public class RideOverviewController extends AbstractRideController implements Pa
     // TODO: re-calculates actualContent each time from scratch, without considering the previous filters.
     @Override
     public Collection<Map<String, String>> filterByAverageRating(final int maxRating, final boolean ranged) {
-        setActualContent(new QueryBuilder().createConnection()
+        return Formatter.format(new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(getSelectFields())
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .where(ranged ? PARK_SERVICES.AVGRATING.le(BigDecimal.valueOf(maxRating))
@@ -83,17 +82,15 @@ public class RideOverviewController extends AbstractRideController implements Pa
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords());
-        return formatActualContent();
     }
 
     private List<Map<String, String>> filterByType(final String type) {
-        setActualContent(new QueryBuilder().createConnection()
+        return Formatter.format(new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(getSelectFields())
                         .from(PARK_SERVICES).join(RIDES).on(PARK_SERVICES.PARKSERVICEID.eq(RIDES.RIDEID))
                         .where(PARK_SERVICES.TYPE.eq(type))
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords());
-        return formatActualContent();
     }
 }
