@@ -72,6 +72,8 @@ public final class Formatter {
             fieldValue = record.get(field) + " " + HEIGHT_MEASUREMENT_UNIT;
         } else if (field.equals(RIDES.MINWEIGHT) || field.equals(RIDES.MAXWEIGHT)) {
             fieldValue = record.get(field) + " " + WEIGHT_MEASUREMENT_UNIT;
+        } else if (field.equals(RIDE_DETAILS.ESTIMATEDWAITTIME)) {
+            fieldValue = record.get(field) != null ? formatTime((LocalTime) record.get(field)) : "Ride closed";
         } else if (record.get(field) instanceof LocalTime) {
             fieldValue = formatTime((LocalTime) record.get(field));
         } else {
