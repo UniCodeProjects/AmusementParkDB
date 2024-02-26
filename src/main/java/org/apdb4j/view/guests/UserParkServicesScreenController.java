@@ -196,8 +196,10 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                 .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
         filtersToolBar.getItems().add(rangedCheckBox);
 
-        averageRatingSlider.valueProperty().addListener((observableValue, previousValue, newValue) ->
-                initializeListView(controller.filterByAverageRating(newValue.intValue(), rangedCheckBox.isSelected())));
+        averageRatingSlider.valueProperty().addListener((observableValue, previousValue, newValue) -> {
+            Optional.ofNullable(sortAndFilterButtons.getSelectedToggle()).ifPresent(button -> button.setSelected(false));
+            initializeListView(controller.filterByAverageRating(newValue.intValue(), rangedCheckBox.isSelected()));
+        });
 
         final var resetFiltersButton = new Button("Reset filters");
         resetFiltersButton.setOnAction(e -> {
