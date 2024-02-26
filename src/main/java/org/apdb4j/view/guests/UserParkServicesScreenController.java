@@ -48,8 +48,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     private boolean areFiltersOpen;
     private final ScrollPane filterScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
-    private final ToggleGroup sortButtons = new ToggleGroup();
-    private final ToggleGroup filters = new ToggleGroup();
+    private final ToggleGroup sortAndFilterButtons = new ToggleGroup();
     private final ParkServiceType parkServiceType;
     private final ParkServiceOverviewController controller;
 
@@ -113,7 +112,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
                 }
             });
             filtersToolBar.getItems().add(sortOptionButton);
-            sortOptionButton.setToggleGroup(sortButtons);
+            sortOptionButton.setToggleGroup(sortAndFilterButtons);
         });
     }
 
@@ -154,7 +153,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         filtersToolBar.getItems().add(attributeFilterTitle);
         valuesWithAction.forEach(valueWithAction -> {
             final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
-            filterOptionButton.setToggleGroup(filters);
+            filterOptionButton.setToggleGroup(sortAndFilterButtons);
             filtersToolBar.getItems().add(filterOptionButton);
             filterOptionButton.setOnAction(e -> initializeListView(valueWithAction.getValue().get()));
         });
@@ -202,11 +201,8 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
 
         final var resetFiltersButton = new Button("Reset filters");
         resetFiltersButton.setOnAction(e -> {
-            if (sortButtons.getSelectedToggle() != null) {
-                sortButtons.getSelectedToggle().setSelected(false);
-            }
-            if (filters.getSelectedToggle() != null) {
-                filters.getSelectedToggle().setSelected(false);
+            if (sortAndFilterButtons.getSelectedToggle() != null) {
+                sortAndFilterButtons.getSelectedToggle().setSelected(false);
             }
             averageRatingSlider.setValue(MAX_RATING);
             rangedCheckBox.setSelected(true);

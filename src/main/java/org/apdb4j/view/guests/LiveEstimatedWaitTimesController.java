@@ -38,8 +38,9 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
     private Button showFiltersButton;
     private final ScrollPane filtersScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
-    private final ToggleGroup filters = new ToggleGroup();
-    private final ToggleGroup sortButtons = new ToggleGroup();
+//    private final ToggleGroup filters = new ToggleGroup();
+//    private final ToggleGroup sortButtons = new ToggleGroup();
+    private final ToggleGroup sortAndFilterButtons = new ToggleGroup();
     private boolean areFiltersOpen;
     private final RidesEstimatedWaitTimesController controller = new RidesEstimatedWaitTimesControllerImpl();
 
@@ -60,7 +61,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
         filtersToolBar.getItems().add(attributeFilterTitle);
         valuesWithAction.forEach(valueWithAction -> {
             final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
-            filterOptionButton.setToggleGroup(filters);
+            filterOptionButton.setToggleGroup(sortAndFilterButtons);
             filtersToolBar.getItems().add(filterOptionButton);
             filterOptionButton.setOnAction(e -> initializeRidesListView(valueWithAction.getValue().get()));
         });
@@ -88,11 +89,8 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
         final var resetFiltersButton = new Button("Reset filters");
         resetFiltersButton.setCursor(Cursor.HAND);
         resetFiltersButton.setOnAction(event -> {
-            if (filters.getSelectedToggle() != null) {
-                filters.getSelectedToggle().setSelected(false);
-            }
-            if (sortButtons.getSelectedToggle() != null) {
-                sortButtons.getSelectedToggle().setSelected(false);
+            if (sortAndFilterButtons.getSelectedToggle() != null) {
+                sortAndFilterButtons.getSelectedToggle().setSelected(false);
             }
             initializeRidesListView(controller.getRidesWithWaitTimes());
         });
@@ -143,7 +141,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
                 }
             });
             filtersToolBar.getItems().add(sortOptionButton);
-            sortOptionButton.setToggleGroup(sortButtons);
+            sortOptionButton.setToggleGroup(sortAndFilterButtons);
         });
     }
 }
