@@ -41,6 +41,8 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     @FXML
     private BorderPane pane;
     @FXML
+    private Label title;
+    @FXML
     private ListView<Hyperlink> parkServicesListView;
     @FXML
     private Button showFiltersButton;
@@ -77,6 +79,8 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         if (!parkServiceType.equals(ParkServiceType.RIDE)) {
             estimatedWaitTimesButton.setVisible(false);
         }
+
+        title.setText(title.getText() + (parkServiceType.getName() + "s").toLowerCase(Locale.getDefault()));
 
         averageRatingSlider.setBlockIncrement(1);
         averageRatingSlider.setShowTickMarks(true);
