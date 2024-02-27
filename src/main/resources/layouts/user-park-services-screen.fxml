@@ -15,7 +15,7 @@
             <Insets />
          </BorderPane.margin>
          <center>
-            <Label text="Our rides">
+            <Label fx:id="title" text="Our ">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
