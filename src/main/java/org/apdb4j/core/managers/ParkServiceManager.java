@@ -18,6 +18,7 @@ import static org.apdb4j.db.Tables.PARK_SERVICES;
 public final class ParkServiceManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
+    private static final int BEST_PARK_SERVICES_LIMIT = 5;
 
     private ParkServiceManager() {
     }
@@ -133,10 +134,10 @@ public final class ParkServiceManager {
      */
     public static @NonNull List<Record> getBestParkServices() {
         return DB.createConnection()
-                .queryAction(db -> db.select()
+                .queryAction(db -> db.select(PARK_SERVICES.NAME, PARK_SERVICES.AVGRATING, PARK_SERVICES.NUMREVIEWS)
                         .from(PARK_SERVICES)
                         .orderBy(PARK_SERVICES.AVGRATING.desc())
-                        .limit(5)
+                        .limit(BEST_PARK_SERVICES_LIMIT)
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
