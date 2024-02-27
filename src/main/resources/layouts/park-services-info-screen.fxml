@@ -33,7 +33,7 @@
                               <Insets bottom="5.0" left="5.0" top="5.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                         <TextArea fx:id="description" prefHeight="100.0" prefWidth="575.0">
@@ -46,7 +46,7 @@
                               <Insets bottom="5.0" left="5.0" top="10.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                      </children>
