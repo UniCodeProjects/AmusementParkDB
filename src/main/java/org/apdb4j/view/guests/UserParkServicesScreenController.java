@@ -13,6 +13,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apdb4j.controllers.guests.ExhibitionOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.RideOverviewController;
@@ -56,10 +57,11 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
      * Default constructor.
      * @param type the type of the park service handled by this screen.
      */
-    public UserParkServicesScreenController(final ParkServiceType type) {
+    public UserParkServicesScreenController(final @NonNull ParkServiceType type) {
         parkServiceType = type;
         controller = switch (type) {
             case RIDE -> new RideOverviewController();
+            case EXHIBITION -> new ExhibitionOverviewController();
             default -> throw new IllegalArgumentException("Overview controller for provided type not implemented yet.");
         };
     }
