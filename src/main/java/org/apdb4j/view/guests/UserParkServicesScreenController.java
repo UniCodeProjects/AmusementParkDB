@@ -52,6 +52,8 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
     private final ToggleGroup sortAndFilterButtons = new ToggleGroup();
     private final ParkServiceType parkServiceType;
     private final ParkServiceOverviewController controller;
+    private final Slider averageRatingSlider = new Slider(1, MAX_RATING, MAX_RATING);
+    private final CheckBox rangedCheckBox = new CheckBox("Ranged");
 
     /**
      * Default constructor.
@@ -75,6 +77,23 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         if (!parkServiceType.equals(ParkServiceType.RIDE)) {
             estimatedWaitTimesButton.setVisible(false);
         }
+
+        averageRatingSlider.setBlockIncrement(1);
+        averageRatingSlider.setShowTickMarks(true);
+        averageRatingSlider.setShowTickLabels(true);
+        averageRatingSlider.setMajorTickUnit(1);
+        averageRatingSlider.setMinorTickCount(0);
+        averageRatingSlider.setSnapToTicks(true);
+        averageRatingSlider.valueProperty().addListener((observableValue, previousValue, newValue) -> {
+            Optional.ofNullable(sortAndFilterButtons.getSelectedToggle()).ifPresent(button -> button.setSelected(false));
+            initializeListView(controller.filterByAverageRating(newValue.intValue(), rangedCheckBox.isSelected()));
+        });
+
+        rangedCheckBox.setSelected(true);
+        rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
+        rangedCheckBox.setOnAction(e -> initializeListView(controller
+                .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
+
         initializeListView(controller.getOverview());
         initializeFiltersMenu();
     }
@@ -110,6 +129,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
             final RadioButton sortOptionButton = new RadioButton(sortOption);
             sortOptionButton.setOnAction(e -> {
                 if (((RadioButton) e.getSource()).isSelected()) {
+                    resetAverageRatingFilter((RadioButton) e.getSource());
                     initializeListView(action.get());
                 }
             });
@@ -157,7 +177,10 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
             final RadioButton filterOptionButton = new RadioButton(valueWithAction.getKey());
             filterOptionButton.setToggleGroup(sortAndFilterButtons);
             filtersToolBar.getItems().add(filterOptionButton);
-            filterOptionButton.setOnAction(e -> initializeListView(valueWithAction.getValue().get()));
+            filterOptionButton.setOnAction(e -> {
+                resetAverageRatingFilter((RadioButton) e.getSource());
+                initializeListView(valueWithAction.getValue().get());
+            });
         });
     }
 
@@ -183,25 +206,9 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         averageRatingFilterTitle.setFont(Font.font(Font.getDefault().getFamily(), FontPosture.ITALIC, ATTRIBUTE_NAME_FONT_SIZE));
         averageRatingFilterTitle.setPadding(ATTRIBUTES_TITLE_PADDING);
         filtersToolBar.getItems().add(averageRatingFilterTitle);
-        final Slider averageRatingSlider = new Slider(1, MAX_RATING, MAX_RATING);
-        averageRatingSlider.setBlockIncrement(1);
-        averageRatingSlider.setShowTickMarks(true);
-        averageRatingSlider.setShowTickLabels(true);
-        averageRatingSlider.setMajorTickUnit(1);
-        averageRatingSlider.setMinorTickCount(0);
-        averageRatingSlider.setSnapToTicks(true);
-        filtersToolBar.getItems().add(averageRatingSlider);
-        final CheckBox rangedCheckBox = new CheckBox("Ranged");
-        rangedCheckBox.setSelected(true);
-        rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
-        rangedCheckBox.setOnAction(e -> initializeListView(controller
-                .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
-        filtersToolBar.getItems().add(rangedCheckBox);
 
-        averageRatingSlider.valueProperty().addListener((observableValue, previousValue, newValue) -> {
-            Optional.ofNullable(sortAndFilterButtons.getSelectedToggle()).ifPresent(button -> button.setSelected(false));
-            initializeListView(controller.filterByAverageRating(newValue.intValue(), rangedCheckBox.isSelected()));
-        });
+        filtersToolBar.getItems().add(averageRatingSlider);
+        filtersToolBar.getItems().add(rangedCheckBox);
 
         final var resetFiltersButton = new Button("Reset filters");
         resetFiltersButton.setOnAction(e -> {
@@ -214,5 +221,16 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         });
         resetFiltersButton.setCursor(Cursor.HAND);
         filtersToolBar.getItems().add(resetFiltersButton);
+    }
+
+    private void resetAverageRatingFilter(final RadioButton button) {
+        if (!rangedCheckBox.isSelected()) {
+            rangedCheckBox.setSelected(true);
+        }
+        if (((int) averageRatingSlider.getValue()) != MAX_RATING) {
+            averageRatingSlider.setValue(MAX_RATING);
+        }
+        // Selecting the button because the slider's event handler deselects all the buttons when its value changes.
+        button.setSelected(true);
     }
 }
