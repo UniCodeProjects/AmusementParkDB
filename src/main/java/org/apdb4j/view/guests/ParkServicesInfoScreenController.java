@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apdb4j.controllers.guests.ParkServiceType;
+import org.apdb4j.controllers.guests.SingleExhibitionInfoController;
 import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
 import org.apdb4j.controllers.guests.SingleRideInfoController;
 import org.apdb4j.util.view.JavaFXUtils;
@@ -20,6 +21,7 @@ import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -58,6 +60,7 @@ public class ParkServicesInfoScreenController implements Initializable {
         this.userParkServicesScreenController = userParkServicesScreenController;
         controller = switch (parkServiceType) {
             case RIDE -> new SingleRideInfoController();
+            case EXHIBITION -> new SingleExhibitionInfoController();
             default -> throw new IllegalArgumentException("Single info controller not implemented yet for provided type.");
         };
     }
@@ -72,17 +75,26 @@ public class ParkServicesInfoScreenController implements Initializable {
         description.setEditable(false);
         parkServiceDescriptionLabel.setText(parkServiceType.getName() + parkServiceDescriptionLabel.getText());
         parkServiceInfoLabel.setText(parkServiceType.getName() + parkServiceInfoLabel.getText());
-        controller.getAllParkServiceInfo(parkServiceName).forEach((attribute, value) -> {
-            final var hBox = new HBox();
-            descriptionAndInfoContainer.getChildren().add(hBox);
-            VBox.setMargin(hBox, new Insets(0, 0, 5, 0));
-            final var attributeNameLabel = new Label(attribute + ":");
-            attributeNameLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
-            final var attributeValueLabel = new Label(value);
-            hBox.getChildren().addAll(attributeNameLabel, attributeValueLabel);
-            HBox.setMargin(attributeNameLabel, new Insets(0, 0, 0, 5));
-            HBox.setMargin(attributeValueLabel, new Insets(0, 0, 0, 3));
-        });
+        if (parkServiceType.equals(ParkServiceType.EXHIBITION)) {
+            final var exhibitionInfo = new HashMap<>(controller.getAllParkServiceInfo(parkServiceName));
+            addNewAttributeWithValueInInfoView("Type", exhibitionInfo.get("Type"));
+            exhibitionInfo.remove("Type");
+
+            final var plannedExhibitionLabel = new Label("Next show's info:");
+            plannedExhibitionLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 14));
+            VBox.setMargin(plannedExhibitionLabel, new Insets(0, 0, 5, 5));
+            descriptionAndInfoContainer.getChildren().add(plannedExhibitionLabel);
+            if (exhibitionInfo.isEmpty()) {
+                final var noPlannedExhibitionLabel = new Label("There are no shows planned for this exhibition");
+                noPlannedExhibitionLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
+                VBox.setMargin(noPlannedExhibitionLabel, new Insets(0, 0, 0, 5));
+                descriptionAndInfoContainer.getChildren().add(noPlannedExhibitionLabel);
+            } else {
+                exhibitionInfo.forEach(this::addNewAttributeWithValueInInfoView);
+            }
+        } else {
+            controller.getAllParkServiceInfo(parkServiceName).forEach(this::addNewAttributeWithValueInInfoView);
+        }
     }
 
     /**
@@ -113,5 +125,17 @@ public class ParkServicesInfoScreenController implements Initializable {
                 true,
                 parkServiceName, userParkServicesScreenController);
         JavaFXUtils.setStageTitle(event, "reviews", true);
+    }
+
+    private void addNewAttributeWithValueInInfoView(final @NonNull String attribute, final @NonNull String value) {
+        final var hBox = new HBox();
+        descriptionAndInfoContainer.getChildren().add(hBox);
+        VBox.setMargin(hBox, new Insets(0, 0, 5, 0));
+        final var attributeNameLabel = new Label(attribute + ":");
+        attributeNameLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
+        final var attributeValueLabel = new Label(value);
+        hBox.getChildren().addAll(attributeNameLabel, attributeValueLabel);
+        HBox.setMargin(attributeNameLabel, new Insets(0, 0, 0, 5));
+        HBox.setMargin(attributeValueLabel, new Insets(0, 0, 0, 3));
     }
 }
