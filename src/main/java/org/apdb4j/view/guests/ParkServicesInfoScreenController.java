@@ -1,6 +1,7 @@
 package org.apdb4j.view.guests;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javafx.scene.control.Alert;
 import lombok.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,12 +18,14 @@ import org.apdb4j.controllers.guests.SingleExhibitionInfoController;
 import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
 import org.apdb4j.controllers.guests.SingleRideInfoController;
 import org.apdb4j.controllers.guests.SingleShopInfoController;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -104,12 +107,17 @@ public class ParkServicesInfoScreenController implements Initializable {
      */
     @FXML
     void onPhotosButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEventAsPopup(event, ParkServicesPhotosScreenController.class,
-                parkServiceName + " photos",
-                1,
-                1,
-                null,
-                controller.getPhotosPath(parkServiceName));
+        final List<String> photosPath = controller.getPhotosPath(parkServiceName);
+        if (photosPath.isEmpty()) {
+            new AlertBuilder(Alert.AlertType.INFORMATION).setHeaderText("There are no photos for " + parkServiceName).show();
+        } else {
+            LoadFXML.fromEventAsPopup(event, ParkServicesPhotosScreenController.class,
+                    parkServiceName + " photos",
+                    1,
+                    1,
+                    null,
+                    List.copyOf(photosPath));
+        }
     }
 
     /**
