@@ -17,6 +17,7 @@ import org.apdb4j.controllers.guests.ExhibitionOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceOverviewController;
 import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.RideOverviewController;
+import org.apdb4j.controllers.guests.ShopOverviewController;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
@@ -66,6 +67,7 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
         controller = switch (type) {
             case RIDE -> new RideOverviewController();
             case EXHIBITION -> new ExhibitionOverviewController();
+            case SHOP -> new ShopOverviewController();
             default -> throw new IllegalArgumentException("Overview controller for provided type not implemented yet.");
         };
     }
