@@ -3,7 +3,6 @@ package org.apdb4j.view.guests;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
@@ -46,8 +45,6 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
     private TextField surnameTextField;
     @FXML
     private TextField usernameTextField;
-    @FXML
-    private PasswordField passwordField;
 
     /**
      * {@inheritDoc}
@@ -68,10 +65,6 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
                 EDIT_BUTTON_IMAGE_WIDTH,
                 EDIT_BUTTON_IMAGE_HEIGHT);
         JavaFXUtils.setLabeledImage(editEmailButton,
-                EDIT_BUTTON_IMAGE_PATH,
-                EDIT_BUTTON_IMAGE_WIDTH,
-                EDIT_BUTTON_IMAGE_HEIGHT);
-        JavaFXUtils.setLabeledImage(editPasswordButton,
                 EDIT_BUTTON_IMAGE_PATH,
                 EDIT_BUTTON_IMAGE_WIDTH,
                 EDIT_BUTTON_IMAGE_HEIGHT);
