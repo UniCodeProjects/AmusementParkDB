@@ -152,6 +152,8 @@ public class UserScreenController implements FXMLController, Initializable {
      */
     @FXML
     void onRestaurantsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RESTAURANT);
+        JavaFXUtils.setStageTitle(event, "Our restaurants", true);
     }
 
     /**
