@@ -16,6 +16,7 @@ import org.apdb4j.controllers.guests.ParkServiceType;
 import org.apdb4j.controllers.guests.SingleExhibitionInfoController;
 import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
 import org.apdb4j.controllers.guests.SingleRideInfoController;
+import org.apdb4j.controllers.guests.SingleShopInfoController;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableFXMLController;
@@ -61,7 +62,7 @@ public class ParkServicesInfoScreenController implements Initializable {
         controller = switch (parkServiceType) {
             case RIDE -> new SingleRideInfoController();
             case EXHIBITION -> new SingleExhibitionInfoController();
-            default -> throw new IllegalArgumentException("Single info controller not implemented yet for provided type.");
+            case SHOP, RESTAURANT -> new SingleShopInfoController();
         };
     }
 
