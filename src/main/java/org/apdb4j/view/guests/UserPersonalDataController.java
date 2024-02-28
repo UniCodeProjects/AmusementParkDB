@@ -139,6 +139,6 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
      */
     @FXML
     void onEditPasswordButtonClick(final ActionEvent event) {
-        LoadFXML.fromEventAsPopup(event, "layouts/change-password-popup.fxml", "Change your password");
+        LoadFXML.fromNodeAsPopup(editPasswordButton, "layouts/change-password-popup.fxml", "Change your password");
     }
 }
