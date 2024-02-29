@@ -249,7 +249,7 @@ alter table FACILITIES add constraint FKR_FK
 
 alter table GUESTS add constraint FKR_1_FK
      foreign key (Email)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 -- Not allowed in MySQL
 -- alter table MAINTENANCES add constraint IDMAINTENANCE_CHK
@@ -274,7 +274,7 @@ alter table responsibilities add constraint FKres_MAI
 
 alter table REVIEWS add constraint FKpublication
      foreign key (Account)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 alter table REVIEWS add constraint FKreference
      foreign key (ParkServiceID)
@@ -295,7 +295,7 @@ alter table RIDES add constraint FKR_FKR
 
 alter table STAFF add constraint FKR_FKS
      foreign key (Email)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 alter table TICKET_TYPES add constraint FKcomposition
      foreign key (Year)
