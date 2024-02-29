@@ -1343,13 +1343,12 @@ public class StaffScreenController implements FXMLController, Initializable {
     void onReviewServiceFilter(final ActionEvent event) {
         final RadioButton selected = (RadioButton) reviewFilterToggle.getSelectedToggle();
         final ObservableList<ReviewTableItem> tableItems = reviewsTableView.getItems();
-        final ReviewController controller = reviewController;
         final Consumer<String> handleFiltering = label -> {
             tableItems.clear();
             switch (label.toLowerCase(Locale.getDefault())) {
-                case "rides" -> tableItems.addAll(controller.filterByRide());
-                case "exhibitions" -> tableItems.addAll(controller.filterByExhibition());
-                case "shops" -> tableItems.addAll(controller.filterByShop());
+                case "rides" -> Platform.runLater(() -> tableItems.addAll(reviewController.filterByRide()));
+                case "exhibitions" -> Platform.runLater(() -> tableItems.addAll(reviewController.filterByExhibition()));
+                case "shops" -> Platform.runLater(() -> tableItems.addAll(reviewController.filterByShop()));
                 default -> throw new IllegalStateException("Unknown label: " + label);
             }
         };
