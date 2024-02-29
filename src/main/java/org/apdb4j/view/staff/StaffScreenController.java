@@ -125,6 +125,10 @@ public class StaffScreenController implements FXMLController, Initializable {
     @FXML
     private Tab expensesTab;
     @FXML
+    private Tab employeesTab;
+    @FXML
+    private Tab contractsTab;
+    @FXML
     private TextField parkNameField;
     @FXML
     private TextField adminField;
@@ -1409,6 +1413,8 @@ public class StaffScreenController implements FXMLController, Initializable {
             addListenersToDatePicker(datePicker1, datePicker2, clearButton);
         } else {
             expensesTab.setDisable(true);
+            employeesTab.setDisable(true);
+            contractsTab.setDisable(true);
         }
         // Loading the ride tableview by default.
         initRideTable();
