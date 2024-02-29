@@ -130,7 +130,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab closable="false" text="Employees">
+            <Tab fx:id="employeesTab" closable="false" text="Employees">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
@@ -216,7 +216,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab text="Contracts">
+            <Tab fx:id="contractsTab" closable="false" text="Contracts">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <left>
