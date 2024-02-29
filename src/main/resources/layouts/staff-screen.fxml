@@ -673,13 +673,10 @@
                                       <Tooltip text="Press BACKSPACE or DELETE to clear." />
                                   </tooltip>
                               </RadioButton>
-                              <RadioButton fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions">
+                              <RadioButton fx:id="reviewExhibitionFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Exhibitions" toggleGroup="$reviewFilterToggle">
                                   <tooltip>
                                       <Tooltip text="Press BACKSPACE or DELETE to clear." />
                                   </tooltip>
-                                 <toggleGroup>
-                                            <ToggleGroup fx:id="reviewFilterToggle" />
-                                 </toggleGroup>
                               </RadioButton>
                               <RadioButton fx:id="reviewShopFilter" mnemonicParsing="false" onAction="#onReviewServiceFilter" text="Shops" toggleGroup="$reviewFilterToggle">
                                   <tooltip>
