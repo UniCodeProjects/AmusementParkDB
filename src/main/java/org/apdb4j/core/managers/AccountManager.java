@@ -383,9 +383,13 @@ public final class AccountManager {
         }
     }
 
-    // TODO: improve method: three queries are performed instead of one
     private static boolean isInvalidUsername(final @NonNull String username) {
-        return !isGuestByUsername(username) && !isAdminByUsername(username) && !isEmployeeByUsername(username);
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetchOne(0, int.class))
+                .closeConnection().getResultAsInt() == 0;
     }
 
 }
