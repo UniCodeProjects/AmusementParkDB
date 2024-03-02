@@ -53,24 +53,23 @@ public class TicketsInfoController extends BackableAbstractFXMLController {
         title.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, TITLE_FONT_SIZE));
         final TableColumn<TicketTableItem, String> ticketIDColumn = new TableColumn<>("Ticket ID");
         final TableColumn<TicketTableItem, LocalDate> purchaseDateColumn = new TableColumn<>("Purchase date");
-        final TableColumn<TicketTableItem, LocalDate> validOnColumn = new TableColumn<>("Valid on");
-        final TableColumn<TicketTableItem, LocalDate> validUntilColumn = new TableColumn<>("Valid until");
+        final TableColumn<TicketTableItem, LocalDate> validOnOrValidUntilColumn = ticketType.equals(TicketType.SINGLE_DAY_TICKET)
+                ? new TableColumn<>("Valid on") : new TableColumn<>("Valid until");
         final TableColumn<TicketTableItem, Integer> remainingEntrancesColumn = new TableColumn<>("Remaining entrances");
         final TableColumn<TicketTableItem, Year> yearColumn = new TableColumn<>("Price list");
         final TableColumn<TicketTableItem, String> categoryColumn = new TableColumn<>("Category");
 
         ticketIDColumn.setCellValueFactory(new PropertyValueFactory<>("ticketID"));
         purchaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
-        validOnColumn.setCellValueFactory(new PropertyValueFactory<>("validOn"));
-        validUntilColumn.setCellValueFactory(new PropertyValueFactory<>("validUntil"));
+        validOnOrValidUntilColumn.setCellValueFactory(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
+                ? new PropertyValueFactory<>("validOn") : new PropertyValueFactory<>("validUntil"));
         remainingEntrancesColumn.setCellValueFactory(new PropertyValueFactory<>("remainingEntrances"));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 
         tableView.getColumns().addAll(List.of(ticketIDColumn,
                 purchaseDateColumn,
-                validOnColumn,
-                validUntilColumn,
+                validOnOrValidUntilColumn,
                 remainingEntrancesColumn,
                 yearColumn,
                 categoryColumn));
