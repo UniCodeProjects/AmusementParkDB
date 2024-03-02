@@ -1,72 +1,80 @@
 package org.apdb4j.view.guests;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
-import org.apdb4j.view.FXMLController;
+import javafx.scene.text.FontWeight;
+import lombok.NonNull;
+import org.apdb4j.controllers.SessionManager;
+import org.apdb4j.controllers.guests.BoughtTicketsController;
+import org.apdb4j.controllers.guests.BoughtTicketsControllerImpl;
+import org.apdb4j.controllers.guests.TicketType;
+import org.apdb4j.view.BackableAbstractFXMLController;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * FXML controller for the screen that allows the user to see more information on the tickets bought.
  */
-public class TicketsInfoController implements FXMLController, Initializable {
-    private static final double TICKETS_INFO_FONT_SIZE = 20;
+public class TicketsInfoController extends BackableAbstractFXMLController {
 
+    private static final int TITLE_FONT_SIZE = 24;
     @FXML
-    private Label dateInfo;
+    private Label title;
     @FXML
-    private ListView<BorderPane> listView;
+    private TableView<TicketTableItem> tableView;
+    private final BoughtTicketsController controller;
+    private final TicketType ticketType;
+
+    /**
+     * Default constructor. Creates a new instance of this class that shows all the info about the tickets
+     * of the provided type bought by the currently logged user so far.
+     * @param ticketType the ticket type.
+     */
+    public TicketsInfoController(final @NonNull TicketType ticketType) {
+        this.ticketType = ticketType;
+        controller = new BoughtTicketsControllerImpl(ticketType);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        dateInfo.setText("tickets valid on 25/04");
-        final var label1 = new Label("Ticket ID: ID1");
-        final var label2 = new Label("purchase date: 23/04");
-        final var label3 = new Label("adult single day ticket, 2023");
-        label1.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label2.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label3.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        final var label4 = new Label("Ticket ID: ID2");
-        final var label5 = new Label("purchase date: 24/04");
-        final var label6 = new Label("adult single day ticket, 2023");
-        label4.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label5.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label6.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        final var label7 = new Label("Ticket ID: ID3");
-        final var label8 = new Label("purchase date: 22/04");
-        final var label9 = new Label("senior single day ticket, 2023");
-        label7.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label8.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label9.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        final var label10 = new Label("Ticket ID: ID4");
-        final var label11 = new Label("purchase date: 25/04");
-        final var label12 = new Label("kids single day ticket, 2023");
-        label10.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label11.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        label12.setFont(new Font(TICKETS_INFO_FONT_SIZE));
-        final var borderPane1 = new BorderPane();
-        addTicketInfo(borderPane1, label1, label2, label3);
-        final var borderPane2 = new BorderPane();
-        addTicketInfo(borderPane2, label4, label5, label6);
-        final var borderPane3 = new BorderPane();
-        addTicketInfo(borderPane3, label7, label8, label9);
-        final var borderPane4 = new BorderPane();
-        addTicketInfo(borderPane4, label10, label11, label12);
-        listView.getItems().addAll(borderPane1, borderPane2, borderPane3, borderPane4);
-    }
+        super.initialize(location, resources);
+        title.setText(SessionManager.getSessionManager().getSession().username() + "'s " + ticketType.getName() + "s");
+        title.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, TITLE_FONT_SIZE));
+        final TableColumn<TicketTableItem, String> ticketIDColumn = new TableColumn<>("Ticket ID");
+        final TableColumn<TicketTableItem, LocalDate> purchaseDateColumn = new TableColumn<>("Purchase date");
+        final TableColumn<TicketTableItem, LocalDate> validOnColumn = new TableColumn<>("Valid on");
+        final TableColumn<TicketTableItem, LocalDate> validUntilColumn = new TableColumn<>("Valid until");
+        final TableColumn<TicketTableItem, Integer> remainingEntrancesColumn = new TableColumn<>("Remaining entrances");
+        final TableColumn<TicketTableItem, Year> yearColumn = new TableColumn<>("Price list");
+        final TableColumn<TicketTableItem, String> categoryColumn = new TableColumn<>("Category");
 
-    private void addTicketInfo(final BorderPane pane, final Label ticketID, final Label purchaseDate, final Label ticketType) {
-        pane.setLeft(ticketID);
-        pane.setRight(purchaseDate);
-        pane.setBottom(ticketType);
+        ticketIDColumn.setCellValueFactory(new PropertyValueFactory<>("ticketID"));
+        purchaseDateColumn.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
+        validOnColumn.setCellValueFactory(new PropertyValueFactory<>("validOn"));
+        validUntilColumn.setCellValueFactory(new PropertyValueFactory<>("validUntil"));
+        remainingEntrancesColumn.setCellValueFactory(new PropertyValueFactory<>("remainingEntrances"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        tableView.getColumns().addAll(List.of(ticketIDColumn,
+                purchaseDateColumn,
+                validOnColumn,
+                validUntilColumn,
+                remainingEntrancesColumn,
+                yearColumn,
+                categoryColumn));
+        tableView.getItems().addAll(controller.getAllData());
     }
 }
 
