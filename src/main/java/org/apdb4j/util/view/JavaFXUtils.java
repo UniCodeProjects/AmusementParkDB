@@ -19,7 +19,6 @@ public final class JavaFXUtils {
     private JavaFXUtils() {
     }
 
-    // TODO: add parameters showLoading and removeFocus
     /**
      * Sets the provided scene starting from the provided event.
      * @param event an event.
