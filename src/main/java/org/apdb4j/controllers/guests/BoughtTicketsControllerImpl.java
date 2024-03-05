@@ -104,10 +104,22 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> getExpiredTickets() {
-        // TODO: perform a single query instead?
-        final var result = getAllData();
-        result.removeAll(getValidTickets());
-        return result;
+        return getDataAsTicketTableItem(new QueryBuilder()
+                .createConnection()
+                .queryAction(db -> db.select(TICKETS.TICKETID,
+                        TICKETS.PURCHASEDATE,
+                        TICKETS.VALIDON,
+                        TICKETS.VALIDUNTIL,
+                        TICKETS.REMAININGENTRANCES,
+                        ATTRIBUTIONS.YEAR,
+                        ATTRIBUTIONS.CATEGORY)
+                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
+                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
+                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
+                        .and(TICKETS.REMAININGENTRANCES.eq(UInteger.valueOf(0)).or(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
+                            ? TICKETS.VALIDON.lessThan(LocalDate.now()) : TICKETS.VALIDUNTIL.lessThan(LocalDate.now())))
+                        .fetch())
+                .closeConnection().getResultAsRecords());
     }
 
     /**
