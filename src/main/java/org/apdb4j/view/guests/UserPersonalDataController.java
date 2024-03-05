@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
@@ -48,6 +50,7 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
     private TextField surnameTextField;
     @FXML
     private TextField usernameTextField;
+    private String oldUsername;
 
     /**
      * {@inheritDoc}
@@ -94,11 +97,14 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
         confirmNewUsernameButton.setOnAction(event -> {
             confirmNewUsernameButton.setVisible(false);
             usernameTextField.setEditable(false);
+            oldUsername = SessionManager.getSessionManager().getSession().username();
             if (!SessionManager.getSessionManager().changeLoggedAccountUsername(usernameTextField.getText())) {
                 new AlertBuilder(Alert.AlertType.ERROR).setContentText("The provided username is not valid").show();
                 usernameTextField.setText(SessionManager.getSessionManager().getSession().username());
             } else {
-                new AlertBuilder(Alert.AlertType.INFORMATION).setContentText("Username modified successfully!").show();
+                new AlertBuilder(Alert.AlertType.INFORMATION).setContentText("Username modified successfully!")
+                        .setOnClose(this::changeUsernameInStageTitle)
+                        .show();
             }
         });
         confirmNewEmailButton.setOnAction(event -> {
@@ -165,5 +171,25 @@ public class UserPersonalDataController extends BackableAbstractFXMLController {
     @FXML
     void onEditPasswordButtonClick(final ActionEvent event) {
         LoadFXML.fromNodeAsPopup(editPasswordButton, "layouts/change-password-popup.fxml", "Change your password");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onBackButtonPressed(final ActionEvent event) {
+        super.onBackButtonPressed(event);
+        changeUsernameInStageTitle();
+    }
+
+    /*
+     * If the username has been changed, replaces the old username written in all the application's open windows with the new one,
+     * otherwise does nothing.
+     */
+    private void changeUsernameInStageTitle() {
+        if (oldUsername != null) {
+            Window.getWindows().forEach(window -> ((Stage) window).setTitle(((Stage) window).getTitle()
+                    .replaceFirst(oldUsername, SessionManager.getSessionManager().getSession().username())));
+        }
     }
 }
