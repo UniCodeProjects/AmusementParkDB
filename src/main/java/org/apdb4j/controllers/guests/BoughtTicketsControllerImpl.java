@@ -5,8 +5,10 @@ import org.apdb4j.controllers.SessionManager;
 import org.apdb4j.core.managers.Manager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.guests.TicketTableItem;
+import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.impl.DSL;
 import org.jooq.types.UInteger;
 
 import java.time.LocalDate;
@@ -38,20 +40,7 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> getAllData() {
-        return getDataAsTicketTableItem(new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(TICKETS.TICKETID,
-                        TICKETS.PURCHASEDATE,
-                        TICKETS.VALIDON,
-                        TICKETS.VALIDUNTIL,
-                        TICKETS.REMAININGENTRANCES,
-                        ATTRIBUTIONS.YEAR,
-                        ATTRIBUTIONS.CATEGORY)
-                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
-                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords());
+        return getDataAsTicketTableItem(performBaseQueryWithCondition(DSL.condition(true)));
     }
 
     /**
@@ -59,20 +48,7 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> filterByCategory(final @NonNull String category) {
-        return getDataAsTicketTableItem(new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(TICKETS.TICKETID,
-                        TICKETS.PURCHASEDATE,
-                        TICKETS.VALIDON,
-                        TICKETS.VALIDUNTIL,
-                        TICKETS.REMAININGENTRANCES,
-                        ATTRIBUTIONS.YEAR,
-                        ATTRIBUTIONS.CATEGORY)
-                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
-                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
-                        .and(ATTRIBUTIONS.CATEGORY.equalIgnoreCase(category))
-                        .fetch())
-                .closeConnection().getResultAsRecords());
+        return getDataAsTicketTableItem(performBaseQueryWithCondition(ATTRIBUTIONS.CATEGORY.equalIgnoreCase(category)));
     }
 
     /**
@@ -80,23 +56,9 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> getValidTickets() {
-        return getDataAsTicketTableItem(new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(TICKETS.TICKETID,
-                        TICKETS.PURCHASEDATE,
-                        TICKETS.VALIDON,
-                        TICKETS.VALIDUNTIL,
-                        TICKETS.REMAININGENTRANCES,
-                        ATTRIBUTIONS.YEAR,
-                        ATTRIBUTIONS.CATEGORY)
-                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
-                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
-                        .and(TICKETS.REMAININGENTRANCES.greaterThan(UInteger.valueOf(0)))
-                        .and(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
-                                ? TICKETS.VALIDON.greaterOrEqual(LocalDate.now())
-                                : TICKETS.VALIDUNTIL.greaterOrEqual(LocalDate.now()))
-                        .fetch())
-                .closeConnection().getResultAsRecords());
+        return getDataAsTicketTableItem(performBaseQueryWithCondition(TICKETS.REMAININGENTRANCES.greaterThan(UInteger.valueOf(0))
+                .and(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
+                        ? TICKETS.VALIDON.greaterOrEqual(LocalDate.now()) : TICKETS.VALIDUNTIL.greaterOrEqual(LocalDate.now()))));
     }
 
     /**
@@ -104,22 +66,9 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> getExpiredTickets() {
-        return getDataAsTicketTableItem(new QueryBuilder()
-                .createConnection()
-                .queryAction(db -> db.select(TICKETS.TICKETID,
-                        TICKETS.PURCHASEDATE,
-                        TICKETS.VALIDON,
-                        TICKETS.VALIDUNTIL,
-                        TICKETS.REMAININGENTRANCES,
-                        ATTRIBUTIONS.YEAR,
-                        ATTRIBUTIONS.CATEGORY)
-                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
-                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
-                        .and(TICKETS.REMAININGENTRANCES.eq(UInteger.valueOf(0)).or(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
-                            ? TICKETS.VALIDON.lessThan(LocalDate.now()) : TICKETS.VALIDUNTIL.lessThan(LocalDate.now())))
-                        .fetch())
-                .closeConnection().getResultAsRecords());
+        return getDataAsTicketTableItem(performBaseQueryWithCondition(TICKETS.REMAININGENTRANCES.eq(UInteger.valueOf(0))
+                .or(ticketType.equals(TicketType.SINGLE_DAY_TICKET)
+                        ? TICKETS.VALIDON.lessThan(LocalDate.now()) : TICKETS.VALIDUNTIL.lessThan(LocalDate.now()))));
     }
 
     /**
@@ -135,20 +84,7 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
      */
     @Override
     public Collection<TicketTableItem> filterByPriceListYear(final int year) {
-        return getDataAsTicketTableItem(new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(TICKETS.TICKETID,
-                        TICKETS.PURCHASEDATE,
-                        TICKETS.VALIDON,
-                        TICKETS.VALIDUNTIL,
-                        TICKETS.REMAININGENTRANCES,
-                        ATTRIBUTIONS.YEAR,
-                        ATTRIBUTIONS.CATEGORY)
-                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
-                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
-                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
-                        .and(ATTRIBUTIONS.YEAR.eq(year))
-                        .fetch())
-                .closeConnection().getResultAsRecords());
+        return getDataAsTicketTableItem(performBaseQueryWithCondition(ATTRIBUTIONS.YEAR.eq(year)));
     }
 
     private Collection<TicketTableItem> getDataAsTicketTableItem(final @NonNull Result<Record> data) {
@@ -160,5 +96,23 @@ public class BoughtTicketsControllerImpl implements BoughtTicketsController {
                         Year.of(ticket.get(ATTRIBUTIONS.YEAR)),
                         ticket.get(ATTRIBUTIONS.CATEGORY)))
                 .collect(Collectors.toList());
+    }
+
+    private Result<Record> performBaseQueryWithCondition(final @NonNull Condition condition) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(TICKETS.TICKETID,
+                                TICKETS.PURCHASEDATE,
+                                TICKETS.VALIDON,
+                                TICKETS.VALIDUNTIL,
+                                TICKETS.REMAININGENTRANCES,
+                                ATTRIBUTIONS.YEAR,
+                                ATTRIBUTIONS.CATEGORY)
+                        .from(TICKETS).join(ATTRIBUTIONS).on(TICKETS.TICKETID.eq(ATTRIBUTIONS.TICKETID))
+                        .where(TICKETS.OWNERID.eq(SessionManager.getSessionManager().getSession().personID()))
+                        .and(ATTRIBUTIONS.TYPE.equalIgnoreCase(ticketType.getName()))
+                        .and(condition)
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords();
     }
 }
