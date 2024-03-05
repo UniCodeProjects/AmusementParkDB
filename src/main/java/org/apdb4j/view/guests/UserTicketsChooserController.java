@@ -119,6 +119,7 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                 HBox.setMargin(dateLabel, DATE_LABEL_MARGIN);
 
                 final DatePicker datePicker = new DatePicker();
+                datePicker.setDayCellFactory(dp -> new JavaFXUtils.PresentAndFutureDaysDateCell());
                 ticketsWithChosenDates.put(new ImmutablePair<>(ticketType, customerCategory), datePicker);
                 datePicker.setDisable(true);
                 datePicker.setPrefWidth(DATE_PICKER_PREF_WIDTH);
