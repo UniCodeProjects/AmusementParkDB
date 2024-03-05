@@ -184,26 +184,28 @@ public class UserTicketsChooserController extends BackableAbstractFXMLController
                     .setContentText("A date must be selected for all the chosen tickets")
                     .show();
         } else {
-            chosenTickets.entrySet().stream().filter(t -> t.getValue() != 0).forEach(ticketTypeAndCategoryWithNumber -> {
+            for (final var ticketTypeAndCategoryWithNumber : chosenTickets.entrySet().stream()
+                    .filter(t -> t.getValue() != 0)
+                    .toList()) {
                 final var ticketBought = controller.buyTicket(ticketTypeAndCategoryWithNumber.getKey().getKey(),
                         ticketsWithChosenDates.get(ticketTypeAndCategoryWithNumber.getKey()).getValue(),
                         ticketTypeAndCategoryWithNumber.getKey().getValue(),
                         ticketTypeAndCategoryWithNumber.getValue());
                 if (!ticketBought) {
                     new AlertBuilder(Alert.AlertType.ERROR).show();
-                } else {
-                    new AlertBuilder(Alert.AlertType.INFORMATION)
-                            .setContentText("Purchase successful")
-                            .setOnClose(() -> {
-                                JavaFXUtils.setStageTitle(event,
-                                        "APDB4J - " + SessionManager.getSessionManager().getSession().username(),
-                                        false);
-                                Platform.runLater(() ->
-                                        LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false));
-                            })
-                            .show();
+                    return;
                 }
-            });
+            }
+            new AlertBuilder(Alert.AlertType.INFORMATION)
+                    .setContentText("Purchase successful")
+                    .setOnClose(() -> {
+                        JavaFXUtils.setStageTitle(event,
+                                "APDB4J - " + SessionManager.getSessionManager().getSession().username(),
+                                false);
+                        Platform.runLater(() ->
+                                LoadFXML.fromEvent(event, "layouts/user-screen.fxml", true, true, false));
+                    })
+                    .show();
         }
     }
 
