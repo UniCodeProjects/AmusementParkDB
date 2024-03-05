@@ -49,7 +49,6 @@ public class RideOverviewController extends AbstractRideController implements Pa
     /**
      * {@inheritDoc}
      */
-    // TODO: re-calculates actualContent each time from scratch, without considering the previous filters.
     @Override
     public Map<String, Collection<? extends Pair<String, Supplier<List<Map<String, String>>>>>> getFiltersWithValuesAndAction() {
         return Stream.concat(Stream
@@ -71,7 +70,6 @@ public class RideOverviewController extends AbstractRideController implements Pa
     /**
      * {@inheritDoc}
      */
-    // TODO: re-calculates actualContent each time from scratch, without considering the previous filters.
     @Override
     public Collection<Map<String, String>> filterByAverageRating(final int maxRating, final boolean ranged) {
         return Formatter.format(new QueryBuilder().createConnection()
