@@ -78,6 +78,7 @@ public class ShopOverviewController extends AbstractParkServiceController implem
     /**
      * {@inheritDoc}
      */
+    // CPD-OFF
     @Override
     protected List<Map<String, String>> sortByAverageRating(final @NonNull Order order) {
         return Formatter.format(new QueryBuilder().createConnection()
@@ -114,6 +115,7 @@ public class ShopOverviewController extends AbstractParkServiceController implem
                 .map(type -> new ImmutablePair<String, Supplier<List<Map<String, String>>>>(type, () -> filterByType(type)))
                 .toList());
     }
+    // CPD-ON
 
     /**
      * {@inheritDoc}
