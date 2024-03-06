@@ -98,8 +98,11 @@ public class UserParkServicesScreenController extends BackableAbstractFXMLContro
 
         rangedCheckBox.setSelected(true);
         rangedCheckBox.setPrefWidth(CHECKBOXES_PREF_WIDTH);
-        rangedCheckBox.setOnAction(e -> initializeListView(controller
-                .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected())));
+        rangedCheckBox.setOnAction(e -> {
+            initializeListView(controller
+                    .filterByAverageRating((int) averageRatingSlider.getValue(), rangedCheckBox.isSelected()));
+            Optional.ofNullable(sortAndFilterButtons.getSelectedToggle()).ifPresent(button -> button.setSelected(false));
+        });
 
         initializeListView(controller.getOverview());
         initializeFiltersMenu();
