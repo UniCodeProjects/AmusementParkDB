@@ -44,7 +44,7 @@ create table COSTS (
      Expenses decimal(8,2) not null,
      Month int not null,
      Year int not null,
-     constraint COST_ID_CHECK check ((ShopID like 'SH%') or (ShopID like 'RE%')),
+     constraint COST_ID_CHECK check (ShopID like 'SH%'),
      constraint MONEY_DATA_NON_NEGATIVITY_CHECK check (Revenue >= 0 and Expenses >= 0),
      constraint MONTH_DOMAIN check (Month between 1 and 12),
      constraint IDCOST primary key (ShopID, Month, Year));
@@ -66,9 +66,9 @@ create table FACILITIES (
      ClosingTime time not null,
      IsShop boolean not null,
      constraint FKR_ID primary key (FacilityID),
-     constraint FACILITYID_CHECK check (FacilityID like 'SH%' or FacilityID like 'RE%' or FacilityID like 'RI%'),
+     constraint FACILITYID_CHECK check (FacilityID like 'SH%' or FacilityID like 'RI%'),
      -- if IsShop is true, then the facility must be a shop. If IsShop is false, then the facility must not be a shop.
-     constraint SHOP_CHECK check ((IsShop = false or (FacilityID like 'SH%' or FacilityID like 'RE%')) and (IsShop = true or (FacilityID like 'RI%'))),
+     constraint SHOP_CHECK check ((IsShop = false or FacilityID like 'SH%') and (IsShop = true or (FacilityID like 'RI%'))),
      constraint TIMES_CONSISTENCY check (OpeningTime < ClosingTime));
 
 create table GUESTS (
@@ -104,9 +104,9 @@ create table PARK_SERVICES (
      IsExhibition boolean not null,
      constraint IDPARK_SERVICE primary key (ParkServiceID),
      constraint IDPARK_SERVICE_1 unique (Name),
-     constraint PARKSERVICEID_CHECK check (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%' or ParkServiceID like 'EX%'),
+     constraint PARKSERVICEID_CHECK check (ParkServiceID like 'SH%' or ParkServiceID like 'RI%' or ParkServiceID like 'EX%'),
      -- if IsExhibition is true, then the park service must be an exhibition. If IsExhibition is false, then the park service must not be an exhibition.
-     constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RE%' or ParkServiceID like 'RI%'))),
+     constraint EXHIBITION_CHECK check ((IsExhibition = false or (ParkServiceID like 'EX%')) and (IsExhibition = true or (ParkServiceID like 'SH%' or ParkServiceID like 'RI%'))),
      constraint AVGRATING_DOMAIN check (AvgRating between 0 and 5),
      constraint AVGRATING_CHECK check ((AvgRating = 0.0 and NumReviews = 0) or (AvgRating >= 1.0 and NumReviews >= 1)));
 
@@ -138,7 +138,6 @@ create table REVIEWS (
      Account varchar(256) not null,
      ParkServiceID char(11) not null,
      constraint IDRECENSIONE primary key (ReviewID),
-     constraint IDREVIEW unique (Account, ParkServiceID),
      constraint RATING_FORMAT check (Rating between 1 and 5));
 
 create table RIDE_DETAILS (
@@ -250,7 +249,7 @@ alter table FACILITIES add constraint FKR_FK
 
 alter table GUESTS add constraint FKR_1_FK
      foreign key (Email)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 -- Not allowed in MySQL
 -- alter table MAINTENANCES add constraint IDMAINTENANCE_CHK
@@ -275,7 +274,7 @@ alter table responsibilities add constraint FKres_MAI
 
 alter table REVIEWS add constraint FKpublication
      foreign key (Account)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 alter table REVIEWS add constraint FKreference
      foreign key (ParkServiceID)
@@ -296,7 +295,7 @@ alter table RIDES add constraint FKR_FKR
 
 alter table STAFF add constraint FKR_FKS
      foreign key (Email)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on update cascade;
 
 alter table TICKET_TYPES add constraint FKcomposition
      foreign key (Year)

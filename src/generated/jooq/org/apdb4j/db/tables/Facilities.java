@@ -131,8 +131,8 @@ public class Facilities extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
-            Internal.createCheck(this, DSL.name("FACILITYID_CHECK"), "((`FacilityID` like _utf8mb4\\'SH%\\') or (`FacilityID` like _utf8mb4\\'RE%\\') or (`FacilityID` like _utf8mb4\\'RI%\\'))", true),
-            Internal.createCheck(this, DSL.name("SHOP_CHECK"), "(((`IsShop` = false) or (`FacilityID` like _utf8mb4\\'SH%\\') or (`FacilityID` like _utf8mb4\\'RE%\\')) and ((`IsShop` = true) or (`FacilityID` like _utf8mb4\\'RI%\\')))", true),
+            Internal.createCheck(this, DSL.name("FACILITYID_CHECK"), "((`FacilityID` like _utf8mb4\\'SH%\\') or (`FacilityID` like _utf8mb4\\'RI%\\'))", true),
+            Internal.createCheck(this, DSL.name("SHOP_CHECK"), "(((`IsShop` = false) or (`FacilityID` like _utf8mb4\\'SH%\\')) and ((`IsShop` = true) or (`FacilityID` like _utf8mb4\\'RI%\\')))", true),
             Internal.createCheck(this, DSL.name("TIMES_CONSISTENCY"), "(`OpeningTime` < `ClosingTime`)", true)
         );
     }

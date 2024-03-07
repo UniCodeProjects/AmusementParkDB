@@ -1,11 +1,14 @@
 package org.apdb4j.core.managers;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.Record;
+import org.jooq.Result;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 
@@ -15,6 +18,7 @@ import static org.apdb4j.db.Tables.PARK_SERVICES;
 public final class ParkServiceManager {
 
     private static final QueryBuilder DB = new QueryBuilder();
+    private static final int BEST_PARK_SERVICES_LIMIT = 5;
 
     private ParkServiceManager() {
     }
@@ -130,13 +134,60 @@ public final class ParkServiceManager {
      */
     public static @NonNull List<Record> getBestParkServices() {
         return DB.createConnection()
-                .queryAction(db -> db.select()
+                .queryAction(db -> db.select(PARK_SERVICES.NAME, PARK_SERVICES.AVGRATING, PARK_SERVICES.NUMREVIEWS)
                         .from(PARK_SERVICES)
                         .orderBy(PARK_SERVICES.AVGRATING.desc())
-                        .limit(5)
+                        .limit(BEST_PARK_SERVICES_LIMIT)
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
     }
 
+    /**
+     * Returns the description of the provided park service.
+     * If there is no park service with the provided name, an {@link IllegalArgumentException} is thrown.
+     * @param parkServiceName the park service.
+     * @return the description of the provided park service.
+     */
+    public static String getParkServiceDescription(final @NonNull String parkServiceName) {
+        final boolean isParkServiceName = DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (!isParkServiceName) {
+            throw new IllegalArgumentException(parkServiceName + " is not a valid park service name");
+        }
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.DESCRIPTION)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().getValue(0, PARK_SERVICES.DESCRIPTION);
+    }
+
+    /**
+     * Returns the identifier of the park service with the provided name, if exists,
+     * otherwise an {@link IllegalArgumentException} will be thrown.
+     * @param parkServiceName the name of the park service.
+     * @return the identifier of the park service with the provided name.
+     */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
+    public static String getParkServiceID(final @NonNull String parkServiceName) {
+        final Result<Record> parkServiceID = Objects.requireNonNull(DB.createConnection()
+                .queryAction(db -> db.select(PARK_SERVICES.PARKSERVICEID)
+                        .from(PARK_SERVICES)
+                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords());
+        if (parkServiceID.isEmpty()) {
+            throw new IllegalArgumentException(parkServiceName + " is not a valid park service name");
+        } else {
+            return parkServiceID.getValue(0, PARK_SERVICES.PARKSERVICEID);
+        }
+    }
 }

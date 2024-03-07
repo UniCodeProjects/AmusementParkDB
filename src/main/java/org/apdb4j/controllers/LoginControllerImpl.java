@@ -11,6 +11,8 @@ import org.jooq.exception.DataAccessException;
 import java.util.Optional;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.STAFF;
 
 /**
  * The implementation of the login controller.
@@ -27,6 +29,22 @@ public class LoginControllerImpl implements LoginController {
      */
     @Override
     public boolean checkSignIn(final @NonNull String username, final @NonNull String password) {
+        final boolean isFired = new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS
+                                .join(STAFF)
+                                .on(ACCOUNTS.EMAIL.eq(STAFF.EMAIL))
+                                .join(CONTRACTS)
+                                .on(STAFF.NATIONALID.eq(CONTRACTS.EMPLOYEENID)))
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .and(CONTRACTS.ENDDATE.isNotNull())
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+        if (isFired) {
+            errorMessage = "You cannot login, your contract has terminated.";
+            return false;
+        }
         final Result<Record> resultCount = DB.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(ACCOUNTS)

@@ -276,8 +276,4 @@ public final class TicketManager {
                 .closeConnection()
                 .getResultAsInt();
     }
-
-    /*TODO: refactor these methods and put them in Manager with the name
-     * public static boolean isValueInTable(Table<Record> table, Field<?> fieldName, Object fieldValue)?
-     */
 }
