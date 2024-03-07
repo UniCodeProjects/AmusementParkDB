@@ -138,8 +138,8 @@ public class ParkServices extends TableImpl<Record> {
         return Arrays.asList(
             Internal.createCheck(this, DSL.name("AVGRATING_CHECK"), "(((`AvgRating` = 0.0) and (`NumReviews` = 0)) or ((`AvgRating` >= 1.0) and (`NumReviews` >= 1)))", true),
             Internal.createCheck(this, DSL.name("AVGRATING_DOMAIN"), "(`AvgRating` between 0 and 5)", true),
-            Internal.createCheck(this, DSL.name("EXHIBITION_CHECK"), "(((`IsExhibition` = false) or (`ParkServiceID` like _utf8mb4\\'EX%\\')) and ((`IsExhibition` = true) or (`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RE%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\')))", true),
-            Internal.createCheck(this, DSL.name("PARKSERVICEID_CHECK"), "((`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RE%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\') or (`ParkServiceID` like _utf8mb4\\'EX%\\'))", true)
+            Internal.createCheck(this, DSL.name("EXHIBITION_CHECK"), "(((`IsExhibition` = false) or (`ParkServiceID` like _utf8mb4\\'EX%\\')) and ((`IsExhibition` = true) or (`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\')))", true),
+            Internal.createCheck(this, DSL.name("PARKSERVICEID_CHECK"), "((`ParkServiceID` like _utf8mb4\\'SH%\\') or (`ParkServiceID` like _utf8mb4\\'RI%\\') or (`ParkServiceID` like _utf8mb4\\'EX%\\'))", true)
         );
     }
 

@@ -1,4 +1,4 @@
-package org.apdb4j.core;
+package org.apdb4j.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

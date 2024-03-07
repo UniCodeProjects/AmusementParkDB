@@ -44,6 +44,14 @@ public abstract class BackableAbstractFXMLController implements BackableFXMLCont
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fireBackButton() {
+        backButton.fire();
+    }
+
+    /**
      * Returns to the previous scene.
      * @param event the click on the "back" button.
      */

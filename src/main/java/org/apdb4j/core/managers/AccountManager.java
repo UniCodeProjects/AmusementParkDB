@@ -3,6 +3,7 @@ package org.apdb4j.core.managers;
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.util.RegexUtils;
+import org.jooq.exception.DataAccessException;
 
 import static org.apdb4j.db.Tables.*;
 
@@ -241,6 +242,154 @@ public final class AccountManager {
                 .getResultAsRecords()
                 .get(0)
                 .get(ACCOUNTS.EMAIL);
+    }
+
+    /**
+     * Retrieves the name of the owner of the account with the provided username, if such account exists.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param accountUsername the username of the account.
+     * @return the name of the owner of the account with the provided username.
+     */
+    public static @NonNull String getAccountOwnerName(final @NonNull String accountUsername) {
+        if (isInvalidUsername(accountUsername)) {
+            throw new IllegalArgumentException("There is no account with the username: " + accountUsername);
+        }
+        return isGuestByUsername(accountUsername) ? new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(GUESTS.NAME)
+                        .from(GUESTS)
+                        .where(GUESTS.EMAIL.eq(getAccountEmail(accountUsername)))
+                        .fetch()).closeConnection().getResultAsRecords().getValue(0, GUESTS.NAME)
+                : new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(STAFF.NAME)
+                        .from(STAFF)
+                        .where(STAFF.EMAIL.eq(getAccountEmail(accountUsername)))
+                        .fetch())
+                .closeConnection().getResultAsRecords().getValue(0, STAFF.NAME);
+    }
+
+    /**
+     * Retrieves the surname of the owner of the account with the provided username, if such account exists.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param accountUsername the username of the account.
+     * @return the surname of the owner of the account with the provided username.
+     */
+    public static @NonNull String getAccountOwnerSurname(final @NonNull String accountUsername) {
+        if (isInvalidUsername(accountUsername)) {
+            throw new IllegalArgumentException("There is no account with the username: " + accountUsername);
+        }
+        return isGuestByUsername(accountUsername) ? new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(GUESTS.SURNAME)
+                        .from(GUESTS)
+                        .where(GUESTS.EMAIL.eq(getAccountEmail(accountUsername)))
+                        .fetch())
+                .closeConnection().getResultAsRecords().getValue(0, GUESTS.SURNAME)
+                : new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(STAFF.SURNAME)
+                        .from(STAFF)
+                        .where(STAFF.EMAIL.eq(getAccountEmail(accountUsername)))
+                        .fetch())
+                .closeConnection().getResultAsRecords().getValue(0, STAFF.SURNAME);
+    }
+
+    /**
+     * Changes the name of the owner of the account with the provided email, if such account exists.
+     * @param accountEmail the email of the account.
+     * @param newName the new name of the account owner.
+     * @return {@code true} if the update is successfully, {@code false} otherwise (e.g. if an account with the provided
+     *         email does not exist).
+     */
+    public static boolean changeAccountOwnerName(final @NonNull String accountEmail, final @NonNull String newName) {
+        try {
+            return isGuest(accountEmail) ? new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(GUESTS)
+                            .set(GUESTS.NAME, newName)
+                            .where(GUESTS.EMAIL.eq(accountEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1
+                    : new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(STAFF)
+                            .set(STAFF.NAME, newName)
+                            .where(STAFF.EMAIL.eq(accountEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1;
+        } catch (final DataAccessException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Changes the surname of the owner of the account with the provided email, if such account exists.
+     * @param accountEmail the email of the account.
+     * @param newSurname the new surname of the account owner.
+     * @return {@code true} if the update is successfully, {@code false} otherwise (e.g. if an account with the provided
+     *         email does not exist).
+     */
+    public static boolean changeAccountOwnerSurname(final @NonNull String accountEmail, final @NonNull String newSurname) {
+        try {
+            return isGuest(accountEmail) ? new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(GUESTS)
+                            .set(GUESTS.SURNAME, newSurname)
+                            .where(GUESTS.EMAIL.eq(accountEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1
+                    : new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(STAFF)
+                            .set(STAFF.SURNAME, newSurname)
+                            .where(STAFF.EMAIL.eq(accountEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1;
+        } catch (final DataAccessException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Changes the username of the account with the provided email, if such account exists.
+     * @param accountEmail the email of the account.
+     * @param newUsername the new username of the account.
+     * @return {@code true} if the update is successfully, {@code false} otherwise (e.g. if an account with the provided
+     *         email does not exist or if {@code newUsername} is a username of another account).
+     */
+    public static boolean changeUsername(final @NonNull String accountEmail, final @NonNull String newUsername) {
+        try {
+            return new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(ACCOUNTS)
+                            .set(ACCOUNTS.USERNAME, newUsername)
+                            .where(ACCOUNTS.EMAIL.eq(accountEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1;
+        } catch (final DataAccessException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Changes the email of the account whose email is {@code actualEmail}, if such account exists.
+     * @param actualEmail the current email of the account.
+     * @param newEmail the new email of the account.
+     * @return {@code true} if the update is successfully, {@code false} otherwise (e.g. if an account with
+     *         {@code actualEmail} does not exist or {@code newEmail} is an email of another account).
+     */
+    public static boolean changeEmail(final @NonNull String actualEmail, final @NonNull String newEmail) {
+        try {
+            return new QueryBuilder().createConnection()
+                    .queryAction(db -> db.update(ACCOUNTS)
+                            .set(ACCOUNTS.EMAIL, newEmail)
+                            .where(ACCOUNTS.EMAIL.eq(actualEmail))
+                            .execute())
+                    .closeConnection().getResultAsInt() == 1;
+        } catch (final DataAccessException e) {
+            return false;
+        }
+    }
+
+    private static boolean isInvalidUsername(final @NonNull String username) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(ACCOUNTS)
+                        .where(ACCOUNTS.USERNAME.eq(username))
+                        .fetchOne(0, int.class))
+                .closeConnection().getResultAsInt() == 0;
     }
 
 }

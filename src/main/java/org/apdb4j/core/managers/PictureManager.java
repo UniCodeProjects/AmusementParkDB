@@ -4,6 +4,8 @@ import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apdb4j.util.QueryBuilder;
 
+import java.util.List;
+
 import static org.apdb4j.db.Tables.PICTURES;
 
 /**
@@ -54,6 +56,21 @@ public final class PictureManager {
     public static boolean removePicture(final @NonNull String path) {
         // Escaping path backslash if present.
         return Manager.removeTupleFromDB(PICTURES, StringUtils.replace(path, "\\", "\\\\"));
+    }
+
+    /**
+     * Returns all the pictures of the park service with the provided name.
+     * @param parkServiceName the park service name.
+     * @return all the pictures associated with the provided park service.
+     */
+    public static List<String> getPictures(final @NonNull String parkServiceName) {
+        return new QueryBuilder().createConnection()
+                .queryAction(db -> db.select(PICTURES.PATH)
+                        .from(PICTURES)
+                        .where(PICTURES.PARKSERVICEID.eq(ParkServiceManager.getParkServiceID(parkServiceName)))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords().getValues(PICTURES.PATH);
     }
 
 }
