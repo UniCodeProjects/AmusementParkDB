@@ -102,33 +102,6 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
      */
     @FXML
     void onAccept(final ActionEvent event) {
-        final ContractTableItem editedContract = new ContractTableItem(contract.getId(),
-                employeeNIDField.getText(),
-                employerNIDField.getText(),
-                signedDatePicker.getValue(),
-                beginDatePicker.getValue(),
-                endDatePicker.getValue(),
-                salarySpinner.getValue());
-        Platform.runLater(() -> {
-            final ContractTableItem currentContract = contractTableView.getItems()
-                    .get(contractTableView.getItems().indexOf(contract));
-            final int index = contractTableView.getItems().indexOf(currentContract);
-            contractTableView.getItems().remove(currentContract);
-            contractTableView.getItems().add(index, new ContractControllerImpl().editData(editedContract));
-            contractTableView.getSelectionModel().select(editedContract);
-            contractTableView.requestFocus();
-        });
-        // Updating employee table view.
-        final EmployeeTableItem linkedEmployee = employeeTableView.getItems().stream()
-                .filter(employee -> employee.getNationalID().equals(contract.getEmployeeNID()))
-                .findFirst()
-                .orElseThrow();
-        final int employeeIndex = employeeTableView.getItems().indexOf(linkedEmployee);
-        employeeTableView.getItems().remove(linkedEmployee);
-        linkedEmployee.setSalary(salarySpinner.getValue());
-        final EmployeeTableItem updatedEmployee = new EmployeeControllerImpl().editData(linkedEmployee);
-        Platform.runLater(() -> employeeTableView.getItems().add(employeeIndex, updatedEmployee));
-
         if (fromEmployeeScreen) {
             if (Objects.isNull(partialEmployee)) {
                 throw new IllegalStateException("Employee table item is null.");
@@ -143,6 +116,33 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
                     endDatePicker.getValue(),
                     salarySpinner.getValue());
             update.accept(partialEmployee, contract);
+        } else {
+            final ContractTableItem editedContract = new ContractTableItem(contract.getId(),
+                    employeeNIDField.getText(),
+                    employerNIDField.getText(),
+                    signedDatePicker.getValue(),
+                    beginDatePicker.getValue(),
+                    endDatePicker.getValue(),
+                    salarySpinner.getValue());
+            Platform.runLater(() -> {
+                final ContractTableItem currentContract = contractTableView.getItems()
+                        .get(contractTableView.getItems().indexOf(contract));
+                final int index = contractTableView.getItems().indexOf(currentContract);
+                contractTableView.getItems().remove(currentContract);
+                contractTableView.getItems().add(index, new ContractControllerImpl().editData(editedContract));
+                contractTableView.getSelectionModel().select(editedContract);
+                contractTableView.requestFocus();
+            });
+            // Updating employee table view.
+            final EmployeeTableItem linkedEmployee = employeeTableView.getItems().stream()
+                    .filter(employee -> employee.getNationalID().equals(contract.getEmployeeNID()))
+                    .findFirst()
+                    .orElseThrow();
+            final int employeeIndex = employeeTableView.getItems().indexOf(linkedEmployee);
+            employeeTableView.getItems().remove(linkedEmployee);
+            linkedEmployee.setSalary(salarySpinner.getValue());
+            final EmployeeTableItem updatedEmployee = new EmployeeControllerImpl().editData(linkedEmployee);
+            Platform.runLater(() -> employeeTableView.getItems().add(employeeIndex, updatedEmployee));
         }
         gridPane.getScene().getWindow().hide();
     }
