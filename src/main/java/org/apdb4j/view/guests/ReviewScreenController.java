@@ -1,6 +1,7 @@
 package org.apdb4j.view.guests;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -9,20 +10,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.apdb4j.util.QueryBuilder;
+import org.apdb4j.controllers.guests.ReviewController;
+import org.apdb4j.controllers.guests.ReviewControllerImpl;
+import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.BackableAbstractFXMLController;
-import org.jooq.Record;
-import org.jooq.Result;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
-import java.util.Objects;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-import static org.apdb4j.db.Tables.*;
-
 /**
- * FXML controller for the screen that displays all the reviews for a ride.
+ * FXML controller for the screen that displays all the reviews for a park service.
  */
 public class ReviewScreenController extends BackableAbstractFXMLController {
 
@@ -36,13 +36,20 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
     @FXML
     private Label title;
     private final String parkServiceName;
+    private final ReviewController controller;
+    private final BackableFXMLController userParkServicesScreenController;
 
     /**
      * Creates a new instance of this class which refers to the park service {@code parkServiceName}.
      * @param parkServiceName the name of the park service referred by the scene.
+     * @param userParkServicesScreenController the controller of the screen that shows all the park services.
      */
-    public ReviewScreenController(final @NonNull String parkServiceName) {
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public ReviewScreenController(final @NonNull String parkServiceName,
+                                  final @NonNull BackableFXMLController userParkServicesScreenController) {
         this.parkServiceName = parkServiceName;
+        controller = new ReviewControllerImpl(parkServiceName);
+        this.userParkServicesScreenController = userParkServicesScreenController;
     }
 
     /**
@@ -52,19 +59,11 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
     public void initialize(final URL location, final ResourceBundle resources) {
         super.initialize(location, resources);
         title.setText(parkServiceName + " " + TITLE_BASE_TEXT);
-        for (final Record review : getReviews()) {
+        for (final var review : controller.getReviews()) {
             addReviewInListView(review);
         }
-        final var numReviewsAndAvgRating = new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(PARK_SERVICES.NUMREVIEWS, PARK_SERVICES.AVGRATING)
-                        .from(PARK_SERVICES)
-                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords()
-                .get(0);
-        numReviews.setText(numReviewsAndAvgRating.get(PARK_SERVICES.NUMREVIEWS).toString());
-        averageRating.setText(numReviewsAndAvgRating.get(PARK_SERVICES.AVGRATING).toString());
+        numReviews.setText(String.valueOf(controller.getNumberOfReviews()));
+        averageRating.setText(String.valueOf(controller.getAverageRating()));
     }
 
     /**
@@ -78,49 +77,27 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
                 "Share your opinion on " + parkServiceName,
                 1,
                 1,
-                parkServiceName);
+                JavaFXUtils.getStage(event),
+                parkServiceName, controller, userParkServicesScreenController);
     }
 
-    private Result<Record> getReviews() {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(REVIEWS.ACCOUNT,
-                        REVIEWS.DESCRIPTION,
-                        REVIEWS.DATE,
-                        REVIEWS.RATING)
-                        .from(REVIEWS)
-                        .where(REVIEWS.PARKSERVICEID.eq(getParkServiceID()))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords();
-    }
-
-    private String getParkServiceID() {
-        return new QueryBuilder().createConnection()
-                .queryAction(db -> db.select(PARK_SERVICES.PARKSERVICEID)
-                        .from(PARK_SERVICES)
-                        .where(PARK_SERVICES.NAME.eq(parkServiceName))
-                        .fetch())
-                .closeConnection()
-                .getResultAsRecords()
-                .get(0)
-                .get(PARK_SERVICES.PARKSERVICEID);
-    }
-
-    private void addReviewInListView(final Record review) {
+    private void addReviewInListView(final @NonNull Map<String, String> review) {
         final VBox reviewContainer = new VBox();
         reviews.getItems().add(reviewContainer);
-        // TODO: change the email with the username
-        reviewContainer.getChildren().add(new Label("Author: " + review.get(REVIEWS.ACCOUNT)));
-        final HBox ratingAndDate = new HBox();
-        reviewContainer.getChildren().add(ratingAndDate);
-        VBox.setMargin(ratingAndDate, new Insets(0, 0, 5, 0));
-        final Label ratingLabel = new Label("Rating: " + review.get(REVIEWS.RATING).toString() + "/5");
-        ratingAndDate.getChildren().add(ratingLabel);
-        HBox.setMargin(ratingLabel, new Insets(0, 10, 0, 0));
-        ratingAndDate.getChildren().add(new Label("Date: " + review.get(REVIEWS.DATE).toString()));
-        if (!Objects.isNull(review.get(REVIEWS.DESCRIPTION))) {
+        reviewContainer.getChildren().add(new Label("Author: " + review.get("Username")));
+        final HBox ratingAndDateTime = new HBox();
+        reviewContainer.getChildren().add(ratingAndDateTime);
+        VBox.setMargin(ratingAndDateTime, new Insets(0, 0, 5, 0));
+        final Label ratingLabel = new Label("Rating: " + review.get("Rating") + "/" + ReviewController.getMaxRating());
+        ratingAndDateTime.getChildren().add(ratingLabel);
+        HBox.setMargin(ratingLabel, new Insets(0, 5, 0, 0));
+        final Label dateLabel = new Label("Date: " + review.get("Date"));
+        ratingAndDateTime.getChildren().add(dateLabel);
+        HBox.setMargin(dateLabel, new Insets(0, 5, 0, 0));
+        ratingAndDateTime.getChildren().add(new Label("Time: " + review.get("Time")));
+        if (!review.get("Description").isEmpty()) {
             final TextArea reviewDescription = new TextArea();
-            reviewDescription.setText(review.get(REVIEWS.DESCRIPTION));
+            reviewDescription.setText(review.get("Description"));
             reviewDescription.setEditable(false);
             reviewContainer.getChildren().add(reviewDescription);
         }

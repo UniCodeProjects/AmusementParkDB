@@ -1,6 +1,7 @@
 package org.apdb4j.view;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 /**
  * Interface that represents FXML controllers that have to manage a "back" button.
@@ -13,4 +14,9 @@ public interface BackableFXMLController extends FXMLController {
      * @param previousSceneTitle the stage title that has to be set when {@code previousScene} is shown.
      */
     void setPreviousScene(Scene previousScene, String previousSceneTitle);
+
+    /**
+     * Calls {@link Button#fire()} on the "back" button.
+     */
+    void fireBackButton();
 }

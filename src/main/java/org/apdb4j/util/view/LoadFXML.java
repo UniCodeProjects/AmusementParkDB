@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;
 import org.apdb4j.view.BackableFXMLController;
@@ -147,7 +148,7 @@ public final class LoadFXML {
                                         final @NonNull String title,
                                         final double widthSizeFactor,
                                         final double heightSizeFactor) {
-        fromEventAsPopup(event, getControllerClass(fxml), title, widthSizeFactor, heightSizeFactor, NULL_VARARG);
+        fromEventAsPopup(event, getControllerClass(fxml), title, widthSizeFactor, heightSizeFactor, null, NULL_VARARG);
     }
 
     /**
@@ -158,6 +159,9 @@ public final class LoadFXML {
      * @param title the window title.
      * @param widthSizeFactor the size factor for the popup width.
      * @param heightSizeFactor the size factor for the popup height.
+     * @param owner the owner of the popup stage. In other words, the window from which this method is called.
+     *              It is better to set the owner only when needed. If this information is not necessary, it is better
+     *              to set this parameter to {@code null}.
      * @param controllerConstructorArgs the arguments that have to be passed to the FXML controller's constructor.
      */
     public static void fromEventAsPopup(final @NonNull Event event,
@@ -165,6 +169,7 @@ public final class LoadFXML {
                                         final @NonNull String title,
                                         final double widthSizeFactor,
                                         final double heightSizeFactor,
+                                        final Window owner,
                                         final Object... controllerConstructorArgs) {
         Parent root;
         final FXMLLoader loader = initializeFXMLLoader(fxmlControllerClass, controllerConstructorArgs);
@@ -178,6 +183,7 @@ public final class LoadFXML {
         final Scene popupScene = new Scene(root, window.getWidth() * widthSizeFactor, window.getHeight() * heightSizeFactor);
         // Setting the popup stage.
         final Stage popupStage = new Stage();
+        popupStage.initOwner(owner);
         popupStage.setScene(popupScene);
         popupStage.setTitle(title);
         popupStage.initModality(Modality.APPLICATION_MODAL);

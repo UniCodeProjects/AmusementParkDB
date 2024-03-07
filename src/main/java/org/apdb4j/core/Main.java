@@ -1,6 +1,7 @@
 package org.apdb4j.core;
 
 import javafx.application.Application;
+import org.apdb4j.view.App;
 
 /**
  * Main class.

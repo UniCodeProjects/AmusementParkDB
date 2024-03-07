@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -11,12 +12,17 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.apdb4j.controllers.guests.BestParkServicesControllerImpl;
+import org.apdb4j.controllers.guests.ParkServiceType;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
 import org.apdb4j.view.FXMLController;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -128,5 +134,63 @@ public class UserScreenController implements FXMLController, Initializable {
     void onRidesClick(final ActionEvent event) {
         LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RIDE);
         JavaFXUtils.setStageTitle(event, "Our rides", true);
+    }
+
+    /**
+     * Opens the screen that displays all the exhibitions' info.
+     * @param event the click on related hyperlink
+     */
+    @FXML
+    void onExhibitionsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.EXHIBITION);
+        JavaFXUtils.setStageTitle(event, "Our exhibitions", true);
+    }
+
+    /**
+     * Opens the screen that displays all the restaurants' info.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onRestaurantsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.RESTAURANT);
+        JavaFXUtils.setStageTitle(event, "Our restaurants", true);
+    }
+
+    /**
+     * Opens the screen that displays all the shops' info.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onShopsClick(final ActionEvent event) {
+        LoadFXML.fromEvent(event, UserParkServicesScreenController.class, true, true, true, ParkServiceType.SHOP);
+        JavaFXUtils.setStageTitle(event, "Our shops", true);
+    }
+
+    /**
+     * Opens the screen that displays the best park services according to their average rating.
+     * @param event the click on the related hyperlink
+     */
+    @FXML
+    void onBestParkServicesClick(final ActionEvent event) {
+        final VBox bestParkServicesContainer = new VBox();
+        final List<Map<String, String>> bestParkServices = new BestParkServicesControllerImpl().getBestParkServices();
+        bestParkServices.forEach(parkService -> {
+            final var parkServiceInfo = new HashMap<>(parkService);
+            final Label parkServiceLabel = new Label();
+            parkServiceLabel.setText((bestParkServices.indexOf(parkService) + 1) + ". ");
+            parkServiceLabel.setText(parkServiceLabel.getText() + "Name: " + parkServiceInfo.get("Name") + " - ");
+            parkServiceInfo.remove("Name");
+            parkServiceInfo.forEach((attribute, value) ->
+                    parkServiceLabel.setText(parkServiceLabel.getText() + attribute + ": " + value + " - "));
+            bestParkServicesContainer.getChildren().add(parkServiceLabel);
+            VBox.setMargin(parkServiceLabel, new Insets(0, 0, 0, 5));
+        });
+        bestParkServicesContainer.getChildren().forEach(label -> {
+            final String labelText = ((Label) label).getText();
+            ((Label) label).setText(new StringBuilder(labelText)
+                    .replace(labelText.length() - 3, labelText.length(), "").toString());
+        });
+        new AlertBuilder(Alert.AlertType.INFORMATION).setHeaderText("Our best park services")
+                .setContent(bestParkServicesContainer).show();
     }
 }
