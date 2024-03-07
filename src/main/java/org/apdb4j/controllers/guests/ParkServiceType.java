@@ -1,26 +1,27 @@
-package org.apdb4j.view.guests;
+package org.apdb4j.controllers.guests;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
- * All the possible types of a park service.
+ * All the possible types of park services.
  */
 public enum ParkServiceType {
+
     /**
-     * The ride type.
+     * The ride park service type.
      */
     RIDE("Ride"),
     /**
-     * The exhibition type.
+     * The exhibition park service type.
      */
     EXHIBITION("Exhibition"),
     /**
-     * The shop type.
+     * The shop park service type.
      */
     SHOP("Shop"),
     /**
-     * The restaurant type.
+     * The restaurant park service type.
      */
     RESTAURANT("Restaurant");
 

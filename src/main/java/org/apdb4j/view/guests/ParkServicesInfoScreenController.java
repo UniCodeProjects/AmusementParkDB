@@ -1,22 +1,31 @@
 package org.apdb4j.view.guests;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javafx.scene.control.Alert;
+import lombok.NonNull;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import lombok.NonNull;
-import org.apdb4j.controllers.guests.ParkServiceController;
+import org.apdb4j.controllers.guests.ParkServiceType;
+import org.apdb4j.controllers.guests.SingleExhibitionInfoController;
+import org.apdb4j.controllers.guests.SingleParkServiceInfoController;
+import org.apdb4j.controllers.guests.SingleRideInfoController;
+import org.apdb4j.controllers.guests.SingleShopInfoController;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.JavaFXUtils;
 import org.apdb4j.util.view.LoadFXML;
+import org.apdb4j.view.BackableFXMLController;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -34,26 +43,30 @@ public class ParkServicesInfoScreenController implements Initializable {
     private Label parkServiceInfoLabel;
     @FXML
     private Label parkServiceNameLabel;
-    @FXML
-    private Button photosButton; // TODO: remove, also from fxml
-    @FXML
-    private Button reviewsButton; // TODO: remove, also from fxml
     private final String parkServiceName;
-    private final ParkServiceController controller;
     private final ParkServiceType parkServiceType;
+    private final SingleParkServiceInfoController controller;
+    private final BackableFXMLController userParkServicesScreenController;
 
     /**
-     * Creates a new instance of this class which refers to the park service {@code parkServiceName}.
+     * Creates a new instance of this class which refers to the park service {@code parkServiceName}, of type
+     * {@code parkServiceType}.
      * @param parkServiceName the name of the park service referred by the scene.
-     * @param controller the MVC controller.
-     * @param parkServiceType the type of the park service with name {@code parkServiceName}.
+     * @param parkServiceType the type of the park service referred by the scene.
+     * @param userParkServicesScreenController the controller of the screen that shows all the park services.
      */
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ParkServicesInfoScreenController(final @NonNull String parkServiceName,
-                                            final @NonNull ParkServiceController controller,
-                                            final @NonNull ParkServiceType parkServiceType) {
+                                            final @NonNull ParkServiceType parkServiceType,
+                                            final @NonNull BackableFXMLController userParkServicesScreenController) {
         this.parkServiceName = parkServiceName;
-        this.controller = controller;
         this.parkServiceType = parkServiceType;
+        this.userParkServicesScreenController = userParkServicesScreenController;
+        controller = switch (parkServiceType) {
+            case RIDE -> new SingleRideInfoController();
+            case EXHIBITION -> new SingleExhibitionInfoController();
+            case SHOP, RESTAURANT -> new SingleShopInfoController();
+        };
     }
 
     /**
@@ -62,22 +75,30 @@ public class ParkServicesInfoScreenController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         parkServiceNameLabel.setText(parkServiceName);
-        parkServiceDescriptionLabel.setText(parkServiceType.getName() + parkServiceDescriptionLabel.getText());
         description.setText(controller.getParkServiceDescription(parkServiceName));
         description.setEditable(false);
+        parkServiceDescriptionLabel.setText(parkServiceType.getName() + parkServiceDescriptionLabel.getText());
         parkServiceInfoLabel.setText(parkServiceType.getName() + parkServiceInfoLabel.getText());
-        final var parkServiceInfo = controller.getAllInfo(parkServiceName);
-        parkServiceInfo.forEach((attribute, value) -> {
-            final var hBox = new HBox();
-            descriptionAndInfoContainer.getChildren().add(hBox);
-            VBox.setMargin(hBox, new Insets(0, 0, 5, 0));
-            final var attributeNameLabel = new Label(attribute + ":");
-            attributeNameLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
-            final var attributeValueLabel = new Label(value);
-            hBox.getChildren().addAll(attributeNameLabel, attributeValueLabel);
-            HBox.setMargin(attributeNameLabel, new Insets(0, 0, 0, 5));
-            HBox.setMargin(attributeValueLabel, new Insets(0, 0, 0, 3));
-        });
+        if (parkServiceType.equals(ParkServiceType.EXHIBITION)) {
+            final var exhibitionInfo = new HashMap<>(controller.getAllParkServiceInfo(parkServiceName));
+            addNewAttributeWithValueInInfoView("Type", exhibitionInfo.get("Type"));
+            exhibitionInfo.remove("Type");
+
+            final var plannedExhibitionLabel = new Label("Next show's info:");
+            plannedExhibitionLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 14));
+            VBox.setMargin(plannedExhibitionLabel, new Insets(0, 0, 5, 5));
+            descriptionAndInfoContainer.getChildren().add(plannedExhibitionLabel);
+            if (exhibitionInfo.isEmpty()) {
+                final var noPlannedExhibitionLabel = new Label("There are no shows planned for this exhibition");
+                noPlannedExhibitionLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
+                VBox.setMargin(noPlannedExhibitionLabel, new Insets(0, 0, 0, 5));
+                descriptionAndInfoContainer.getChildren().add(noPlannedExhibitionLabel);
+            } else {
+                exhibitionInfo.forEach(this::addNewAttributeWithValueInInfoView);
+            }
+        } else {
+            controller.getAllParkServiceInfo(parkServiceName).forEach(this::addNewAttributeWithValueInInfoView);
+        }
     }
 
     /**
@@ -86,11 +107,17 @@ public class ParkServicesInfoScreenController implements Initializable {
      */
     @FXML
     void onPhotosButtonPressed(final ActionEvent event) {
-        LoadFXML.fromEventAsPopup(event, ParkServicesPhotosScreenController.class,
-                parkServiceName + " photos",
-                1,
-                1,
-                controller.getParkServiceID(parkServiceName));
+        final List<String> photosPath = controller.getPhotosPath(parkServiceName);
+        if (photosPath.isEmpty()) {
+            new AlertBuilder(Alert.AlertType.INFORMATION).setHeaderText("There are no photos for " + parkServiceName).show();
+        } else {
+            LoadFXML.fromEventAsPopup(event, ParkServicesPhotosScreenController.class,
+                    parkServiceName + " photos",
+                    1,
+                    1,
+                    null,
+                    List.copyOf(photosPath));
+        }
     }
 
     /**
@@ -105,7 +132,19 @@ public class ParkServicesInfoScreenController implements Initializable {
                 true,
                 true,
                 true,
-                parkServiceName);
+                parkServiceName, userParkServicesScreenController);
         JavaFXUtils.setStageTitle(event, "reviews", true);
+    }
+
+    private void addNewAttributeWithValueInInfoView(final @NonNull String attribute, final @NonNull String value) {
+        final var hBox = new HBox();
+        descriptionAndInfoContainer.getChildren().add(hBox);
+        VBox.setMargin(hBox, new Insets(0, 0, 5, 0));
+        final var attributeNameLabel = new Label(attribute + ":");
+        attributeNameLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 12));
+        final var attributeValueLabel = new Label(value);
+        hBox.getChildren().addAll(attributeNameLabel, attributeValueLabel);
+        HBox.setMargin(attributeNameLabel, new Insets(0, 0, 0, 5));
+        HBox.setMargin(attributeValueLabel, new Insets(0, 0, 0, 3));
     }
 }

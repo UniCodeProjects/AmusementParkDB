@@ -127,11 +127,6 @@ public class Reviews extends TableImpl<Record> {
     }
 
     @Override
-    public List<UniqueKey<Record>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_REVIEWS_IDREVIEW);
-    }
-
-    @Override
     public List<ForeignKey<Record, ?>> getReferences() {
         return Arrays.asList(Keys.FKPUBLICATION, Keys.FKREFERENCE);
     }

@@ -19,7 +19,6 @@ public final class JavaFXUtils {
     private JavaFXUtils() {
     }
 
-    // TODO: add parameters showLoading and removeFocus
     /**
      * Sets the provided scene starting from the provided event.
      * @param event an event.
@@ -111,4 +110,18 @@ public final class JavaFXUtils {
         }
     }
 
+    /**
+     * A {@link DateCell} that disables the days that are in the past.
+     */
+    public static class PresentAndFutureDaysDateCell extends DateCell {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void updateItem(final LocalDate localDate, final boolean b) {
+            super.updateItem(localDate, b);
+            this.setDisable(localDate.isBefore(LocalDate.now()));
+        }
+    }
 }

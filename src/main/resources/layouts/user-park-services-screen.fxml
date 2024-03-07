@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,7 +15,7 @@
             <Insets />
          </BorderPane.margin>
          <center>
-            <Label text="Our rides">
+            <Label fx:id="title" text="Our ">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -37,8 +36,18 @@
          </left>
          <bottom>
             <BorderPane prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <left>
+               <right>
                   <Button fx:id="showFiltersButton" mnemonicParsing="false" onAction="#onFilterButtonPressed" text="Show filters" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets right="5.0" />
+                     </BorderPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </right>
+               <left>
+                  <Button fx:id="estimatedWaitTimesButton" mnemonicParsing="false" onAction="#onEstimatedWaitTimesButtonPressed" text="Estimated wait times LIVE!" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="5.0" />
                      </BorderPane.margin>
@@ -47,23 +56,6 @@
                      </cursor>
                   </Button>
                </left>
-               <center>
-                  <Button fx:id="estimatedWaitTimesButton" mnemonicParsing="false" onAction="#onEstimatedWaitTimesButtonPressed" text="Estimated wait times LIVE!" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </center>
-               <right>
-                  <ComboBox fx:id="sortMenu" prefWidth="200.0" promptText="Sort by" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets right="5.0" />
-                     </BorderPane.margin>
-                  </ComboBox>
-               </right>
             </BorderPane>
          </bottom>
       </BorderPane>

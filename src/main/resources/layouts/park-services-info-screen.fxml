@@ -33,7 +33,7 @@
                               <Insets bottom="5.0" left="5.0" top="5.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                         <TextArea fx:id="description" prefHeight="100.0" prefWidth="575.0">
@@ -46,7 +46,7 @@
                               <Insets bottom="5.0" left="5.0" top="10.0" />
                            </VBox.margin>
                            <font>
-                              <Font name="System Bold Italic" size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                      </children>
@@ -59,7 +59,7 @@
    <bottom>
       <BorderPane prefHeight="35.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <left>
-            <Button fx:id="photosButton" mnemonicParsing="false" onAction="#onPhotosButtonPressed" text="See photos" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#onPhotosButtonPressed" text="See photos" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="5.0" />
                </BorderPane.margin>
@@ -69,7 +69,7 @@
             </Button>
          </left>
          <right>
-            <Button fx:id="reviewsButton" mnemonicParsing="false" onAction="#onReviewsButtonPressed" text="Reviews" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#onReviewsButtonPressed" text="Reviews" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="5.0" />
                </BorderPane.margin>
