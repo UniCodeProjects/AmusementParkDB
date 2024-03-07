@@ -12,7 +12,6 @@ public final class IDGenerationUtils {
     private static final String EXHIBITION_ID_PREFIX = "EX-";
     private static final String RIDE_ID_PREFIX = "RI-";
     private static final String SHOP_ID_PREFIX = "SH-";
-    private static final String RESTAURANT_ID_PREFIX = "RE-";
     private static final String TICKET_ID_PREFIX = "T-";
     private static final int ABBREVIATED_PERSON_NAME_LENGTH = 3;
     private static final int ABBREVIATED_PERSON_SURNAME_LENGTH = 3;
@@ -53,14 +52,6 @@ public final class IDGenerationUtils {
      */
     public static @NonNull String generateShopID() {
         return SHOP_ID_PREFIX + HashUtils.generate(LocalDateTime.now());
-    }
-
-    /**
-     * Generates an identifier for a new restaurant.
-     * @return a new identifier for a restaurant.
-     */
-    public static @NonNull String generateRestaurantID() {
-        return RESTAURANT_ID_PREFIX + HashUtils.generate(LocalDateTime.now());
     }
 
     /**
