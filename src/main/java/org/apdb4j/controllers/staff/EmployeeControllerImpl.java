@@ -18,6 +18,7 @@ import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.jooq.tools.StringUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +54,9 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
-        return getEmployeeData(CONTRACTS.ENDDATE.isNull().or(STAFF.ISADMIN.isTrue()));
+        return getEmployeeData(CONTRACTS.ENDDATE.isNull()
+                .or(CONTRACTS.ENDDATE.greaterThan(LocalDate.now()))
+                .or(STAFF.ISADMIN.isTrue()));
     }
 
     /**
@@ -172,7 +175,7 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> Collection<T> getFiredData() {
-        return getEmployeeData(CONTRACTS.ENDDATE.isNotNull());
+        return getEmployeeData(CONTRACTS.ENDDATE.isNotNull().and(CONTRACTS.ENDDATE.lessOrEqual(LocalDate.now())));
     }
 
     /**
