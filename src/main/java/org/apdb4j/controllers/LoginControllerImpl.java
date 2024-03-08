@@ -8,6 +8,7 @@ import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.apdb4j.db.Tables.ACCOUNTS;
@@ -37,7 +38,7 @@ public class LoginControllerImpl implements LoginController {
                                 .join(CONTRACTS)
                                 .on(STAFF.NATIONALID.eq(CONTRACTS.EMPLOYEENID)))
                         .where(ACCOUNTS.USERNAME.eq(username))
-                        .and(CONTRACTS.ENDDATE.isNotNull())
+                        .and(CONTRACTS.ENDDATE.isNotNull().and(CONTRACTS.ENDDATE.lessOrEqual(LocalDate.now())))
                         .fetchOne(0, int.class))
                 .closeConnection()
                 .getResultAsInt() == 1;
