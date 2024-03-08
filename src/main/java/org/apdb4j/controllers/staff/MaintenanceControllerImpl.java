@@ -1,6 +1,7 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.apdb4j.core.managers.MaintenanceManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.MaintenanceTableItem;
@@ -18,7 +19,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.*;
+import static org.apdb4j.db.Tables.FACILITIES;
+import static org.apdb4j.db.Tables.MAINTENANCES;
+import static org.apdb4j.db.Tables.RESPONSIBILITIES;
+import static org.apdb4j.db.Tables.RIDES;
 
 /**
  * An implementation of a maintenance controller.
@@ -47,7 +51,7 @@ public class MaintenanceControllerImpl implements MaintenanceController {
                 maintenance.getPrice(),
                 maintenance.getDescription(),
                 maintenance.getDate(),
-                maintenance.getEmployeeIDs());
+                StringUtils.split(maintenance.getEmployeeIDs(), ", "));
         if (!successfulQuery) {
             errorMessage = "Something went wrong.";
             throw new DataAccessException(errorMessage);
