@@ -75,7 +75,7 @@ public class MaintenanceScreenController extends PopupInitializer implements FXM
                     tableView.getItems().add(controller.addData(maintenanceItem));
                 } catch (final DataAccessException e) {
                     new AlertBuilder(Alert.AlertType.ERROR)
-                            .setContentText(e.getCause().getMessage())
+                            .setContentText(e.getMessage())
                             .show();
                 }
             });
