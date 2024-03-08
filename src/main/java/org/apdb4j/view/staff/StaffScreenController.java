@@ -209,6 +209,8 @@ public class StaffScreenController implements FXMLController, Initializable {
     @FXML
     private CheckBox maintenanceShopFilter;
     @FXML
+    private Button addMaintenanceBtn;
+    @FXML
     private TextField picturesSearchField;
     @FXML
     private TableView<PictureTableItem> picturesTableView;
@@ -1415,6 +1417,7 @@ public class StaffScreenController implements FXMLController, Initializable {
             expensesTab.setDisable(true);
             employeesTab.setDisable(true);
             contractsTab.setDisable(true);
+            addMaintenanceBtn.setDisable(true);
         }
         // Loading the ride tableview by default.
         initRideTable();
