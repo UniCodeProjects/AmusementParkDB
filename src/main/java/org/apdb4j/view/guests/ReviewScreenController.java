@@ -84,7 +84,7 @@ public class ReviewScreenController extends BackableAbstractFXMLController {
     private void addReviewInListView(final @NonNull Map<String, String> review) {
         final VBox reviewContainer = new VBox();
         reviews.getItems().add(reviewContainer);
-        reviewContainer.getChildren().add(new Label("Author: " + review.get("Username")));
+        reviewContainer.getChildren().add(new Label("Author: " + review.get("Name") + " " + review.get("Surname")));
         final HBox ratingAndDateTime = new HBox();
         reviewContainer.getChildren().add(ratingAndDateTime);
         VBox.setMargin(ratingAndDateTime, new Insets(0, 0, 5, 0));

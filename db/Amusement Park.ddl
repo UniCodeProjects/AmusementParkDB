@@ -135,7 +135,7 @@ create table REVIEWS (
      Date date not null,
      Time time not null,
      Description varchar(1000),
-     Account varchar(256) not null,
+     Author char(16) not null,
      ParkServiceID char(11) not null,
      constraint IDRECENSIONE primary key (ReviewID),
      constraint RATING_FORMAT check (Rating between 1 and 5));
@@ -273,8 +273,8 @@ alter table responsibilities add constraint FKres_MAI
      references MAINTENANCES (FacilityID, Date);
 
 alter table REVIEWS add constraint FKpublication
-     foreign key (Account)
-     references ACCOUNTS (Email) on update cascade;
+     foreign key (Author)
+     references GUESTS (GuestID);
 
 alter table REVIEWS add constraint FKreference
      foreign key (ParkServiceID)

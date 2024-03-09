@@ -74,9 +74,9 @@ public class Reviews extends TableImpl<Record> {
     public final TableField<Record, String> DESCRIPTION = createField(DSL.name("Description"), SQLDataType.VARCHAR(1000), this, "");
 
     /**
-     * The column <code>amusement_park.reviews.Account</code>.
+     * The column <code>amusement_park.reviews.Author</code>.
      */
-    public final TableField<Record, String> ACCOUNT = createField(DSL.name("Account"), SQLDataType.VARCHAR(256).nullable(false), this, "");
+    public final TableField<Record, String> AUTHOR = createField(DSL.name("Author"), SQLDataType.CHAR(16).nullable(false), this, "");
 
     /**
      * The column <code>amusement_park.reviews.ParkServiceID</code>.
@@ -131,18 +131,18 @@ public class Reviews extends TableImpl<Record> {
         return Arrays.asList(Keys.FKPUBLICATION, Keys.FKREFERENCE);
     }
 
-    private transient Accounts _accounts;
+    private transient Guests _guests;
     private transient ParkServices _parkServices;
 
     /**
-     * Get the implicit join path to the <code>amusement_park.accounts</code>
+     * Get the implicit join path to the <code>amusement_park.guests</code>
      * table.
      */
-    public Accounts accounts() {
-        if (_accounts == null)
-            _accounts = new Accounts(this, Keys.FKPUBLICATION);
+    public Guests guests() {
+        if (_guests == null)
+            _guests = new Guests(this, Keys.FKPUBLICATION);
 
-        return _accounts;
+        return _guests;
     }
 
     /**

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.GUESTS;
 import static org.apdb4j.db.Tables.PARK_SERVICES;
 import static org.apdb4j.db.Tables.REVIEWS;
 
@@ -120,8 +120,8 @@ public final class ReviewManager {
                         REVIEWS.DATE,
                         REVIEWS.TIME,
                         REVIEWS.DESCRIPTION,
-                        ACCOUNTS.USERNAME)
-                        .from(REVIEWS).join(ACCOUNTS).on(REVIEWS.ACCOUNT.eq(ACCOUNTS.EMAIL))
+                        GUESTS.NAME, GUESTS.SURNAME)
+                        .from(REVIEWS).join(GUESTS).on(REVIEWS.AUTHOR.eq(GUESTS.GUESTID))
                         .where(REVIEWS.PARKSERVICEID.eq(ParkServiceManager.getParkServiceID(parkServiceName)))
                         .fetch())
                 .closeConnection()
