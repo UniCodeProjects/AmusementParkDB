@@ -4,12 +4,16 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import org.apdb4j.core.managers.AccountManager;
+import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.util.view.LoadFXML;
 
 import java.awt.Toolkit;
@@ -28,8 +32,6 @@ public class SignInScreenController extends LoginCommonController implements Ini
     private PasswordField password;
     @FXML
     private Button signInBtn;
-    @FXML
-    private Hyperlink signUpLink;
     @FXML
     private TextField username;
 
@@ -59,6 +61,36 @@ public class SignInScreenController extends LoginCommonController implements Ini
     @FXML
     void signUp(final ActionEvent event) {
         LoadFXML.fromEvent(event, "layouts/sign-up-screen.fxml", true, false, false);
+    }
+
+    /**
+     * Adds the given account credentials to an employee account.
+     * @param actionEvent the event
+     */
+    @FXML
+    void employeeSignUp(final ActionEvent actionEvent) {
+        final TextField employeeEmail = new TextField();
+        employeeEmail.setPromptText("Email");
+        final TextField employeeUsername = new TextField();
+        employeeUsername.setPromptText("Choose username");
+        final PasswordField employeePassword = new PasswordField();
+        employeePassword.setPromptText("Choose password");
+        final VBox vBox = new VBox(employeeEmail, employeeUsername, employeePassword);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(5);
+        new AlertBuilder(Alert.AlertType.CONFIRMATION)
+                .setContent(vBox)
+                .setOnClose(() -> {
+                    final boolean queryResult = AccountManager.addCredentialsForAccount(employeeEmail.getText().trim(),
+                            employeeUsername.getText().trim(),
+                            employeePassword.getText().trim());
+                    if (!queryResult) {
+                        new AlertBuilder(Alert.AlertType.ERROR)
+                                .setContentText("An error occurred while adding the account credentials.")
+                                .show();
+                    }
+                })
+                .show();
     }
 
     /**
