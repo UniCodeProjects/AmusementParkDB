@@ -66,6 +66,6 @@ public class ReviewControllerImpl implements ReviewController {
                 ParkServiceManager.getParkServiceID(parkServiceName),
                 rating,
                 description,
-                SessionManager.getSessionManager().getSession().email());
+                SessionManager.getSessionManager().getSession().personID());
     }
 }

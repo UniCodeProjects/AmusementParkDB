@@ -83,6 +83,56 @@ public final class GuestManager {
         return true;
     }
 
+    /**
+     * Retrieves the name of the guest with the provided {@code guestID}, if such guest exists.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param guestID the guest identifier.
+     * @return the name of the guest with the provided {@code guestID}.
+     */
+    public static String getGuestName(final @NonNull String guestID) {
+        if (isIDInvalid(guestID)) {
+            throw new IllegalArgumentException("\"" + guestID + "\"" + " is not a valid guest identifier");
+        }
+        return DB.createConnection()
+                .queryAction(db -> db.select(GUESTS.NAME)
+                        .from(GUESTS)
+                        .where(GUESTS.GUESTID.eq(guestID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords()
+                .getValue(0, GUESTS.NAME);
+    }
+
+    /**
+     * Retrieves the surname of the guest with the provided {@code guestID}, if such guest exists.
+     * Otherwise, an {@link IllegalArgumentException} will be thrown.
+     * @param guestID the guest identifier.
+     * @return the surname of the guest with the provided {@code guestID}.
+     */
+    public static String getGuestSurname(final @NonNull String guestID) {
+        if (isIDInvalid(guestID)) {
+            throw new IllegalArgumentException("\"" + guestID + "\"" + " is not a valid guest identifier");
+        }
+        return DB.createConnection()
+                .queryAction(db -> db.select(GUESTS.SURNAME)
+                        .from(GUESTS)
+                        .where(GUESTS.GUESTID.eq(guestID))
+                        .fetch())
+                .closeConnection()
+                .getResultAsRecords()
+                .getValue(0, GUESTS.SURNAME);
+    }
+
+    private static boolean isIDInvalid(final @NonNull String guestID) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(GUESTS)
+                        .where(GUESTS.GUESTID.eq(guestID))
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 0;
+    }
+
     private static boolean isStaff(final String email) {
         return DB.createConnection()
                 .queryAction(db -> db.selectCount()

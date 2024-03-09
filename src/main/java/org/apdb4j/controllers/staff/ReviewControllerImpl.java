@@ -1,6 +1,7 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
+import org.apdb4j.core.managers.GuestManager;
 import org.apdb4j.util.QueryBuilder;
 import org.apdb4j.view.staff.tableview.ReviewTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
@@ -156,7 +157,8 @@ public class ReviewControllerImpl implements ReviewController {
                 record.get(REVIEWS.DESCRIPTION),
                 record.get(REVIEWS.DATE),
                 record.get(REVIEWS.TIME),
-                record.get(REVIEWS.ACCOUNT))));
+                GuestManager.getGuestName(record.get(REVIEWS.AUTHOR)) + " "
+                        + GuestManager.getGuestSurname(record.get(REVIEWS.AUTHOR)))));
         return data;
     }
 

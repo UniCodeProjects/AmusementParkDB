@@ -84,16 +84,16 @@ values ("SH-eaa716ef", 14500.00, 5000.00, 9, 2023),
        ("SH-d08f831a", 11000.00, 2450.00, 6, 2023);
        
 insert into reviews
-values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "andreaverdi@mail.com", "RI-3c6dfaa5"),
-       ("7602814a", 4, '2023-09-01', '22:12:55', null, "tommasorusso@mail.com", "RI-3c6dfaa5"),
-       ("2595bb41", 4, '2023-07-22', '10:01:33', null, "tommasorusso@mail.com", "RI-e607d536"),
-       ("6e946d3", 5, '2023-06-27', '16:25:00', null, "francescoesposito@mail.com", "RI-5c53cbe6"),
-       ("924fa3cf", 5, '2023-05-13', '11:22:54', null, "mariagialli@mail.com", "EX-39234f38"),
-       ("240bace7", 4, '2023-03-03', '17:31:45', null, "tommasorusso@mail.com", "EX-39234f38"),
-       ("a1141a57", 5, '2023-09-03', '18:20:13', null, "francescoesposito@mail.com", "EX-dc28f34b"),
-       ("cb362766", 5, '2023-01-14', '19:43:43', null, "andreaverdi@mail.com", "SH-eaa716ef"),
-       ("2f150ea4", 4, '2023-01-19', '16:14:59', null, "mariagialli@mail.com", "SH-eaa716ef"),
-       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "tommasorusso@mail.com", "SH-d08f831a");
+values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "Ale-Gia-4b160428", "RI-3c6dfaa5"),
+       ("7602814a", 4, '2023-09-01', '22:12:55', null, "Tom-Rus-8d031c19", "RI-3c6dfaa5"),
+       ("2595bb41", 4, '2023-07-22', '10:01:33', null, "Tom-Rus-8d031c19", "RI-e607d536"),
+       ("6e946d3", 5, '2023-06-27', '16:25:00', null, "Fra-Esp-e28cee91", "RI-5c53cbe6"),
+       ("924fa3cf", 5, '2023-05-13', '11:22:54', null, "Ric-Fer-bcba6597", "EX-39234f38"),
+       ("240bace7", 4, '2023-03-03', '17:31:45', null, "Tom-Rus-8d031c19", "EX-39234f38"),
+       ("a1141a57", 5, '2023-09-03', '18:20:13', null, "Fra-Esp-e28cee91", "EX-dc28f34b"),
+       ("cb362766", 5, '2023-01-14', '19:43:43', null, "Ale-Gia-4b160428", "SH-eaa716ef"),
+       ("2f150ea4", 4, '2023-01-19', '16:14:59', null, "Ric-Fer-bcba6597", "SH-eaa716ef"),
+       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "Tom-Rus-8d031c19", "SH-d08f831a");
        
 insert into maintenances
 values ("RI-3c6dfaa5", 500.00, "maintenance1", '2023-06-10'),
