@@ -170,7 +170,7 @@ create table RIDES (
 create table STAFF (
      StaffID char(16) not null,
      NationalID varchar(256) not null,
-     Email varchar(256) not null,
+     Email varchar(256),
      Name varchar(256) not null,
      Surname varchar(256) not null,
      DoB date not null,
@@ -296,7 +296,7 @@ alter table RIDES add constraint FKR_FKR
 
 alter table STAFF add constraint FKR_FKS
      foreign key (Email)
-     references ACCOUNTS (Email);
+     references ACCOUNTS (Email) on delete set null;
 
 alter table TICKET_TYPES add constraint FKcomposition
      foreign key (Year)
