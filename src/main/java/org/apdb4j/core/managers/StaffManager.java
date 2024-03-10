@@ -2,7 +2,6 @@ package org.apdb4j.core.managers;
 
 import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
-import org.jooq.Record;
 import org.jooq.impl.DSL;
 
 import java.time.LocalDate;
@@ -78,9 +77,9 @@ public final class StaffManager {
      * Performs the SQL query that fires the provided staff member.
      * @param staffNationalID the national identifier of the staff member to fire. If the value of this parameter
      *                        is not the national identifier of a staff member, the query will not be executed.
-     * @return {@code true} on successful tuple update
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
-    public static boolean fireStaffMember(final @NonNull String staffNationalID) {
+    public static void fireStaffMember(final @NonNull String staffNationalID) {
         final LocalDate currentDate = LocalDate.now();
         final int lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth()).getDayOfMonth();
         DB.createConnection()
@@ -103,52 +102,6 @@ public final class StaffManager {
                     return 1;
                 })
                 .closeConnection();
-        return true;
     }
-
-    /**
-     * Performs the SQL query that updates the salary of the provided staff member.
-     * @param staffNationalID the staff's national identifier. If the value of this parameter is not the national
-     *                        identifier of a staff member, the query will not be executed and the controller will be informed.
-     * @param newContractID the new ID used for the updated contract.
-     * @param newSalary the new salary for the provided staff member.
-     * @return {@code true} on successful tuple update
-     */
-    @SuppressWarnings("PMD.PrematureDeclaration")   // Not a premature declaration, changes happen in DB.
-     public static boolean updateStaffSalary(final @NonNull String staffNationalID,
-                                             final @NonNull String newContractID,
-                                             final double newSalary) {
-         final Record oldContract = DB.createConnection()
-                 .queryAction(db -> db.select()
-                         .from(CONTRACTS)
-                         .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
-                         .fetch())
-                 .closeConnection()
-                 .getResultAsRecords()
-                 .get(0);
-         final boolean updatedOldContract = fireStaffMember(staffNationalID);
-         if (!updatedOldContract) {
-             return false;
-         }
-         final boolean updatedNewContract = ContractManager.signNewContract(newContractID,
-                 oldContract.get(CONTRACTS.EMPLOYEENID),
-                 oldContract.get(CONTRACTS.EMPLOYERNID),
-                 LocalDate.now(),
-                 LocalDate.now(),
-                 oldContract.get(CONTRACTS.ENDDATE),
-                 newSalary
-         );
-         // Rollback changes to old contract.
-         if (!updatedNewContract) {
-             return DB.createConnection()
-                     .queryAction(db -> db.update(CONTRACTS)
-                             .set(CONTRACTS.ENDDATE, oldContract.get(CONTRACTS.ENDDATE))
-                             .where(CONTRACTS.CONTRACTID.eq(oldContract.get(CONTRACTS.CONTRACTID)))
-                             .execute())
-                     .closeConnection()
-                     .getResultAsInt() == 1;
-         }
-         return true;
-     }
 
 }
