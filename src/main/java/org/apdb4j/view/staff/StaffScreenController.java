@@ -102,6 +102,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -440,13 +441,24 @@ public class StaffScreenController implements FXMLController, Initializable {
      */
     @FXML
     void onEmployeeFire(final ActionEvent event) {
+        final LocalDate endOfMonth = YearMonth.now().atEndOfMonth();
+        if (!endOfMonth.equals(LocalDate.now())) {
+            new AlertBuilder(Alert.AlertType.INFORMATION)
+                    .setContentText("Employees can only be fired at the end of the month: " + endOfMonth)
+                    .show();
+            return;
+        }
         final EmployeeTableItem selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
         if (Objects.isNull(selectedEmployee)) {
             showAlertForUnselectedRowInTableView("employee");
             return;
         }
         Platform.runLater(() -> {
-            employeeTableView.getItems().remove(employeeController.fire(selectedEmployee));
+            final Optional<EmployeeTableItem> firedEmployee = employeeController.fire(selectedEmployee);
+            if (firedEmployee.isEmpty()) {
+                return;
+            }
+            employeeTableView.getItems().remove(firedEmployee.get());
             // Refreshing contracts table view.
             contractsTableView.getItems().clear();
             contractsTableView.getItems().addAll(contractController.getData());

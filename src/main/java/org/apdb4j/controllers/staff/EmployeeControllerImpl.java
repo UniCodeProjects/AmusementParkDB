@@ -160,13 +160,21 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     *
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
-    public <T extends TableItem> T fire(final T employeeItem) {
+    public <T extends TableItem> Optional<T> fire(final T employeeItem) {
         final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
-        StaffManager.fireStaffMember(employee.getNationalID());
-        return employeeItem;
+        try {
+            StaffManager.fireStaffMember(employee.getNationalID());
+        } catch (final DataAccessException e) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText(e.getMessage())
+                    .show();
+            return Optional.empty();
+        }
+        return Optional.of(employeeItem);
     }
 
     /**
