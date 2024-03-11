@@ -96,8 +96,8 @@ public class ExhibitionScreenController extends PopupInitializer implements FXML
                 descriptionTextArea.getText(),
                 datePicker.getValue(),
                 editMode ? LocalTime.of(timeHourSpinner.getValue(), timeMinuteSpinner.getValue()) : null,
-                maxSeatsSpinner.getValue(),
-                spectatorsSpinner.getValue(),
+                editMode ? maxSeatsSpinner.getValue() : null,
+                editMode ? spectatorsSpinner.getValue() : null,
                 editMode ? exhibition.getAverageRating() : 0.0,
                 editMode ? exhibition.getRatings() : 0);
         final ObservableList<AttractionTableItem> tableItems = tableView.getItems();
