@@ -12,19 +12,25 @@ import org.apdb4j.util.view.AlertBuilder;
 import org.apdb4j.view.staff.tableview.ContractTableItem;
 import org.apdb4j.view.staff.tableview.EmployeeTableItem;
 import org.apdb4j.view.staff.tableview.TableItem;
+import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.jooq.tools.StringUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.apdb4j.db.Tables.*;
-import static org.jooq.impl.DSL.*;
+import static org.apdb4j.db.Tables.ACCOUNTS;
+import static org.apdb4j.db.Tables.CONTRACTS;
+import static org.apdb4j.db.Tables.STAFF;
+import static org.jooq.impl.DSL.concat;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.inline;
 
 /**
  * A staff controller specifically used for employees.
@@ -48,7 +54,9 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> Collection<T> getData() {
-        return getEmployeeData(false);
+        return getEmployeeData(CONTRACTS.ENDDATE.isNull()
+                .or(CONTRACTS.ENDDATE.greaterThan(LocalDate.now()))
+                .or(STAFF.ISADMIN.isTrue()));
     }
 
     /**
@@ -152,13 +160,21 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
+     *
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
-    public <T extends TableItem> T fire(final T employeeItem) {
+    public <T extends TableItem> Optional<T> fire(final T employeeItem) {
         final EmployeeTableItem employee = (EmployeeTableItem) employeeItem;
-        StaffManager.fireStaffMember(employee.getNationalID());
-        return employeeItem;
+        try {
+            StaffManager.fireStaffMember(employee.getNationalID());
+        } catch (final DataAccessException e) {
+            new AlertBuilder(Alert.AlertType.ERROR)
+                    .setContentText(e.getMessage())
+                    .show();
+            return Optional.empty();
+        }
+        return Optional.of(employeeItem);
     }
 
     /**
@@ -167,7 +183,7 @@ public class EmployeeControllerImpl implements EmployeeController {
      */
     @Override
     public <T extends TableItem> Collection<T> getFiredData() {
-        return getEmployeeData(true);
+        return getEmployeeData(CONTRACTS.ENDDATE.isNotNull().and(CONTRACTS.ENDDATE.lessOrEqual(LocalDate.now())));
     }
 
     /**
@@ -192,13 +208,13 @@ public class EmployeeControllerImpl implements EmployeeController {
         return extractEmployeeData(result);
     }
 
-    private <T extends TableItem> @NonNull List<T> getEmployeeData(final boolean fired) {
+    private <T extends TableItem> @NonNull List<T> getEmployeeData(final Condition condition) {
         final Result<Record> result = new QueryBuilder().createConnection()
                 .queryAction(db -> db.select(STAFF.asterisk().except(STAFF.ISEMPLOYEE), CONTRACTS.SALARY)
                         .from(STAFF)
                         .leftJoin(CONTRACTS)
                         .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
-                        .where(fired ? CONTRACTS.ENDDATE.isNotNull() : CONTRACTS.ENDDATE.isNull().or(STAFF.ISADMIN.isTrue()))
+                        .where(condition)
                         .fetch())
                 .closeConnection()
                 .getResultAsRecords();
