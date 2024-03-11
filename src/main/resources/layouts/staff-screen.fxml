@@ -563,7 +563,7 @@
                               <CheckBox fx:id="maintenanceRideFilter" mnemonicParsing="false" onAction="#onMaintenanceRideFilter" text="Rides" />
                               <CheckBox fx:id="maintenanceShopFilter" mnemonicParsing="false" onAction="#onMaintenanceShopFilter" text="Shops" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddMaintenance" text="Add" />
+                              <Button fx:id="addMaintenanceBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddMaintenance" text="Add" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditMaintenance" text="Edit" />
                            </children>
                            <BorderPane.margin>
