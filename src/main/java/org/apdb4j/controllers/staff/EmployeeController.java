@@ -4,6 +4,7 @@ import org.apdb4j.controllers.Filterable;
 import org.apdb4j.view.staff.tableview.TableItem;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Specialised controller for handling employees.
@@ -24,10 +25,10 @@ public interface EmployeeController extends AdministrationController, Filterable
      * Removes from the DB the selected employee item.
      * @param employeeItem the employee to fire
      * @param <T> the {@code EmployeeTableItem} type
-     * @return the fired employee
+     * @return an optional containing the fired employee, empty if no employee was fired
      * @throws org.jooq.exception.DataAccessException if query fails
      */
-    <T extends TableItem> T fire(T employeeItem);
+    <T extends TableItem> Optional<T> fire(T employeeItem);
 
     /**
      * Retrieves all the table items of fired employees.

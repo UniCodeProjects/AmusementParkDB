@@ -60,7 +60,7 @@ public class Staff extends TableImpl<Record> {
     /**
      * The column <code>amusement_park.staff.Email</code>.
      */
-    public final TableField<Record, String> EMAIL = createField(DSL.name("Email"), SQLDataType.VARCHAR(256).nullable(false), this, "");
+    public final TableField<Record, String> EMAIL = createField(DSL.name("Email"), SQLDataType.VARCHAR(256), this, "");
 
     /**
      * The column <code>amusement_park.staff.Name</code>.

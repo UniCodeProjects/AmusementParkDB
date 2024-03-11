@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 
@@ -70,7 +71,7 @@ public final class EmployeeTableItem implements TableItem {
         this.role = new SimpleStringProperty(role == null ? null : role.trim());
         this.admin = new SimpleBooleanProperty(isAdmin);
         this.salary = new SimpleDoubleProperty(salary <= 0 ? Double.NaN : salary);
-        this.email = new SimpleStringProperty(email.trim());
+        this.email = new SimpleStringProperty(StringUtils.defaultString(email).trim());
     }
 
     /**
