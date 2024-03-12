@@ -155,6 +155,7 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
         beginDatePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell());
         endDatePicker.setDayCellFactory(param -> new JavaFXUtils.LastDayDateCell());
         if (!editMode) {
+            employeeNIDField.setText(partialEmployee.getNationalID());
             return;
         }
         employeeNIDField.setText(contract.getEmployeeNID());
