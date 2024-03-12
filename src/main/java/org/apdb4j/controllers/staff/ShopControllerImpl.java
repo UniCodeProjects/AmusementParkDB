@@ -54,16 +54,16 @@ public class ShopControllerImpl implements ShopController {
     @Override
     public <T extends TableItem> T addData(final T item) {
         final ShopTableItem shop = (ShopTableItem) item;
-        boolean query1Successful;
+        boolean queryResult;
         if (shop.getDescription().isBlank()) {
-            query1Successful = ShopManager.addNewShop(shop.getId(),
+            queryResult = ShopManager.addNewShop(shop.getId(),
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
                     shop.getType()
             );
         } else {
-            query1Successful = ShopManager.addNewShopWithDescription(shop.getId(),
+            queryResult = ShopManager.addNewShopWithDescription(shop.getId(),
                     shop.getName(),
                     shop.getOpeningTime(),
                     shop.getClosingTime(),
@@ -71,12 +71,7 @@ public class ShopControllerImpl implements ShopController {
                     shop.getDescription()
             );
         }
-        final boolean query2Successful = ShopManager.addNewMonthlyCost(shop.getId(),
-                shop.getYearMonth(),
-                shop.getExpenses(),
-                shop.getRevenue()
-        );
-        if (!query1Successful || !query2Successful) {
+        if (!queryResult) {
             errorMessage = "Something went wrong";
             throw new DataAccessException(errorMessage);
         }
@@ -106,12 +101,37 @@ public class ShopControllerImpl implements ShopController {
                                 .set(FACILITIES.CLOSINGTIME, shop.getClosingTime())
                                 .where(FACILITIES.FACILITYID.eq(shop.getId()))
                                 .execute();
-                        configuration.dsl()
-                                .update(COSTS)
-                                .set(COSTS.EXPENSES, BigDecimal.valueOf(shop.getExpenses()))
-                                .set(COSTS.REVENUE, BigDecimal.valueOf(shop.getRevenue()))
+                    });
+                    return 1;
+                })
+                .closeConnection();
+        new QueryBuilder().createConnection()
+                .queryAction(db -> {
+                    db.transaction(configuration -> {
+                        final boolean costTableIsPresent = configuration.dsl()
+                                .selectCount()
+                                .from(COSTS)
                                 .where(COSTS.SHOPID.eq(shop.getId()))
-                                .execute();
+                                .fetchSingleInto(Integer.class) == 1;
+                        if (costTableIsPresent) {
+                            configuration.dsl()
+                                    .update(COSTS)
+                                    .set(COSTS.EXPENSES, BigDecimal.valueOf(shop.getExpenses()))
+                                    .set(COSTS.REVENUE, BigDecimal.valueOf(shop.getRevenue()))
+                                    .set(COSTS.MONTH, shop.getYearMonth().getMonthValue())
+                                    .set(COSTS.YEAR, shop.getYearMonth().getYear())
+                                    .where(COSTS.SHOPID.eq(shop.getId()))
+                                    .execute();
+                        } else {
+                            final boolean queryResult = ShopManager.addNewMonthlyCost(shop.getId(),
+                                    shop.getYearMonth(),
+                                    shop.getExpenses(),
+                                    shop.getRevenue()
+                            );
+                            if (!queryResult) {
+                                throw new DataAccessException("Could not add a new monthly cost.");
+                            }
+                        }
                     });
                     return 1;
                 })
@@ -172,7 +192,7 @@ public class ShopControllerImpl implements ShopController {
                         .from(PARK_SERVICES)
                         .join(FACILITIES)
                         .on(FACILITIES.FACILITYID.eq(PARK_SERVICES.PARKSERVICEID))
-                        .join(COSTS)
+                        .leftJoin(COSTS)
                         .on(COSTS.SHOPID.eq(PARK_SERVICES.PARKSERVICEID))
                         .where(FACILITIES.ISSHOP.isTrue())
                         .and(condition)
@@ -190,9 +210,11 @@ public class ShopControllerImpl implements ShopController {
                 record.get(FACILITIES.CLOSINGTIME),
                 record.get(PARK_SERVICES.TYPE),
                 StringUtils.defaultIfBlank(record.get(PARK_SERVICES.DESCRIPTION), ""),
-                record.get(COSTS.EXPENSES).doubleValue(),
-                record.get(COSTS.REVENUE).doubleValue(),
-                YearMonth.of(record.get(COSTS.YEAR), record.get(COSTS.MONTH)))));
+                record.get(COSTS.EXPENSES) == null ? null : record.get(COSTS.EXPENSES).doubleValue(),
+                record.get(COSTS.REVENUE) == null ? null : record.get(COSTS.REVENUE).doubleValue(),
+                record.get(COSTS.YEAR) == null && record.get(COSTS.MONTH) == null
+                        ? null
+                        : YearMonth.of(record.get(COSTS.YEAR), record.get(COSTS.MONTH)))));
         return data;
     }
 
