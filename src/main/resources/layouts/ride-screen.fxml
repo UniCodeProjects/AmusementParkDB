@@ -110,12 +110,12 @@
              </Spinner>
              <Spinner fx:id="minWeightSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="10">
                  <valueFactory>
-                     <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="0.1" max="1.7976931348623157E308" min="0" />
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="0" />
                  </valueFactory>
              </Spinner>
              <Spinner fx:id="maxWeightSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="11">
                  <valueFactory>
-                     <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="0.1" max="1.7976931348623157E308" min="0" />
+                     <SpinnerValueFactory.IntegerSpinnerValueFactory max="2147483647" min="0" />
                  </valueFactory>
              </Spinner>
             <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
