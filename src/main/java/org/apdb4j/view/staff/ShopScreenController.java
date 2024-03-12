@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Setter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apdb4j.controllers.staff.ShopController;
 import org.apdb4j.controllers.staff.ShopControllerImpl;
 import org.apdb4j.util.IDGenerationUtils;
@@ -24,7 +25,6 @@ import org.jooq.exception.DataAccessException;
 
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -90,9 +90,9 @@ public class ShopScreenController extends PopupInitializer implements FXMLContro
                 LocalTime.of(closingHourSpinner.getValue(), closingMinuteSpinner.getValue()),
                 typeComboBox.getValue(),
                 descriptionTextArea.getText(),
-                expensesSpinner.getValue(),
-                revenueSpinner.getValue(),
-                YearMonth.of(yearSpinner.getValue(), monthChoiceBox.getValue()));
+                editMode ? expensesSpinner.getValue() : null,
+                editMode ? revenueSpinner.getValue() : null,
+                editMode ? YearMonth.of(yearSpinner.getValue(), monthChoiceBox.getValue()) : null);
         gridPane.getScene().getWindow().hide();
         if (!editMode) {
             Platform.runLater(() -> {
@@ -105,22 +105,15 @@ public class ShopScreenController extends PopupInitializer implements FXMLContro
                 }
             });
         } else {
+            final int selectedIndex = tableView.getItems().indexOf(shop);
+            try {
+                CONTROLLER.editData(shopItem);
+            } catch (final DataAccessException e) {
+                new AlertBuilder(Alert.AlertType.ERROR)
+                        .setContentText(CONTROLLER.getErrorMessage().orElse(""));
+            }
             Platform.runLater(() -> {
-                final int selectedIndex = tableView.getItems().indexOf(shop);
-                try {
-                    CONTROLLER.editData(shopItem);
-                } catch (final DataAccessException e) {
-                    new AlertBuilder(Alert.AlertType.ERROR)
-                            .setContentText(CONTROLLER.getErrorMessage().orElse(""));
-                }
-                final List<ShopTableItem> allShopEntries = tableView.getItems().stream()
-                        .filter(shopTableItem -> shopTableItem.getId().equals(shop.getId()))
-                        .toList();
-                tableView.getItems().removeAll(allShopEntries);
-                tableView.getItems().addAll(selectedIndex, CONTROLLER.getData(shop.getId()));
-                // Re-sorting the tableview by the shop id column.
-                tableView.getSortOrder().add(tableView.getColumns().get(0));
-                tableView.sort();
+                tableView.getItems().set(selectedIndex, shopItem);
                 tableView.getSelectionModel().select(selectedIndex);
             });
         }
@@ -134,8 +127,7 @@ public class ShopScreenController extends PopupInitializer implements FXMLContro
         IntStream.rangeClosed(1, 12).forEach(month -> monthChoiceBox.getItems().add(Month.of(month)));
         typeComboBox.getItems().addAll(CONTROLLER.getExistingTypes());
         if (!editMode) {
-            monthChoiceBox.setValue(YearMonth.now().getMonth());
-            yearSpinner.getValueFactory().setValue(Year.now().getValue());
+            List.of(expensesSpinner, revenueSpinner, monthChoiceBox, yearSpinner).forEach(c -> c.setDisable(true));
             return;
         }
         nameField.setText(shop.getName());
@@ -145,12 +137,10 @@ public class ShopScreenController extends PopupInitializer implements FXMLContro
         closingMinuteSpinner.getValueFactory().setValue(shop.getClosingTime().getMinute());
         typeComboBox.setValue(shop.getType());
         descriptionTextArea.setText(shop.getDescription());
-        expensesSpinner.getValueFactory().setValue(shop.getExpenses());
-        revenueSpinner.getValueFactory().setValue(shop.getRevenue());
-        monthChoiceBox.setValue(shop.getYearMonth().getMonth());
-        monthChoiceBox.setDisable(true);
-        yearSpinner.getValueFactory().setValue(shop.getYearMonth().getYear());
-        yearSpinner.setDisable(true);
+        expensesSpinner.getValueFactory().setValue(ObjectUtils.defaultIfNull(shop.getExpenses(), 0.0));
+        revenueSpinner.getValueFactory().setValue(ObjectUtils.defaultIfNull(shop.getRevenue(), 0.0));
+        monthChoiceBox.setValue(ObjectUtils.defaultIfNull(shop.getYearMonth(), YearMonth.now()).getMonth());
+        yearSpinner.getValueFactory().setValue(ObjectUtils.defaultIfNull(shop.getYearMonth(), YearMonth.now()).getYear());
     }
 
 }

@@ -45,18 +45,18 @@ public class ShopTableItem implements TableItem {
                          final @NonNull LocalTime closingTime,
                          final @NonNull String type,
                          final @NonNull String description,
-                         final double expense,
-                         final double revenue,
-                         final @NonNull YearMonth yearMonth) {
+                         final Double expense,
+                         final Double revenue,
+                         final YearMonth yearMonth) {
         this.id = new SimpleStringProperty(id.trim());
         this.name = new SimpleStringProperty(name.trim());
         this.openingTime = new SimpleObjectProperty<>(openingTime);
         this.closingTime = new SimpleObjectProperty<>(closingTime);
         this.type = new SimpleStringProperty(type.trim());
         this.description = new SimpleStringProperty(description.trim());
-        this.expenses = new SimpleDoubleProperty(expense);
-        this.revenue = new SimpleDoubleProperty(revenue);
-        this.yearMonth = new SimpleObjectProperty<>(yearMonth);
+        this.expenses = expense == null ? null : new SimpleDoubleProperty(expense);
+        this.revenue = revenue == null ? null : new SimpleDoubleProperty(revenue);
+        this.yearMonth = yearMonth == null ? null : new SimpleObjectProperty<>(yearMonth);
     }
 
     /**
@@ -111,16 +111,16 @@ public class ShopTableItem implements TableItem {
      * Returns the shop expenses.
      * @return the shop expenses
      */
-    public double getExpenses() {
-        return expenses.get();
+    public Double getExpenses() {
+        return expenses == null ? null : expenses.get();
     }
 
     /**
      * Returns the shop revenue.
      * @return the shop revenue
      */
-    public double getRevenue() {
-        return revenue.get();
+    public Double getRevenue() {
+        return revenue == null ? null : revenue.get();
     }
 
     /**
@@ -128,7 +128,7 @@ public class ShopTableItem implements TableItem {
      * @return the month related to the expenses/revenues
      */
     public YearMonth getYearMonth() {
-        return yearMonth.get();
+        return yearMonth == null ? null : yearMonth.get();
     }
 
 }
