@@ -886,14 +886,6 @@ public class StaffScreenController implements FXMLController, Initializable {
                 showAlertForUnselectedRowInTableView("exhibition");
                 return;
             }
-            if (selectedExhibition.getDate() != null
-                    || selectedExhibition.getTime() != null
-                    || selectedExhibition.getMaxSeats() != 0) {
-                new AlertBuilder(Alert.AlertType.ERROR)
-                        .setContentText("This exhibition cannot be planned.")
-                        .show();
-                return;
-            }
             final GridPane gridPane = new GridPane();
 
             final DatePicker datePicker = new DatePicker();
