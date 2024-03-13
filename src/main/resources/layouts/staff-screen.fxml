@@ -489,7 +489,8 @@
                            <children>
                               <TextField fx:id="shopSearchField" onKeyTyped="#onShopSearch" promptText="Shop name" />
                               <Separator prefWidth="200.0" />
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddShop" text="Add" />
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNewShop" text="New shop" />
+                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAddShopMonthlyCost" text="Add monthly cost" />
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEditShop" text="Edit" />
                            </children>
                            <BorderPane.margin>

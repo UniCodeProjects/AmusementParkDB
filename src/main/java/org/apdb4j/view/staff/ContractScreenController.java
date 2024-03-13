@@ -88,7 +88,7 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
      */
     @FXML
     void onAdvancedEdit(final ActionEvent event) {
-        final List<Control> formFields = List.of(employeeNIDField, employerNIDField, signedDatePicker, beginDatePicker);
+        final List<Control> formFields = List.of(employerNIDField, signedDatePicker, beginDatePicker);
         if (advancedEditCheckBox.isSelected()) {
             formFields.forEach(control -> control.setDisable(false));
         } else {
@@ -155,9 +155,11 @@ public class ContractScreenController extends PopupInitializer implements FXMLCo
         beginDatePicker.setDayCellFactory(param -> new JavaFXUtils.FirstDayDateCell());
         endDatePicker.setDayCellFactory(param -> new JavaFXUtils.LastDayDateCell());
         if (!editMode) {
+            employeeNIDField.setText(partialEmployee.getNationalID());
             return;
         }
         employeeNIDField.setText(contract.getEmployeeNID());
+        employeeNIDField.setDisable(true);
         employerNIDField.setText(contract.getEmployerNID());
         signedDatePicker.setValue(contract.getSignedDate());
         beginDatePicker.setValue(contract.getBeginDate());

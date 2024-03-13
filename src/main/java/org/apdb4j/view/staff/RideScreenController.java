@@ -61,9 +61,9 @@ public class RideScreenController extends PopupInitializer implements FXMLContro
     @FXML
     private Spinner<Integer> maxHeightSpinner;
     @FXML
-    private Spinner<Double> minWeightSpinner;
+    private Spinner<Integer> minWeightSpinner;
     @FXML
-    private Spinner<Double> maxWeightSpinner;
+    private Spinner<Integer> maxWeightSpinner;
     @FXML
     private ToggleGroup statusToggleGroup;
     @FXML

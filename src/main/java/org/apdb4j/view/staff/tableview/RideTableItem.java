@@ -35,8 +35,8 @@ public class RideTableItem implements AttractionTableItem {
     private final StringProperty description;
     private final IntegerProperty minHeight;
     private final IntegerProperty maxHeight;
-    private final DoubleProperty minWeight;
-    private final DoubleProperty maxWeight;
+    private final IntegerProperty minWeight;
+    private final IntegerProperty maxWeight;
     private final StringProperty status;
     private final DoubleProperty averageRating;
     private final IntegerProperty ratings;
@@ -71,8 +71,8 @@ public class RideTableItem implements AttractionTableItem {
                          final String description,
                          final int minHeight,
                          final int maxHeight,
-                         final double minWeight,
-                         final double maxWeight,
+                         final int minWeight,
+                         final int maxWeight,
                          final @NonNull String status,
                          final double averageRating,
                          final int ratings) {
@@ -87,8 +87,8 @@ public class RideTableItem implements AttractionTableItem {
         this.description = new SimpleStringProperty(StringUtils.defaultString(description).trim());
         this.minHeight = new SimpleIntegerProperty(minHeight);
         this.maxHeight = new SimpleIntegerProperty(maxHeight);
-        this.minWeight = new SimpleDoubleProperty(minWeight);
-        this.maxWeight = new SimpleDoubleProperty(maxWeight);
+        this.minWeight = new SimpleIntegerProperty(minWeight);
+        this.maxWeight = new SimpleIntegerProperty(maxWeight);
         this.status = new SimpleStringProperty(status.trim());
         this.averageRating = new SimpleDoubleProperty(averageRating);
         this.ratings = new SimpleIntegerProperty(ratings);
@@ -186,7 +186,7 @@ public class RideTableItem implements AttractionTableItem {
      * Returns the ride min weight.
      * @return the ride min weight
      */
-    public double getMinWeight() {
+    public int getMinWeight() {
         return minWeight.get();
     }
 
@@ -194,7 +194,7 @@ public class RideTableItem implements AttractionTableItem {
      * Returns the ride max weight.
      * @return the ride max weight
      */
-    public double getMaxWeight() {
+    public int getMaxWeight() {
         return maxWeight.get();
     }
 
