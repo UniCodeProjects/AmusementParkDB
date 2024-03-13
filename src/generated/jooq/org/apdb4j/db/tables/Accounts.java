@@ -117,6 +117,7 @@ public class Accounts extends TableImpl<Record> {
     @Override
     public List<Check<Record>> getChecks() {
         return Arrays.asList(
+            Internal.createCheck(this, DSL.name("CREDENTIALS_CHECK"), "(((`Username` is not null) and (`Password` is not null)) or ((`Username` is null) and (`Password` is null)))", true),
             Internal.createCheck(this, DSL.name("PERMISSION_CHECK"), "(`PermissionType` in (_utf8mb4\\'Admin\\',_utf8mb4\\'Staff\\',_utf8mb4\\'Guest\\'))", true),
             Internal.createCheck(this, DSL.name("PSW_LENGTH"), "(length(`Password`) >= 8)", true)
         );
