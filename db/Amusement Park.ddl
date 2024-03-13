@@ -12,6 +12,7 @@ create table ACCOUNTS (
      constraint IDACCOUNT primary key (Email),
      constraint IDACCOUNT_1 unique (Username),
      constraint PSW_LENGTH check (length(Password) >= 8),
+     constraint CREDENTIALS_CHECK check ((Username is not null and Password is not null) or (Username is null and Password is null)),
      constraint PERMISSION_CHECK check (PermissionType in ("Admin", "Staff", "Guest")));
 
 create table attributions (
