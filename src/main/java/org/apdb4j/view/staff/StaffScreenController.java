@@ -886,14 +886,6 @@ public class StaffScreenController implements FXMLController, Initializable {
                 showAlertForUnselectedRowInTableView("exhibition");
                 return;
             }
-            if (selectedExhibition.getDate() != null
-                    || selectedExhibition.getTime() != null
-                    || selectedExhibition.getMaxSeats() != 0) {
-                new AlertBuilder(Alert.AlertType.ERROR)
-                        .setContentText("This exhibition cannot be planned.")
-                        .show();
-                return;
-            }
             final GridPane gridPane = new GridPane();
 
             final DatePicker datePicker = new DatePicker();
@@ -1083,9 +1075,27 @@ public class StaffScreenController implements FXMLController, Initializable {
      * @param event the event
      */
     @FXML
-    void onAddShop(final ActionEvent event) {
+    void onNewShop(final ActionEvent event) {
         ShopScreenController.setEditMode(false);
+        ShopScreenController.setAddCostMode(false);
         LoadFXML.fromEventAsPopup(event, "layouts/shop-screen.fxml", "Add shop");
+    }
+
+    /**
+     * Adds a monthly cost to the selected shop.
+     * @param event the event
+     */
+    @FXML
+    void onAddShopMonthlyCost(final ActionEvent event) {
+        final var selectedShop = shopsTableView.getSelectionModel().getSelectedItem();
+        if (Objects.isNull(selectedShop)) {
+            showAlertForUnselectedRowInTableView("shop");
+            return;
+        }
+        ShopScreenController.setEditMode(false);
+        ShopScreenController.setAddCostMode(true);
+        ShopScreenController.setShop(selectedShop);
+        LoadFXML.fromEventAsPopup(event, "layouts/shop-screen.fxml", "Add monthly cost");
     }
 
     /**
@@ -1100,6 +1110,7 @@ public class StaffScreenController implements FXMLController, Initializable {
             return;
         }
         ShopScreenController.setEditMode(true);
+        ShopScreenController.setAddCostMode(false);
         ShopScreenController.setShop(selectedShop);
         LoadFXML.fromEventAsPopup(event, "layouts/shop-screen.fxml", "Edit shop");
     }

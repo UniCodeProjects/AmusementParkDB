@@ -1,7 +1,6 @@
 package org.apdb4j.controllers.staff;
 
 import lombok.NonNull;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apdb4j.core.managers.ExhibitionManager;
 import org.apdb4j.util.QueryBuilder;
@@ -206,10 +205,10 @@ public class ExhibitionControllerImpl implements ExhibitionController {
                 record.get(PARK_SERVICES.DESCRIPTION),
                 record.get(EXHIBITION_DETAILS.DATE),
                 record.get(EXHIBITION_DETAILS.TIME),
-                ObjectUtils.defaultIfNull(record.get(EXHIBITION_DETAILS.MAXSEATS), 0),
-                ObjectUtils.defaultIfNull(record.get(EXHIBITION_DETAILS.SPECTATORS), 0).intValue(),
-                ObjectUtils.defaultIfNull(record.get(PARK_SERVICES.AVGRATING), 0.0).doubleValue(),
-                ObjectUtils.defaultIfNull(record.get(PARK_SERVICES.NUMREVIEWS), 0).intValue())));
+                record.get(EXHIBITION_DETAILS.MAXSEATS),
+                record.get(EXHIBITION_DETAILS.SPECTATORS) == null ? null : record.get(EXHIBITION_DETAILS.SPECTATORS).intValue(),
+                record.get(PARK_SERVICES.AVGRATING).doubleValue(),
+                record.get(PARK_SERVICES.NUMREVIEWS).intValue())));
         return data;
     }
 
