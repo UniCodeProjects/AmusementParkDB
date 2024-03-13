@@ -43,6 +43,23 @@ public class ShopControllerImpl implements ShopController {
      * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
+    public ShopTableItem addMonthlyCost(final ShopTableItem shop) {
+        final boolean queryResult = ShopManager.addNewMonthlyCost(shop.getId(),
+                shop.getYearMonth(),
+                shop.getExpenses(),
+                shop.getRevenue()
+        );
+        if (!queryResult) {
+            throw new DataAccessException("Could not add a new monthly cost.");
+        }
+        return shop;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws org.jooq.exception.DataAccessException if query fails
+     */
+    @Override
     public <T extends TableItem> Collection<T> getData(final String shopID) {
         return extractShopData(searchQuery(FACILITIES.FACILITYID.eq(shopID)));
     }
@@ -101,37 +118,12 @@ public class ShopControllerImpl implements ShopController {
                                 .set(FACILITIES.CLOSINGTIME, shop.getClosingTime())
                                 .where(FACILITIES.FACILITYID.eq(shop.getId()))
                                 .execute();
-                    });
-                    return 1;
-                })
-                .closeConnection();
-        new QueryBuilder().createConnection()
-                .queryAction(db -> {
-                    db.transaction(configuration -> {
-                        final boolean costTableIsPresent = configuration.dsl()
-                                .selectCount()
-                                .from(COSTS)
+                        configuration.dsl()
+                                .update(COSTS)
+                                .set(COSTS.EXPENSES, BigDecimal.valueOf(shop.getExpenses()))
+                                .set(COSTS.REVENUE, BigDecimal.valueOf(shop.getRevenue()))
                                 .where(COSTS.SHOPID.eq(shop.getId()))
-                                .fetchSingleInto(Integer.class) == 1;
-                        if (costTableIsPresent) {
-                            configuration.dsl()
-                                    .update(COSTS)
-                                    .set(COSTS.EXPENSES, BigDecimal.valueOf(shop.getExpenses()))
-                                    .set(COSTS.REVENUE, BigDecimal.valueOf(shop.getRevenue()))
-                                    .set(COSTS.MONTH, shop.getYearMonth().getMonthValue())
-                                    .set(COSTS.YEAR, shop.getYearMonth().getYear())
-                                    .where(COSTS.SHOPID.eq(shop.getId()))
-                                    .execute();
-                        } else {
-                            final boolean queryResult = ShopManager.addNewMonthlyCost(shop.getId(),
-                                    shop.getYearMonth(),
-                                    shop.getExpenses(),
-                                    shop.getRevenue()
-                            );
-                            if (!queryResult) {
-                                throw new DataAccessException("Could not add a new monthly cost.");
-                            }
-                        }
+                                .execute();
                     });
                     return 1;
                 })
