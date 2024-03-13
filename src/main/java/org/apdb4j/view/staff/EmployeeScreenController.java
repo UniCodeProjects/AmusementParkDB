@@ -148,6 +148,7 @@ public class EmployeeScreenController extends PopupInitializer implements FXMLCo
             return;
         }
         nationalIDField.setText(employee.getNationalID());
+        nationalIDField.setDisable(true);
         nameField.setText(employee.getName());
         surnameField.setText(employee.getSurname());
         dobPicker.setValue(employee.getDob());
