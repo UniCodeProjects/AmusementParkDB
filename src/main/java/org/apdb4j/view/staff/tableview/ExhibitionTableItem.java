@@ -51,8 +51,8 @@ public class ExhibitionTableItem implements AttractionTableItem {
                                final String description,
                                final LocalDate date,
                                final LocalTime time,
-                               final int maxSeats,
-                               final int spectators,
+                               final Integer maxSeats,
+                               final Integer spectators,
                                final double averageRating,
                                final int ratings) {
         this.id = new SimpleStringProperty(id.trim());
@@ -61,8 +61,8 @@ public class ExhibitionTableItem implements AttractionTableItem {
         this.description = new SimpleStringProperty(StringUtils.defaultString(description).trim());
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
-        this.maxSeats = new SimpleIntegerProperty(maxSeats);
-        this.spectators = new SimpleIntegerProperty(spectators);
+        this.maxSeats = maxSeats == null ? null : new SimpleIntegerProperty(maxSeats);
+        this.spectators = spectators == null ? null : new SimpleIntegerProperty(spectators);
         this.averageRating = new SimpleDoubleProperty(averageRating);
         this.ratings = new SimpleIntegerProperty(ratings);
     }
@@ -119,16 +119,16 @@ public class ExhibitionTableItem implements AttractionTableItem {
      * Returns the exhibition max seats.
      * @return the exhibition max seats
      */
-    public int getMaxSeats() {
-        return maxSeats.get();
+    public Integer getMaxSeats() {
+        return maxSeats == null ? null : maxSeats.get();
     }
 
     /**
      * Returns the exhibition spectators number.
      * @return the exhibition spectators number
      */
-    public int getSpectators() {
-        return spectators.get();
+    public Integer getSpectators() {
+        return spectators == null ? null : spectators.get();
     }
 
     /**

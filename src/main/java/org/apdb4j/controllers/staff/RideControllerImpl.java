@@ -58,8 +58,8 @@ public class RideControllerImpl implements RideController {
                 ride.getDescription(),
                 ride.getMinHeight(),
                 ride.getMaxHeight(),
-                Math.toIntExact(Math.round(ride.getMinWeight())),
-                Math.toIntExact(Math.round(ride.getMaxWeight())),
+                ride.getMinWeight(),
+                ride.getMaxWeight(),
                 ride.getStatus().charAt(0)
         );
         if (!successfulQuery) {
@@ -112,8 +112,8 @@ public class RideControllerImpl implements RideController {
                         .set(PARK_SERVICES.DESCRIPTION, ride.getDescription())
                         .set(RIDES.MINHEIGHT, UInteger.valueOf(ride.getMinHeight()))
                         .set(RIDES.MAXHEIGHT, UInteger.valueOf(ride.getMaxHeight()))
-                        .set(RIDES.MINWEIGHT, UInteger.valueOf(Math.round(ride.getMinWeight())))
-                        .set(RIDES.MAXWEIGHT, UInteger.valueOf(Math.round(ride.getMaxWeight())))
+                        .set(RIDES.MINWEIGHT, UInteger.valueOf(ride.getMinWeight()))
+                        .set(RIDES.MAXWEIGHT, UInteger.valueOf(ride.getMaxWeight()))
                         .set(PARK_SERVICES.AVGRATING, BigDecimal.valueOf(ride.getAverageRating()))
                         .set(PARK_SERVICES.NUMREVIEWS, UInteger.valueOf(ride.getRatings()))
                         .where(RIDES.RIDEID.eq(ride.getId()))
@@ -201,8 +201,8 @@ public class RideControllerImpl implements RideController {
                 record.get(PARK_SERVICES.DESCRIPTION),
                 record.get(RIDES.MINHEIGHT).intValue(),
                 record.get(RIDES.MAXHEIGHT).intValue(),
-                record.get(RIDES.MINWEIGHT).doubleValue(),
-                record.get(RIDES.MAXWEIGHT).doubleValue(),
+                record.get(RIDES.MINWEIGHT).intValue(),
+                record.get(RIDES.MAXWEIGHT).intValue(),
                 record.get(RIDE_DETAILS.STATUS),
                 record.get(PARK_SERVICES.AVGRATING).doubleValue(),
                 record.get(PARK_SERVICES.NUMREVIEWS).intValue())));
