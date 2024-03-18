@@ -90,6 +90,8 @@ public final class StaffManager {
                                 .set(CONTRACTS.ENDDATE,
                                         LocalDate.of(Year.now().getValue(), YearMonth.now().getMonth(), lastDayOfMonth))
                                 .where(CONTRACTS.EMPLOYEENID.eq(staffNationalID))
+                                .and(CONTRACTS.ENDDATE.isNull()
+                                        .or(CONTRACTS.ENDDATE.greaterThan(currentDate)))
                                 .execute();
                         configuration.dsl()
                                 .deleteFrom(ACCOUNTS)
