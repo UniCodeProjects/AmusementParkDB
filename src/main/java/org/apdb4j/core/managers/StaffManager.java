@@ -106,4 +106,36 @@ public final class StaffManager {
                 .closeConnection();
     }
 
+    /**
+     * Retrieves whether the provided national identifier is the national identifier of an employee.
+     * @param staffNID the national identifier.
+     * @return {@code true} if exists an employee with the provided national identifier, {@code false} otherwise.
+     */
+    public static boolean isEmployeeByNID(final @NonNull String staffNID) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(STAFF)
+                        .where(STAFF.NATIONALID.eq(staffNID))
+                        .and(STAFF.ISEMPLOYEE.isTrue())
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
+
+    /**
+     * Retrieves whether the provided national identifier is the national identifier of an admin.
+     * @param staffNID the national identifier.
+     * @return {@code true} if exists an admin with the provided national identifier, {@code false} otherwise.
+     */
+    public static boolean isAdminByNID(final @NonNull String staffNID) {
+        return DB.createConnection()
+                .queryAction(db -> db.selectCount()
+                        .from(STAFF)
+                        .where(STAFF.NATIONALID.eq(staffNID))
+                        .and(STAFF.ISADMIN.isTrue())
+                        .fetchOne(0, int.class))
+                .closeConnection()
+                .getResultAsInt() == 1;
+    }
+
 }

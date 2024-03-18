@@ -36,6 +36,9 @@ public final class ContractManager {
                                           final @NonNull LocalDate subscriptionDate,
                                           final @NonNull LocalDate beginDate, final LocalDate endDate,
                                           final double salary) {
+        if (!StaffManager.isEmployeeByNID(employeeNID) || !StaffManager.isAdminByNID(employerNID)) {
+            return false;
+        }
         final int insertedTuples = new QueryBuilder()
                 .createConnection()
                 .queryAction(db -> db.insertInto(CONTRACTS)
