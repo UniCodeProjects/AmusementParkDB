@@ -188,9 +188,9 @@ public class EmployeeControllerImpl implements EmployeeController {
 
     /**
      * {@inheritDoc}
-     * @throws org.jooq.exception.DataAccessException if query fails
      * <br>In this instance it filters the employees based on their name and surname.
-     * @implNote This method only filters employees that have not been fired yet
+     * <br/><em>This method only filters employees that have not been fired yet.</em>
+     * @throws org.jooq.exception.DataAccessException if query fails
      */
     @Override
     public <T extends TableItem> Collection<T> filter(final String s) {

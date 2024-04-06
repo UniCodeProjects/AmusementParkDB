@@ -15,7 +15,7 @@ public class ExpensesControllerImpl implements ExpensesController {
     /**
      * {@inheritDoc}
      * @throws IllegalArgumentException when no income is found for the given parameters, or {@code m1} is after {@code m2}
-     * @throws IllegalStateException if {@link #getIncomes(YearMonth...)}
+     * @throws IllegalStateException if {@link MoneyManager#getIncomes(YearMonth...)}
      *                               returns more or less than two values
      */
     @Override
