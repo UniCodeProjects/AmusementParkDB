@@ -15,7 +15,7 @@ public interface ExpensesController {
      * @param m2 second month
      * @return the income for both months as a pair
      * @throws IllegalArgumentException when no income is found for the given parameters, or {@code m1} is after {@code m2}
-     * @throws IllegalStateException if {@link #getIncomes(YearMonth...)}
+     * @throws IllegalStateException if {@link org.apdb4j.core.managers.MoneyManager#getIncomes(YearMonth...)}
      *                               returns more or less than two values
      */
     Pair<Double, Double> getIncome(YearMonth m1, YearMonth m2);
