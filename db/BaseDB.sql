@@ -7,7 +7,9 @@ values ("mariorossi@mail.com", "mario.rossi", "A@BbCc11", "Admin"),
        ("alessandrogialli@mail.com", "alessandro.gialli", "A@BbCc66", "Guest"),
        ("tommasorusso@mail.com", "tommaso.russo", "A@BbCc77", "Guest"),
        ("francescoesposito@mail.com", "francesco.esposito", "A@BbCc88", "Guest"),
-       ("riccardoferrari@mail.com", "riccardo.ferrari", "A@BbCc99", "Guest");
+       ("riccardoferrari@mail.com", "riccardo.ferrari", "A@BbCc99", "Guest"),
+       ("pietrobianchi@mail.com", "pietro.bianchi", "@Bcdefg1", "Staff"),
+       ("martapizzulla@mail.com", "marta.pizzulla", "@Bcdefg2", "Staff");
        
 insert into guests
 values ("Ale-Gia-4b160428", "alessandrogialli@mail.com", "Alessandro", "Gialli"),
@@ -20,13 +22,17 @@ values ("Mar-Ros-254ddfbc", "MRARSS77E15A944I", "mariorossi@mail.com", "Mario", 
        ("And-Ver-e5bbe886", "VRDNDR66T22F839F", "andreaverdi@mail.com", "Andrea", "Verdi", '1966-12-22', "Napoli", "M", "engineer", false, true),
        ("Mar-Gia-f592ab85", "GLLMRA79H49H501I", "mariagialli@mail.com", "Maria", "Gialli", '1979-06-09', "Roma", "F", "chef", false, true),
        ("Leo-Ros-fc10576d", "RSSLRD89L17C573J", "leonardorossi@mail.com", "Leonardo", "Rossi", '1989-07-17', "Cesena", "M", "waiter", false, true),
-       ("Sof-Ver-f00852e9", "VRDSFO93R45D704B", "sofiaverdi@mail.com", "Sofia", "Verdi", '1993-10-05', "Forlì", "F", "engineer", false, true);
+       ("Sof-Ver-f00852e9", "VRDSFO93R45D704B", "sofiaverdi@mail.com", "Sofia", "Verdi", '1993-10-05', "Forlì", "F", "engineer", false, true),
+       ("Pie-Bia-389ce515", "BNCPTR82S05A944O", "pietrobianchi@mail.com", "Pietro", "Bianchi", '1982-11-05', "Bologna", "M", "ride attendant", false, true),
+       ("Mar-Piz-5811e0c", "PZZMRT99E68G273X", "martapizzulla@mail.com", "Marta", "Pizzulla", '1999-05-28', "Palermo", "F", "chef", false, true);
 
 insert into contracts 
 values ("C-f2afe4e1", '2021-12-10', '2022-01-01', null, 1100.00, "MRARSS77E15A944I", "RSSLRD89L17C573J"),
        ("C-8e76b68d", '2023-05-04', '2023-06-01', '2024-01-31', 1600.00, "MRARSS77E15A944I", "VRDSFO93R45D704B"),
        ("C-453dabdd", '2023-02-22', '2023-04-01', '2024-04-30', 1500.00, "MRARSS77E15A944I", "GLLMRA79H49H501I"),
-       ("C-7882a6be", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "VRDNDR66T22F839F");
+       ("C-7882a6be", '2023-08-19', '2023-09-01', null, 1200.00, "MRARSS77E15A944I", "VRDNDR66T22F839F"),
+       ("C-f59d9d35", '2024-01-01', '2024-05-01', '2025-04-30', 1500.00, "MRARSS77E15A944I", "BNCPTR82S05A944O"),
+       ("C-cccfe072", '2024-02-01', '2024-02-01', null, 2000.00, "MRARSS77E15A944I", "PZZMRT99E68G273X");
 
 insert into price_lists
 values (2023),
