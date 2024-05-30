@@ -48,7 +48,8 @@ values ("RI-3c6dfaa5", "Nitro Blast", 4.5, 2, "Launched coaster", null, false),
        ("SH-d08f831a", "Gizmo Grove", 4, 1, "Gadgets", null, false),
        ("RI-cadf1460", "Thunderbolt Twister", 4, 2, "Launched coaster", "This ultimate roller coaster adventure will leave you breathless and craving more. Are you ready to brave the storm? Ride the Thunderbolt Twister today!", false),
        ("RI-b199d969", "Galactic Whirl", 5, 1, "Spinning ride", null, false),
-       ("RI-222fe4ef", "Jungle Rapids", 4.5, 2, "Water ride", null, false);
+       ("RI-222fe4ef", "Jungle Rapids", 4.5, 2, "Water ride", null, false),
+       ("EX-7daef637", "Wheels of Fury", 5, 1, "Stunt show", null, true);
 
 insert into facilities
 values ("RI-3c6dfaa5", '09:00:00', '19:00:00', false),
@@ -92,7 +93,10 @@ insert into exhibition_details
 values ("EX-39234f38", '2023-09-15', '16:00:00', 200, null),
        ("EX-39234f38", '2023-09-02', '14:00:00', 150, 120),
        ("EX-dc28f34b", '2023-09-01', '15:00:00', 300, 200),
-       ("EX-dc28f34b", '2023-09-20', '15:30:00', 400, null);
+       ("EX-dc28f34b", '2023-09-20', '15:30:00', 400, null),
+       ("EX-7daef637", '2024-06-10', '16:00:00', 100, null),
+       ("EX-7daef637", '2024-06-25', '11:30:00', 100, null),
+       ("EX-7daef637", '2023-09-18', '16:30:00', 85, 60);
        
 insert into costs
 values ("SH-eaa716ef", 14500.00, 5000.00, 9, 2023),
@@ -119,7 +123,8 @@ values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "Ale-Gia-4b160428", "RI-3
        ("a54b1f89", 4, '2024-05-15', '17:25:19', null, "Fra-Esp-e28cee91", "RI-cadf1460"),
        ("7ebdc34a", 5, '2024-04-01', '19:30:37', "This spinning ride is amazing! It feels very safe. The staff were very friendly and efficient, A must-try for anyone visiting the park. Can't wait to ride it again!", "Ale-Gia-4b160428", "RI-b199d969"),
        ("b40df21", 4, '2023-09-10', '20:27:55', null, "Ric-Fer-bcba6597", "RI-222fe4ef"),
-       ("e2298fc6", 5, '2024-05-25', '11:45:13', null, "Tom-Rus-8d031c19", "RI-222fe4ef");
+       ("e2298fc6", 5, '2024-05-25', '11:45:13', null, "Tom-Rus-8d031c19", "RI-222fe4ef"),
+       ("b10ef4e8", 5, '2023-09-19', '19:44:12', null, "Fra-Esp-e28cee91", "EX-7daef637");
        
 insert into maintenances
 values ("RI-3c6dfaa5", 500.00, "Track maintenance.", '2023-06-10'),
