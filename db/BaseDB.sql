@@ -140,7 +140,10 @@ values ("RI-3c6dfaa5", '2023-06-10', "VRDSFO93R45D704B"),
        ("RI-e607d536", '2023-07-17', "GLLMRA79H49H501I"),
        ("RI-e607d536", '2023-09-15', "GLLMRA79H49H501I"),
        ("RI-5c53cbe6", '2023-08-05', "VRDSFO93R45D704B"),
-       ("RI-5c53cbe6", '2023-09-25', "VRDSFO93R45D704B");
+       ("RI-5c53cbe6", '2023-09-25', "VRDSFO93R45D704B"),
+       ("RI-cadf1460", '2024-01-15', "VRDSFO93R45D704B"),
+       ("RI-b199d969", '2024-04-13', "VRDNDR66T22F839F"),
+       ("RI-222fe4ef", '2023-12-19', "VRDNDR66T22F839F");
        
 insert into tickets
 values ("T-dbbaffb3", '2023-05-05', '2023-05-05', null, 0, "Ale-Gia-4b160428"),
