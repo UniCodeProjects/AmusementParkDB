@@ -41,18 +41,24 @@ values (2023),
 insert into park_services
 values ("RI-3c6dfaa5", "Nitro Blast", 4.5, 2, "Launched coaster", null, false),
        ("RI-e607d536", "Phantom Flyer", 4, 1, "Inverted coaster", null, false),
-       ("RI-5c53cbe6", "Tidal Twister", 5, 1, "Water coaster", null, false),
+       ("RI-5c53cbe6", "Tidal Twister", 5, 1, "Water ride", null, false),
        ("EX-39234f38", "Adventure Avenue", 4.5, 2, "Theatre play", null, true),
        ("EX-dc28f34b", "Extreme Evolution", 5, 1, "Stunt show", null, true),
        ("SH-eaa716ef", "Burger Town", 4.5, 2, "Restaurant", null, false),
-       ("SH-d08f831a", "Gizmo Grove", 4, 1, "Gadgets", null, false);
+       ("SH-d08f831a", "Gizmo Grove", 4, 1, "Gadgets", null, false),
+       ("RI-cadf1460", "Thunderbolt Twister", 4, 2, "Launched coaster", "This ultimate roller coaster adventure will leave you breathless and craving more. Are you ready to brave the storm? Ride the Thunderbolt Twister today!", false),
+       ("RI-b199d969", "Galactic Whirl", 5, 1, "Spinning ride", null, false),
+       ("RI-222fe4ef", "Jungle Rapids", 4.5, 2, "Water ride", null, false);
 
 insert into facilities
 values ("RI-3c6dfaa5", '09:00:00', '19:00:00', false),
        ("RI-e607d536", '09:00:00', '19:00:00', false),
        ("RI-5c53cbe6", '09:00:00', '19:00:00', false),
        ("SH-eaa716ef", '09:00:00', '19:00:00', true),
-       ("SH-d08f831a", '09:00:00', '19:00:00', true);
+       ("SH-d08f831a", '09:00:00', '19:00:00', true),
+       ("RI-cadf1460", '09:00:00', '19:00:00', false),
+       ("RI-b199d969", '09:00:00', '19:00:00', false),
+       ("RI-222fe4ef", '09:00:00', '19:00:00', false);
 
 insert into pictures
 values ("img/NitroBlast.jpg", "RI-3c6dfaa5"),
@@ -61,17 +67,26 @@ values ("img/NitroBlast.jpg", "RI-3c6dfaa5"),
        ("img/AdventureAvenue.jpg", "EX-39234f38"),
        ("img/ExtremeEvolution.jpg", "EX-dc28f34b"),
        ("img/BurgerTown.jpg", "SH-eaa716ef"),
-       ("img/GizmoGrove.jpg", "SH-d08f831a");
+       ("img/GizmoGrove.jpg", "SH-d08f831a"),
+       ("img/ThunderboltTwister.jpg", "RI-cadf1460"),
+       ("img/GalacticWhirl.jpg", "RI-b199d969"),
+       ("img/JungleRapids.jpg", "RI-222fe4ef");
        
 insert into rides
 values ("RI-3c6dfaa5", "Extreme", '00:03:00', 30, 100, 200, 40, 200),
        ("RI-e607d536", "Extreme", '00:02:30', 25, 100, 200, 20, 150),
-       ("RI-5c53cbe6", "Mild", '00:02:00', 40, 100, 190, 20, 160);
+       ("RI-5c53cbe6", "Mild", '00:02:00', 40, 100, 190, 20, 160),
+       ("RI-cadf1460", "Extreme", '00:02:00', 24, 120, 200, 40, 200),
+       ("RI-b199d969", "Moderate", '00:03:00', 32, 100, 200, 40, 200),
+       ("RI-222fe4ef", "Mild", '00:05:00', 20, 100, 200, 20, 200);
        
 insert into ride_details
 values ("RI-3c6dfaa5", "O", '00:00:00'),
        ("RI-e607d536", "O", '00:05:00'),
-       ("RI-5c53cbe6", "O", '00:10:00');
+       ("RI-5c53cbe6", "O", '00:10:00'),
+       ("RI-cadf1460", "O", '00:20:00'),
+       ("RI-b199d969", "O", '00:15:00'),
+       ("RI-222fe4ef", "O", '00:10:00');
        
 insert into exhibition_details
 values ("EX-39234f38", '2023-09-15', '16:00:00', 200, null),
@@ -99,15 +114,23 @@ values ("b0b7bc8b", 5, '2023-09-08', '15:30:04', null, "Ale-Gia-4b160428", "RI-3
        ("a1141a57", 5, '2023-09-03', '18:20:13', null, "Fra-Esp-e28cee91", "EX-dc28f34b"),
        ("cb362766", 5, '2023-01-14', '19:43:43', null, "Ale-Gia-4b160428", "SH-eaa716ef"),
        ("2f150ea4", 4, '2023-01-19', '16:14:59', null, "Ric-Fer-bcba6597", "SH-eaa716ef"),
-       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "Tom-Rus-8d031c19", "SH-d08f831a");
+       ("99fafe0f", 4, '2023-05-19', '19:19:19', null, "Tom-Rus-8d031c19", "SH-d08f831a"),
+       ("a3cfbd18", 4, '2023-12-12', '15:04:21', "I really enjoyed it!", "Tom-Rus-8d031c19", "RI-cadf1460"),
+       ("a54b1f89", 4, '2024-05-15', '17:25:19', null, "Fra-Esp-e28cee91", "RI-cadf1460"),
+       ("7ebdc34a", 5, '2024-04-01', '19:30:37', "This spinning ride is amazing! It feels very safe. The staff were very friendly and efficient, A must-try for anyone visiting the park. Can't wait to ride it again!", "Ale-Gia-4b160428", "RI-b199d969"),
+       ("b40df21", 4, '2023-09-10', '20:27:55', null, "Ric-Fer-bcba6597", "RI-222fe4ef"),
+       ("e2298fc6", 5, '2024-05-25', '11:45:13', null, "Tom-Rus-8d031c19", "RI-222fe4ef");
        
 insert into maintenances
-values ("RI-3c6dfaa5", 500.00, "maintenance1", '2023-06-10'),
-       ("RI-3c6dfaa5", 100.00, "maintenance2", '2023-05-15'),
-       ("RI-e607d536", 1000.00, "maintenance3", '2023-07-17'),
-       ("RI-e607d536", 550.00, "maintenance4", '2023-09-15'),
-       ("RI-5c53cbe6", 400.00, "maintenance5", '2023-08-05'),
-       ("RI-5c53cbe6", 450.00, "maintenance6", '2023-09-25');
+values ("RI-3c6dfaa5", 500.00, "Track maintenance.", '2023-06-10'),
+       ("RI-3c6dfaa5", 100.00, "Inspected and lubricated all mechanical components, updated control systems, and conducted successful load and operational tests.", '2023-05-15'),
+       ("RI-e607d536", 1000.00, "Track maintenance. Replaced the brakes.", '2023-07-17'),
+       ("RI-e607d536", 550.00, "Inspected and lubricated all mechanical components, updated control systems, and conducted successful load and operational tests.", '2023-09-15'),
+       ("RI-5c53cbe6", 400.00, "Substituted some rafts.", '2023-08-05'),
+       ("RI-5c53cbe6", 450.00, "Replaced the primary water pump.", '2023-09-25'),
+       ("RI-cadf1460", 100.00, "Inspected and lubricated all mechanical components, updated control systems, and conducted successful load and operational tests.", '2024-01-15'),
+       ("RI-b199d969", 350.00, "Replaced the main gearbox.", '2024-04-13'),
+       ("RI-222fe4ef", 200.00, "Replaced the primary water pump.", '2023-12-19');
        
 insert into responsibilities
 values ("RI-3c6dfaa5", '2023-06-10', "VRDSFO93R45D704B"),
