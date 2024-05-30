@@ -4,6 +4,7 @@ import lombok.NonNull;
 import org.apdb4j.util.QueryBuilder;
 import org.jooq.impl.DSL;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
@@ -127,13 +128,16 @@ public class OverviewControllerImpl implements OverviewController {
      */
     @Override
     public int getEmployeesAmount() {
+        final var currentDate = LocalDate.now();
         return QUERY_BUILDER.createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(STAFF)
                         .join(CONTRACTS)
                         .on(CONTRACTS.EMPLOYEENID.eq(STAFF.NATIONALID))
                         .where(STAFF.ISEMPLOYEE.isTrue())
-                        .and(CONTRACTS.ENDDATE.isNull())
+                        .and(CONTRACTS.BEGINDATE.lessOrEqual(currentDate))
+                        .and(CONTRACTS.ENDDATE.isNull()
+                                .or(CONTRACTS.ENDDATE.greaterThan(currentDate)))
                         .fetchOne(0, int.class))
                 .closeConnection()
                 .getResultAsInt();
