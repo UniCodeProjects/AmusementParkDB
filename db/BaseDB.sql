@@ -168,7 +168,14 @@ values ("T-dbbaffb3", '2023-05-05', '2023-05-05', null, 0, "Ale-Gia-4b160428"),
        ("T-8e8985f4", '2023-03-06', null, '2023-05-06', 7, "Fra-Esp-e28cee91"),
        ("T-a572544", '2023-09-01', null, '2023-12-01', 8, "Ric-Fer-bcba6597"),
        ("T-ad8830af", '2023-08-10', '2023-08-10', null, 0, "Tom-Rus-8d031c19"),
-       ("T-1e8d680f", '2023-06-24', '2023-07-01', null, 0, "Fra-Esp-e28cee91");
+       ("T-1e8d680f", '2023-06-24', '2023-07-01', null, 0, "Fra-Esp-e28cee91"),
+       ("T-bb721d41", '2024-04-10', '2024-04-10', null, 0, "Tom-Rus-8d031c19"),
+       ("T-9541e820", '2024-04-04', '2024-04-10', null, 0, "Ric-Fer-bcba6597"),
+       ("T-c86803e6", '2024-04-02', null, '2024-05-02', 8, "Ale-Gia-4b160428"),
+       ("T-249ea2f", '2024-03-14', '2024-03-14', null, 0, "Fra-Esp-e28cee91"),
+       ("T-8b186c7", '2024-03-17', '2024-03-17', null, 0, "Ric-Fer-bcba6597"),
+       ("T-dad8baef", '2024-02-12', '2024-02-12', null, 0, "Fra-Esp-e28cee91"),
+       ("T-1b8ab072", '2024-01-22', '2024-01-22', null, 0, "Tom-Rus-8d031c19");
 
 insert into ticket_types
 values (2023, 25.00, "single day ticket", "kids", 1),
@@ -194,7 +201,14 @@ values ("T-dbbaffb3", 2023, "single day ticket", "adults"),
        ("T-8e8985f4", 2023, "season ticket", "adults"),
        ("T-a572544", 2023, "season ticket", "adults"),
        ("T-ad8830af", 2023, "single day ticket", "adults"),
-       ("T-1e8d680f", 2023, "single day ticket", "adults");
+       ("T-1e8d680f", 2023, "single day ticket", "adults"),
+       ("T-bb721d41", 2024, "single day ticket", "kids"),
+       ("T-9541e820", 2024, "single day ticket", "adults"),
+       ("T-c86803e6", 2024, "season ticket", "adults"),
+       ("T-249ea2f", 2024, "single day ticket", "adults"),
+       ("T-8b186c7", 2024, "single day ticket", "adults"),
+       ("T-dad8baef", 2024, "single day ticket", "senior"),
+       ("T-1b8ab072", 2024, "single day ticket", "adults");
        
 insert into punch_dates
 values ('2023-05-05'),
@@ -204,7 +218,13 @@ values ('2023-05-05'),
        ('2023-09-15'),
        ('2023-11-25'),
        ('2023-08-10'),
-       ('2023-07-01');
+       ('2023-07-01'),
+       ('2024-04-10'),
+       ('2024-04-15'),
+       ('2024-03-14'),
+       ('2024-03-17'),
+       ('2024-02-12'),
+       ('2024-01-22');
        
 insert into validations
 values ('2023-05-05', "T-dbbaffb3"),
@@ -215,7 +235,15 @@ values ('2023-05-05', "T-dbbaffb3"),
        ('2023-09-15', "T-a572544"),
        ('2023-11-25', "T-a572544"),
        ('2023-08-10', "T-ad8830af"),
-       ('2023-07-01', "T-1e8d680f");
+       ('2023-07-01', "T-1e8d680f"),
+       ('2024-04-10', "T-bb721d41"),
+       ('2024-04-10', "T-9541e820"),
+       ('2024-04-10', "T-c86803e6"),
+       ('2024-04-15', "T-c86803e6"),
+       ('2024-03-14', "T-249ea2f"),
+       ('2024-03-17', "T-8b186c7"),
+       ('2024-02-12', "T-dad8baef"),
+       ('2024-01-22', "T-1b8ab072");
        
 insert into monthly_recaps
 values ('2023-01-01', 50000.00),
