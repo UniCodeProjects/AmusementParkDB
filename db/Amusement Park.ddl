@@ -252,11 +252,6 @@ alter table GUESTS add constraint FKR_1_FK
      foreign key (Email)
      references ACCOUNTS (Email) on update cascade;
 
--- Not allowed in MySQL
--- alter table MAINTENANCES add constraint IDMAINTENANCE_CHK
---     check(exists(select * from responsibilities
---                  where responsibilities.FacilityID = FacilityID and responsibilities.Date = Date));
-
 alter table MAINTENANCES add constraint FKexecution
      foreign key (FacilityID)
      references FACILITIES (FacilityID);
@@ -285,11 +280,6 @@ alter table RIDE_DETAILS add constraint FKride_ride_detail_FK
      foreign key (RideID)
      references RIDES (RideID);
 
--- Not allowed in MySQL
--- alter table RIDES add constraint FKR_CHK
---     check(exists(select * from RIDE_DETAILS
---                  where RIDE_DETAILS.RideID = RideID)); 
-
 alter table RIDES add constraint FKR_FKR
      foreign key (RideID)
      references FACILITIES (FacilityID);
@@ -301,11 +291,6 @@ alter table STAFF add constraint FKR_FKS
 alter table TICKET_TYPES add constraint FKcomposition
      foreign key (Year)
      references PRICE_LISTS (Year);
-
--- Not allowed in MySQL
--- alter table TICKETS add constraint IDTICKET_CHK
---     check(exists(select * from attributions
---                  where attributions.TicketID = TicketID)); 
 
 alter table TICKETS add constraint FKpurchase
      foreign key (OwnerID)
