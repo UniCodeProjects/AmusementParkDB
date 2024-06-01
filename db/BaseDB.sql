@@ -175,7 +175,8 @@ values ("RI-3c6dfaa5", 500.00, "Track maintenance.", '2023-06-10'),
        ("RI-5c53cbe6", 450.00, "Replaced the primary water pump.", '2023-09-25'),
        ("RI-cadf1460", 100.00, "Inspected and lubricated all mechanical components, updated control systems, and conducted successful load and operational tests.", '2024-01-15'),
        ("RI-b199d969", 350.00, "Replaced the main gearbox.", '2024-04-13'),
-       ("RI-222fe4ef", 200.00, "Replaced the primary water pump.", '2023-12-19');
+       ("RI-222fe4ef", 200.00, "Replaced the primary water pump.", '2023-12-19'),
+       ("SH-bea6b983", 400.00, "Bought new oven.", '2024-04-12');
        
 insert into responsibilities
 values ("RI-3c6dfaa5", '2023-06-10', "VRDSFO93R45D704B"),
@@ -188,7 +189,8 @@ values ("RI-3c6dfaa5", '2023-06-10', "VRDSFO93R45D704B"),
        ("RI-5c53cbe6", '2023-09-25', "VRDSFO93R45D704B"),
        ("RI-cadf1460", '2024-01-15', "VRDSFO93R45D704B"),
        ("RI-b199d969", '2024-04-13', "VRDNDR66T22F839F"),
-       ("RI-222fe4ef", '2023-12-19', "VRDNDR66T22F839F");
+       ("RI-222fe4ef", '2023-12-19', "VRDNDR66T22F839F"),
+       ("SH-bea6b983", '2024-04-12', "VRDNDR66T22F839F");
        
 insert into tickets
 values ("T-dbbaffb3", '2023-05-05', '2023-05-05', null, 0, "Ale-Gia-4b160428"),
