@@ -1547,10 +1547,12 @@ public class StaffScreenController implements FXMLController, Initializable {
     }
 
     private boolean monthlyRecapIsNeeded() {
+        final var currentDate = LocalDate.now();
         return new QueryBuilder().createConnection()
                 .queryAction(db -> db.selectCount()
                         .from(MONTHLY_RECAPS)
-                        .where(MONTHLY_RECAPS.DATE.eq(LocalDate.now().minusMonths(1)))
+                        .where(MONTHLY_RECAPS.DATE.eq(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), 1)
+                                .minusMonths(1)))
                         .fetchOne(0, int.class))
                 .closeConnection()
                 .getResultAsInt() == 0;
