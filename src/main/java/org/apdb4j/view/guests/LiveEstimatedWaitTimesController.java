@@ -27,6 +27,7 @@ import java.util.function.Supplier;
 public class LiveEstimatedWaitTimesController implements FXMLController, Initializable {
 
     private static final double FILTERS_MENU_WIDTH = 250;
+    private static final double FILTERS_MENU_HEIGHT = 350;
     private static final double RIDE_INFO_FONT_SIZE = 18;
     private static final double FILTERS_TITLE_FONT_SIZE = 14;
     private static final double ATTRIBUTE_NAME_FONT_SIZE = 12;
@@ -38,8 +39,6 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
     private Button showFiltersButton;
     private final ScrollPane filtersScrollableContainer = new ScrollPane();
     private final ToolBar filtersToolBar = new ToolBar();
-//    private final ToggleGroup filters = new ToggleGroup();
-//    private final ToggleGroup sortButtons = new ToggleGroup();
     private final ToggleGroup sortAndFilterButtons = new ToggleGroup();
     private boolean areFiltersOpen;
     private final RidesEstimatedWaitTimesController controller = new RidesEstimatedWaitTimesControllerImpl();
@@ -73,6 +72,7 @@ public class LiveEstimatedWaitTimesController implements FXMLController, Initial
         filtersScrollableContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         filtersToolBar.setOrientation(Orientation.VERTICAL);
         filtersToolBar.setPrefWidth(FILTERS_MENU_WIDTH);
+        filtersToolBar.setPrefHeight(FILTERS_MENU_HEIGHT);
 
         final var filtersTitle = new Label("Filters");
         filtersTitle.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, FILTERS_TITLE_FONT_SIZE));
